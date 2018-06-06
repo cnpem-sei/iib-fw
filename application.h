@@ -5,10 +5,11 @@
 #ifndef __APPLICATION_H__
 #define __APPLICATION_H__
 
-#define  OUTPUT_Q1_MODULE   0
-#define  OUTPUT_Q4_MODULE   1
-#define  RECTIFIER_MODULE   2
-#define  INPUT_MODULE       3
+#define  OUTPUT_Q1_MODULE       0
+#define  OUTPUT_Q4_MODULE       1
+#define  RECTIFIER_MODULE       2
+#define  INPUT_MODULE           3
+#define  COMMAND_DRAWER_MODULE  4
 
 void LedIndicationStatus(void);
 void AppConfiguration(void);
@@ -178,6 +179,22 @@ unsigned char RectifierAcTransformerOverTempStsRead(void);
 unsigned char RectifierWaterFluxInterlockRead(void);
 unsigned char RectifierWaterFluxInterlockStsRead(void);
 
+// Command Drawer
+unsigned char CommandDrawerTempHeatSinkRead(void);
+unsigned char CommandDrawerTempHeatSinkAlarmStsRead(void);
+unsigned char CommandDrawerTempHeatSinkItlkStsRead(void);
+
+unsigned char CommandDrawerTempLRead(void);
+unsigned char CommandDrawerTempLAlarmStsRead(void);
+unsigned char CommandDrawerTempLItlkStsRead(void);
+
+extern float CommandDrawerVcapBankRead(void);
+extern unsigned char CommandDrawerVcapBankAlarmStsRead(void);
+extern unsigned char CommandDrawerVcapBankItlkStsRead(void);
+
+extern float CommandDrawerVoutRead(void);
+extern unsigned char CommandDrawerVoutAlarmStsRead(void);
+extern unsigned char CommandDrawerVoutItlkStsRead(void);
 
 void ClearDiagnosticCount(void);
 void PrintDiagnosticVar(void);

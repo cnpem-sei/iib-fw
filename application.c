@@ -186,10 +186,34 @@ typedef struct
 
 } RectifierModule_t;
 
-static Q1Module_t         Q1Module;
-static Q4Module_t         Q4Module;
-static InputModule_t      InputModule;
-static RectifierModule_t  Rectifier;
+typedef struct
+{
+    /* PT100CH1 */
+    uint8_t TempHeatSink;
+    bool TempHeatSinkAlarmSts;
+    bool TempHeatSinkItlkSts;
+    /* PT100CH2 */
+    uint8_t TempL;
+    bool TempLAlarmSts;
+    bool TempLItlkSts;
+    /* LCH1 */
+    float VcapBank;
+    bool VcapBankAlarmSts;
+    bool VcapBankItlkSts;
+    /* LCH2 */
+    float Vout;
+    bool VoutAlarmSts;
+    bool VoutItlkSts;
+    /* GPDIO1 */
+    bool ExtItlkSts;
+
+} CommandDrawerModule_t;
+
+static Q1Module_t               Q1Module;
+static Q4Module_t               Q4Module;
+static InputModule_t            InputModule;
+static RectifierModule_t        Rectifier;
+static CommandDrawerModule_t    CommandDrawer;
 
 static unsigned char PowerModuleModel = 0;
 
@@ -216,6 +240,7 @@ void AppConfiguration(void)
     //PowerModuleModel = OUTPUT_Q4_MODULE;
     //PowerModuleModel = RECTIFIER_MODULE;
     //PowerModuleModel = INPUT_MODULE;
+    //PowerModuleModel = COMMAND_DRAWER_MODULE;
     
     switch(PowerModuleModel)
     {
@@ -614,6 +639,60 @@ void AppConfiguration(void)
          InputModule.Driver2ErrorItlk = 0;
 
          break;
+     case COMMAND_DRAWER_MODULE:
+
+         //Setar ranges de entrada
+         VoltageCh1Init(330.0, 3);                 // Capacitors Voltage Configuration.
+         VoltageCh2Init(250.0, 3);                 // Output Voltage Configuration.
+
+         ConfigVoltCh1AsNtc(0);                 // Config Voltage Ch1 as a voltage input
+         ConfigVoltCh2AsNtc(0);                 // Config Voltage Ch2 as a voltage input
+
+         //Setar limites
+         VoltageCh1AlarmLevelSet(250.0);           // Rectifier1 Voltage Alarm
+         VoltageCh1TripLevelSet(300.0);            // Rectifier1 Voltage Trip
+         VoltageCh2AlarmLevelSet(180.0);           // Rectifier2 Voltage Alarm
+         VoltageCh2TripLevelSet(210.0);            // Rectifier2 Voltage Trip
+
+         // PT100 configuration limits
+         Pt100SetCh1AlarmLevel(55);            // HEATSINK TEMPERATURE ALARM LEVEL
+         Pt100SetCh1TripLevel(60);             // HEATSINK TEMPERATURE TRIP LEVEL
+         Pt100SetCh2AlarmLevel(55);            // INDUCTOR TEMPERATURE ALARM LEVEL
+         Pt100SetCh2TripLevel(60);             // INDUCTOR TEMPERATURE TRIP LEVEL
+         // PT100 channel enable
+         Pt100Ch1Enable();                     // HEATSINK TEMPERATURE CHANNEL ENABLE
+         Pt100Ch2Enable();                     // INDUCTOR TEMPERATURE CHANNEL ENABLE
+         Pt100Ch3Disable();
+         Pt100Ch4Disable();
+
+         // Delay 4 seconds
+         Pt100SetCh1Delay(4);
+         // Delay 4 seconds
+         Pt100SetCh2Delay(4);
+         // Delay 4 seconds
+         Pt100SetCh3Delay(4);
+         // Delay 4 seconds
+         Pt100SetCh4Delay(4);
+
+         CommandDrawer.VcapBank             = 0.0;
+         CommandDrawer.VcapBankAlarmSts     = 0;
+         CommandDrawer.VcapBankItlkSts      = 0;
+
+         CommandDrawer.Vout                 = 0.0;
+         CommandDrawer.VoutAlarmSts         = 0;
+         CommandDrawer.VoutItlkSts          = 0;
+
+         CommandDrawer.TempHeatSink         = 0;
+         CommandDrawer.TempHeatSinkAlarmSts = 0;
+         CommandDrawer.TempHeatSinkItlkSts  = 0;
+
+         CommandDrawer.TempL                = 0;
+         CommandDrawer.TempLAlarmSts        = 0;
+         CommandDrawer.TempLItlkSts         = 0;
+
+         CommandDrawer.ExtItlkSts           = 0;
+         break;
+
     }
     
     // End of configuration
@@ -717,17 +796,28 @@ void InterlockClearCheck(void)
                break;
                
           case INPUT_MODULE:
-               InputModule.IinAlarmSts = 0;
-               InputModule.IinItlkSts = 0;
-               InputModule.VdcLinkAlarmSts = 0;
-               InputModule.VdcLinkItlkSts = 0;
-               InputModule.TempHeatsinkAlarmSts = 0;
-               InputModule.TempHeatsinkItlkSts = 0;
-               InputModule.TempLAlarmSts = 0;
-               InputModule.TempLItlkSts = 0;
-               InputModule.Driver1ErrorItlk = 0;
-               InputModule.Driver2ErrorItlk = 0;
-               break;
+              InputModule.IinAlarmSts = 0;
+              InputModule.IinItlkSts = 0;
+              InputModule.VdcLinkAlarmSts = 0;
+              InputModule.VdcLinkItlkSts = 0;
+              InputModule.TempHeatsinkAlarmSts = 0;
+              InputModule.TempHeatsinkItlkSts = 0;
+              InputModule.TempLAlarmSts = 0;
+              InputModule.TempLItlkSts = 0;
+              InputModule.Driver1ErrorItlk = 0;
+              InputModule.Driver2ErrorItlk = 0;
+              break;
+          case COMMAND_DRAWER_MODULE:
+              CommandDrawer.VcapBankAlarmSts     = 0;
+              CommandDrawer.VcapBankItlkSts      = 0;
+              CommandDrawer.VoutAlarmSts         = 0;
+              CommandDrawer.VoutItlkSts          = 0;
+              CommandDrawer.TempHeatSinkAlarmSts = 0;
+              CommandDrawer.TempHeatSinkItlkSts  = 0;
+              CommandDrawer.TempLAlarmSts        = 0;
+              CommandDrawer.TempLItlkSts         = 0;
+              CommandDrawer.ExtItlkSts           = 0;
+              break;
           }
           
       }
@@ -771,6 +861,11 @@ void AppInterlock(void)
             ReleAuxTurnOff();
             ReleItlkTurnOff();
             break;
+
+       case COMMAND_DRAWER_MODULE:
+           ReleAuxTurnOff();
+           ReleItlkTurnOff();
+           break;
       }
       
 }
@@ -860,6 +955,15 @@ void InterlockAppCheck(void)
             Test |= InputModule.Driver1ErrorItlk;
             Test |= InputModule.Driver2ErrorItlk;
             break;
+
+       case COMMAND_DRAWER_MODULE:
+
+           Test |= CommandDrawer.TempHeatSinkItlkSts;
+           Test |= CommandDrawer.TempLItlkSts;
+           Test |= CommandDrawer.VcapBankItlkSts;
+           Test |= CommandDrawer.VoutItlkSts;
+           Test |= CommandDrawer.ExtItlkSts;
+           break;
    }
 
    Test |= RhTripStatusRead();
@@ -919,6 +1023,12 @@ void AlarmAppCheck(void)
             Test |= InputModule.TempLAlarmSts;
             Test |= InputModule.VdcLinkAlarmSts;
             break;
+
+       case COMMAND_DRAWER_MODULE:
+           Test |= CommandDrawer.TempHeatSinkAlarmSts;
+           Test |= CommandDrawer.TempLAlarmSts;
+           Test |= CommandDrawer.VcapBankAlarmSts;
+           Test |= CommandDrawer.VoutAlarmSts;
    }
 
    Test |= RhAlarmStatusRead();
@@ -1061,6 +1171,27 @@ void LedIndicationStatus(void)
             else Led6TurnOff();
 
             break;
+
+       case COMMAND_DRAWER_MODULE:
+           if (CommandDrawer.VcapBankItlkSts) Led2TurnOn();
+           else if (CommandDrawer.VcapBankAlarmSts) Led2Toggle();
+           else Led2TurnOff();
+
+           if (CommandDrawer.VoutItlkSts) Led3TurnOn();
+           else if (CommandDrawer.VoutAlarmSts) Led3Toggle();
+           else Led3TurnOff();
+
+           if (CommandDrawer.ExtItlkSts) Led4TurnOn();
+           else Led4TurnOff();
+
+           if (CommandDrawer.TempHeatSinkItlkSts) Led5TurnOn();
+           else if (CommandDrawer.TempHeatSinkAlarmSts) Led5Toggle();
+           else Led5TurnOff();
+
+           if (CommandDrawer.TempLItlkSts) Led6TurnOn();
+           else if (CommandDrawer.TempLAlarmSts) Led6TurnOff();
+           else Led6TurnOff();
+           break;
       }
       
 }
@@ -1258,6 +1389,27 @@ void Application(void)
             if(!InputModule.Driver2ErrorItlk) InputModule.Driver2ErrorItlk = Driver2TopErrRead();
             */
             break;
+
+       case COMMAND_DRAWER_MODULE:
+           CommandDrawer.TempHeatSink = Pt100ReadCh1();
+           CommandDrawer.TempHeatSinkAlarmSts = Pt100ReadCh1AlarmSts();
+           if (!CommandDrawer.TempHeatSinkItlkSts) CommandDrawer.TempHeatSinkItlkSts = Pt100ReadCh1TripSts();
+
+           CommandDrawer.TempL = Pt100ReadCh2();
+           CommandDrawer.TempLAlarmSts = Pt100ReadCh2AlarmSts();
+           if (!CommandDrawer.TempLItlkSts) CommandDrawer.TempLItlkSts = Pt100ReadCh2TripSts();
+
+           CommandDrawer.VcapBank = VoltageCh1Read();
+           CommandDrawer.VcapBankAlarmSts = VoltageCh1AlarmStatusRead();
+           if (!CommandDrawer.VcapBankItlkSts) CommandDrawer.VcapBankItlkSts = VoltageCh1TripStatusRead();
+
+           CommandDrawer.Vout = VoltageCh2Read();
+           CommandDrawer.VoutAlarmSts = VoltageCh2AlarmStatusRead();
+           if (!CommandDrawer.VoutItlkSts) CommandDrawer.VoutItlkSts = VoltageCh2TripStatusRead();
+
+           if(!CommandDrawer.ExtItlkSts) CommandDrawer.ExtItlkSts = !Gpdi1Read();
+
+           break;
       }
 
       // Interlock Test
@@ -1296,9 +1448,10 @@ void Application(void)
              case INPUT_MODULE:
                   ReleAuxTurnOn();
                   ReleItlkTurnOn();
-
-
                   break;
+             case COMMAND_DRAWER_MODULE:
+                 ReleAuxTurnOn();
+                 ReleItlkTurnOn();
             }
       }
 
@@ -1901,3 +2054,71 @@ unsigned char InputModuleTempLItlkStsRead(void)
 }
 
 //******************************************************************************
+
+/* Command Drawer */
+
+unsigned char CommandDrawerTempHeatSinkRead(void)
+{
+    return CommandDrawer.TempHeatSink;
+}
+
+unsigned char CommandDrawerTempHeatSinkAlarmStsRead(void)
+{
+    return CommandDrawer.TempHeatSinkAlarmSts;
+}
+
+unsigned char CommandDrawerTempHeatSinkItlkStsRead(void)
+{
+    return CommandDrawer.TempHeatSinkItlkSts;
+}
+
+//******************************************************************************
+
+unsigned char CommandDrawerTempLRead(void)
+{
+    return CommandDrawer.TempL;
+}
+
+unsigned char CommandDrawerTempLAlarmStsRead(void)
+{
+    return CommandDrawer.TempLAlarmSts;
+}
+
+unsigned char CommandDrawerTempLItlkStsRead(void)
+{
+    return CommandDrawer.TempLItlkSts;
+}
+
+//******************************************************************************
+
+float CommandDrawerVcapBankRead(void)
+{
+    return CommandDrawer.VcapBank;
+}
+
+unsigned char CommandDrawerVcapBankAlarmStsRead(void)
+{
+    return CommandDrawer.VcapBankAlarmSts;
+}
+
+unsigned char CommandDrawerVcapBankItlkStsRead(void)
+{
+    return CommandDrawer.VcapBankItlkSts;
+}
+
+//******************************************************************************
+
+float CommandDrawerVoutRead(void)
+{
+    return CommandDrawer.Vout;
+}
+
+unsigned char CommandDrawerVoutAlarmStsRead(void)
+{
+    return CommandDrawer.VoutAlarmSts;
+}
+
+unsigned char CommandDrawerVoutItlkStsRead(void)
+{
+    return CommandDrawer.VoutItlkSts;
+}
