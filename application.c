@@ -236,11 +236,11 @@ void AppConfiguration(void)
     // This parameter guide the firmware behavior
     // Each Model has a diferent variable list that need to be check
     
-    PowerModuleModel = OUTPUT_Q1_MODULE;
+    //PowerModuleModel = OUTPUT_Q1_MODULE;
     //PowerModuleModel = OUTPUT_Q4_MODULE;
     //PowerModuleModel = RECTIFIER_MODULE;
     //PowerModuleModel = INPUT_MODULE;
-    //PowerModuleModel = COMMAND_DRAWER_MODULE;
+    PowerModuleModel = COMMAND_DRAWER_MODULE;
     
     switch(PowerModuleModel)
     {
@@ -1715,7 +1715,7 @@ unsigned char Q4ModuleIoutItlkStsRead(void)
       return Q4Module.IoutItlkSts;
 }
 
-//**********************************************
+//******************************************************************************
 
 unsigned char Q4ModuleTempIGBT1Read(void)
 {
@@ -1732,7 +1732,7 @@ unsigned char Q4ModuleTempIGBT1ItlkStsRead(void)
       return Q4Module.TempIGBT1ItlkSts;
 }
 
-//**********************************************
+//******************************************************************************
 
 unsigned char Q4ModuleTempIGBT2Read(void)
 {
@@ -1767,7 +1767,7 @@ unsigned char RectifierIoutRectf1ItlkStsRead(void)
       return Rectifier.IoutRectf1ItlkSts;
 }
 
-//**********************************************
+//******************************************************************************
 
 float RectifierIoutRectf2Read(void)
 {
@@ -1784,7 +1784,7 @@ unsigned char RectifierIoutRectf2ItlkStsRead(void)
       return Rectifier.IoutRectf2ItlkSts;
 }
 
-//**********************************************
+//******************************************************************************
 
 float RectifierVoutRectf1Read(void)
 {
@@ -1801,7 +1801,7 @@ unsigned char RectifierVoutRectf1ItlkStsRead(void)
       return Rectifier.VoutRectf1ItlkSts;
 }
 
-//**********************************************
+//******************************************************************************
             
 float RectifierVoutRectf2Read(void)
 {
@@ -1818,7 +1818,7 @@ unsigned char RectifierVoutRectf2ItlkStsRead(void)
       return Rectifier.VoutRectf2ItlkSts;
 }
 
-//**********************************************
+//******************************************************************************
 
 float RectifierLeakageCurrentRead(void)
 {
@@ -1835,7 +1835,7 @@ unsigned char RectifierLeakageCurrentItlkStsRead(void)
       return Rectifier.LeakageCurrentItlkSts;
 }
 
-//**********************************************
+//******************************************************************************
 
 unsigned char RectifierTempHeatSinkRead(void)
 {
@@ -1852,7 +1852,7 @@ unsigned char RectifierTempHeatSinkItlkStsRead(void)
       return Rectifier.TempHeatSinkItlkSts;
 }
 
-//**********************************************
+//******************************************************************************
 
 unsigned char RectifierTempWaterRead(void)
 {
@@ -1869,7 +1869,7 @@ unsigned char RectifierTempWaterItlkStsRead(void)
       return Rectifier.TempWaterItlkSts;
 }
 
-//**********************************************
+//******************************************************************************
 
 unsigned char RectifierTempModule1Read(void)
 {
@@ -1886,7 +1886,7 @@ unsigned char RectifierTempModule1ItlkStsRead(void)
       return Rectifier.TempModule1ItlkSts;
 }
 
-//**********************************************
+//******************************************************************************
 
 unsigned char RectifierTempModule2Read(void)
 {
@@ -1903,7 +1903,7 @@ unsigned char RectifierTempModule2ItlkStsRead(void)
       return Rectifier.TempModule2ItlkSts;
 }
 
-//**********************************************
+//******************************************************************************
 
 unsigned char RectifierTempL1Read(void)
 {
@@ -1920,7 +1920,7 @@ unsigned char RectifierTempL1ItlkStsRead(void)
       return Rectifier.TempL1ItlkSts;
 }
 
-//**********************************************
+//******************************************************************************
 
 unsigned char RectifierTempL2Read(void)
 {
@@ -1937,7 +1937,7 @@ unsigned char RectifierTempL2ItlkStsRead(void)
       return Rectifier.TempL2ItlkSts;
 }
 
-//**********************************************
+//******************************************************************************
 
 unsigned char RectifierAcPhaseFaultRead(void)
 {
@@ -1949,7 +1949,7 @@ unsigned char RectifierAcPhaseFaultStsRead(void)
       return Rectifier.AcPhaseFaultSts;
 }
 
-//**********************************************
+//******************************************************************************
 
 unsigned char RectifierAcOverCurrentRead(void)
 {
@@ -1961,7 +1961,7 @@ unsigned char RectifierAcOverCurrentStsRead(void)
       return Rectifier.AcOverCurrentSts;
 }
 
-//**********************************************
+//******************************************************************************
 
 unsigned char RectifierAcTransformerOverTempRead(void)
 {
@@ -1973,7 +1973,7 @@ unsigned char RectifierAcTransformerOverTempStsRead(void)
       return Rectifier.AcTransformerOverTempSts;
 }
 
-//**********************************************
+//******************************************************************************
 
 unsigned char RectifierWaterFluxInterlockRead(void)
 {
@@ -2002,7 +2002,7 @@ unsigned char InputModuleIinItlkStsRead(void)
       return InputModule.IinItlkSts;
 }
 
-//**********************************************
+//******************************************************************************
 
 float InputModuleVdcLinkRead(void)
 {
@@ -2019,7 +2019,7 @@ unsigned char InputModuleVdcLinkItlkStsRead(void)
       return InputModule.VdcLinkItlkSts;
 }
 
-//**********************************************
+//******************************************************************************
 
 unsigned char InputModuleTempHeatsinkRead(void)
 {
@@ -2036,7 +2036,7 @@ unsigned char InputModuleTempHeatsinkItlkStsRead(void)
       return InputModule.TempHeatsinkItlkSts;
 }
 
-//**********************************************
+//******************************************************************************
 
 unsigned char InputModuleTempLRead(void)
 {

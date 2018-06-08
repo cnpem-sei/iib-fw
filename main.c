@@ -1,5 +1,3 @@
-
-
 #include <adc_internal.h>
 #include <stdint.h>
 #include <stdbool.h>
@@ -24,7 +22,6 @@
 #include "board_drivers/hardware_def.h"
 #include "peripheral_drivers/gpio/gpio_driver.h"
 
-
 #include "leds.h"
 #include "output.h"
 #include "input.h"
@@ -33,41 +30,6 @@
 //#include "memory.h"
 #include "task.h"
 //#include "driver_board.h"
-
-/*
-#include "inc/hw_ints.h"
-#include "inc/hw_types.h"
-#include "driverlib/fpu.h"
-#include "driverlib/gpio.h"
-#include "driverlib/interrupt.h"
-#include "driverlib/pin_map.h"
-#include "driverlib/rom.h"
-#include "driverlib/rom_map.h"
-#include "driverlib/timer.h"
-#include "driverlib/uart.h"
-#include "utils/uartstdio.h"
-
-#include "inc/hw_gpio.h"
-#include "inc/hw_memmap.h"
-#include "inc/hw_types.h"
-#include "inc/hw_can.h"
-#include "inc/hw_epi.h"
-#include "inc/hw_ssi.h"
-#include "inc/hw_udma.h"
-#include "inc/hw_i2c.h"
-#include "driverlib/debug.h"
-#include "driverlib/gpio.h"
-#include "driverlib/i2c.h"
-#include "driverlib/can.h"
-#include "driverlib/rom.h"
-#include "driverlib/sysctl.h"
-#include "driverlib/epi.h"
-#include "driverlib/ssi.h"
-#include "driverlib/uart.h"
-#include "driverlib/usb.h"
-#include "driverlib/udma.h"
-#include "driverlib/pin_map.h"
-*/
 
 #define ON  ~0
 #define OFF 0
@@ -243,11 +205,9 @@ int main(void)
     {
 
         Application();
-
         BoardTask();
 
     }
-
 
     return 0;
 }
