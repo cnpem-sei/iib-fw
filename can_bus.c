@@ -1,4 +1,3 @@
-
 #include <stdbool.h>
 #include <stdint.h>
 #include "inc/hw_can.h"
