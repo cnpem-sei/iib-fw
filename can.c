@@ -48,23 +48,30 @@
  * TODO: Put here your defines. Just what is local. If you don't
  * need to access it from other module, consider use a constant (const)
  */
-#define INTERLOCK_MESSAGE_ID    0
-#define ALARM_MESSAGE_ID        1
 
-/******************************************************************************
+/*******************************************************************************
  * A flag to indicate that some transmission error occurred.
- *****************************************************************************/
+ ******************************************************************************/
 
 volatile bool g_bErrFlag = 0;
 
 /*******************************************************************************
+ * A flag for the interrupt handler to indicate that a message was received.
+ ******************************************************************************/
+
+volatile bool g_bRXFlag = 0;
+
+/*******************************************************************************
  * Can Messages
  ******************************************************************************/
-tCANMsgObject can_message_rx;
+tCANMsgObject can_message_rx;   // Receive data from network
 uint8_t message_data_rx[8];
 
-tCANMsgObject can_message_tx;
+tCANMsgObject can_message_tx;   // Send data in network
 uint8_t message_data_tx[8];
+
+tCANMsgObject can_message_rx_remote; // Receive data request from network
+uint8_t message_data_rx_remote[8];
 
 /**
  * TODO: Put here your constants and variables. Always use static for 
@@ -80,6 +87,42 @@ uint8_t message_data_tx[8];
 /**
  * TODO: Put here the implementation for your public functions.
  */
+void init_can(uint32_t sysclock)
+{
+    /* Configure the GPIO pin muxing to select CAN0 functions for these pins*/
+    GPIOPinConfigure(GPIO_PA0_CAN0RX);
+    GPIOPinConfigure(GPIO_PA0_CAN0TX);
+
+    /* Enable the alternate function on the GPIO pins. The above step selects*/
+    GPIOPinTypeCAN(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
+
+    /* Enable CAN peripheral*/
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_CAN0);
+
+    /* Wait for the CAN0 module to be ready. */
+    while (!SysCtlPeripheralReady(SYSCTL_PERIPH_CAN0)) {}
+
+    /* Initialize CAN controller */
+    CANInit(CAN0_BASE);
+
+    /* Set bit rate to 1Mbps */
+    CANBitRateSet(CAN0_BASE, sysclock, 1000000);
+
+    /* Enable CAN interrupts */
+    CANIntEnable(CAN0_BASE, CAN_INT_MASTER | CAN_INT_ERROR | CAN_INT_STATUS);
+
+    /* ISR for CAN */
+    CANIntRegister(CAN0_BASE, isr_can);
+
+    /* Priority */
+    IntPrioritySet(INT_CAN0, 1);
+
+    /* Enable CAN interrupt on the processor */
+    IntEnable(INT_CAN0);
+
+    /* Enable CAN for operation*/
+    CANEnable(CAN0_BASE);
+}
 
 /**
  * TODO: Put here the implementation for your private functions.

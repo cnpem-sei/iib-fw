@@ -27,6 +27,12 @@
  * TODO: Put here your defines. Just what need 
  * to be accessed by other modules.
  */
+typedef enum
+{
+    Interlock,
+    Alarm,
+
+} can_message_t;
 
 
 /**
