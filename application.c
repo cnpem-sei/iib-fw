@@ -206,6 +206,8 @@ typedef struct
     bool VoutItlkSts;
     /* GPDIO1 */
     bool ExtItlkSts;
+    /* GPDI05*/
+    bool ExtItlk2Sts;
 
 } CommandDrawerModule_t;
 
@@ -691,6 +693,8 @@ void AppConfiguration(void)
          CommandDrawer.TempLItlkSts         = 0;
 
          CommandDrawer.ExtItlkSts           = 0;
+
+         CommandDrawer.ExtItlk2Sts          = 0;
          break;
 
     }
@@ -817,6 +821,7 @@ void InterlockClearCheck(void)
               CommandDrawer.TempLAlarmSts        = 0;
               CommandDrawer.TempLItlkSts         = 0;
               CommandDrawer.ExtItlkSts           = 0;
+              CommandDrawer.ExtItlk2Sts          = 0;
               break;
           }
           
@@ -963,6 +968,7 @@ void InterlockAppCheck(void)
            Test |= CommandDrawer.VcapBankItlkSts;
            Test |= CommandDrawer.VoutItlkSts;
            Test |= CommandDrawer.ExtItlkSts;
+           Test |= CommandDrawer.ExtItlk2Sts;
            break;
    }
 
@@ -1181,16 +1187,20 @@ void LedIndicationStatus(void)
            else if (CommandDrawer.VoutAlarmSts) Led3Toggle();
            else Led3TurnOff();
 
-           if (CommandDrawer.ExtItlkSts) Led4TurnOn();
+           if (CommandDrawer.TempHeatSinkItlkSts) Led4TurnOn();
+           else if (CommandDrawer.TempHeatSinkAlarmSts) Led4Toggle();
            else Led4TurnOff();
 
-           if (CommandDrawer.TempHeatSinkItlkSts) Led5TurnOn();
-           else if (CommandDrawer.TempHeatSinkAlarmSts) Led5Toggle();
+           if (CommandDrawer.TempLItlkSts) Led5TurnOn();
+           else if (CommandDrawer.TempLAlarmSts) Led5TurnOff();
            else Led5TurnOff();
 
-           if (CommandDrawer.TempLItlkSts) Led6TurnOn();
-           else if (CommandDrawer.TempLAlarmSts) Led6TurnOff();
+           if (CommandDrawer.ExtItlkSts) Led6TurnOn();
            else Led6TurnOff();
+
+           if (CommandDrawer.ExtItlk2Sts) Led7TurnOn();
+           else Led7TurnOff();
+
            break;
       }
       
@@ -1408,6 +1418,8 @@ void Application(void)
            if (!CommandDrawer.VoutItlkSts) CommandDrawer.VoutItlkSts = VoltageCh2TripStatusRead();
 
            if(!CommandDrawer.ExtItlkSts) CommandDrawer.ExtItlkSts = !Gpdi1Read();
+
+           if(!CommandDrawer.ExtItlk2Sts) CommandDrawer.ExtItlk2Sts = !Gpdi5Read();
 
            break;
       }

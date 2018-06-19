@@ -31,7 +31,6 @@ typedef enum
 {
     Interlock,
     Alarm,
-
 } can_message_t;
 
 

@@ -122,6 +122,7 @@ void init_can(uint32_t sysclock)
 
     /* Enable CAN for operation*/
     CANEnable(CAN0_BASE);
+
 }
 
 /**
