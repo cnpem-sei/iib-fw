@@ -200,7 +200,6 @@ int main(void)
 
     AppConfiguration();
 
-
     while(1)
     {
 

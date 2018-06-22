@@ -11,7 +11,6 @@
 #include "driverlib/uart.h"
 #include "utils/uartstdio.h"
 
-
 #include "can_bus.h"
 
 #include "BoardTempHum.h"
@@ -70,8 +69,7 @@ static union
 // have been transmitted.
 //
 //*****************************************************************************
-void
-can_handler(void)
+void can_handler(void)
 {
     uint32_t ui32Status;
 
@@ -396,6 +394,7 @@ void SendCan(unsigned char Message)
            sCANMessageTx.ui32MsgLen = 8;
            sCANMessageTx.ui32MsgID = CanId + 0;
            break;
+
       case Q1_V_IN_OUT:
            floatNchars.f = Q1ModuleVinRead();  // Vin
            pui8MsgDataTx[0] = floatNchars.c[0];
@@ -423,14 +422,14 @@ void SendCan(unsigned char Message)
            pui8MsgDataTx[5] = RhRead();
 
            pui8MsgDataTx[6] = 0;
-           if(Q1ModuleRelayRead()) pui8MsgDataTx[6] = pui8MsgDataTx[6] | 0b00000001;
-           if(Q1ModuleExternalItlkRead()) pui8MsgDataTx[6] = pui8MsgDataTx[6] | 0b00000010;
-           if(Q1ModuleDriver1ErrorRead()) pui8MsgDataTx[6] = pui8MsgDataTx[6] | 0b00000100;
-           if(Q1ModuleDriver2ErrorRead()) pui8MsgDataTx[6] = pui8MsgDataTx[6] | 0b00001000;
-           if(Q1ModuleLeakageCurrentRead()) pui8MsgDataTx[6] = pui8MsgDataTx[6] | 0b00010000;
-           if(Q1ModuleRackRead()) pui8MsgDataTx[6] = pui8MsgDataTx[6] | 0b00100000;
-           if(Q1ModuleTempIGBT1HwrItlkRead()) pui8MsgDataTx[6] = pui8MsgDataTx[6] | 0b01000000;
-           if(Q1ModuleTempIGBT2HwrItlkRead()) pui8MsgDataTx[6] = pui8MsgDataTx[6] | 0b10000000;
+           if(Q1ModuleRelayRead()) pui8MsgDataTx[6]             = pui8MsgDataTx[6] | 0b00000001;
+           if(Q1ModuleExternalItlkRead()) pui8MsgDataTx[6]      = pui8MsgDataTx[6] | 0b00000010;
+           if(Q1ModuleDriver1ErrorRead()) pui8MsgDataTx[6]      = pui8MsgDataTx[6] | 0b00000100;
+           if(Q1ModuleDriver2ErrorRead()) pui8MsgDataTx[6]      = pui8MsgDataTx[6] | 0b00001000;
+           if(Q1ModuleLeakageCurrentRead()) pui8MsgDataTx[6]    = pui8MsgDataTx[6] | 0b00010000;
+           if(Q1ModuleRackRead()) pui8MsgDataTx[6]              = pui8MsgDataTx[6] | 0b00100000;
+           if(Q1ModuleTempIGBT1HwrItlkRead()) pui8MsgDataTx[6]  = pui8MsgDataTx[6] | 0b01000000;
+           if(Q1ModuleTempIGBT2HwrItlkRead()) pui8MsgDataTx[6]  = pui8MsgDataTx[6] | 0b10000000;
 
            pui8MsgDataTx[7] = 0;
 
@@ -729,7 +728,6 @@ void SendCan(unsigned char Message)
     }
 
     CANMessageSet(CAN0_BASE, 2, &sCANMessageTx, MSG_OBJ_TYPE_TX);
-
 }
 
 void CheckCan(void)
@@ -760,11 +758,11 @@ void CheckCan(void)
         g_bRXFlag = 0;
 
         InterlockClear();
+        AlarmClear();
 
     }
 
 }
-
 
 //--------------------------------------------------------------------------
 void InitCan(uint32_t ui32SysClock)

@@ -321,10 +321,10 @@ void AppConfiguration(void)
          Q1Module.TempIGBT2ItlkSts = 0;
          Q1Module.TempIGBT2HwrItlk = 0;
          Q1Module.TempIGBT2HwrItlkSts = 0;
-         Q1Module.DriveVoltage = 0.0;
+         Q1Module.DriveVoltage  = 0.0;
          Q1Module.Drive1Current = 0.0;
          Q1Module.Drive2Current = 0.0;
-         Q1Module.Driver1Error = 0;
+         Q1Module.Driver1Error  = 0;
          Q1Module.Driver1ErrorItlk = 0;
          Q1Module.Driver2Error = 0;
          Q1Module.Driver2ErrorItlk = 0;
@@ -365,8 +365,8 @@ void AppConfiguration(void)
          //Set protection limits
          CurrentCh1AlarmLevelSet(240); //Corrente de entrada
          CurrentCh1TripLevelSet(250);  //Corrente de entrada
-         CurrentCh2AlarmLevelSet(500); //Corrente de saida
-         CurrentCh2TripLevelSet(510);  //Corrente de saida
+         CurrentCh2AlarmLevelSet(550); //Corrente de saida
+         CurrentCh2TripLevelSet(560);  //Corrente de saida
 
          
          // NTC contiguration type
@@ -379,8 +379,8 @@ void AppConfiguration(void)
          LvCurrentCh1TripLevelSet(300.0);  // Tensão de entrada Interlock
 
          // PT100 configuration limits
-         Pt100SetCh1AlarmLevel(45);  // Temperatura do dissipador
-         Pt100SetCh1TripLevel(50);   // Temperatura do dissipador
+         Pt100SetCh1AlarmLevel(35);  // Temperatura do dissipador
+         Pt100SetCh1TripLevel(40);   // Temperatura do dissipador
          Pt100SetCh2AlarmLevel(55);  // Temperatura do indutor
          Pt100SetCh2TripLevel(60);   // Temperatura do indutor
 
