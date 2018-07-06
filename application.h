@@ -196,6 +196,9 @@ extern float CommandDrawerVoutRead(void);
 extern unsigned char CommandDrawerVoutAlarmStsRead(void);
 extern unsigned char CommandDrawerVoutItlkStsRead(void);
 
+extern unsigned char CommandDrawerExtItlkStsRead();
+extern unsigned char CommandDrawerExt2ItlkStsRead();
+
 void ClearDiagnosticCount(void);
 void PrintDiagnosticVar(void);
 

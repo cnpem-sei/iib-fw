@@ -29,7 +29,6 @@
  * to be accessed by other modules.
  */
 
-
 /**
  * TODO: Put here your functions prototypes. Just what need 
  * to be accessed by other modules.
@@ -102,7 +101,7 @@ typedef enum
 
 typedef enum
 {
-
+    None
 } can_tx_cmd_t;
 
 typedef union {

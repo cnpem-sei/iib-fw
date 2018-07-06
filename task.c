@@ -89,10 +89,6 @@ bool Driver2CurrtReadTask = 0;
  * TODO: Put here the implementation for your private functions.
  */
 
-
-
-
-
 void ErrorCheckHandle(void)
 {
     if(Pt100ReadCh1Error()) Pt100Ch1Clear();

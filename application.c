@@ -237,12 +237,12 @@ void AppConfiguration(void)
     // Set Power Module Model
     // This parameter guide the firmware behavior
     // Each Model has a diferent variable list that need to be check
-    
+
     //PowerModuleModel = OUTPUT_Q1_MODULE;
-    //PowerModuleModel = OUTPUT_Q4_MODULE;
+    PowerModuleModel = OUTPUT_Q4_MODULE;
     //PowerModuleModel = RECTIFIER_MODULE;
     //PowerModuleModel = INPUT_MODULE;
-    PowerModuleModel = COMMAND_DRAWER_MODULE;
+    //PowerModuleModel = COMMAND_DRAWER_MODULE;
     
     switch(PowerModuleModel)
     {
@@ -903,6 +903,7 @@ void InterlockAppCheck(void)
    switch(PowerModuleModel)
    {
        case OUTPUT_Q1_MODULE:
+
            Test |= Q1Module.VinItlkSts;
            Test |= Q1Module.VoutItlkSts;
            Test |= Q1Module.IoutA1ItlkSts;
@@ -921,6 +922,7 @@ void InterlockAppCheck(void)
            break;
        
        case OUTPUT_Q4_MODULE:
+
             Test |= Q4Module.IinItlkSts;
             Test |= Q4Module.IoutItlkSts;
             Test |= Q4Module.VdcLinkItlkSts;
@@ -935,6 +937,7 @@ void InterlockAppCheck(void)
             break;
        
        case RECTIFIER_MODULE:
+
             Test |= Rectifier.IoutRectf1ItlkSts;
             Test |= Rectifier.IoutRectf2ItlkSts;
             Test |= Rectifier.VoutRectf1ItlkSts;
@@ -953,6 +956,7 @@ void InterlockAppCheck(void)
             break;
        
        case INPUT_MODULE:
+
             Test |= InputModule.IinItlkSts;
             Test |= InputModule.VdcLinkItlkSts;
             Test |= InputModule.TempHeatsinkItlkSts;
@@ -1205,9 +1209,6 @@ void LedIndicationStatus(void)
       }
       
 }
-
-
-
 
 void Application(void)
 {
@@ -2133,4 +2134,14 @@ unsigned char CommandDrawerVoutAlarmStsRead(void)
 unsigned char CommandDrawerVoutItlkStsRead(void)
 {
     return CommandDrawer.VoutItlkSts;
+}
+
+unsigned char CommandDrawerExtItlkStsRead()
+{
+    return CommandDrawer.ExtItlkSts;
+}
+
+unsigned char CommandDrawerExt2ItlkStsRead()
+{
+    return CommandDrawer.ExtItlk2Sts;
 }
