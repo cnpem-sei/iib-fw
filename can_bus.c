@@ -49,6 +49,7 @@ tCANMsgObject receive_message;
 uint8_t event_message_data[EVENT_MESSAGE_LEN];
 uint8_t request_data_rx[DATA_REQUEST_MESSAGE_LEN];
 uint8_t request_data_tx[DATA_SEND_MESSAGE_LEN];
+uint8_t reset_msg_data[RESET_MESSAGE_LEN];
 
 
 //Rx
@@ -1096,8 +1097,8 @@ void send_heart_beat_message()
                                                               MSG_OBJ_TYPE_TX);
 }
 
-void handle_request_data_message(void) {
-
+void handle_request_data_message(void)
+{
     uint8_t var;
     uint8_t id;
 
@@ -1120,6 +1121,21 @@ void handle_request_data_message(void) {
         transmit_message.pui8MsgData = request_data_tx;
         CANMessageSet(CAN0_BASE, DATA_SEND_OBJ_ID, &transmit_message,
                                                               MSG_OBJ_TYPE_TX);
+    }
+}
+
+void handle_reset_message(void)
+{
+    uint8_t id;
+
+    receive_message.pui8MsgData = reset_msg_data;
+    CANMessageGet(CAN0_BASE, RESET_MESSAGE_OBJ_ID, &receive_message, 0);
+
+    id = reset_msg_data[0];
+
+    if (id == CanId) {
+        AlarmClear();
+        InterlockClear();
     }
 }
 
