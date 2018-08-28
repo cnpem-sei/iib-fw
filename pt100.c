@@ -70,28 +70,27 @@ float RTD_Resistance = 100.0; //RTD Resistance at 0 Degrees. Please refer to you
 
 typedef struct
 {
- unsigned char Ch;
- unsigned char Enable;
- unsigned char Calibration;
- unsigned char Temperature;
- unsigned char AlarmLimit;
- unsigned char TripLimit;
- unsigned char CanNotCommunicate;
- unsigned char Error;
- unsigned char RtdOutOfRange;
- unsigned char Alarm;
- unsigned char Trip;
- unsigned char Alarm_Delay_s; // second
- unsigned char Alarm_DelayCount;
- unsigned char Itlk_Delay_s; // second
- unsigned char Itlk_DelayCount;
+    unsigned char Ch;
+    unsigned char Enable;
+    unsigned char Calibration;
+    unsigned char Temperature;
+    unsigned char AlarmLimit;
+    unsigned char TripLimit;
+    unsigned char CanNotCommunicate;
+    unsigned char Error;
+    unsigned char RtdOutOfRange;
+    unsigned char Alarm;
+    unsigned char Trip;
+    unsigned char Alarm_Delay_s; // second
+    unsigned char Alarm_DelayCount;
+    unsigned char Itlk_Delay_s; // second
+    unsigned char Itlk_DelayCount;
 }pt100_t;
 
 static pt100_t Pt100Ch1;
 static pt100_t Pt100Ch2;
 static pt100_t Pt100Ch3;
 static pt100_t Pt100Ch4;
-
 
 // Temperature Range: 0 to 255°C
 /**
@@ -105,193 +104,178 @@ static pt100_t Pt100Ch4;
  */
 void get_Temp(pt100_t *pt100)
 {
-  unsigned int msb_rtd;
-  unsigned int lsb_rtd;
-  unsigned char fault_test = 0;
-  float R;
-  float Temp;
-  float TempT;
-  float RTD;
-  
-  msb_rtd = read_spi_byte(0x01);
-  lsb_rtd = read_spi_byte(0x02);
-  
-  fault_test = lsb_rtd & 0x01;
-  
-  if(fault_test == 0)
-  {
+    unsigned int msb_rtd;
+    unsigned int lsb_rtd;
+    unsigned char fault_test = 0;
+    float R;
+    float Temp;
+    float TempT;
+    float RTD;
     
-    // Clear RTD out of range flag
-    pt100->RtdOutOfRange = 0;
+    msb_rtd = read_spi_byte(0x01);
+    lsb_rtd = read_spi_byte(0x02);
     
-    RTD = ((msb_rtd << 7) + ((lsb_rtd & 0xFE) >> 1)); // Combining RTD_MSB and RTD_LSB to protray decimal value. Removing MSB and LSB during shifting/Anding
+    fault_test = lsb_rtd & 0x01;
 
-    R = (RTD * Reference_Resistor) / 32768; // Conversion of ADC RTD code to resistance
+    if(fault_test == 0)
+    {
+        // Clear RTD out of range flag
+        pt100->RtdOutOfRange = 0;
 
-    Temp = -RTD_Resistance * a + sqrt(RTD_Resistance * RTD_Resistance * a * a - 4 * RTD_Resistance * b * (RTD_Resistance - R)); // Conversion of RTD resistance to Temperature
+        RTD = ((msb_rtd << 7) + ((lsb_rtd & 0xFE) >> 1)); // Combining RTD_MSB and RTD_LSB to protray decimal value. Removing MSB and LSB during shifting/Anding
 
-    TempT = Temp / (2 * RTD_Resistance * b);
-    
-    if(TempT < 0.0) TempT = 0.0;
-    else if(TempT > 255.0) TempT = 255.0;
-    
-  }
-  else
-  {
-   //"Error was detected. The RTD resistance measured is not within the range specified in the Threshold Registers."
-   pt100->RtdOutOfRange = 1;
-   
-   TempT = 0.0;
-   
-  }
-  
-  pt100->Temperature = TempT;
+        R = (RTD * Reference_Resistor) / 32768; // Conversion of ADC RTD code to resistance
 
+        Temp = -RTD_Resistance * a + sqrt(RTD_Resistance * RTD_Resistance * a * a - 4 * RTD_Resistance * b * (RTD_Resistance - R)); // Conversion of RTD resistance to Temperature
+
+        TempT = Temp / (2 * RTD_Resistance * b);
+
+        if(TempT < 0.0) TempT = 0.0;
+        else if(TempT > 255.0) TempT = 255.0;
+    }
+    else
+    {
+         //"Error was detected. The RTD resistance measured is not within the range specified in the Threshold Registers."
+         pt100->RtdOutOfRange = 1;
+         TempT = 0.0;
+    }
+    pt100->Temperature = TempT;
 }
 
 
 void Pt100Channel(pt100_t *pt100)
 {
- switch(pt100->Ch)
- {
-  case 1:
-       set_pin(RTD_CS_A0_BASE, RTD_CS_A0_PIN);
-       set_pin(RTD_CS_A1_BASE, RTD_CS_A1_PIN);
-       break;
-  case 2:
-       set_pin(RTD_CS_A0_BASE, RTD_CS_A0_PIN);
-       clear_pin(RTD_CS_A1_BASE, RTD_CS_A1_PIN);
-       break;
-  case 3:
-       clear_pin(RTD_CS_A0_BASE, RTD_CS_A0_PIN);
-       clear_pin(RTD_CS_A1_BASE, RTD_CS_A1_PIN);
-       break;
-  case 4:
-       clear_pin(RTD_CS_A0_BASE, RTD_CS_A0_PIN);
-       set_pin(RTD_CS_A1_BASE, RTD_CS_A1_PIN);
-       break;
-  default:
-       break;
- }
- 
+    switch(pt100->Ch)
+    {
+        case 1:
+             set_pin(RTD_CS_A0_BASE, RTD_CS_A0_PIN);
+             set_pin(RTD_CS_A1_BASE, RTD_CS_A1_PIN);
+             break;
+        case 2:
+             set_pin(RTD_CS_A0_BASE, RTD_CS_A0_PIN);
+             clear_pin(RTD_CS_A1_BASE, RTD_CS_A1_PIN);
+             break;
+        case 3:
+             clear_pin(RTD_CS_A0_BASE, RTD_CS_A0_PIN);
+             clear_pin(RTD_CS_A1_BASE, RTD_CS_A1_PIN);
+             break;
+        case 4:
+             clear_pin(RTD_CS_A0_BASE, RTD_CS_A0_PIN);
+             set_pin(RTD_CS_A1_BASE, RTD_CS_A1_PIN);
+             break;
+        default:
+             break;
+    }
 }
 
 void Pt100InitChannel(pt100_t *pt100)
 {
- unsigned int Fault_Error = 0;    // Variable to read Fault register and compute faults
- unsigned int value = 0;
- 
- // Set mux channel
- Pt100Channel(pt100);
- 
- //Try to clear the error
- write_spi_byte(Configuration, 0b10000010);
- delay_ms(100);
- 
- write_spi_byte(Configuration,0b11010000);       // Enabling Vbias of max31865
- value = read_spi_byte(read_Configuration);            // Reading contents of Configuration register to verify communication with max31865 is done properly
- 
- if (value == 208)
- {
-    write_spi_byte(Write_High_Fault_Threshold_MSB, 0xFF);    // Writing High Fault Threshold MSB
-    write_spi_byte(Write_High_Fault_Threshold_LSB, 0xFF);    // Writing High Fault Threshold LSB
-    write_spi_byte(Write_Low_Fault_Threshold_MSB, 0x00);     // Writing Low Fault Threshold MSB
-    write_spi_byte(Write_Low_Fault_Threshold_LSB, 0x00);     // Writing Low Fault Threshold LSB
+     unsigned int Fault_Error = 0;    // Variable to read Fault register and compute faults
+     unsigned int value = 0;
 
-    //"Communication successful with max31865"
-    pt100->CanNotCommunicate = 0;
+     // Set mux channel
+     Pt100Channel(pt100);
 
-    // Prior to getting started with RTD to Digital Conversion, Users can do a preliminary test to detect if their is a fault in RTD connection with max31865
-    Fault_Error = read_spi_byte(Fault_Status);
-    
-    // If their is no fault detected, the get_Temp() is called and it initiates the conversion. The results are displayed on the serial console
-    if (Fault_Error == 0)
-    {
-    
-      pt100->Error = 0;
-
-    }
-    else
-    {
+     //Try to clear the error
+     write_spi_byte(Configuration, 0b10000010);
+     delay_ms(100);
      
-      //Save the error
-      pt100->Error = Fault_Error;
+     write_spi_byte(Configuration,0b11010000);              // Enabling Vbias of max31865
+     value = read_spi_byte(read_Configuration);            // Reading contents of Configuration register to verify communication with max31865 is done properly
      
-    }
+     if (value == 208)
+     {
+         write_spi_byte(Write_High_Fault_Threshold_MSB, 0xFF);    // Writing High Fault Threshold MSB
+         write_spi_byte(Write_High_Fault_Threshold_LSB, 0xFF);    // Writing High Fault Threshold LSB
+         write_spi_byte(Write_Low_Fault_Threshold_MSB, 0x00);     // Writing Low Fault Threshold MSB
+         write_spi_byte(Write_Low_Fault_Threshold_LSB, 0x00);     // Writing Low Fault Threshold LSB
+
+         //"Communication successful with max31865"
+         pt100->CanNotCommunicate = 0;
+
+         // Prior to getting started with RTD to Digital Conversion, Users can do a preliminary test to detect if their is a fault in RTD connection with max31865
+         Fault_Error = read_spi_byte(Fault_Status);
+
+         // If their is no fault detected, the get_Temp() is called and it initiates the conversion. The results are displayed on the serial console
+         if (Fault_Error == 0)
+         {
+
+           pt100->Error = 0;
+
+         }
+         else
+         {
     
- }
- else
- {
-    //" Unable to communicate with the device. Please check your connections and try again"
-    pt100->CanNotCommunicate = 1;
+           //Save the error
+           pt100->Error = Fault_Error;
     
- }
- 
+         }
+
+     }
+     else
+     {
+         //" Unable to communicate with the device. Please check your connections and try again"
+         pt100->CanNotCommunicate = 1;
+
+     }
 }
 
 void Pt100ReadChannel(pt100_t *pt100)
 {
-  unsigned int Fault_Error = 0;    // Variable to read Fault register and compute faults
-  unsigned int value = 0;
+    unsigned int Fault_Error = 0;    // Variable to read Fault register and compute faults
+    unsigned int value = 0;
 
-  // Set mux channel
-  Pt100Channel(pt100);
-  
-  // Prior to getting started with RTD to Digital Conversion, Users can do a preliminary test to detect if their is a fault in RTD connection with max31865
-  Fault_Error = read_spi_byte(Fault_Status);
+    // Set mux channel
+    Pt100Channel(pt100);
 
-  // If their is no fault detected, the get_Temp() is called and it initiates the conversion. The results are displayed on the serial console
-  if (Fault_Error == 0)
-  {
-     // Calling get_Temp() to read RTD registers and convert to Temperature reading
-     get_Temp(pt100);
-     pt100->Error = Fault_Error;
-     
-     if(pt100->Temperature >= pt100->AlarmLimit)
-     {
-        if(pt100->Alarm_DelayCount < pt100->Alarm_Delay_s) pt100->Alarm_DelayCount++;
-        else
+    // Prior to getting started with RTD to Digital Conversion, Users can do a preliminary test to detect if their is a fault in RTD connection with max31865
+    Fault_Error = read_spi_byte(Fault_Status);
+
+    // If their is no fault detected, the get_Temp() is called and it initiates the conversion. The results are displayed on the serial console
+    if (Fault_Error == 0)
+    {
+        // Calling get_Temp() to read RTD registers and convert to Temperature reading
+        get_Temp(pt100);
+        pt100->Error = Fault_Error;
+
+        if(pt100->Temperature >= pt100->AlarmLimit)
         {
-           pt100->Alarm_DelayCount = 0;
-           pt100->Alarm = 1;
+           if(pt100->Alarm_DelayCount < pt100->Alarm_Delay_s) pt100->Alarm_DelayCount++;
+           else
+           {
+              pt100->Alarm_DelayCount = 0;
+              pt100->Alarm = 1;
+           }
         }
-     }
-     else pt100->Alarm_DelayCount = 0;
-     
-     if(pt100->Temperature >= pt100->TripLimit)
-     {
-        if(pt100->Itlk_DelayCount < pt100->Itlk_Delay_s) pt100->Itlk_DelayCount++;
-        else
+
+        else pt100->Alarm_DelayCount = 0;
+
+        if(pt100->Temperature >= pt100->TripLimit)
         {
-           pt100->Itlk_DelayCount = 0;
-           pt100->Trip = 1;
+           if(pt100->Itlk_DelayCount < pt100->Itlk_Delay_s) pt100->Itlk_DelayCount++;
+           else
+           {
+              pt100->Itlk_DelayCount = 0;
+              pt100->Trip = 1;
+           }
         }
-     }
-     else pt100->Itlk_DelayCount = 0;
-     
-  }
-  else
-  {
-     //Save the error
-     pt100->Temperature = 0;
-     pt100->Error = Fault_Error;
-
-  }
-
+        else pt100->Itlk_DelayCount = 0;
+    }
+    else
+    {
+        //Save the error
+        pt100->Temperature = 0;
+        pt100->Error = Fault_Error;
+    }
 }
 
 void Pt100ChannelClear(pt100_t *pt100)
 {
- 
     // Set mux channel
     Pt100Channel(pt100);
- 
     //Try to clear the error
     write_spi_byte(Configuration, 0b10000010);
- 
 }
-
-
 
 void Pt100Init(void)
 {
@@ -310,71 +294,69 @@ void Pt100Init(void)
     // Setting SPI clock to 4 MHz. Please note it is important to initialize SPI bus prior to making any changes.
     spi_init();
 
-    Pt100Ch1.Ch = 1;
-    Pt100Ch1.Enable = 0;
-    Pt100Ch1.Calibration = 0;
-    Pt100Ch1.Temperature = 0;
-    Pt100Ch1.AlarmLimit = 100;
-    Pt100Ch1.TripLimit = 110;
-    Pt100Ch1.Error = 0;
-    Pt100Ch1.RtdOutOfRange = 0;
-    Pt100Ch1.Alarm = 0;
-    Pt100Ch1.Trip = 0;
-    Pt100Ch1.Alarm_Delay_s = 0;
-    Pt100Ch1.Alarm_DelayCount = 0;
-    Pt100Ch1.Itlk_Delay_s = 0;
-    Pt100Ch1.Itlk_DelayCount = 0;
+    Pt100Ch1.Ch                 = 1;
+    Pt100Ch1.Enable             = 0;
+    Pt100Ch1.Calibration        = 0;
+    Pt100Ch1.Temperature        = 0;
+    Pt100Ch1.AlarmLimit         = 100;
+    Pt100Ch1.TripLimit          = 110;
+    Pt100Ch1.Error              = 0;
+    Pt100Ch1.RtdOutOfRange      = 0;
+    Pt100Ch1.Alarm              = 0;
+    Pt100Ch1.Trip               = 0;
+    Pt100Ch1.Alarm_Delay_s      = 0;
+    Pt100Ch1.Alarm_DelayCount   = 0;
+    Pt100Ch1.Itlk_Delay_s       = 0;
+    Pt100Ch1.Itlk_DelayCount    = 0;
     Pt100InitChannel(&Pt100Ch1);
 
-
-    Pt100Ch2.Ch = 2;
-    Pt100Ch2.Enable = 0;
-    Pt100Ch2.Calibration = 0;
-    Pt100Ch2.Temperature = 0;
-    Pt100Ch2.AlarmLimit = 100;
-    Pt100Ch2.TripLimit = 110;
-    Pt100Ch2.Error = 0;
-    Pt100Ch2.RtdOutOfRange = 0;
-    Pt100Ch2.Alarm = 0;
-    Pt100Ch2.Trip = 0;
-    Pt100Ch2.Alarm_Delay_s = 0;
-    Pt100Ch2.Alarm_DelayCount = 0;
-    Pt100Ch2.Itlk_Delay_s = 0;
-    Pt100Ch2.Itlk_DelayCount = 0;
+    Pt100Ch2.Ch                 = 2;
+    Pt100Ch2.Enable             = 0;
+    Pt100Ch2.Calibration        = 0;
+    Pt100Ch2.Temperature        = 0;
+    Pt100Ch2.AlarmLimit         = 100;
+    Pt100Ch2.TripLimit          = 110;
+    Pt100Ch2.Error              = 0;
+    Pt100Ch2.RtdOutOfRange      = 0;
+    Pt100Ch2.Alarm              = 0;
+    Pt100Ch2.Trip               = 0;
+    Pt100Ch2.Alarm_Delay_s      = 0;
+    Pt100Ch2.Alarm_DelayCount   = 0;
+    Pt100Ch2.Itlk_Delay_s       = 0;
+    Pt100Ch2.Itlk_DelayCount    = 0;
     Pt100InitChannel(&Pt100Ch2);
 
-
-    Pt100Ch3.Ch = 3;
-    Pt100Ch3.Enable = 0;
-    Pt100Ch3.Calibration = 0;
-    Pt100Ch3.Temperature = 0;
-    Pt100Ch3.AlarmLimit = 100;
-    Pt100Ch3.TripLimit = 110;
-    Pt100Ch3.Error = 0;
-    Pt100Ch3.RtdOutOfRange = 0;
-    Pt100Ch3.Alarm = 0;
-    Pt100Ch3.Trip = 0;
-    Pt100Ch3.Alarm_Delay_s = 0;
-    Pt100Ch3.Alarm_DelayCount = 0;
-    Pt100Ch3.Itlk_Delay_s = 0;
-    Pt100Ch3.Itlk_DelayCount = 0;
+    Pt100Ch3.Ch                 = 3;
+    Pt100Ch3.Enable             = 0;
+    Pt100Ch3.Calibration        = 0;
+    Pt100Ch3.Temperature        = 0;
+    Pt100Ch3.AlarmLimit         = 100;
+    Pt100Ch3.TripLimit          = 110;
+    Pt100Ch3.Error              = 0;
+    Pt100Ch3.RtdOutOfRange      = 0;
+    Pt100Ch3.Alarm              = 0;
+    Pt100Ch3.Trip               = 0;
+    Pt100Ch3.Alarm_Delay_s      = 0;
+    Pt100Ch3.Alarm_DelayCount   = 0;
+    Pt100Ch3.Itlk_Delay_s       = 0;
+    Pt100Ch3.Itlk_DelayCount    = 0;
     Pt100InitChannel(&Pt100Ch3);
 
 
-    Pt100Ch4.Ch = 4;
-    Pt100Ch4.Enable = 0;
-    Pt100Ch4.Calibration = 0;
-    Pt100Ch4.Temperature = 0;
-    Pt100Ch4.AlarmLimit = 100;
-    Pt100Ch4.TripLimit = 110;
-    Pt100Ch4.Error = 0;
-    Pt100Ch4.RtdOutOfRange = 0;
-    Pt100Ch4.Alarm = 0;
-    Pt100Ch4.Trip = 0;
-    Pt100Ch4.Alarm_Delay_s = 0;
-    Pt100Ch4.Alarm_DelayCount = 0;
-    Pt100Ch4.Itlk_Delay_s = 0;
-    Pt100Ch4.Itlk_DelayCount = 0;
+    Pt100Ch4.Ch                 = 4;
+    Pt100Ch4.Enable             = 0;
+    Pt100Ch4.Calibration        = 0;
+    Pt100Ch4.Temperature        = 0;
+    Pt100Ch4.AlarmLimit         = 100;
+    Pt100Ch4.TripLimit          = 110;
+    Pt100Ch4.Error              = 0;
+    Pt100Ch4.RtdOutOfRange      = 0;
+    Pt100Ch4.Alarm              = 0;
+    Pt100Ch4.Trip               = 0;
+    Pt100Ch4.Alarm_Delay_s      = 0;
+    Pt100Ch4.Alarm_DelayCount   = 0;
+    Pt100Ch4.Itlk_Delay_s       = 0;
+    Pt100Ch4.Itlk_DelayCount    = 0;
     Pt100InitChannel(&Pt100Ch4);
  
 }
@@ -446,7 +428,7 @@ void Pt100Ch2Disable(void)
 // PT100 Channel 3 Enable
 void Pt100Ch3Enable(void)
 {
-    Pt100Ch3.Enable = 3;
+    Pt100Ch3.Enable = 1;
 }
 
 // PT100 Channel 3 Disable
@@ -559,8 +541,6 @@ void Pt100SetCh2Delay(unsigned char Delay_Set)
     Pt100Ch2.Itlk_Delay_s = Delay_Set;
 }
 
-
-
 // Set Channel 3 Temperature Alarme Level
 void Pt100SetCh3AlarmLevel(unsigned char alarm)
 {
@@ -591,8 +571,6 @@ void Pt100SetCh3Delay(unsigned char Delay_Set)
     Pt100Ch3.Alarm_Delay_s = Delay_Set;
     Pt100Ch3.Itlk_Delay_s = Delay_Set;
 }
-
-
 
 // Set Channel 4 Temperature Alarme Level
 void Pt100SetCh4AlarmLevel(unsigned char alarm)

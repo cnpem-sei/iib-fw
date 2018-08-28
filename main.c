@@ -29,6 +29,7 @@
 #include "pt100.h"
 //#include "memory.h"
 #include "task.h"
+#include "iib_data.h"
 //#include "driver_board.h"
 
 #define ON  ~0
@@ -60,7 +61,8 @@ static void int_timer_1ms_handler(void)
     if(can_timestamp_100ms >= 10)
     {
         RunToggle();
-        SendCanSchedule();
+        //SendCanSchedule();
+        send_heart_beat_message();
         can_timestamp_100ms = 0;
         RunToggle();
     }
@@ -69,7 +71,6 @@ static void int_timer_1ms_handler(void)
     RunToggle();
     sample_adc();
     RunToggle();
-
     task_1_ms();
 }
 
@@ -79,11 +80,9 @@ static void int_timer_100us_handler(void)
     // Clear the timer interrupt.
     //
     TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
-
     RunToggle();
     task_100_us();
     RunToggle();
-
 }
 
 void timer_1ms_init(void)
@@ -98,7 +97,6 @@ void timer_1ms_init(void)
     //
     TimerConfigure(TIMER1_BASE, TIMER_CFG_PERIODIC);
     TimerLoadSet(TIMER1_BASE, TIMER_A, (SYSCLOCK / 1000) - 1);
-
     IntPrioritySet(INT_TIMER1A, 1);
 
     //
@@ -106,7 +104,6 @@ void timer_1ms_init(void)
     //
     IntEnable(INT_TIMER1A);
     TimerIntEnable(TIMER1_BASE, TIMER_TIMA_TIMEOUT);
-
     TimerIntRegister(TIMER1_BASE, TIMER_A, int_timer_1ms_handler);
 
     //
@@ -134,9 +131,7 @@ void timer_100us_init(void)
     //
     IntEnable(INT_TIMER0A);
     TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
-
     TimerIntRegister(TIMER0_BASE, TIMER_A, int_timer_100us_handler);
-
     IntPrioritySet(INT_TIMER0A, 0);
 
     //
@@ -151,13 +146,14 @@ void timer_100us_init(void)
  */
 int main(void)
 {
-
     uint32_t ui32SysClock;
 
     ui32SysClock = SysCtlClockFreqSet((SYSCTL_OSC_MAIN | SYSCTL_USE_PLL | SYSCTL_XTAL_25MHZ |
     SYSCTL_CFG_VCO_480), 120000000);
 
     pinout_config();
+
+    init_control_framwork(&g_controller_iib);
 
     AdcsInit();
 
@@ -202,10 +198,8 @@ int main(void)
 
     while(1)
     {
-
         Application();
         BoardTask();
-
     }
 
     return 0;

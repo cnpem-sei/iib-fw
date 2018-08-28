@@ -36,6 +36,17 @@ volatile bool g_bErrFlag = 0;
 //*****************************************************************************
 volatile bool g_bRXFlag = 0;
 
+
+/******************************************************************************
+ *                          Object Messages
+ *****************************************************************************/
+tCANMsgObject transmit_message;
+tCANMsgObject event_message;
+tCANMsgObject receive_message;
+
+uint8_t event_message_data[EVENT_MESSAGE_LEN];
+
+
 //Rx
 tCANMsgObject sCANMessage;
 uint8_t pui8MsgData[8];
@@ -61,6 +72,12 @@ static union
    char c[4];
 } floatNchars;
 
+static union
+{
+    uint16_t    u16;
+    char        c[2];
+}u16Nchars;
+
 
 //*****************************************************************************
 //
@@ -69,7 +86,7 @@ static union
 // have been transmitted.
 //
 //*****************************************************************************
-void can_handler(void)
+void can_isr(void)
 {
     uint32_t ui32Status;
 
@@ -105,14 +122,14 @@ void can_handler(void)
     // Check if the cause is message object 1, which what we are using for
     // sending messages.
     //
-    else if(ui32Status == 1)
+    else if(ui32Status == EVENT_MESSAGE_OBJ_ID)
     {
         //
         // Getting to this point means that the TX interrupt occurred on
         // message object 1, and the message TX is complete.  Clear the
         // message object interrupt.
         //
-        CANIntClear(CAN0_BASE, 1);
+        CANIntClear(CAN0_BASE, EVENT_MESSAGE_OBJ_ID);
 
         //
         // Increment a counter to keep track of how many messages have been
@@ -129,6 +146,46 @@ void can_handler(void)
         //
         // Since the message was sent, clear any error flags.
         //
+        g_bErrFlag = 0;
+    }
+
+    else if(ui32Status == PARAMS_MESSAGE_OBJ_ID)
+    {
+        CANIntClear(CAN0_BASE, PARAMS_MESSAGE_OBJ_ID);
+
+        //TODO: Handle ISR
+
+        g_bRXFlag = 1;
+        g_bErrFlag = 0;
+    }
+
+    else if(ui32Status == RESET_MESSAGE_OBJ_ID)
+    {
+        CANIntClear(CAN0_BASE, RESET_MESSAGE_OBJ_ID);
+
+        //TODO: Handle ISR
+
+        g_bRXFlag = 1;
+        g_bErrFlag = 0;
+    }
+
+    else if(ui32Status == DATA_REQUEST_OBJ_ID)
+    {
+        CANIntClear(CAN0_BASE, DATA_REQUEST_OBJ_ID);
+
+        //TODO: Handle ISR
+
+        g_bRXFlag = 1;
+        g_bErrFlag = 0;
+    }
+
+    else if(ui32Status == DATA_SEND_OBJ_ID)
+    {
+        CANIntClear(CAN0_BASE, DATA_SEND_OBJ_ID);
+
+        //TODO: Handle ISR
+
+        g_bRXFlag = 1;
         g_bErrFlag = 0;
     }
 
@@ -163,7 +220,7 @@ void SendCanSchedule(void)
                 SendCan(Q1_I_ARMS);
                 break;
             case OUTPUT_Q4_MODULE:
-
+                SendCan(Q4_I_OUT);
                 break;
             case RECTIFIER_MODULE:
 
@@ -173,7 +230,7 @@ void SendCanSchedule(void)
                 break;
 
             case COMMAND_DRAWER_MODULE:
-
+                SendCan(DRAWER_TEMP);
                 break;
         }
 
@@ -187,7 +244,7 @@ void SendCanSchedule(void)
                 SendCan(Q1_V_IN_OUT);
                 break;
             case OUTPUT_Q4_MODULE:
-
+                SendCan(Q4_TEMP);
                break;
             case RECTIFIER_MODULE:
 
@@ -197,6 +254,7 @@ void SendCanSchedule(void)
                break;
 
             case COMMAND_DRAWER_MODULE:
+                SendCan(DRAWER_V);
                break;
         }
 
@@ -207,7 +265,7 @@ void SendCanSchedule(void)
         switch(AppType())
         {
             case OUTPUT_Q1_MODULE:
-
+                SendCan(Q1_SLOW_STS);
                break;
             case OUTPUT_Q4_MODULE:
 
@@ -220,7 +278,7 @@ void SendCanSchedule(void)
                break;
 
             case COMMAND_DRAWER_MODULE:
-
+                SendCan(DRAWER_ALARM_ITLK_STS);
                 break;
         }
 
@@ -303,20 +361,18 @@ void SendCanSchedule(void)
         switch(AppType())
         {
             case OUTPUT_Q1_MODULE:
-
                break;
+
             case OUTPUT_Q4_MODULE:
-
                break;
+
             case RECTIFIER_MODULE:
-
                break;
-            case INPUT_MODULE:
 
+            case INPUT_MODULE:
                break;
 
             case COMMAND_DRAWER_MODULE:
-
                 break;
         }
 
@@ -336,17 +392,15 @@ void SendCanSchedule(void)
                }
                break;
             case OUTPUT_Q4_MODULE:
-
                break;
+
             case RECTIFIER_MODULE:
-
                break;
-            case INPUT_MODULE:
 
+            case INPUT_MODULE:
                break;
 
             case COMMAND_DRAWER_MODULE:
-
                break;
         }
 
@@ -364,7 +418,6 @@ void SendCanSchedule(void)
                    toggle_pin(TP_1_BASE, TP_1_PIN);
                    SendCan(Q1_ALARM_ITLK_STS);
                    toggle_pin(TP_1_BASE, TP_1_PIN);
-
                }
 
                break;
@@ -457,14 +510,14 @@ void SendCan(unsigned char Message)
            pui8MsgDataTx[5] = RhRead();
 
            pui8MsgDataTx[6] = 0;
-           if(Q1ModuleRelayRead()) pui8MsgDataTx[6]             = pui8MsgDataTx[6] | 0b00000001;
-           if(Q1ModuleExternalItlkRead()) pui8MsgDataTx[6]      = pui8MsgDataTx[6] | 0b00000010;
-           if(Q1ModuleDriver1ErrorRead()) pui8MsgDataTx[6]      = pui8MsgDataTx[6] | 0b00000100;
-           if(Q1ModuleDriver2ErrorRead()) pui8MsgDataTx[6]      = pui8MsgDataTx[6] | 0b00001000;
-           if(Q1ModuleLeakageCurrentRead()) pui8MsgDataTx[6]    = pui8MsgDataTx[6] | 0b00010000;
-           if(Q1ModuleRackRead()) pui8MsgDataTx[6]              = pui8MsgDataTx[6] | 0b00100000;
-           if(Q1ModuleTempIGBT1HwrItlkRead()) pui8MsgDataTx[6]  = pui8MsgDataTx[6] | 0b01000000;
-           if(Q1ModuleTempIGBT2HwrItlkRead()) pui8MsgDataTx[6]  = pui8MsgDataTx[6] | 0b10000000;
+           if(Q1ModuleRelayRead()) pui8MsgDataTx[6]             |= 0b00000001;
+           if(Q1ModuleExternalItlkRead()) pui8MsgDataTx[6]      |= 0b00000010;
+           if(Q1ModuleDriver1ErrorRead()) pui8MsgDataTx[6]      |= 0b00000100;
+           if(Q1ModuleDriver2ErrorRead()) pui8MsgDataTx[6]      |= 0b00001000;
+           if(Q1ModuleLeakageCurrentRead()) pui8MsgDataTx[6]    |= 0b00010000;
+           if(Q1ModuleRackRead()) pui8MsgDataTx[6]              |= 0b00100000;
+           if(Q1ModuleTempIGBT1HwrItlkRead()) pui8MsgDataTx[6]  |= 0b01000000;
+           if(Q1ModuleTempIGBT2HwrItlkRead()) pui8MsgDataTx[6]  |= 0b10000000;
 
            pui8MsgDataTx[7] = 0;
 
@@ -478,17 +531,17 @@ void SendCan(unsigned char Message)
            pui8MsgDataTx[0] = 0;
            pui8MsgDataTx[1] = 0;
 
-           if(Q1ModuleVoutAlarmStsRead())         pui8MsgDataTx[0] = pui8MsgDataTx[0] | 0b00000001;
-           if(Q1ModuleVinAlarmStsRead())          pui8MsgDataTx[0] = pui8MsgDataTx[0] | 0b00000010;
-           if(Q1ModuleIoutA1AlarmStsRead())       pui8MsgDataTx[0] = pui8MsgDataTx[0] | 0b00000100;
-           if(Q1ModuleIoutA2AlarmStsRead())       pui8MsgDataTx[0] = pui8MsgDataTx[0] | 0b00001000;
-           if(Q1ModuleTempIGBT1AlarmStsRead())    pui8MsgDataTx[0] = pui8MsgDataTx[0] | 0b00010000;
-           if(Q1ModuleTempIGBT2AlarmStsRead())    pui8MsgDataTx[0] = pui8MsgDataTx[0] | 0b00100000;
-           if(Q1ModuleTempLAlarmStsRead())        pui8MsgDataTx[0] = pui8MsgDataTx[0] | 0b01000000;
-           if(Q1ModuleTempHeatSinkAlarmStsRead()) pui8MsgDataTx[0] = pui8MsgDataTx[0] | 0b10000000;
+           if(Q1ModuleVoutAlarmStsRead())         pui8MsgDataTx[0] |= 0b00000001;
+           if(Q1ModuleVinAlarmStsRead())          pui8MsgDataTx[0] |= 0b00000010;
+           if(Q1ModuleIoutA1AlarmStsRead())       pui8MsgDataTx[0] |= 0b00000100;
+           if(Q1ModuleIoutA2AlarmStsRead())       pui8MsgDataTx[0] |= 0b00001000;
+           if(Q1ModuleTempIGBT1AlarmStsRead())    pui8MsgDataTx[0] |= 0b00010000;
+           if(Q1ModuleTempIGBT2AlarmStsRead())    pui8MsgDataTx[0] |= 0b00100000;
+           if(Q1ModuleTempLAlarmStsRead())        pui8MsgDataTx[0] |= 0b01000000;
+           if(Q1ModuleTempHeatSinkAlarmStsRead()) pui8MsgDataTx[0] |= 0b10000000;
 
-           if(RhAlarmStatusRead())                pui8MsgDataTx[1] = pui8MsgDataTx[1] | 0b00000001;
-           if(TempAlarmStatusRead())              pui8MsgDataTx[1] = pui8MsgDataTx[1] | 0b00000010;
+           if(RhAlarmStatusRead())                pui8MsgDataTx[1] |= 0b00000001;
+           if(TempAlarmStatusRead())              pui8MsgDataTx[1] |= 0b00000010;
 
            pui8MsgDataTx[2] = 0;
            pui8MsgDataTx[3] = 0;
@@ -497,26 +550,26 @@ void SendCan(unsigned char Message)
            pui8MsgDataTx[4] = 0;
            pui8MsgDataTx[5] = 0;
 
-           if(Q1ModuleVoutItlkStsRead())         pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00000001;
-           if(Q1ModuleVinItlkStsRead())          pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00000010;
-           if(Q1ModuleIoutA1ItlkStsRead())       pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00000100;
-           if(Q1ModuleIoutA2ItlkStsRead())       pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00001000;
-           if(Q1ModuleTempIGBT1ItlkStsRead())    pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00010000;
-           if(Q1ModuleTempIGBT2ItlkStsRead())    pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00100000;
-           if(Q1ModuleTempIGBT1HwrItlkStsRead()) pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b01000000;
-           if(Q1ModuleTempIGBT2HwrItlkStsRead()) pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b10000000;
+           if(Q1ModuleVoutItlkStsRead())         pui8MsgDataTx[4] |= 0b00000001;
+           if(Q1ModuleVinItlkStsRead())          pui8MsgDataTx[4] |= 0b00000010;
+           if(Q1ModuleIoutA1ItlkStsRead())       pui8MsgDataTx[4] |= 0b00000100;
+           if(Q1ModuleIoutA2ItlkStsRead())       pui8MsgDataTx[4] |= 0b00001000;
+           if(Q1ModuleTempIGBT1ItlkStsRead())    pui8MsgDataTx[4] |= 0b00010000;
+           if(Q1ModuleTempIGBT2ItlkStsRead())    pui8MsgDataTx[4] |= 0b00100000;
+           if(Q1ModuleTempIGBT1HwrItlkStsRead()) pui8MsgDataTx[4] |= 0b01000000;
+           if(Q1ModuleTempIGBT2HwrItlkStsRead()) pui8MsgDataTx[4] |= 0b10000000;
 
-           if(Q1ModuleTempLItlkStsRead())        pui8MsgDataTx[5] = pui8MsgDataTx[5] | 0b00000001;
-           if(Q1ModuleTempHeatSinkItlkStsRead()) pui8MsgDataTx[5] = pui8MsgDataTx[5] | 0b00000010;
-           if(Q1ModuleExternalItlkStsRead())     pui8MsgDataTx[5] = pui8MsgDataTx[5] | 0b00000100;
-           if(Q1ModuleLeakageCurrentStsRead())   pui8MsgDataTx[5] = pui8MsgDataTx[5] | 0b00001000;
-           if(Q1ModuleRackStsRead())             pui8MsgDataTx[5] = pui8MsgDataTx[5] | 0b00010000;
-           if(Q1ModuleDriver1ErrorItlkRead())    pui8MsgDataTx[5] = pui8MsgDataTx[5] | 0b00100000;
-           if(Q1ModuleDriver2ErrorItlkRead())    pui8MsgDataTx[5] = pui8MsgDataTx[5] | 0b01000000;
-           if(RhTripStatusRead())                pui8MsgDataTx[5] = pui8MsgDataTx[5] | 0b10000000;
+           if(Q1ModuleTempLItlkStsRead())        pui8MsgDataTx[5] |= 0b00000001;
+           if(Q1ModuleTempHeatSinkItlkStsRead()) pui8MsgDataTx[5] |= 0b00000010;
+           if(Q1ModuleExternalItlkStsRead())     pui8MsgDataTx[5] |= 0b00000100;
+           if(Q1ModuleLeakageCurrentStsRead())   pui8MsgDataTx[5] |= 0b00001000;
+           if(Q1ModuleRackStsRead())             pui8MsgDataTx[5] |= 0b00010000;
+           if(Q1ModuleDriver1ErrorItlkRead())    pui8MsgDataTx[5] |= 0b00100000;
+           if(Q1ModuleDriver2ErrorItlkRead())    pui8MsgDataTx[5] |= 0b01000000;
+           if(RhTripStatusRead())                pui8MsgDataTx[5] |= 0b10000000;
 
            pui8MsgDataTx[6] = 0;
-           if(TempTripStatusRead())              pui8MsgDataTx[6] = pui8MsgDataTx[6] | 0b00000001;
+           if(TempTripStatusRead())              pui8MsgDataTx[6] |= 0b00000001;
 
 
            pui8MsgDataTx[7] = 0;
@@ -526,50 +579,50 @@ void SendCan(unsigned char Message)
            break;
 
 
-      case Q4_I_OUT:
-
-           floatNchars.f = Q4ModuleIoutRead();  // Vin
-           pui8MsgDataTx[0] = floatNchars.c[0];
-           pui8MsgDataTx[1] = floatNchars.c[1];
-           pui8MsgDataTx[2] = floatNchars.c[2];
-           pui8MsgDataTx[3] = floatNchars.c[3];
-
-           pui8MsgDataTx[4] = Q4ModuleTempIGBT1Read();
-           pui8MsgDataTx[5] = Q4ModuleTempIGBT2Read();
-           pui8MsgDataTx[6] = RhRead();
-           pui8MsgDataTx[7] = 0;
-
-           sCANMessageTx.ui32MsgLen = 8;
-           sCANMessageTx.ui32MsgID = CanId + 0;
-           break;
-
-      case Q4_TEMP:
-
-           pui8MsgDataTx[0] = 0;
-           pui8MsgDataTx[1] = 0;
-           pui8MsgDataTx[2] = 0;
-           pui8MsgDataTx[3] = 0;
-
-           pui8MsgDataTx[4] = 0;
-           // Alarm
-           if(Q4ModuleIoutAlarmStsRead())      pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00000001;
-           if(Q4ModuleTempIGBT1AlarmStsRead()) pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00000010;
-           if(Q4ModuleTempIGBT2AlarmStsRead()) pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00000100;
-           if(RhAlarmStatusRead())             pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00001000;
-
-           pui8MsgDataTx[5] = 0;
-           // Interlock
-           if(Q4ModuleIoutItlkStsRead())      pui8MsgDataTx[5] = pui8MsgDataTx[5] | 0b00000001;
-           if(Q4ModuleTempIGBT1ItlkStsRead()) pui8MsgDataTx[5] = pui8MsgDataTx[5] | 0b00000010;
-           if(Q4ModuleTempIGBT2ItlkStsRead()) pui8MsgDataTx[5] = pui8MsgDataTx[5] | 0b00000100;
-           if(RhTripStatusRead())             pui8MsgDataTx[5] = pui8MsgDataTx[5] | 0b00001000;
-
-           pui8MsgDataTx[6] = 0;
-           pui8MsgDataTx[7] = 0;
-
-           sCANMessageTx.ui32MsgLen = 8;
-           sCANMessageTx.ui32MsgID = CanId + 1;
-           break;
+      //case Q4_I_OUT:
+      //
+      //     floatNchars.f = Q4ModuleIoutRead();  // Vin
+      //     pui8MsgDataTx[0] = floatNchars.c[0];
+      //     pui8MsgDataTx[1] = floatNchars.c[1];
+      //     pui8MsgDataTx[2] = floatNchars.c[2];
+      //     pui8MsgDataTx[3] = floatNchars.c[3];
+      //
+      //     pui8MsgDataTx[4] = Q4ModuleTempIGBT1Read();
+      //     pui8MsgDataTx[5] = Q4ModuleTempIGBT2Read();
+      //     pui8MsgDataTx[6] = RhRead();
+      //     pui8MsgDataTx[7] = 0;
+      //
+      //     sCANMessageTx.ui32MsgLen = 8;
+      //     sCANMessageTx.ui32MsgID = CanId + 0;
+      //     break;
+      //
+      //case Q4_TEMP:
+      //
+      //     pui8MsgDataTx[0] = 0;
+      //     pui8MsgDataTx[1] = 0;
+      //     pui8MsgDataTx[2] = 0;
+      //     pui8MsgDataTx[3] = 0;
+      //
+      //     pui8MsgDataTx[4] = 0;
+      //     // Alarm
+      //     if(Q4ModuleIoutAlarmStsRead())      pui8MsgDataTx[4] |= 0b00000001;
+      //     if(Q4ModuleTempIGBT1AlarmStsRead()) pui8MsgDataTx[4] |= 0b00000010;
+      //     if(Q4ModuleTempIGBT2AlarmStsRead()) pui8MsgDataTx[4] |= 0b00000100;
+      //     if(RhAlarmStatusRead())             pui8MsgDataTx[4] |= 0b00001000;
+      //
+      //     pui8MsgDataTx[5] = 0;
+      //     // Interlock
+      //     if(Q4ModuleIoutItlkStsRead())      pui8MsgDataTx[5] |= 0b00000001;
+      //     if(Q4ModuleTempIGBT1ItlkStsRead()) pui8MsgDataTx[5] |= 0b00000010;
+      //     if(Q4ModuleTempIGBT2ItlkStsRead()) pui8MsgDataTx[5] |= 0b00000100;
+      //     if(RhTripStatusRead())             pui8MsgDataTx[5] |= 0b00001000;
+      //
+      //     pui8MsgDataTx[6] = 0;
+      //     pui8MsgDataTx[7] = 0;
+      //
+      //     sCANMessageTx.ui32MsgLen = 8;
+      //     sCANMessageTx.ui32MsgID = CanId + 1;
+      //     break;
 
       case BUCK_I_IN:
 
@@ -604,22 +657,22 @@ void SendCan(unsigned char Message)
            pui8MsgDataTx[4] = 0;
            pui8MsgDataTx[5] = 0;
            //Alarm
-           if(InputModuleIinAlarmStsRead())           pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00000001;
-           if(InputModuleVdcLinkAlarmStsRead())       pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00000010;
-           if(InputModuleTempHeatsinkAlarmStsRead())  pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00000100;
-           if(InputModuleTempLAlarmStsRead())         pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00001000;
+           if(InputModuleIinAlarmStsRead())           pui8MsgDataTx[4] |= 0b00000001;
+           if(InputModuleVdcLinkAlarmStsRead())       pui8MsgDataTx[4] |= 0b00000010;
+           if(InputModuleTempHeatsinkAlarmStsRead())  pui8MsgDataTx[4] |= 0b00000100;
+           if(InputModuleTempLAlarmStsRead())         pui8MsgDataTx[4] |= 0b00001000;
            //if(BuckModuleTempL1AlarmStsRead()) pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00010000;
            //if(BuckModuleTempL2AlarmStsRead()) pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00100000;
-           if(RhAlarmStatusRead())            pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b01000000;
+           if(RhAlarmStatusRead())            pui8MsgDataTx[4] |=  0b01000000;
 
 
            pui8MsgDataTx[6] = 0;
            pui8MsgDataTx[7] = 0;
            //Interlock
-           if(InputModuleIinItlkStsRead())            pui8MsgDataTx[6] = pui8MsgDataTx[6] | 0b00000001;
-           if(InputModuleVdcLinkItlkStsRead())        pui8MsgDataTx[6] = pui8MsgDataTx[6] | 0b00000010;
-           if(InputModuleTempHeatsinkItlkStsRead())   pui8MsgDataTx[6] = pui8MsgDataTx[6] | 0b00000100;
-           if(InputModuleTempLItlkStsRead())          pui8MsgDataTx[6] = pui8MsgDataTx[6] | 0b00001000;
+           if(InputModuleIinItlkStsRead())            pui8MsgDataTx[6] |= 0b00000001;
+           if(InputModuleVdcLinkItlkStsRead())        pui8MsgDataTx[6] |= 0b00000010;
+           if(InputModuleTempHeatsinkItlkStsRead())   pui8MsgDataTx[6] |= 0b00000100;
+           if(InputModuleTempLItlkStsRead())          pui8MsgDataTx[6] |= 0b00001000;
            //if(BuckModuleTempL1ItlkStsRead())         pui8MsgDataTx[6] = pui8MsgDataTx[6] | 0b00010000;
            //if(BuckModuleTempL2ItlkStsRead())         pui8MsgDataTx[6] = pui8MsgDataTx[6] | 0b00100000;
            //if(BuckModuleWaterFluxInterlockStsRead()) pui8MsgDataTx[6] = pui8MsgDataTx[6] | 0b01000000;
@@ -676,10 +729,10 @@ void SendCan(unsigned char Message)
            pui8MsgDataTx[3] = floatNchars.c[3];
 
            pui8MsgDataTx[4] = 0;
-           if(RectifierAcPhaseFaultRead())          pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00000001;
-           if(RectifierAcOverCurrentRead())         pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00000010;
-           if(RectifierAcTransformerOverTempRead()) pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00000100;
-           if(RectifierWaterFluxInterlockRead())    pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00001000;;
+           if(RectifierAcPhaseFaultRead())          pui8MsgDataTx[4] |= 0b00000001;
+           if(RectifierAcOverCurrentRead())         pui8MsgDataTx[4] |= 0b00000010;
+           if(RectifierAcTransformerOverTempRead()) pui8MsgDataTx[4] |= 0b00000100;
+           if(RectifierWaterFluxInterlockRead())    pui8MsgDataTx[4] |= 0b00001000;;
 
            pui8MsgDataTx[5] = 0;
            pui8MsgDataTx[6] = 0;
@@ -709,19 +762,19 @@ void SendCan(unsigned char Message)
            pui8MsgDataTx[0] = 0;
            pui8MsgDataTx[1] = 0;
 
-           if(RectifierIoutRectf1AlarmStsRead())     pui8MsgDataTx[0] = pui8MsgDataTx[0] | 0b00000001;
-           if(RectifierIoutRectf2AlarmStsRead())     pui8MsgDataTx[0] = pui8MsgDataTx[0] | 0b00000010;
-           if(RectifierVoutRectf1AlarmStsRead())     pui8MsgDataTx[0] = pui8MsgDataTx[0] | 0b00000100;
-           if(RectifierVoutRectf2AlarmStsRead())     pui8MsgDataTx[0] = pui8MsgDataTx[0] | 0b00001000;
-           if(RectifierLeakageCurrentAlarmStsread()) pui8MsgDataTx[0] = pui8MsgDataTx[0] | 0b00010000;
-           if(RectifierTempHeatSinkAlarmStsRead())   pui8MsgDataTx[0] = pui8MsgDataTx[0] | 0b00100000;
-           if(RectifierTempWaterAlarmStsRead())      pui8MsgDataTx[0] = pui8MsgDataTx[0] | 0b01000000;
-           if(RectifierTempModule1AlarmStsRead())    pui8MsgDataTx[0] = pui8MsgDataTx[0] | 0b10000000;
+           if(RectifierIoutRectf1AlarmStsRead())     pui8MsgDataTx[0] |= 0b00000001;
+           if(RectifierIoutRectf2AlarmStsRead())     pui8MsgDataTx[0] |= 0b00000010;
+           if(RectifierVoutRectf1AlarmStsRead())     pui8MsgDataTx[0] |= 0b00000100;
+           if(RectifierVoutRectf2AlarmStsRead())     pui8MsgDataTx[0] |= 0b00001000;
+           if(RectifierLeakageCurrentAlarmStsread()) pui8MsgDataTx[0] |= 0b00010000;
+           if(RectifierTempHeatSinkAlarmStsRead())   pui8MsgDataTx[0] |= 0b00100000;
+           if(RectifierTempWaterAlarmStsRead())      pui8MsgDataTx[0] |= 0b01000000;
+           if(RectifierTempModule1AlarmStsRead())    pui8MsgDataTx[0] |= 0b10000000;
 
-           if(RectifierTempModule2AlarmStsRead())    pui8MsgDataTx[1] = pui8MsgDataTx[1] | 0b00000001;
-           if(RectifierTempL1AlarmStsRead())         pui8MsgDataTx[1] = pui8MsgDataTx[1] | 0b00000010;
-           if(RectifierTempL2AlarmStsRead())         pui8MsgDataTx[1] = pui8MsgDataTx[1] | 0b00000100;
-           if(RhAlarmStatusRead())                   pui8MsgDataTx[1] = pui8MsgDataTx[1] | 0b00001000;
+           if(RectifierTempModule2AlarmStsRead())    pui8MsgDataTx[1] |= 0b00000001;
+           if(RectifierTempL1AlarmStsRead())         pui8MsgDataTx[1] |= 0b00000010;
+           if(RectifierTempL2AlarmStsRead())         pui8MsgDataTx[1] |= 0b00000100;
+           if(RhAlarmStatusRead())                   pui8MsgDataTx[1] |= 0b00001000;
 
            pui8MsgDataTx[2] = 0;
            pui8MsgDataTx[3] = 0;
@@ -730,23 +783,23 @@ void SendCan(unsigned char Message)
            pui8MsgDataTx[4] = 0;
            pui8MsgDataTx[5] = 0;
 
-           if(RectifierIoutRectf1ItlkStsRead())        pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00000001;
-           if(RectifierIoutRectf2ItlkStsRead())        pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00000010;
-           if(RectifierVoutRectf1ItlkStsRead())        pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00000100;
-           if(RectifierVoutRectf2ItlkStsRead())        pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00001000;
-           if(RectifierLeakageCurrentItlkStsRead())    pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00010000;
-           if(RectifierTempHeatSinkItlkStsRead())      pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00100000;
-           if(RectifierTempWaterItlkStsRead())         pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b01000000;
-           if(RectifierTempModule1ItlkStsRead())       pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b10000000;
+           if(RectifierIoutRectf1ItlkStsRead())        pui8MsgDataTx[4] |= 0b00000001;
+           if(RectifierIoutRectf2ItlkStsRead())        pui8MsgDataTx[4] |= 0b00000010;
+           if(RectifierVoutRectf1ItlkStsRead())        pui8MsgDataTx[4] |= 0b00000100;
+           if(RectifierVoutRectf2ItlkStsRead())        pui8MsgDataTx[4] |= 0b00001000;
+           if(RectifierLeakageCurrentItlkStsRead())    pui8MsgDataTx[4] |= 0b00010000;
+           if(RectifierTempHeatSinkItlkStsRead())      pui8MsgDataTx[4] |= 0b00100000;
+           if(RectifierTempWaterItlkStsRead())         pui8MsgDataTx[4] |= 0b01000000;
+           if(RectifierTempModule1ItlkStsRead())       pui8MsgDataTx[4] |= 0b10000000;
 
-           if(RectifierTempModule2ItlkStsRead())       pui8MsgDataTx[5] = pui8MsgDataTx[5] | 0b00000001;
-           if(RectifierTempL1ItlkStsRead())            pui8MsgDataTx[5] = pui8MsgDataTx[5] | 0b00000010;
-           if(RectifierTempL2ItlkStsRead())            pui8MsgDataTx[5] = pui8MsgDataTx[5] | 0b00000100;
-           if(RectifierAcPhaseFaultStsRead())          pui8MsgDataTx[5] = pui8MsgDataTx[5] | 0b00001000;
-           if(RectifierAcOverCurrentStsRead())         pui8MsgDataTx[5] = pui8MsgDataTx[5] | 0b00010000;
-           if(RectifierAcTransformerOverTempStsRead()) pui8MsgDataTx[5] = pui8MsgDataTx[5] | 0b00100000;
-           if(RectifierWaterFluxInterlockStsRead())    pui8MsgDataTx[5] = pui8MsgDataTx[5] | 0b01000000;
-           if(RhTripStatusRead())                      pui8MsgDataTx[5] = pui8MsgDataTx[5] | 0b10000000;
+           if(RectifierTempModule2ItlkStsRead())       pui8MsgDataTx[5] |= 0b00000001;
+           if(RectifierTempL1ItlkStsRead())            pui8MsgDataTx[5] |= 0b00000010;
+           if(RectifierTempL2ItlkStsRead())            pui8MsgDataTx[5] |= 0b00000100;
+           if(RectifierAcPhaseFaultStsRead())          pui8MsgDataTx[5] |= 0b00001000;
+           if(RectifierAcOverCurrentStsRead())         pui8MsgDataTx[5] |= 0b00010000;
+           if(RectifierAcTransformerOverTempStsRead()) pui8MsgDataTx[5] |= 0b00100000;
+           if(RectifierWaterFluxInterlockStsRead())    pui8MsgDataTx[5] |= 0b01000000;
+           if(RhTripStatusRead())                      pui8MsgDataTx[5] |= 0b10000000;
 
            pui8MsgDataTx[6] = 0;
            pui8MsgDataTx[7] = 0;
@@ -833,6 +886,7 @@ void SendCan(unsigned char Message)
     CANMessageSet(CAN0_BASE, 2, &sCANMessageTx, MSG_OBJ_TYPE_TX);
 }
 
+
 void CheckCan(void)
 {
 
@@ -867,6 +921,61 @@ void CheckCan(void)
 
 }
 
+void send_can_message(can_message_id_t msg_id, uint16_t field, float data)
+{
+    u16Nchars.u16   = field;
+    floatNchars.f   = data;
+
+    pui8MsgDataTx[0] = CanId;
+    pui8MsgDataTx[1] = 0;   // Master Id
+    pui8MsgDataTx[2] = u16Nchars.c[0];
+    pui8MsgDataTx[3] = u16Nchars.c[1];
+    pui8MsgDataTx[4] = floatNchars.c[0];
+    pui8MsgDataTx[5] = floatNchars.c[1];
+    pui8MsgDataTx[6] = floatNchars.c[2];
+    pui8MsgDataTx[7] = floatNchars.c[3];
+
+    sCANMessageTx.ui32MsgLen = 8;
+    sCANMessageTx.ui32MsgID = msg_id;
+
+    CANMessageSet(CAN0_BASE, 2, &sCANMessageTx, MSG_OBJ_TYPE_TX);
+}
+
+void send_board_readings()
+{
+    switch(AppType())
+    {
+        case OUTPUT_Q1_MODULE:
+            //send_can_message(Reading,   TempHeatSink,   33.0);
+            //send_can_message(Itlk,      TempL,          35.0);
+            //send_can_message(Alm,       VcapBank,       36.5);
+            //send_can_message(Reset,     Vout,           37.5);
+            //send_can_message(Reading,   Gpdi,           0);
+            break;
+
+        case OUTPUT_Q4_MODULE:
+            break;
+
+        case RECTIFIER_MODULE:
+            break;
+
+        case INPUT_MODULE:
+            break;
+
+        case COMMAND_DRAWER_MODULE:
+            //send_can_message(Reading,   TempHeatSink,   33.0);
+            //send_can_message(Itlk,      TempL,          35.0);
+            //send_can_message(Alm,       VcapBank,       36.5);
+            //send_can_message(Reset,     Vout,           37.5);
+            //send_can_message(Reading,   Gpdi,           0);
+            break;
+
+        default:
+            break;
+
+    }
+}
+
 //--------------------------------------------------------------------------
 void InitCan(uint32_t ui32SysClock)
 {
@@ -891,14 +1000,14 @@ void InitCan(uint32_t ui32SysClock)
 
 
     // Set up the bit rate for the CAN bus 1Mbps
+    //CANBitRateSet(CAN0_BASE, ui32SysClock, 500000);
     CANBitRateSet(CAN0_BASE, ui32SysClock, 1000000);
-    //CANBitRateSet(CAN0_BASE, SysCtlClockGet(), 1000000);
     //CANBitRateSet(CAN0_BASE, 8000000, 1000000);
 
     // Enable interrupts on the CAN peripheral.
     CANIntEnable(CAN0_BASE, CAN_INT_MASTER | CAN_INT_ERROR | CAN_INT_STATUS);
 
-    CANIntRegister(CAN0_BASE, can_handler);
+    CANIntRegister(CAN0_BASE, can_isr);
 
     IntPrioritySet(INT_CAN0, 1);
 
@@ -912,34 +1021,46 @@ void InitCan(uint32_t ui32SysClock)
     //
     CANEnable(CAN0_BASE);
 
-    //
-    // Initialize a message object to receive CAN messages with ID 0x200 (Interlock Clear)
-    // The expected ID must be set along with the mask to indicate that all
-    // bits in the ID must match.
-    //
-    sCANMessage.ui32MsgID = 0x200;
-    sCANMessage.ui32MsgIDMask = 0x7FF;
-    sCANMessage.ui32Flags = (MSG_OBJ_RX_INT_ENABLE | MSG_OBJ_USE_ID_FILTER | MSG_OBJ_FIFO);
-    sCANMessage.ui32MsgLen = 8;
+    /*
+     * Message object to send interlock and alarm data
+     * */
 
-    //
-    // Now load the message object into the CAN peripheral message object 1.
-    // Once loaded the CAN will receive any messages with this CAN ID into
-    // this message object, and an interrupt will occur.
-    //
-    CANMessageSet(CAN0_BASE, 1, &sCANMessage, MSG_OBJ_TYPE_RX);
+    event_message.ui32MsgID = ItlkMsgId;
+    event_message.ui32MsgIDMask = 0;
+    event_message.ui32Flags = MSG_OBJ_TX_INT_ENABLE;
+    event_message.ui32MsgLen = EVENT_MESSAGE_LEN;
 
-    //
-    // Initialize message object 2 to be able to send CAN message 1.  This
-    // message object is not shared so it only needs to be initialized one
-    // time, and can be used for repeatedly sending the same message ID.
-    //
-    sCANMessageTx.ui32MsgID = 0x000;
-    sCANMessageTx.ui32MsgIDMask = 0;
-    sCANMessageTx.ui32Flags = (MSG_OBJ_TX_INT_ENABLE | MSG_OBJ_FIFO);
-    sCANMessageTx.ui32MsgLen = 8;
-    sCANMessageTx.pui8MsgData = pui8MsgDataTx;
+    /*
+     * Message object to receive parameters
+     * */
 
+    receive_message.ui32MsgID = ParamsSetMsgId;
+    receive_message.ui32MsgIDMask = 0xfffff;
+    receive_message.ui32Flags = MSG_OBJ_RX_INT_ENABLE | MSG_OBJ_USE_ID_FILTER;
+    receive_message.ui32MsgLen = PARAMS_MESSAGE_LEN;
+
+    CANMessageSet(CAN0_BASE, PARAMS_MESSAGE_OBJ_ID, &receive_message,
+                                                              MSG_OBJ_TYPE_RX);
+    /*
+     * Message object to reset events (interlock and alarms)
+     * */
+
+    receive_message.ui32MsgID = ResetMsgId;
+    receive_message.ui32MsgLen = RESET_MESSAGE_LEN;
+
+    CANMessageSet(CAN0_BASE, RESET_MESSAGE_OBJ_ID, &receive_message,
+                                                              MSG_OBJ_TYPE_RX);
+
+    receive_message.ui32MsgID = DataRequestMsgId;
+    receive_message.ui32MsgLen = DATA_REQUEST_MESSAGE_LEN;
+
+    CANMessageSet(CAN0_BASE, DATA_REQUEST_OBJ_ID, &receive_message,
+                                                              MSG_OBJ_TYPE_RX);
+
+    transmit_message.ui32MsgID = DataSendMsgId;
+    transmit_message.ui32MsgIDMask = 0;
+    transmit_message.ui32Flags = MSG_OBJ_TX_INT_ENABLE;
+    transmit_message.ui32MsgLen = DATA_SEND_MESSAGE_LEN;
 
     // Module ID
     CanId = BoardAddressRead();
@@ -948,6 +1069,34 @@ void InitCan(uint32_t ui32SysClock)
 
 }
 //---------------------------------------------------------------------------
+
+void send_event_message(can_message_id_t message_id)
+{
+    if (message_id == ItlkMsgId) {
+        // TODO: atribuir dados de interlock
+    }
+    else if (message_id == AlmMsgId) {
+        // TODO: atribuir dados de alarme
+    }
+
+    event_message.ui32MsgID = message_id;
+    // TODO: Configure size of message
+    CANMessageSet(CAN0_BASE, EVENT_MESSAGE_OBJ_ID, &event_message,
+                                                              MSG_OBJ_TYPE_TX);
+
+}
+
+
+void send_heart_beat_message()
+{
+    uint8_t *pui8MsgData;
+    pui8MsgData = (uint8_t *)&CanId;
+    event_message.ui32MsgID = HeartBeatMsgId;
+    event_message.ui32MsgLen = sizeof(pui8MsgData);
+    event_message.pui8MsgData = pui8MsgData;
+    CANMessageSet(CAN0_BASE, EVENT_MESSAGE_OBJ_ID, &event_message,
+                                                              MSG_OBJ_TYPE_TX);
+}
 
 uint16_t CanIdRead(void)
 {

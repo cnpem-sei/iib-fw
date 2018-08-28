@@ -1,6 +1,8 @@
 eclipse.preferences.version=1
 encoding//Debug/board_drivers/subdir_rules.mk=UTF-8
 encoding//Debug/board_drivers/subdir_vars.mk=UTF-8
+encoding//Debug/iib_modules/subdir_rules.mk=UTF-8
+encoding//Debug/iib_modules/subdir_vars.mk=UTF-8
 encoding//Debug/makefile=UTF-8
 encoding//Debug/objects.mk=UTF-8
 encoding//Debug/peripheral_drivers/gpio/subdir_rules.mk=UTF-8

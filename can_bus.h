@@ -28,10 +28,45 @@
 
 #define ITLK_MESS               255
 
+#define EVENT_MESSAGE_LEN       8
+#define EVENT_MESSAGE_OBJ_ID    1
+
+#define PARAMS_MESSAGE_LEN      8
+#define PARAMS_MESSAGE_OBJ_ID   2
+
+#define RESET_MESSAGE_LEN       1
+#define RESET_MESSAGE_OBJ_ID    3
+
+#define DATA_REQUEST_MESSAGE_LEN    4
+#define DATA_REQUEST_OBJ_ID         4
+
+#define DATA_SEND_MESSAGE_LEN       8
+#define DATA_SEND_OBJ_ID            5
+
+typedef enum {
+    ItlkMsgId = 1,
+    AlmMsgId,
+    ResetMsgId,
+    DataRequestMsgId,
+    DataSendMsgId,
+    ParamsSetMsgId,
+    HeartBeatMsgId
+}can_message_id_t;
+
+typedef enum {
+    TempHeatSink,
+    TempL,
+    VcapBank,
+    Vout,
+    Gpdi
+} command_drawer_field_t;
+
 extern void SendCanSchedule(void);
 extern void SendCan(unsigned char Message);
 extern void InitCan(uint32_t ui32SysClock);
 extern void CheckCan(void);
 extern uint16_t CanIdRead(void);
+extern void test_bus();
+extern void send_board_readings();
 
 #endif

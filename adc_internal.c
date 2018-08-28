@@ -1269,8 +1269,6 @@ void CurrentCh4TripLevelSet(float nValue)
     CurrentCh4.TripLimit = nValue;
 }
 
-
-
 unsigned char CurrentCh1AlarmStatusRead(void)
 {
     if(CurrentCh1.Enable)return CurrentCh1.Alarm;
