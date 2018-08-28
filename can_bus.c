@@ -13,6 +13,8 @@
 
 #include "can_bus.h"
 
+#include "iib_data.h"
+
 #include "BoardTempHum.h"
 #include "input.h"
 #include "application.h"
@@ -45,6 +47,8 @@ tCANMsgObject event_message;
 tCANMsgObject receive_message;
 
 uint8_t event_message_data[EVENT_MESSAGE_LEN];
+uint8_t request_data_rx[DATA_REQUEST_MESSAGE_LEN];
+uint8_t request_data_tx[DATA_SEND_MESSAGE_LEN];
 
 
 //Rx
@@ -61,7 +65,7 @@ uint8_t pui8MsgDataTx[8];
 
 uint16_t SecCount = 0;
 
-uint16_t CanId = 0;
+uint8_t CanId = 0;
 
 uint8_t CanScheduleVar = 0;
 
@@ -135,13 +139,8 @@ void can_isr(void)
         // Increment a counter to keep track of how many messages have been
         // sent.  In a real application this could be used to set flags to
         // indicate when a message is sent.
-        //
-        //g_ui32MsgCount++;
 
-        //
-        // Set flag to indicate received message is pending.
-        //
-        g_bRXFlag = 1;
+
 
         //
         // Since the message was sent, clear any error flags.
@@ -163,7 +162,7 @@ void can_isr(void)
     {
         CANIntClear(CAN0_BASE, RESET_MESSAGE_OBJ_ID);
 
-        //TODO: Handle ISR
+        //TODO: Add reset interlocks to schedule
 
         g_bRXFlag = 1;
         g_bErrFlag = 0;
@@ -173,7 +172,7 @@ void can_isr(void)
     {
         CANIntClear(CAN0_BASE, DATA_REQUEST_OBJ_ID);
 
-        //TODO: Handle ISR
+        handle_request_data_message();
 
         g_bRXFlag = 1;
         g_bErrFlag = 0;
@@ -185,7 +184,6 @@ void can_isr(void)
 
         //TODO: Handle ISR
 
-        g_bRXFlag = 1;
         g_bErrFlag = 0;
     }
 
@@ -1096,6 +1094,33 @@ void send_heart_beat_message()
     event_message.pui8MsgData = pui8MsgData;
     CANMessageSet(CAN0_BASE, EVENT_MESSAGE_OBJ_ID, &event_message,
                                                               MSG_OBJ_TYPE_TX);
+}
+
+void handle_request_data_message(void) {
+
+    uint8_t var;
+    uint8_t id;
+
+    receive_message.pui8MsgData = request_data_rx;
+    CANMessageGet(CAN0_BASE, DATA_REQUEST_OBJ_ID, &receive_message, 0);
+
+    id = request_data_rx[0];
+
+    if (id == CanId) {
+
+        request_data_tx[0] = CanId;
+        request_data_tx[1] = var;
+        request_data_tx[2] = 0;
+        request_data_tx[3] = 0;
+        request_data_tx[4] = g_controller_iib.iib_signals[var].u8[0];
+        request_data_tx[5] = g_controller_iib.iib_signals[var].u8[1];
+        request_data_tx[6] = g_controller_iib.iib_signals[var].u8[2];
+        request_data_tx[7] = g_controller_iib.iib_signals[var].u8[3];
+
+        transmit_message.pui8MsgData = request_data_tx;
+        CANMessageSet(CAN0_BASE, DATA_SEND_OBJ_ID, &transmit_message,
+                                                              MSG_OBJ_TYPE_TX);
+    }
 }
 
 uint16_t CanIdRead(void)
