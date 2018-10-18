@@ -38,7 +38,6 @@ volatile bool g_bErrFlag = 0;
 //*****************************************************************************
 volatile bool g_bRXFlag = 0;
 
-
 /******************************************************************************
  *                          Object Messages
  *****************************************************************************/
@@ -66,7 +65,7 @@ uint8_t pui8MsgDataTx[8];
 
 uint16_t SecCount = 0;
 
-uint8_t CanId = 0;
+uint8_t CanId = 1;
 
 uint8_t CanScheduleVar = 0;
 
@@ -163,7 +162,7 @@ void can_isr(void)
     {
         CANIntClear(CAN0_BASE, RESET_MESSAGE_OBJ_ID);
 
-        //TODO: Add reset interlocks to schedule
+        handle_reset_message();
 
         g_bRXFlag = 1;
         g_bErrFlag = 0;
@@ -177,6 +176,7 @@ void can_isr(void)
 
         g_bRXFlag = 1;
         g_bErrFlag = 0;
+
     }
 
     else if(ui32Status == DATA_SEND_OBJ_ID)
@@ -218,9 +218,11 @@ void SendCanSchedule(void)
             case OUTPUT_Q1_MODULE:
                 SendCan(Q1_I_ARMS);
                 break;
+
             case OUTPUT_Q4_MODULE:
                 SendCan(Q4_I_OUT);
                 break;
+
             case RECTIFIER_MODULE:
 
                 break;
@@ -266,12 +268,15 @@ void SendCanSchedule(void)
             case OUTPUT_Q1_MODULE:
                 SendCan(Q1_SLOW_STS);
                break;
+
             case OUTPUT_Q4_MODULE:
 
                break;
+
             case RECTIFIER_MODULE:
 
                break;
+
             case INPUT_MODULE:
 
                break;
@@ -420,12 +425,15 @@ void SendCanSchedule(void)
                }
 
                break;
+
             case OUTPUT_Q4_MODULE:
 
                break;
+
             case RECTIFIER_MODULE:
 
                break;
+
             case INPUT_MODULE:
 
                break;
@@ -570,13 +578,11 @@ void SendCan(unsigned char Message)
            pui8MsgDataTx[6] = 0;
            if(TempTripStatusRead())              pui8MsgDataTx[6] |= 0b00000001;
 
-
            pui8MsgDataTx[7] = 0;
 
            sCANMessageTx.ui32MsgLen = 8;
            sCANMessageTx.ui32MsgID = CanId + 3;
            break;
-
 
       //case Q4_I_OUT:
       //
@@ -662,7 +668,7 @@ void SendCan(unsigned char Message)
            if(InputModuleTempLAlarmStsRead())         pui8MsgDataTx[4] |= 0b00001000;
            //if(BuckModuleTempL1AlarmStsRead()) pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00010000;
            //if(BuckModuleTempL2AlarmStsRead()) pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00100000;
-           if(RhAlarmStatusRead())            pui8MsgDataTx[4] |=  0b01000000;
+           if(RhAlarmStatusRead())              pui8MsgDataTx[4] |=  0b01000000;
 
 
            pui8MsgDataTx[6] = 0;
@@ -999,9 +1005,7 @@ void InitCan(uint32_t ui32SysClock)
 
 
     // Set up the bit rate for the CAN bus 1Mbps
-    //CANBitRateSet(CAN0_BASE, ui32SysClock, 500000);
     CANBitRateSet(CAN0_BASE, ui32SysClock, 1000000);
-    //CANBitRateSet(CAN0_BASE, 8000000, 1000000);
 
     // Enable interrupts on the CAN peripheral.
     CANIntEnable(CAN0_BASE, CAN_INT_MASTER | CAN_INT_ERROR | CAN_INT_STATUS);
@@ -1085,13 +1089,16 @@ void send_event_message(can_message_id_t message_id)
 
 }
 
+uint8_t hb_data[1];
 
 void send_heart_beat_message()
 {
-    uint8_t *pui8MsgData;
-    pui8MsgData = (uint8_t *)&CanId;
-    event_message.ui32MsgID = HeartBeatMsgId;
-    event_message.ui32MsgLen = sizeof(pui8MsgData);
+    //uint8_t pui8MsgData[1];
+    hb_data[0] = 1;
+    //event_message.ui32MsgID = HeartBeatMsgId;
+    event_message.ui32MsgID = 1;
+    event_message.ui32MsgIDMask = 0xfffff;
+    event_message.ui32MsgLen = 4;
     event_message.pui8MsgData = pui8MsgData;
     CANMessageSet(CAN0_BASE, EVENT_MESSAGE_OBJ_ID, &event_message,
                                                               MSG_OBJ_TYPE_TX);

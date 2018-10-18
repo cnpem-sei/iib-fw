@@ -62,7 +62,6 @@ static void int_timer_1ms_handler(void)
     {
         RunToggle();
         //SendCanSchedule();
-        send_heart_beat_message();
         can_timestamp_100ms = 0;
         RunToggle();
     }
@@ -200,6 +199,7 @@ int main(void)
     {
         Application();
         BoardTask();
+        //send_heart_beat_message();
     }
 
     return 0;

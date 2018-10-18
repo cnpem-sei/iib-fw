@@ -237,7 +237,7 @@ void task_1_ms(void)
 void BoardTask(void)
 {
 
-  //RunToggle();
+  RunToggle();
 
   if(TempCh1Read)
   {

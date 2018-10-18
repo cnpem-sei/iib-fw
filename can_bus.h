@@ -28,14 +28,14 @@
 
 #define ITLK_MESS               255
 
-#define EVENT_MESSAGE_LEN       8
-#define EVENT_MESSAGE_OBJ_ID    1
+#define EVENT_MESSAGE_LEN           8
+#define EVENT_MESSAGE_OBJ_ID        1
 
-#define PARAMS_MESSAGE_LEN      8
-#define PARAMS_MESSAGE_OBJ_ID   2
+#define PARAMS_MESSAGE_LEN          8
+#define PARAMS_MESSAGE_OBJ_ID       2
 
-#define RESET_MESSAGE_LEN       1
-#define RESET_MESSAGE_OBJ_ID    3
+#define RESET_MESSAGE_LEN           1
+#define RESET_MESSAGE_OBJ_ID        3
 
 #define DATA_REQUEST_MESSAGE_LEN    4
 #define DATA_REQUEST_OBJ_ID         4

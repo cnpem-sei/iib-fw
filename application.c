@@ -107,6 +107,7 @@ typedef struct
     bool Driver1ErrorItlk;
     bool Driver2Error;
     bool Driver2ErrorItlk;
+
 } Q4Module_t;
 
 
@@ -122,6 +123,7 @@ typedef struct
 
 typedef struct
 {
+
     float Iin;
     bool IinAlarmSts;
     bool IinItlkSts;
@@ -138,6 +140,7 @@ typedef struct
     bool Driver1ErrorItlk;
     bool Driver2Error;
     bool Driver2ErrorItlk;
+
 } InputModule_t;
 
 typedef struct
@@ -183,6 +186,7 @@ typedef struct
     bool AcTransformerOverTempSts;
     bool WaterFluxInterlock;
     bool WaterFluxInterlockSts;
+
 } RectifierModule_t;
 
 typedef struct
@@ -231,8 +235,8 @@ void AppConfiguration(void)
     // This parameter guide the firmware behavior
     // Each Model has a different variable list that need to be check
 
-    //PowerModuleModel = OUTPUT_Q1_MODULE;
-    PowerModuleModel = OUTPUT_Q4_MODULE;
+    PowerModuleModel = OUTPUT_Q1_MODULE;
+    //PowerModuleModel = OUTPUT_Q4_MODULE;
     //PowerModuleModel = RECTIFIER_MODULE;
     //PowerModuleModel = INPUT_MODULE;
     //PowerModuleModel = COMMAND_DRAWER_MODULE;
@@ -350,6 +354,7 @@ void AppConfiguration(void)
             */
 
             init_q4_module();
+
             break;
          
         case RECTIFIER_MODULE:
@@ -649,6 +654,7 @@ void InterlockClearCheck(void)
           switch(PowerModuleModel)
           {
               case OUTPUT_Q1_MODULE:
+
                   Q1Module.VinItlkSts             = 0;
                   Q1Module.VoutItlkSts            = 0;
                   Q1Module.IoutA1ItlkSts          = 0;
@@ -664,65 +670,74 @@ void InterlockClearCheck(void)
                   Q1Module.ExternalItlkSts        = 0;
                   Q1Module.LeakageCurrentSts      = 0;
                   Q1Module.RackSts                = 0;
+
                   break;
 
               case OUTPUT_Q4_MODULE:
+
                   clear_q4_interlocks();
+
                   break;
 
               case RECTIFIER_MODULE:
-                  Rectifier.IoutRectf1AlarmSts         = 0;
-                  Rectifier.IoutRectf1ItlkSts          = 0;
-                  Rectifier.IoutRectf2AlarmSts         = 0;
-                  Rectifier.IoutRectf2ItlkSts          = 0;
-                  Rectifier.VoutRectf1AlarmSts         = 0;
-                  Rectifier.VoutRectf1ItlkSts          = 0;
-                  Rectifier.VoutRectf2AlarmSts         = 0;
-                  Rectifier.VoutRectf2ItlkSts          = 0;
-                  Rectifier.LeakageCurrentAlarmSts     = 0;
-                  Rectifier.LeakageCurrentItlkSts      = 0;
-                  Rectifier.TempHeatSinkAlarmSts       = 0;
-                  Rectifier.TempHeatSinkItlkSts        = 0;
-                  Rectifier.TempWaterAlarmSts          = 0;
-                  Rectifier.TempWaterItlkSts           = 0;
-                  Rectifier.TempModule1AlarmSts        = 0;
-                  Rectifier.TempModule1ItlkSts         = 0;
-                  Rectifier.TempModule2AlarmSts        = 0;
-                  Rectifier.TempModule2ItlkSts         = 0;
-                  Rectifier.TempL1AlarmSts             = 0;
-                  Rectifier.TempL1ItlkSts              = 0;
-                  Rectifier.TempL2AlarmSts             = 0;
-                  Rectifier.TempL2ItlkSts              = 0;
-                  Rectifier.AcPhaseFaultSts            = 0;
-                  Rectifier.AcOverCurrentSts           = 0;
-                  Rectifier.AcTransformerOverTempSts   = 0;
-                  Rectifier.WaterFluxInterlockSts      = 0;
+
+                  Rectifier.IoutRectf1AlarmSts          = 0;
+                  Rectifier.IoutRectf1ItlkSts           = 0;
+                  Rectifier.IoutRectf2AlarmSts          = 0;
+                  Rectifier.IoutRectf2ItlkSts           = 0;
+                  Rectifier.VoutRectf1AlarmSts          = 0;
+                  Rectifier.VoutRectf1ItlkSts           = 0;
+                  Rectifier.VoutRectf2AlarmSts          = 0;
+                  Rectifier.VoutRectf2ItlkSts           = 0;
+                  Rectifier.LeakageCurrentAlarmSts      = 0;
+                  Rectifier.LeakageCurrentItlkSts       = 0;
+                  Rectifier.TempHeatSinkAlarmSts        = 0;
+                  Rectifier.TempHeatSinkItlkSts         = 0;
+                  Rectifier.TempWaterAlarmSts           = 0;
+                  Rectifier.TempWaterItlkSts            = 0;
+                  Rectifier.TempModule1AlarmSts         = 0;
+                  Rectifier.TempModule1ItlkSts          = 0;
+                  Rectifier.TempModule2AlarmSts         = 0;
+                  Rectifier.TempModule2ItlkSts          = 0;
+                  Rectifier.TempL1AlarmSts              = 0;
+                  Rectifier.TempL1ItlkSts               = 0;
+                  Rectifier.TempL2AlarmSts              = 0;
+                  Rectifier.TempL2ItlkSts               = 0;
+                  Rectifier.AcPhaseFaultSts             = 0;
+                  Rectifier.AcOverCurrentSts            = 0;
+                  Rectifier.AcTransformerOverTempSts    = 0;
+                  Rectifier.WaterFluxInterlockSts       = 0;
+
                   break;
                
               case INPUT_MODULE:
-                  InputModule.IinAlarmSts           = 0;
-                  InputModule.IinItlkSts            = 0;
-                  InputModule.VdcLinkAlarmSts       = 0;
-                  InputModule.VdcLinkItlkSts        = 0;
-                  InputModule.TempHeatsinkAlarmSts  = 0;
-                  InputModule.TempHeatsinkItlkSts   = 0;
-                  InputModule.TempLAlarmSts         = 0;
-                  InputModule.TempLItlkSts          = 0;
-                  InputModule.Driver1ErrorItlk      = 0;
-                  InputModule.Driver2ErrorItlk      = 0;
+
+                  InputModule.IinAlarmSts               = 0;
+                  InputModule.IinItlkSts                = 0;
+                  InputModule.VdcLinkAlarmSts           = 0;
+                  InputModule.VdcLinkItlkSts            = 0;
+                  InputModule.TempHeatsinkAlarmSts      = 0;
+                  InputModule.TempHeatsinkItlkSts       = 0;
+                  InputModule.TempLAlarmSts             = 0;
+                  InputModule.TempLItlkSts              = 0;
+                  InputModule.Driver1ErrorItlk          = 0;
+                  InputModule.Driver2ErrorItlk          = 0;
+
                   break;
 
               case COMMAND_DRAWER_MODULE:
-                  CommandDrawer.VcapBankAlarmSts     = 0;
-                  CommandDrawer.VcapBankItlkSts      = 0;
-                  CommandDrawer.VoutAlarmSts         = 0;
-                  CommandDrawer.VoutItlkSts          = 0;
-                  CommandDrawer.TempHeatSinkAlarmSts = 0;
-                  CommandDrawer.TempHeatSinkItlkSts  = 0;
-                  CommandDrawer.TempLAlarmSts        = 0;
-                  CommandDrawer.TempLItlkSts         = 0;
-                  CommandDrawer.ExtItlkSts           = 0;
-                  CommandDrawer.ExtItlk2Sts          = 0;
+
+                  CommandDrawer.VcapBankAlarmSts        = 0;
+                  CommandDrawer.VcapBankItlkSts         = 0;
+                  CommandDrawer.VoutAlarmSts            = 0;
+                  CommandDrawer.VoutItlkSts             = 0;
+                  CommandDrawer.TempHeatSinkAlarmSts    = 0;
+                  CommandDrawer.TempHeatSinkItlkSts     = 0;
+                  CommandDrawer.TempLAlarmSts           = 0;
+                  CommandDrawer.TempLItlkSts            = 0;
+                  CommandDrawer.ExtItlkSts              = 0;
+                  CommandDrawer.ExtItlk2Sts             = 0;
+
                   break;
           }
           
@@ -745,33 +760,42 @@ void AppInterlock(void)
       switch(PowerModuleModel)
       {
        case OUTPUT_Q1_MODULE:
+
             ReleAuxTurnOff();
             ReleItlkTurnOff();
+
             break;
 
        case OUTPUT_Q4_MODULE:
+
             ReleAuxTurnOff();
             ReleItlkTurnOff();
-
             Gpdo1TurnOff();
             Gpdo2TurnOff();
 
             break;
 
        case RECTIFIER_MODULE:
+
             ReleAuxTurnOff();
             ReleItlkTurnOff();
+
             break;
 
        case INPUT_MODULE:
+
             ReleAuxTurnOff();
             ReleItlkTurnOff();
+
             break;
 
        case COMMAND_DRAWER_MODULE:
+
            ReleAuxTurnOff();
            ReleItlkTurnOff();
+
            break;
+
       }
       
 }
@@ -1102,14 +1126,14 @@ void Application(void)
            Q1Module.VoutAlarmSts = LvCurrentCh2AlarmStatusRead();
            if(!Q1Module.VoutItlkSts)Q1Module.VoutItlkSts                        = LvCurrentCh2TripStatusRead();
 
-           Q1Module.ExternalItlk = !Gpdi1Read();
-           if(!Q1Module.ExternalItlkSts) Q1Module.ExternalItlkSts               = !Gpdi1Read();
+           Q1Module.ExternalItlk = Gpdi1Read();
+           if(!Q1Module.ExternalItlkSts) Q1Module.ExternalItlkSts               = Gpdi1Read();
 
-           Q1Module.LeakageCurrent = !Gpdi2Read();
-           if(!Q1Module.LeakageCurrentSts) Q1Module.LeakageCurrentSts           = !Gpdi2Read();
+           Q1Module.LeakageCurrent = Gpdi2Read();
+           if(!Q1Module.LeakageCurrentSts) Q1Module.LeakageCurrentSts           = Gpdi2Read();
 
-           Q1Module.Rack = !Gpdi3Read();
-           if(!Q1Module.RackSts) Q1Module.RackSts                               = !Gpdi3Read();
+           Q1Module.Rack = Gpdi3Read();
+           if(!Q1Module.RackSts) Q1Module.RackSts                               = Gpdi3Read();
 
            Q1Module.Relay = !Gpdi4Read();
 

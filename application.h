@@ -1,7 +1,3 @@
-
-
-
-
 #ifndef __APPLICATION_H__
 #define __APPLICATION_H__
 
@@ -89,8 +85,6 @@ extern unsigned char Q1ModuleLeakageCurrentStsRead(void);
 
 extern unsigned char Q1ModuleRackRead(void);
 extern unsigned char Q1ModuleRackStsRead(void);
-
-
 
 // 4Q Module
 float Q4ModuleIoutRead(void);
