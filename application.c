@@ -244,15 +244,31 @@ void AppConfiguration(void)
     switch(PowerModuleModel)
     {
         case OUTPUT_Q1_MODULE:
-            //Set current range
-            CurrentCh1Init(130.0, 0.130, 50.0, 3); // Corrente braço1: Sensor Hall
-            CurrentCh2Init(130.0, 0.130, 50.0, 3); // Corrente braço2: LEM LA 130-P
 
-            //Set protection limits
-            CurrentCh1AlarmLevelSet(80.0); // Corrente braço1
-            CurrentCh1TripLevelSet(85.0);  // Corrente braço1
-            CurrentCh2AlarmLevelSet(80.0); // Corrente braço2
-            CurrentCh2TripLevelSet(85.0);  // Corrente braço2
+            //Set current range FAP 150 A
+            //CurrentCh1Init(130.0, 0.130, 50.0, 3); // Corrente braço1: Sensor Hall
+            //CurrentCh2Init(130.0, 0.130, 50.0, 3); // Corrente braço2: LEM LA 130-P
+
+
+            //Set current range FAP 300 A
+            CurrentCh1Init(150.0, 0.150, 50.0, 3); // Corrente braço1: Sensor Hall
+            CurrentCh2Init(150.0, 0.150, 50.0, 3); // Corrente braço2: LEM LA 130-
+
+            //Set protection limits FAP 150 A
+            //CurrentCh1AlarmLevelSet(80.0); // Corrente braço1
+            //CurrentCh1TripLevelSet(85.0);  // Corrente braço1
+            //CurrentCh2AlarmLevelSet(80.0); // Corrente braço2
+            //CurrentCh2TripLevelSet(85.0);  // Corrente braço2
+
+            //Set protection limits FAP 300 A
+            //     These interlocks are bypassed due to the fact that their ADC's
+            //     will most probably saturate during operation at 300 A. These
+            //     measures are also performed by UDC, which guarantees these
+            //     protections
+            CurrentCh1AlarmLevelSet(151.0); // Corrente braço1
+            CurrentCh1TripLevelSet(152.0);  // Corrente braço1
+            CurrentCh2AlarmLevelSet(151.5); // Corrente braço2
+            CurrentCh2TripLevelSet(152.0);  // Corrente braço2
 
             // NTC contiguration type
             //ConfigNtcType(SEMIX);
