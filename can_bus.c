@@ -216,22 +216,29 @@ void SendCanSchedule(void)
         switch(AppType())
         {
             case OUTPUT_Q1_MODULE:
+
                 SendCan(Q1_I_ARMS);
+
                 break;
 
             case OUTPUT_Q4_MODULE:
+
                 SendCan(Q4_I_OUT);
+
                 break;
 
             case RECTIFIER_MODULE:
 
                 break;
+
             case INPUT_MODULE:
 
                 break;
 
             case COMMAND_DRAWER_MODULE:
+
                 SendCan(DRAWER_TEMP);
+
                 break;
         }
 
@@ -266,7 +273,9 @@ void SendCanSchedule(void)
         switch(AppType())
         {
             case OUTPUT_Q1_MODULE:
+
                 SendCan(Q1_SLOW_STS);
+
                break;
 
             case OUTPUT_Q4_MODULE:
@@ -282,8 +291,10 @@ void SendCanSchedule(void)
                break;
 
             case COMMAND_DRAWER_MODULE:
-                SendCan(DRAWER_ALARM_ITLK_STS);
-                break;
+
+               SendCan(DRAWER_ALARM_ITLK_STS);
+
+               break;
         }
 
         CanScheduleVar = 3;
@@ -343,12 +354,15 @@ void SendCanSchedule(void)
             case OUTPUT_Q1_MODULE:
 
                break;
+
             case OUTPUT_Q4_MODULE:
 
                break;
+
             case RECTIFIER_MODULE:
 
                break;
+
             case INPUT_MODULE:
 
                break;
@@ -365,18 +379,23 @@ void SendCanSchedule(void)
         switch(AppType())
         {
             case OUTPUT_Q1_MODULE:
+
                break;
 
             case OUTPUT_Q4_MODULE:
+
                break;
 
             case RECTIFIER_MODULE:
+
                break;
 
             case INPUT_MODULE:
+
                break;
 
             case COMMAND_DRAWER_MODULE:
+
                 break;
         }
 
@@ -388,23 +407,32 @@ void SendCanSchedule(void)
         switch(AppType())
         {
             case OUTPUT_Q1_MODULE:
+
                if(SecCount == 7)
                {
+
                    toggle_pin(TP_1_BASE, TP_1_PIN);
                    SendCan(Q1_SLOW_STS);
                    toggle_pin(TP_1_BASE, TP_1_PIN);
+
                }
+
                break;
+
             case OUTPUT_Q4_MODULE:
+
                break;
 
             case RECTIFIER_MODULE:
+
                break;
 
             case INPUT_MODULE:
+
                break;
 
             case COMMAND_DRAWER_MODULE:
+
                break;
         }
 
@@ -417,7 +445,7 @@ void SendCanSchedule(void)
         {
             case OUTPUT_Q1_MODULE:
 
-                if(SecCount == 8)
+               if(SecCount == 8)
                {
                    toggle_pin(TP_1_BASE, TP_1_PIN);
                    SendCan(Q1_ALARM_ITLK_STS);
@@ -487,6 +515,7 @@ void SendCan(unsigned char Message)
 
            sCANMessageTx.ui32MsgLen = 8;
            sCANMessageTx.ui32MsgID = CanId + 0;
+
            break;
 
       case Q1_V_IN_OUT:
@@ -505,6 +534,7 @@ void SendCan(unsigned char Message)
 
            sCANMessageTx.ui32MsgLen = 8;
            sCANMessageTx.ui32MsgID = CanId + 1;
+
            break;
 
       case Q1_SLOW_STS:
@@ -530,6 +560,7 @@ void SendCan(unsigned char Message)
 
            sCANMessageTx.ui32MsgLen = 8;
            sCANMessageTx.ui32MsgID = CanId + 2;
+
            break;
 
       case Q1_ALARM_ITLK_STS:
@@ -582,6 +613,7 @@ void SendCan(unsigned char Message)
 
            sCANMessageTx.ui32MsgLen = 8;
            sCANMessageTx.ui32MsgID = CanId + 3;
+
            break;
 
       //case Q4_I_OUT:
@@ -645,6 +677,7 @@ void SendCan(unsigned char Message)
 
            sCANMessageTx.ui32MsgLen = 8;
            sCANMessageTx.ui32MsgID = CanId + 0;
+
            break;
 
       case BUCK_TEMP:
@@ -687,6 +720,7 @@ void SendCan(unsigned char Message)
 
            sCANMessageTx.ui32MsgLen = 8;
            sCANMessageTx.ui32MsgID = CanId + 3;
+
            break;
 
       case RECTF_I_OUT:
@@ -705,6 +739,7 @@ void SendCan(unsigned char Message)
 
            sCANMessageTx.ui32MsgLen = 8;
            sCANMessageTx.ui32MsgID = CanId + 0;
+
            break;
 
       case RECTF_V_OUT:
@@ -723,6 +758,7 @@ void SendCan(unsigned char Message)
 
            sCANMessageTx.ui32MsgLen = 8;
            sCANMessageTx.ui32MsgID = CanId + 1;
+
            break;
 
       case RECTF_I_LEAK:
@@ -745,6 +781,7 @@ void SendCan(unsigned char Message)
 
            sCANMessageTx.ui32MsgLen = 8;
            sCANMessageTx.ui32MsgID = CanId + 2;
+
            break;
 
       case RECTF_TEMP:
@@ -760,9 +797,11 @@ void SendCan(unsigned char Message)
 
            sCANMessageTx.ui32MsgLen = 8;
            sCANMessageTx.ui32MsgID = CanId + 3;
+
            break;
 
       case RECTF_ALARM_ITLK_STS:
+
            //Alarm bytes
            pui8MsgDataTx[0] = 0;
            pui8MsgDataTx[1] = 0;
@@ -811,6 +850,7 @@ void SendCan(unsigned char Message)
 
            sCANMessageTx.ui32MsgLen = 8;
            sCANMessageTx.ui32MsgID = CanId + 4;
+
            break;
 
       case DRAWER_TEMP:
@@ -876,6 +916,7 @@ void SendCan(unsigned char Message)
 
           sCANMessageTx.ui32MsgLen = 8;
           sCANMessageTx.ui32MsgID = CanId + 2;
+
           break;
 
       case ITLK_MESS:
@@ -884,6 +925,7 @@ void SendCan(unsigned char Message)
 
            sCANMessageTx.ui32MsgLen = 8;
            sCANMessageTx.ui32MsgID = CanId + 15;
+
            break;
 
     }
@@ -951,31 +993,39 @@ void send_board_readings()
     switch(AppType())
     {
         case OUTPUT_Q1_MODULE:
+
             //send_can_message(Reading,   TempHeatSink,   33.0);
             //send_can_message(Itlk,      TempL,          35.0);
             //send_can_message(Alm,       VcapBank,       36.5);
             //send_can_message(Reset,     Vout,           37.5);
             //send_can_message(Reading,   Gpdi,           0);
+
             break;
 
         case OUTPUT_Q4_MODULE:
+
             break;
 
         case RECTIFIER_MODULE:
+
             break;
 
         case INPUT_MODULE:
+
             break;
 
         case COMMAND_DRAWER_MODULE:
+
             //send_can_message(Reading,   TempHeatSink,   33.0);
             //send_can_message(Itlk,      TempL,          35.0);
             //send_can_message(Alm,       VcapBank,       36.5);
             //send_can_message(Reset,     Vout,           37.5);
             //send_can_message(Reading,   Gpdi,           0);
+
             break;
 
         default:
+
             break;
 
     }

@@ -199,7 +199,7 @@ int main(void)
     {
         Application();
         BoardTask();
-        //send_heart_beat_message();
+        send_heart_beat_message();
     }
 
     return 0;

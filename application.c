@@ -235,8 +235,8 @@ void AppConfiguration(void)
     // This parameter guide the firmware behavior
     // Each Model has a different variable list that need to be check
 
-    PowerModuleModel = OUTPUT_Q1_MODULE;
-    //PowerModuleModel = OUTPUT_Q4_MODULE;
+    //PowerModuleModel = OUTPUT_Q1_MODULE;
+    PowerModuleModel = OUTPUT_Q4_MODULE;
     //PowerModuleModel = RECTIFIER_MODULE;
     //PowerModuleModel = INPUT_MODULE;
     //PowerModuleModel = COMMAND_DRAWER_MODULE;
@@ -1270,9 +1270,9 @@ void Application(void)
            CommandDrawer.VoutAlarmSts = VoltageCh2AlarmStatusRead();
            if (!CommandDrawer.VoutItlkSts) CommandDrawer.VoutItlkSts            = VoltageCh2TripStatusRead();
 
-           if(!CommandDrawer.ExtItlkSts) CommandDrawer.ExtItlkSts               = !Gpdi1Read();
+           if(!CommandDrawer.ExtItlkSts) CommandDrawer.ExtItlkSts               = Gpdi1Read();
 
-           if(!CommandDrawer.ExtItlk2Sts) CommandDrawer.ExtItlk2Sts             = !Gpdi5Read();
+           if(!CommandDrawer.ExtItlk2Sts) CommandDrawer.ExtItlk2Sts             = Gpdi5Read();
 
            break;
       }
