@@ -255,136 +255,9 @@ void AppConfiguration(void)
             break;
          
         case RECTIFIER_MODULE:
-            //Set current range
-            CurrentCh1Init(300.0, 0.150, 50.0, 3);  // Rectifier1 Output Current Sensor Configuration: Hall Sensor
-            CurrentCh2Init(300.0, 0.150, 50.0, 3);  // Rectifier2 Output Current Sensor Configuration: LEM LF 310-S
-            CurrentCh3Init(1.0, 0.0125, 300.0, 0);  // Leakage Current
-            CurrentCh4Init(125.0, 0.125, 50.0, 0);
-            //Set protection limits
-            CurrentCh1AlarmLevelSet(230.0);        // Rectifier1 Output Current Alarm
-            CurrentCh1TripLevelSet(235.0);         // Rectifier1 Output Current Trip
-            CurrentCh2AlarmLevelSet(230.0);        // Rectifier2 Output Current Alarm
-            CurrentCh2TripLevelSet(235.0);         // Rectifier2 Output Current Trip
-            CurrentCh3AlarmLevelSet(0.09);         // Leakage Current Alarm Level
-            CurrentCh3TripLevelSet(0.1);           // Leakage Current Trip Level
-            CurrentCh4AlarmLevelSet(100.0);
-            CurrentCh4TripLevelSet(100.0);
 
-            //Setar ranges de entrada
-            VoltageCh1Init(61.21, 3);              // Rectifier1 Output Voltage Configuration.
-            VoltageCh2Init(61.21, 3);              // Rectifier2 Output Voltage Configuration.
-            VoltageCh3Init(10.0, 3);               // NTC SW1
-            VoltageCh4Init(10.0, 3);               // NTC SW2
+            init_rectifier_module();
 
-            ConfigPolVoltCh2(1);                   // Change the voltage polarity of the channel 2 (rectifier 2 voltage)
-
-            ConfigVoltCh1AsNtc(0);                 // Config Voltage Ch2 as a voltage input
-            ConfigVoltCh2AsNtc(0);                 // Config Voltage Ch2 as a voltage input
-            ConfigVoltCh3AsNtc(1);                 // Config Voltage Ch3 as a NTC input
-            ConfigVoltCh4AsNtc(1);                 // Config Voltage Ch4 as a NTC input
-
-            //Setar limites
-            VoltageCh1AlarmLevelSet(55.0);         // Rectifier1 Voltage Alarm
-            VoltageCh1TripLevelSet(58.0);          // Rectifier1 Voltage Trip
-            VoltageCh2AlarmLevelSet(55.0);         // Rectifier2 Voltage Alarm
-            VoltageCh2TripLevelSet(58.0);          // Rectifier2 Voltage Trip
-            VoltageCh3AlarmLevelSet(115.0);        // Rectifier1 NTC Temperature Alarm
-            VoltageCh3TripLevelSet(125.0);         // Rectifier1 NTC Temperature Trip
-            VoltageCh4AlarmLevelSet(115.0);        // Rectifier2 NTC Temperature Alarm
-            VoltageCh4TripLevelSet(125.0);         // Rectifier2 NTC Temperature Tip
-
-            // PT100 configuration limits
-            Pt100SetCh1AlarmLevel(70);             // Heat Sink Temperature Alarm
-            Pt100SetCh1TripLevel(80);              // Heat Sink Temperature Trip
-            Pt100SetCh2AlarmLevel(55);             // L1 Temperature Alarm
-            Pt100SetCh2TripLevel(60);              // L1 Temperature Trip
-            Pt100SetCh3AlarmLevel(55);             // L2 Temperature Alarm
-            Pt100SetCh3TripLevel(60);              // L2 Temperature Trip
-            Pt100SetCh4AlarmLevel(55);             // Water Temperature Alarm
-            Pt100SetCh4TripLevel(60);              // Water Temperature Trip
-
-            // Delay 4 seconds
-            Pt100SetCh1Delay(4);
-            // Delay 4 seconds
-            Pt100SetCh2Delay(4);
-            // Delay 4 seconds
-            Pt100SetCh3Delay(4);
-            // Delay 4 seconds
-            Pt100SetCh4Delay(4);
-
-            // PT100 channel enable
-            Pt100Ch1Enable();            // Enable PT100 channel 1
-            Pt100Ch2Enable();            // Enable PT100 channel 2
-            Pt100Ch3Enable();            // Enable PT100 channel 3
-            Pt100Ch4Disable();           // Enable PT100 channel 4
-
-            // Rh configuration limits
-            RhAlarmLimitSet(80);
-            RhTripLimitSet(90);
-
-            // Temp board configuration limits
-            TempBoardAlarmLimitSet(80);
-            TempBoardTripLimitSet(90);
-
-            Driver1ErrDisable();         // Driver1 Error Signal Disable
-            Driver2ErrDisable();         // Driver1 Error Signal Disable
-
-            // Init variables
-            Rectifier.IoutRectf1               = 0;
-            Rectifier.IoutRectf1AlarmSts       = 0;
-            Rectifier.IoutRectf1ItlkSts        = 0;
-
-            Rectifier.IoutRectf2               = 0;
-            Rectifier.IoutRectf2AlarmSts       = 0;
-            Rectifier.IoutRectf2ItlkSts        = 0;
-
-            Rectifier.VoutRectf1               = 0;
-            Rectifier.VoutRectf1AlarmSts       = 0;
-            Rectifier.VoutRectf1ItlkSts        = 0;
-
-            Rectifier.VoutRectf2               = 0;
-            Rectifier.VoutRectf2AlarmSts       = 0;
-            Rectifier.VoutRectf2ItlkSts        = 0;
-
-            Rectifier.LeakageCurrent           = 0;
-            Rectifier.LeakageCurrentAlarmSts   = 0;
-            Rectifier.LeakageCurrentItlkSts    = 0;
-
-            Rectifier.TempHeatSink             = 0;
-            Rectifier.TempHeatSinkAlarmSts     = 0;
-            Rectifier.TempHeatSinkItlkSts      = 0;
-
-            Rectifier.TempWater                = 0;
-            Rectifier.TempWaterAlarmSts        = 0;
-            Rectifier.TempWaterItlkSts         = 0;
-
-            Rectifier.TempModule1              = 0;
-            Rectifier.TempModule1AlarmSts      = 0;
-            Rectifier.TempModule1ItlkSts       = 0;
-
-            Rectifier.TempModule2              = 0;
-            Rectifier.TempModule2AlarmSts      = 0;
-            Rectifier.TempModule2ItlkSts       = 0;
-
-            Rectifier.TempL1                   = 0;
-            Rectifier.TempL1AlarmSts           = 0;
-            Rectifier.TempL1ItlkSts            = 0;
-
-            Rectifier.TempL2                   = 0;
-            Rectifier.TempL2AlarmSts           = 0;
-            Rectifier.TempL2ItlkSts            = 0;
-
-            Rectifier.AcPhaseFault             = 0;
-            Rectifier.AcPhaseFaultSts          = 0;
-
-            Rectifier.AcOverCurrent            = 0;
-            Rectifier.AcOverCurrentSts         = 0;
-
-            Rectifier.AcTransformerOverTemp    = 0;
-            Rectifier.AcTransformerOverTempSts = 0;
-
-            Rectifier.WaterFluxInterlock       = 0;
-            Rectifier.WaterFluxInterlockSts    = 0;
             break;
 
         case INPUT_MODULE:
@@ -488,49 +361,28 @@ void InterlockClearCheck(void)
               case OUTPUT_Q1_MODULE:
 
                   clear_q1_interlocks();
+                  clear_q1_alarms();
 
                   break;
 
               case OUTPUT_Q4_MODULE:
 
                   clear_q4_interlocks();
+                  clear_q4_alarms();
 
                   break;
 
               case RECTIFIER_MODULE:
 
-                  Rectifier.IoutRectf1AlarmSts          = 0;
-                  Rectifier.IoutRectf1ItlkSts           = 0;
-                  Rectifier.IoutRectf2AlarmSts          = 0;
-                  Rectifier.IoutRectf2ItlkSts           = 0;
-                  Rectifier.VoutRectf1AlarmSts          = 0;
-                  Rectifier.VoutRectf1ItlkSts           = 0;
-                  Rectifier.VoutRectf2AlarmSts          = 0;
-                  Rectifier.VoutRectf2ItlkSts           = 0;
-                  Rectifier.LeakageCurrentAlarmSts      = 0;
-                  Rectifier.LeakageCurrentItlkSts       = 0;
-                  Rectifier.TempHeatSinkAlarmSts        = 0;
-                  Rectifier.TempHeatSinkItlkSts         = 0;
-                  Rectifier.TempWaterAlarmSts           = 0;
-                  Rectifier.TempWaterItlkSts            = 0;
-                  Rectifier.TempModule1AlarmSts         = 0;
-                  Rectifier.TempModule1ItlkSts          = 0;
-                  Rectifier.TempModule2AlarmSts         = 0;
-                  Rectifier.TempModule2ItlkSts          = 0;
-                  Rectifier.TempL1AlarmSts              = 0;
-                  Rectifier.TempL1ItlkSts               = 0;
-                  Rectifier.TempL2AlarmSts              = 0;
-                  Rectifier.TempL2ItlkSts               = 0;
-                  Rectifier.AcPhaseFaultSts             = 0;
-                  Rectifier.AcOverCurrentSts            = 0;
-                  Rectifier.AcTransformerOverTempSts    = 0;
-                  Rectifier.WaterFluxInterlockSts       = 0;
+                  clear_rectifier_interlocks();
+                  clear_rectifier_alarms();
 
                   break;
                
               case INPUT_MODULE:
 
                   clear_input_module_interlocks();
+                  clear_input_module_alarms();
 
                   break;
 
@@ -632,119 +484,96 @@ void AppAlarm(void)
 
 void InterlockAppCheck(void)
 {
-   unsigned char Test = 0;
+   unsigned char test = 0;
 
    switch(PowerModuleModel)
    {
        case OUTPUT_Q1_MODULE:
 
-           Test = check_q1_interlocks();
+           test = check_q1_interlocks();
 
            break;
        
        case OUTPUT_Q4_MODULE:
 
-           Test = check_q4_interlocks();
+           test = check_q4_interlocks();
 
            break;
        
        case RECTIFIER_MODULE:
 
-            Test |= Rectifier.IoutRectf1ItlkSts;
-            Test |= Rectifier.IoutRectf2ItlkSts;
-            Test |= Rectifier.VoutRectf1ItlkSts;
-            Test |= Rectifier.VoutRectf2ItlkSts;
-            Test |= Rectifier.LeakageCurrentItlkSts;
-            Test |= Rectifier.TempHeatSinkItlkSts;
-            Test |= Rectifier.TempWaterItlkSts;
-            Test |= Rectifier.TempModule1ItlkSts;
-            Test |= Rectifier.TempModule2ItlkSts;
-            Test |= Rectifier.TempL1ItlkSts;
-            Test |= Rectifier.TempL2ItlkSts;
-            Test |= Rectifier.AcPhaseFaultSts;
-            Test |= Rectifier.AcOverCurrentSts;
-            Test |= Rectifier.AcTransformerOverTempSts;
-            Test |= Rectifier.WaterFluxInterlockSts;
-            break;
+           test = check_rectifier_interlocks();
+
+           break;
        
        case INPUT_MODULE:
 
-            Test = check_input_module_interlocks();
+           test = check_input_module_interlocks();
 
-            break;
+           break;
 
        case COMMAND_DRAWER_MODULE:
 
-           Test |= CommandDrawer.TempHeatSinkItlkSts;
-           Test |= CommandDrawer.TempLItlkSts;
-           Test |= CommandDrawer.VcapBankItlkSts;
-           Test |= CommandDrawer.VoutItlkSts;
-           Test |= CommandDrawer.ExtItlkSts;
-           Test |= CommandDrawer.ExtItlk2Sts;
+           test |= CommandDrawer.TempHeatSinkItlkSts;
+           test |= CommandDrawer.TempLItlkSts;
+           test |= CommandDrawer.VcapBankItlkSts;
+           test |= CommandDrawer.VoutItlkSts;
+           test |= CommandDrawer.ExtItlkSts;
+           test |= CommandDrawer.ExtItlk2Sts;
            break;
    }
 
-   Test |= RhTripStatusRead();
+   test |= RhTripStatusRead();
 
-   Test |= DriverVolatgeTripStatusRead();
-   Test |= Driver1CurrentTripStatusRead();
-   Test |= Driver2CurrentTripStatusRead();
+   test |= DriverVolatgeTripStatusRead();
+   test |= Driver1CurrentTripStatusRead();
+   test |= Driver2CurrentTripStatusRead();
 
-   if(Test)InterlockSet();
+   if(test) InterlockSet();
 
 }
 
 void AlarmAppCheck(void)
 {
-   unsigned char Test = 0;
+   unsigned char test = 0;
    
    switch(PowerModuleModel)
    {
        case OUTPUT_Q1_MODULE:
 
-            Test = check_q1_alarms();
+           test = check_q1_alarms();
 
            break;
 
        case OUTPUT_Q4_MODULE:
 
-           Test = check_q4_alarms();
+           test = check_q4_alarms();
 
            break;
 
        case RECTIFIER_MODULE:
 
-            Test |= Rectifier.IoutRectf1AlarmSts;
-            Test |= Rectifier.IoutRectf2AlarmSts;
-            Test |= Rectifier.VoutRectf1AlarmSts;
-            Test |= Rectifier.VoutRectf2AlarmSts;
-            Test |= Rectifier.LeakageCurrentAlarmSts;
-            Test |= Rectifier.TempHeatSinkAlarmSts;
-            Test |= Rectifier.TempWaterAlarmSts;
-            Test |= Rectifier.TempModule1AlarmSts;
-            Test |= Rectifier.TempModule2AlarmSts;
-            Test |= Rectifier.TempL1AlarmSts;
-            Test |= Rectifier.TempL2AlarmSts;
+           test = check_rectifier_alarms();
 
-            break;
+           break;
 
        case INPUT_MODULE:
 
-            Test = check_input_module_alarms();
+           test = check_input_module_alarms();
 
-            break;
+           break;
 
        case COMMAND_DRAWER_MODULE:
-           Test |= CommandDrawer.TempHeatSinkAlarmSts;
-           Test |= CommandDrawer.TempLAlarmSts;
-           Test |= CommandDrawer.VcapBankAlarmSts;
-           Test |= CommandDrawer.VoutAlarmSts;
+           test |= CommandDrawer.TempHeatSinkAlarmSts;
+           test |= CommandDrawer.TempLAlarmSts;
+           test |= CommandDrawer.VcapBankAlarmSts;
+           test |= CommandDrawer.VoutAlarmSts;
    }
 
-   Test |= RhAlarmStatusRead();
+   test |= RhAlarmStatusRead();
 
 
-   if(Test)AlarmSet();
+   if(test) AlarmSet();
 }
 
 
@@ -767,24 +596,7 @@ void LedIndicationStatus(void)
 
         case RECTIFIER_MODULE:
 
-            // Rectifier Output Over Voltage
-            if(Rectifier.VoutRectf1ItlkSts || Rectifier.VoutRectf2ItlkSts) Led2TurnOn();
-            else if(Rectifier.VoutRectf1AlarmSts || Rectifier.VoutRectf2AlarmSts) Led2Toggle();
-            else Led2TurnOff();
-
-            // Rectifier Output Over Current
-            if(Rectifier.IoutRectf1ItlkSts || Rectifier.IoutRectf1ItlkSts) Led3TurnOn();
-            else if(Rectifier.IoutRectf1AlarmSts || Rectifier.IoutRectf1AlarmSts) Led3Toggle();
-            else Led3TurnOff();
-
-            // Rectifier Over Temperature
-            if(Rectifier.TempHeatSinkItlkSts || Rectifier.TempWaterItlkSts || Rectifier.TempModule1ItlkSts || Rectifier.TempModule2ItlkSts || Rectifier.TempL1ItlkSts || Rectifier.TempL2ItlkSts) Led4TurnOn();
-            else if(Rectifier.TempHeatSinkAlarmSts || Rectifier.TempWaterAlarmSts || Rectifier.TempModule1AlarmSts || Rectifier.TempModule2AlarmSts || Rectifier.TempL1AlarmSts || Rectifier.TempL2AlarmSts) Led4Toggle();
-            else Led4TurnOff();
-
-            // External interlock or Driver error
-            if(Rectifier.AcPhaseFaultSts || Rectifier.AcOverCurrentSts || Rectifier.AcTransformerOverTempSts || Rectifier.WaterFluxInterlockSts) Led5TurnOn();
-            else if(!InterlockRead())Led5TurnOff();
+            check_rectifier_indication_leds();
             
             break;
 
@@ -840,63 +652,8 @@ void Application(void)
             break;
             
         case RECTIFIER_MODULE:
-            Rectifier.IoutRectf1 = CurrentCh1Read();
-            Rectifier.IoutRectf1AlarmSts = CurrentCh1AlarmStatusRead();
-            if(!Rectifier.IoutRectf1ItlkSts) Rectifier.IoutRectf1ItlkSts        = CurrentCh1TripStatusRead();
             
-            Rectifier.IoutRectf2 = CurrentCh2Read();
-            Rectifier.IoutRectf2AlarmSts = CurrentCh2AlarmStatusRead();
-            if(!Rectifier.IoutRectf2ItlkSts) Rectifier.IoutRectf2ItlkSts        = CurrentCh2TripStatusRead();
-            
-            Rectifier.VoutRectf1 = VoltageCh1Read();
-            Rectifier.VoutRectf1AlarmSts = VoltageCh1AlarmStatusRead();
-            if(!Rectifier.VoutRectf1ItlkSts) Rectifier.VoutRectf1ItlkSts        = VoltageCh1TripStatusRead();
-            
-            Rectifier.VoutRectf2 = VoltageCh2Read();
-            Rectifier.VoutRectf2AlarmSts = VoltageCh2AlarmStatusRead();
-            if(!Rectifier.VoutRectf2ItlkSts) Rectifier.VoutRectf2ItlkSts        = VoltageCh2TripStatusRead();
-            
-            Rectifier.LeakageCurrent = CurrentCh3Read();
-            Rectifier.LeakageCurrentAlarmSts = CurrentCh3AlarmStatusRead();
-            if(!Rectifier.LeakageCurrentItlkSts) Rectifier.LeakageCurrentItlkSts = CurrentCh3TripStatusRead();
-            
-            Rectifier.TempHeatSink = Pt100ReadCh1();
-            Rectifier.TempHeatSinkAlarmSts = Pt100ReadCh1AlarmSts();
-            if(!Rectifier.TempHeatSinkItlkSts) Rectifier.TempHeatSinkItlkSts    = Pt100ReadCh1TripSts();
-            
-            Rectifier.TempWater = Pt100ReadCh4();
-            Rectifier.TempWaterAlarmSts = Pt100ReadCh4AlarmSts();
-            if(!Rectifier.TempWaterItlkSts) Rectifier.TempWaterItlkSts          = Pt100ReadCh4TripSts();
-            
-            Rectifier.TempModule1 = VoltageCh3Read();
-            Rectifier.TempModule1AlarmSts = VoltageCh3AlarmStatusRead();
-            if(!Rectifier.TempModule1ItlkSts) Rectifier.TempModule1ItlkSts      = VoltageCh3TripStatusRead();
-            
-            Rectifier.TempModule2 = VoltageCh4Read();
-            Rectifier.TempModule2AlarmSts = VoltageCh4AlarmStatusRead();
-            if(!Rectifier.TempModule2ItlkSts) Rectifier.TempModule2ItlkSts      = VoltageCh4TripStatusRead();
-            
-            Rectifier.TempL1 = Pt100ReadCh2();
-            Rectifier.TempL1AlarmSts = Pt100ReadCh2AlarmSts();
-            if(!Rectifier.TempL1ItlkSts) Rectifier.TempL1ItlkSts                = Pt100ReadCh2TripSts();
-            
-            Rectifier.TempL2 = Pt100ReadCh3();
-            Rectifier.TempL2AlarmSts = Pt100ReadCh3AlarmSts();
-            if(!Rectifier.TempL2ItlkSts) Rectifier.TempL2ItlkSts                = Pt100ReadCh3TripSts();
-            
-            Rectifier.AcPhaseFault = !Gpdi1Read();
-            if(!Rectifier.AcPhaseFaultSts) Rectifier.AcPhaseFaultSts            = !Gpdi1Read();
-            
-            Rectifier.AcOverCurrent = !Gpdi2Read();
-            if(!Rectifier.AcOverCurrentSts) Rectifier.AcOverCurrentSts          = !Gpdi2Read();
-            
-            Rectifier.AcTransformerOverTemp = !Gpdi3Read();
-            if(!Rectifier.AcTransformerOverTempSts) Rectifier.AcTransformerOverTempSts = !Gpdi3Read();
-            
-            Rectifier.WaterFluxInterlock = !Gpdi4Read();
-            if(!Rectifier.WaterFluxInterlockSts) Rectifier.WaterFluxInterlockSts = !Gpdi4Read();
-            
-            if(Rectifier.AcPhaseFault || Rectifier.AcOverCurrent || Rectifier.AcTransformerOverTemp || Rectifier.WaterFluxInterlock) InterlockSet();
+            rectifier_application_readings();
             
             break;
             
@@ -984,230 +741,6 @@ void Application(void)
 unsigned char AppType(void)
 {
     return PowerModuleModel;
-}
-
-
-
-
-// Rectifier
-//******************************************************************************
-float RectifierIoutRectf1Read(void)
-{
-    return Rectifier.IoutRectf1;
-}
-            
-unsigned char RectifierIoutRectf1AlarmStsRead(void)
-{
-    return Rectifier.IoutRectf1AlarmSts;
-}
-
-unsigned char RectifierIoutRectf1ItlkStsRead(void)
-{
-    return Rectifier.IoutRectf1ItlkSts;
-}
-
-//******************************************************************************
-float RectifierIoutRectf2Read(void)
-{
-    return Rectifier.IoutRectf2;
-}
-
-unsigned char RectifierIoutRectf2AlarmStsRead(void)
-{
-    return Rectifier.IoutRectf2AlarmSts;
-}
-
-unsigned char RectifierIoutRectf2ItlkStsRead(void)
-{
-    return Rectifier.IoutRectf2ItlkSts;
-}
-
-//******************************************************************************
-float RectifierVoutRectf1Read(void)
-{
-    return Rectifier.VoutRectf1;
-}
-
-unsigned char RectifierVoutRectf1AlarmStsRead(void)
-{
-    return Rectifier.VoutRectf1AlarmSts;
-}
-
-unsigned char RectifierVoutRectf1ItlkStsRead(void)
-{
-    return Rectifier.VoutRectf1ItlkSts;
-}
-
-//******************************************************************************
-float RectifierVoutRectf2Read(void)
-{
-    return Rectifier.VoutRectf2;
-}
-
-unsigned char RectifierVoutRectf2AlarmStsRead(void)
-{
-    return Rectifier.VoutRectf2AlarmSts;
-}
-
-unsigned char RectifierVoutRectf2ItlkStsRead(void)
-{
-    return Rectifier.VoutRectf2ItlkSts;
-}
-
-//******************************************************************************
-float RectifierLeakageCurrentRead(void)
-{
-    return Rectifier.LeakageCurrent;
-}
-
-unsigned char RectifierLeakageCurrentAlarmStsread(void)
-{
-    return Rectifier.LeakageCurrentAlarmSts;
-}
-
-unsigned char RectifierLeakageCurrentItlkStsRead(void)
-{
-    return Rectifier.LeakageCurrentItlkSts;
-}
-
-//******************************************************************************
-unsigned char RectifierTempHeatSinkRead(void)
-{
-    return Rectifier.TempHeatSink;
-}
-
-unsigned char RectifierTempHeatSinkAlarmStsRead(void)
-{
-    return Rectifier.TempHeatSinkAlarmSts;
-}
-
-unsigned char RectifierTempHeatSinkItlkStsRead(void)
-{
-    return Rectifier.TempHeatSinkItlkSts;
-}
-
-//******************************************************************************
-unsigned char RectifierTempWaterRead(void)
-{
-    return Rectifier.TempWater;
-}
-
-unsigned char RectifierTempWaterAlarmStsRead(void)
-{
-    return Rectifier.TempWaterAlarmSts;
-}
-
-unsigned char RectifierTempWaterItlkStsRead(void)
-{
-    return Rectifier.TempWaterItlkSts;
-}
-
-//******************************************************************************
-unsigned char RectifierTempModule1Read(void)
-{
-    return Rectifier.TempModule1;
-}
-
-unsigned char RectifierTempModule1AlarmStsRead(void)
-{
-    return Rectifier.TempModule1AlarmSts;
-}
-
-unsigned char RectifierTempModule1ItlkStsRead(void)
-{
-    return Rectifier.TempModule1ItlkSts;
-}
-
-//******************************************************************************
-unsigned char RectifierTempModule2Read(void)
-{
-    return Rectifier.TempModule2;
-}
-
-unsigned char RectifierTempModule2AlarmStsRead(void)
-{
-    return Rectifier.TempModule2AlarmSts;
-}
-
-unsigned char RectifierTempModule2ItlkStsRead(void)
-{
-    return Rectifier.TempModule2ItlkSts;
-}
-
-//******************************************************************************
-unsigned char RectifierTempL1Read(void)
-{
-    return Rectifier.TempL1;
-}
-
-unsigned char RectifierTempL1AlarmStsRead(void)
-{
-    return Rectifier.TempL1AlarmSts;
-}
-
-unsigned char RectifierTempL1ItlkStsRead(void)
-{
-    return Rectifier.TempL1ItlkSts;
-}
-
-//******************************************************************************
-unsigned char RectifierTempL2Read(void)
-{
-    return Rectifier.TempL2;
-}
-
-unsigned char RectifierTempL2AlarmStsRead(void)
-{
-    return Rectifier.TempL2AlarmSts;
-}
-
-unsigned char RectifierTempL2ItlkStsRead(void)
-{
-    return Rectifier.TempL2ItlkSts;
-}
-
-//******************************************************************************
-unsigned char RectifierAcPhaseFaultRead(void)
-{
-    return Rectifier.AcPhaseFault;
-}
-
-unsigned char RectifierAcPhaseFaultStsRead(void)
-{
-    return Rectifier.AcPhaseFaultSts;
-}
-
-//******************************************************************************
-unsigned char RectifierAcOverCurrentRead(void)
-{
-    return Rectifier.AcOverCurrent;
-}
-
-unsigned char RectifierAcOverCurrentStsRead(void)
-{
-    return Rectifier.AcOverCurrentSts;
-}
-
-//******************************************************************************
-unsigned char RectifierAcTransformerOverTempRead(void)
-{
-    return Rectifier.AcTransformerOverTemp;
-}
-
-unsigned char RectifierAcTransformerOverTempStsRead(void)
-{
-    return Rectifier.AcTransformerOverTempSts;
-}
-
-//******************************************************************************
-unsigned char RectifierWaterFluxInterlockRead(void)
-{
-    return Rectifier.WaterFluxInterlock;
-}
-
-unsigned char RectifierWaterFluxInterlockStsRead(void)
-{
-    return Rectifier.WaterFluxInterlockSts;
 }
 
 //******************************************************************************
