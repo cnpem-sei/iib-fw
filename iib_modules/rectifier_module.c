@@ -19,7 +19,7 @@
  *
  */
 
-#include "q1_module.h"
+#include "rectifier_module.h"
 #include "iib_data.h"
 
 #include "adc_internal.h"

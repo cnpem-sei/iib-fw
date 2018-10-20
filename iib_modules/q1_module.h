@@ -67,6 +67,4 @@ extern uint8_t check_q1_alarms(void);
 extern void check_q1_indication_leds(void);
 extern void q1_application_readings(void);
 
-
-
 #endif /* Q1_MODULE_H_ */

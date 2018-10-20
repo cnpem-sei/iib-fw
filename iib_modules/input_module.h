@@ -22,6 +22,8 @@
 #ifndef INPUT_MODULE_H_
 #define INPUT_MODULE_H_
 
+#include <stdint.h>
+
 #define INPUT_OVERCURRENT_ITLK          0x00000001
 #define DCLINK_OVERVOLTAGE_ITLK         0x00000002
 #define HS_OVERTEMP_ITLK                0x00000004

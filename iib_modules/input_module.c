@@ -19,7 +19,7 @@
  *
  */
 
-#include "q4_module.h"
+#include "input_module.h"
 #include "iib_data.h"
 
 #include "adc_internal.h"
