@@ -499,68 +499,6 @@ void SendCan(unsigned char Message)
 
     switch (Message)
     {
-      case BUCK_I_IN:
-
-           floatNchars.f = InputModuleIinRead();  // Iin
-           pui8MsgDataTx[0] = floatNchars.c[0];
-           pui8MsgDataTx[1] = floatNchars.c[1];
-           pui8MsgDataTx[2] = floatNchars.c[2];
-           pui8MsgDataTx[3] = floatNchars.c[3];
-
-           floatNchars.f = InputModuleVdcLinkRead(); //  Vdc Link
-           pui8MsgDataTx[4] = floatNchars.c[0];
-           pui8MsgDataTx[5] = floatNchars.c[1];
-           pui8MsgDataTx[6] = floatNchars.c[2];
-           pui8MsgDataTx[7] = floatNchars.c[3];
-
-           sCANMessageTx.ui32MsgLen = 8;
-           sCANMessageTx.ui32MsgID = CanId + 0;
-
-           break;
-
-      case BUCK_TEMP:
-
-           pui8MsgDataTx[0] = InputModuleTempHeatsinkRead();
-           pui8MsgDataTx[1] = InputModuleTempLRead();
-
-           pui8MsgDataTx[2] = 0;
-           // Status
-           //if(BuckModuleWaterFluxInterlockRead()) pui8MsgDataTx[2] = pui8MsgDataTx[2] | 0b00000001;
-           //if(BuckModuleAcOverCurrentRead())      pui8MsgDataTx[2] = pui8MsgDataTx[2] | 0b00000010;
-
-           pui8MsgDataTx[3] = 0;
-
-           pui8MsgDataTx[4] = 0;
-           pui8MsgDataTx[5] = 0;
-           //Alarm
-           if(InputModuleIinAlarmStsRead())           pui8MsgDataTx[4] |= 0b00000001;
-           if(InputModuleVdcLinkAlarmStsRead())       pui8MsgDataTx[4] |= 0b00000010;
-           if(InputModuleTempHeatsinkAlarmStsRead())  pui8MsgDataTx[4] |= 0b00000100;
-           if(InputModuleTempLAlarmStsRead())         pui8MsgDataTx[4] |= 0b00001000;
-           //if(BuckModuleTempL1AlarmStsRead()) pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00010000;
-           //if(BuckModuleTempL2AlarmStsRead()) pui8MsgDataTx[4] = pui8MsgDataTx[4] | 0b00100000;
-           if(RhAlarmStatusRead())              pui8MsgDataTx[4] |=  0b01000000;
-
-
-           pui8MsgDataTx[6] = 0;
-           pui8MsgDataTx[7] = 0;
-           //Interlock
-           if(InputModuleIinItlkStsRead())            pui8MsgDataTx[6] |= 0b00000001;
-           if(InputModuleVdcLinkItlkStsRead())        pui8MsgDataTx[6] |= 0b00000010;
-           if(InputModuleTempHeatsinkItlkStsRead())   pui8MsgDataTx[6] |= 0b00000100;
-           if(InputModuleTempLItlkStsRead())          pui8MsgDataTx[6] |= 0b00001000;
-           //if(BuckModuleTempL1ItlkStsRead())         pui8MsgDataTx[6] = pui8MsgDataTx[6] | 0b00010000;
-           //if(BuckModuleTempL2ItlkStsRead())         pui8MsgDataTx[6] = pui8MsgDataTx[6] | 0b00100000;
-           //if(BuckModuleWaterFluxInterlockStsRead()) pui8MsgDataTx[6] = pui8MsgDataTx[6] | 0b01000000;
-           //if(BuckModuleAcOverCurrentStsRead())      pui8MsgDataTx[6] = pui8MsgDataTx[6] | 0b10000000;
-
-           if(RhTripStatusRead())                    pui8MsgDataTx[7] = pui8MsgDataTx[7] | 0b00000001;
-
-           sCANMessageTx.ui32MsgLen = 8;
-           sCANMessageTx.ui32MsgID = CanId + 3;
-
-           break;
-
       case RECTF_I_OUT:
 
            floatNchars.f = RectifierIoutRectf1Read();

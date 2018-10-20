@@ -388,74 +388,9 @@ void AppConfiguration(void)
             break;
 
         case INPUT_MODULE:
-            //Set Current Range
-            CurrentCh1Init(300.0, 0.150, 50.0, 10);    // INPUT CURRENT
 
-            //Set Protection Limits
-            CurrentCh1AlarmLevelSet(160);          // INPUT CURRENT ALARM LEVEL
-            CurrentCh1TripLevelSet(170);           // INPUT CURRENT TRIP LEVEL
+            init_input_module();
 
-            //LV20-P INPUTS
-            LvCurrentCh1Init(550.0, 0.025, 120.0, 10); // CONFIG CHANNEL FOR DC_LINK MEASURE
-
-            //LV20-P LIMITS
-            CurrentCh1AlarmLevelSet(535);         // INPUT DC_LINK VOLTAGE ALARM LEVEL
-            CurrentCh1TripLevelSet(540);          // INPUT DC_LINK VOLTAGE TRIP LEVEL
-
-            // PT100 configuration limits
-            Pt100SetCh1AlarmLevel(45);            // HEATSINK TEMPERATURE ALARM LEVEL
-            Pt100SetCh1TripLevel(50);             // HEATSINK TEMPERATURE TRIP LEVEL
-            Pt100SetCh2AlarmLevel(55);            // INDUCTOR TEMPERATURE ALARM LEVEL
-            Pt100SetCh2TripLevel(60);             // INDUCTOR TEMPERATURE TRIP LEVEL
-            // PT100 channel enable
-            Pt100Ch1Enable();                     // HEATSINK TEMPERATURE CHANNEL ENABLE
-            Pt100Ch2Enable();                     // INDUCTOR TEMPERATURE CHANNEL ENABLE
-            Pt100Ch3Disable();
-            Pt100Ch4Disable();
-
-            // Delay 4 seconds
-            Pt100SetCh1Delay(4);
-            // Delay 4 seconds
-            Pt100SetCh2Delay(4);
-            // Delay 4 seconds
-            Pt100SetCh3Delay(4);
-            // Delay 4 seconds
-            Pt100SetCh4Delay(4);
-
-            // Rh configuration limits
-            RhAlarmLimitSet(80);
-            RhTripLimitSet(90);
-
-            // Temp board configuration limits
-            TempBoardAlarmLimitSet(80);
-            TempBoardTripLimitSet(90);
-
-            // Disable all Driver Error Monitoring
-            Driver1ErrDisable();
-            Driver2ErrDisable();
-
-            // Init Variables
-            InputModule.Iin                        = 0.0;
-            InputModule.IinAlarmSts                = 0;
-            InputModule.IinItlkSts                 = 0;
-
-            InputModule.VdcLink                    = 0.0;
-            InputModule.VdcLinkAlarmSts            = 0;
-            InputModule.VdcLinkItlkSts             = 0;
-
-            InputModule.TempHeatsink               = 0.0;
-            InputModule.TempHeatsinkAlarmSts       = 0;
-            InputModule.TempHeatsinkItlkSts        = 0;
-
-            InputModule.TempL                      = 0.0;
-            InputModule.TempLAlarmSts              = 0;
-            InputModule.TempLItlkSts               = 0;
-
-            InputModule.Driver1Error               = 0;
-            InputModule.Driver1ErrorItlk           = 0;
-
-            InputModule.Driver2Error               = 0;
-            InputModule.Driver2ErrorItlk           = 0;
             break;
 
         case COMMAND_DRAWER_MODULE:
@@ -595,16 +530,7 @@ void InterlockClearCheck(void)
                
               case INPUT_MODULE:
 
-                  InputModule.IinAlarmSts               = 0;
-                  InputModule.IinItlkSts                = 0;
-                  InputModule.VdcLinkAlarmSts           = 0;
-                  InputModule.VdcLinkItlkSts            = 0;
-                  InputModule.TempHeatsinkAlarmSts      = 0;
-                  InputModule.TempHeatsinkItlkSts       = 0;
-                  InputModule.TempLAlarmSts             = 0;
-                  InputModule.TempLItlkSts              = 0;
-                  InputModule.Driver1ErrorItlk          = 0;
-                  InputModule.Driver2ErrorItlk          = 0;
+                  clear_input_module_interlocks();
 
                   break;
 
@@ -743,12 +669,8 @@ void InterlockAppCheck(void)
        
        case INPUT_MODULE:
 
-            Test |= InputModule.IinItlkSts;
-            Test |= InputModule.VdcLinkItlkSts;
-            Test |= InputModule.TempHeatsinkItlkSts;
-            Test |= InputModule.TempLItlkSts;
-            Test |= InputModule.Driver1ErrorItlk;
-            Test |= InputModule.Driver2ErrorItlk;
+            Test = check_input_module_interlocks();
+
             break;
 
        case COMMAND_DRAWER_MODULE:
@@ -786,11 +708,12 @@ void AlarmAppCheck(void)
 
        case OUTPUT_Q4_MODULE:
 
-           Test |= check_q4_alarms();
+           Test = check_q4_alarms();
 
            break;
 
        case RECTIFIER_MODULE:
+
             Test |= Rectifier.IoutRectf1AlarmSts;
             Test |= Rectifier.IoutRectf2AlarmSts;
             Test |= Rectifier.VoutRectf1AlarmSts;
@@ -802,13 +725,13 @@ void AlarmAppCheck(void)
             Test |= Rectifier.TempModule2AlarmSts;
             Test |= Rectifier.TempL1AlarmSts;
             Test |= Rectifier.TempL2AlarmSts;
+
             break;
 
        case INPUT_MODULE:
-            Test |= InputModule.IinAlarmSts;
-            Test |= InputModule.TempHeatsinkAlarmSts;
-            Test |= InputModule.TempLAlarmSts;
-            Test |= InputModule.VdcLinkAlarmSts;
+
+            Test = check_input_module_alarms();
+
             break;
 
        case COMMAND_DRAWER_MODULE:
@@ -867,29 +790,7 @@ void LedIndicationStatus(void)
 
         case INPUT_MODULE:
 
-            // Input Over Current
-            if(InputModule.IinItlkSts) Led2TurnOn();
-            else if(InputModule.IinAlarmSts) Led2Toggle();
-            else Led2TurnOff();
-
-            // Dc-Link Overvoltage
-            if(InputModule.VdcLinkItlkSts) Led3TurnOn();
-            else if(InputModule.VdcLinkAlarmSts) Led3Toggle();
-            else Led3TurnOff();
-
-            // Heatsink Over Temperature
-            if(InputModule.TempHeatsinkItlkSts) Led4TurnOn();
-            else if(InputModule.TempHeatsinkAlarmSts) Led4Toggle();
-            else Led4TurnOff();
-            
-            // Inductor Over Temperature
-            if(InputModule.TempLItlkSts) Led5TurnOn();
-            else if(InputModule.TempLAlarmSts) Led5Toggle();
-            else Led5TurnOff();
-
-            // Driver Error
-            if(InputModule.Driver1ErrorItlk || InputModule.Driver2ErrorItlk) Led6TurnOn();
-            else Led6TurnOff();
+            check_input_module_indication_leds();
 
             break;
 
@@ -1000,30 +901,10 @@ void Application(void)
             break;
             
        case INPUT_MODULE:
-            InputModule.Iin = CurrentCh1Read();
-            InputModule.IinAlarmSts = CurrentCh1AlarmStatusRead();
-            if(!InputModule.IinItlkSts) InputModule.IinItlkSts                  = CurrentCh1TripStatusRead();
-            
-            InputModule.VdcLink = LvCurrentCh1Read();
-            InputModule.VdcLinkAlarmSts = CurrentCh1AlarmStatusRead();
-            if(!InputModule.VdcLinkItlkSts) InputModule.VdcLinkItlkSts          = CurrentCh1TripStatusRead();
-            
-            InputModule.TempHeatsink = Pt100ReadCh1();
-            InputModule.TempHeatsinkAlarmSts = Pt100ReadCh1AlarmSts();
-            if(!InputModule.TempHeatsinkItlkSts) InputModule.TempHeatsinkItlkSts = Pt100ReadCh1TripSts();
 
-            InputModule.TempL = Pt100ReadCh2();
-            InputModule.TempLAlarmSts = Pt100ReadCh2AlarmSts();
-            if(!InputModule.TempLItlkSts) InputModule.TempLItlkSts              = Pt100ReadCh2TripSts();
+           input_module_application_readings();
 
-            /*
-            InputModule.Driver1Error = Driver1TopErrRead();
-            if(!InputModule.Driver1ErrorItlk) InputModule.Driver1ErrorItlk = Driver1TopErrRead();
-
-            InputModule.Driver2Error = Driver2TopErrRead();
-            if(!InputModule.Driver2ErrorItlk) InputModule.Driver2ErrorItlk = Driver2TopErrRead();
-            */
-            break;
+           break;
 
        case COMMAND_DRAWER_MODULE:
            CommandDrawer.TempHeatSink = Pt100ReadCh1();
@@ -1327,71 +1208,6 @@ unsigned char RectifierWaterFluxInterlockRead(void)
 unsigned char RectifierWaterFluxInterlockStsRead(void)
 {
     return Rectifier.WaterFluxInterlockSts;
-}
-
-// Input Module
-//******************************************************************************
-float InputModuleIinRead(void)
-{
-    return InputModule.Iin;
-}
-
-unsigned char InputModuleIinAlarmStsRead(void)
-{
-    return InputModule.IinAlarmSts;
-}
-
-unsigned char InputModuleIinItlkStsRead(void)
-{
-    return InputModule.IinItlkSts;
-}
-
-//******************************************************************************
-float InputModuleVdcLinkRead(void)
-{
-    return InputModule.VdcLink;
-}
-
-unsigned char InputModuleVdcLinkAlarmStsRead(void)
-{
-    return InputModule.VdcLinkAlarmSts;
-}
-
-unsigned char InputModuleVdcLinkItlkStsRead(void)
-{
-    return InputModule.VdcLinkItlkSts;
-}
-
-//******************************************************************************
-unsigned char InputModuleTempHeatsinkRead(void)
-{
-    return InputModule.TempHeatsink;
-}
-
-unsigned char InputModuleTempHeatsinkAlarmStsRead(void)
-{
-    return InputModule.TempHeatsinkAlarmSts;
-}
-
-unsigned char InputModuleTempHeatsinkItlkStsRead(void)
-{
-    return InputModule.TempHeatsinkItlkSts;
-}
-
-//******************************************************************************
-unsigned char InputModuleTempLRead(void)
-{
-    return InputModule.TempL;
-}
-
-unsigned char InputModuleTempLAlarmStsRead(void)
-{
-    return InputModule.TempLAlarmSts;
-}
-
-unsigned char InputModuleTempLItlkStsRead(void)
-{
-    return InputModule.TempLItlkSts;
 }
 
 //******************************************************************************

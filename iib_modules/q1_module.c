@@ -426,11 +426,10 @@ void q1_map_vars()
     g_controller_iib.iib_signals[6].u8[0]   = q1_module.TempIGBT1;
     g_controller_iib.iib_signals[7].u8[0]   = q1_module.TempIGBT2;
     g_controller_iib.iib_signals[8].f       = q1_module.DriveVoltage;
-    g_controller_iib.iib_signals[8].f       = q1_module.Drive1Current;
-    g_controller_iib.iib_signals[8].f       = q1_module.Drive2Current;
-    g_controller_iib.iib_signals[8].u8[0]   = q1_module.TempL;
-    g_controller_iib.iib_signals[8].u8[0]   = q1_module.TempHeatSink;
-
+    g_controller_iib.iib_signals[9].f       = q1_module.Drive1Current;
+    g_controller_iib.iib_signals[10].f      = q1_module.Drive2Current;
+    g_controller_iib.iib_signals[11].u8[0]  = q1_module.TempL;
+    g_controller_iib.iib_signals[12].u8[0]  = q1_module.TempHeatSink;
 }
 
 float q1_module_vout_read(void)
