@@ -1321,6 +1321,7 @@ void Application(void)
             }
       }
 
+      InterlockClearCheck();
       CheckCan();
 
 }
