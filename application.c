@@ -58,7 +58,6 @@ typedef struct
     bool LeakageCurrentSts;
     bool Rack;
     bool RackSts;
-  
 } Q1Module_t;
 
 
@@ -245,129 +244,11 @@ void AppConfiguration(void)
     {
         case OUTPUT_Q1_MODULE:
 
-            //Set current range FAP 150 A
-            //CurrentCh1Init(130.0, 0.130, 50.0, 3); // Corrente braço1: Sensor Hall
-            //CurrentCh2Init(130.0, 0.130, 50.0, 3); // Corrente braço2: LEM LA 130-P
+            init_q1_module();
 
-
-            //Set current range FAP 300 A
-            CurrentCh1Init(150.0, 0.150, 50.0, 3); // Corrente braço1: Sensor Hall
-            CurrentCh2Init(150.0, 0.150, 50.0, 3); // Corrente braço2: LEM LA 130-
-
-            //Set protection limits FAP 150 A
-            //CurrentCh1AlarmLevelSet(80.0); // Corrente braço1
-            //CurrentCh1TripLevelSet(85.0);  // Corrente braço1
-            //CurrentCh2AlarmLevelSet(80.0); // Corrente braço2
-            //CurrentCh2TripLevelSet(85.0);  // Corrente braço2
-
-            //Set protection limits FAP 300 A
-            //     These interlocks are bypassed due to the fact that their ADC's
-            //     will most probably saturate during operation at 300 A. These
-            //     measures are also performed by UDC, which guarantees these
-            //     protections
-            CurrentCh1AlarmLevelSet(151.0); // Corrente braço1
-            CurrentCh1TripLevelSet(152.0);  // Corrente braço1
-            CurrentCh2AlarmLevelSet(151.5); // Corrente braço2
-            CurrentCh2TripLevelSet(152.0);  // Corrente braço2
-
-            // NTC contiguration type
-            //ConfigNtcType(SEMIX);
-
-            //Leitura de tensão isolada
-            LvCurrentCh1Init(450.0, 0.025, 120.0, 3); // Tensão de entrada
-            LvCurrentCh2Init(250.0, 0.025, 120.0, 3); // Tensão de saída
-
-            LvCurrentCh1AlarmLevelSet(40.0); // Tensão de entrada Alarme
-            LvCurrentCh1TripLevelSet(45.0);  // Tensão de entrada Interlock
-            LvCurrentCh2AlarmLevelSet(9.0); // Tensão de saída Alarme
-            LvCurrentCh2TripLevelSet(10.0);  // Tensão de saída Interlock
-
-            // PT100 configuration limits
-            Pt100SetCh1AlarmLevel(60); // Temperatura Dissipador
-            Pt100SetCh1TripLevel(80);  // Temperatura Dissipador
-            Pt100SetCh2AlarmLevel(50); // Temperatura L
-            Pt100SetCh2TripLevel(60);  // Temperatura L
-
-            // Delay 4 seconds
-            Pt100SetCh1Delay(4);
-            // Delay 4 seconds
-            Pt100SetCh2Delay(4);
-
-            // PT100 channel enable
-            Pt100Ch1Enable(); // Temperatura Dissipador
-            Pt100Ch2Enable(); // Temperatura L
-            Pt100Ch3Disable();
-            Pt100Ch4Disable();
-
-            // Rh configuration limits
-            RhAlarmLimitSet(80);
-            RhTripLimitSet(90);
-
-            // Temp board configuration limits
-            TempBoardAlarmLimitSet(80);
-            TempBoardTripLimitSet(90);
-
-            Driver1ErrEnable();
-            Driver2ErrEnable();
-
-            // Init Variables
-            Q1Module.Vin                   = 0.0;
-            Q1Module.VinAlarmSts           = 0;
-            Q1Module.VinItlkSts            = 0;
-            Q1Module.Vout                  = 0.0;
-            Q1Module.VoutAlarmSts          = 0;
-            Q1Module.VoutItlkSts           = 0;
-            Q1Module.IoutA1                = 0.0;
-            Q1Module.IoutA1AlarmSts        = 0;
-            Q1Module.IoutA1ItlkSts         = 0;
-            Q1Module.IoutA2                = 0.0;
-            Q1Module.IoutA2AlarmSts        = 0;
-            Q1Module.IoutA2ItlkSts         = 0;
-            Q1Module.TempIGBT1             = 0.0;
-            Q1Module.TempIGBT1AlarmSts     = 0;
-            Q1Module.TempIGBT1ItlkSts      = 0;
-            Q1Module.TempIGBT1HwrItlk      = 0;
-            Q1Module.TempIGBT1HwrItlkSts   = 0;
-            Q1Module.TempIGBT2             = 0.0;
-            Q1Module.TempIGBT2AlarmSts     = 0;
-            Q1Module.TempIGBT2ItlkSts      = 0;
-            Q1Module.TempIGBT2HwrItlk      = 0;
-            Q1Module.TempIGBT2HwrItlkSts   = 0;
-            Q1Module.DriveVoltage          = 0.0;
-            Q1Module.Drive1Current         = 0.0;
-            Q1Module.Drive2Current         = 0.0;
-            Q1Module.Driver1Error          = 0;
-            Q1Module.Driver1ErrorItlk      = 0;
-            Q1Module.Driver2Error          = 0;
-            Q1Module.Driver2ErrorItlk      = 0;
-            Q1Module.TempL                 = 0;
-            Q1Module.TempLAlarmSts         = 0;
-            Q1Module.TempLItlkSts          = 0;
-            Q1Module.TempHeatSink          = 0;
-            Q1Module.TempHeatSinkAlarmSts  = 0;
-            Q1Module.TempHeatSinkItlkSts   = 0;
-            Q1Module.Relay                 = 0;
-            Q1Module.ExternalItlk          = 0;
-            Q1Module.ExternalItlkSts       = 0;
-            Q1Module.LeakageCurrent        = 0;
-            Q1Module.LeakageCurrentSts     = 0;
-            Q1Module.Rack                  = 0;
-            Q1Module.RackSts               = 0;
             break;
 
         case OUTPUT_Q4_MODULE:
-            /*
-            *PT100
-            - PT100CH1: Temperatura do dissipador, interlocar em 50ºC;
-            - PT100CH2: Temperatura do indutor, interlocar em 60ºC;
-
-            *Leitura de Tensão via LV20-P
-            - LCH1: Tensão do DC-link, relação 330V/25mA, interlocar em 300V;
-
-            *Leitura de corrente por sensor hall
-            - ICH1: Corrente de entrada, relação 300A/150mA, interlocar em 250A;
-            - ICH2: Corrente de saída, relação 500A/100mA, interlocar em 510A;
-            */
 
             init_q4_module();
 
@@ -671,21 +552,7 @@ void InterlockClearCheck(void)
           {
               case OUTPUT_Q1_MODULE:
 
-                  Q1Module.VinItlkSts             = 0;
-                  Q1Module.VoutItlkSts            = 0;
-                  Q1Module.IoutA1ItlkSts          = 0;
-                  Q1Module.IoutA2ItlkSts          = 0;
-                  Q1Module.TempIGBT1ItlkSts       = 0;
-                  Q1Module.TempIGBT1HwrItlkSts    = 0;
-                  Q1Module.TempIGBT2ItlkSts       = 0;
-                  Q1Module.TempIGBT2HwrItlkSts    = 0;
-                  Q1Module.Driver1ErrorItlk       = 0;
-                  Q1Module.Driver2ErrorItlk       = 0;
-                  Q1Module.TempLItlkSts           = 0;
-                  Q1Module.TempHeatSinkItlkSts    = 0;
-                  Q1Module.ExternalItlkSts        = 0;
-                  Q1Module.LeakageCurrentSts      = 0;
-                  Q1Module.RackSts                = 0;
+                  clear_q1_interlocks();
 
                   break;
 
@@ -845,25 +712,14 @@ void InterlockAppCheck(void)
    {
        case OUTPUT_Q1_MODULE:
 
-           Test |= Q1Module.VinItlkSts;
-           Test |= Q1Module.VoutItlkSts;
-           Test |= Q1Module.IoutA1ItlkSts;
-           Test |= Q1Module.IoutA2ItlkSts;
-           Test |= Q1Module.TempIGBT1ItlkSts;
-           Test |= Q1Module.TempIGBT1HwrItlkSts;
-           Test |= Q1Module.TempIGBT2ItlkSts;
-           Test |= Q1Module.TempIGBT2HwrItlkSts;
-           Test |= Q1Module.Driver1ErrorItlk;
-           Test |= Q1Module.Driver2ErrorItlk;
-           Test |= Q1Module.TempLItlkSts;
-           Test |= Q1Module.TempHeatSinkItlkSts;
-           Test |= Q1Module.ExternalItlkSts;
-           Test |= Q1Module.LeakageCurrentSts;
-           Test |= Q1Module.RackSts;
+           Test = check_q1_interlocks();
+
            break;
        
        case OUTPUT_Q4_MODULE:
-           Test |= check_q4_interlocks();
+
+           Test = check_q4_interlocks();
+
            break;
        
        case RECTIFIER_MODULE:
@@ -920,21 +776,18 @@ void AlarmAppCheck(void)
 {
    unsigned char Test = 0;
    
-      switch(PowerModuleModel)
+   switch(PowerModuleModel)
    {
        case OUTPUT_Q1_MODULE:
-            Test |= Q1Module.VinAlarmSts;
-            Test |= Q1Module.VoutAlarmSts;
-            Test |= Q1Module.IoutA1AlarmSts;
-            Test |= Q1Module.IoutA2AlarmSts;
-            Test |= Q1Module.TempIGBT1AlarmSts;
-            Test |= Q1Module.TempIGBT2AlarmSts;
-            Test |= Q1Module.TempLAlarmSts;
-            Test |= Q1Module.TempHeatSinkAlarmSts;
+
+            Test = check_q1_alarms();
+
            break;
 
        case OUTPUT_Q4_MODULE:
+
            Test |= check_q4_alarms();
+
            break;
 
        case RECTIFIER_MODULE:
@@ -975,52 +828,21 @@ void AlarmAppCheck(void)
 
 void LedIndicationStatus(void)
 {
-      switch(PowerModuleModel)
-      {
-       case OUTPUT_Q1_MODULE:
+    switch(PowerModuleModel)
+    {
+        case OUTPUT_Q1_MODULE:
 
-            // Output over voltage
-            if(Q1Module.VoutItlkSts) Led2TurnOn();
-            else if(Q1Module.VoutAlarmSts) Led2Toggle();
-            else Led2TurnOff();
+           check_q1_indication_leds();
 
-            // Input over voltage
-            if(Q1Module.VinItlkSts) Led3TurnOn();
-            else if(Q1Module.VinAlarmSts) Led3Toggle();
-            else Led3TurnOff();
-
-            // Output over current
-            if (Q1Module.IoutA1ItlkSts || Q1Module.IoutA2ItlkSts) Led4TurnOn();
-            else if(Q1Module.IoutA1AlarmSts || Q1Module.IoutA2AlarmSts) Led4Toggle();
-            else Led4TurnOff();
-
-            // Over temperature
-            if(Q1Module.TempIGBT1ItlkSts || Q1Module.TempIGBT2ItlkSts ||  Q1Module.TempLItlkSts || Q1Module.TempHeatSinkItlkSts || Q1Module.TempIGBT1HwrItlkSts || Q1Module.TempIGBT2HwrItlkSts) Led5TurnOn();
-            else if(Q1Module.TempIGBT1AlarmSts || Q1Module.TempIGBT2AlarmSts ||  Q1Module.TempLAlarmSts || Q1Module.TempHeatSinkAlarmSts) Led5Toggle();
-            else Led5TurnOff();
-
-            if(Q1Module.ExternalItlkSts) Led6TurnOn();
-            else Led6TurnOff();
-
-            if(Q1Module.LeakageCurrentSts) Led7TurnOn();
-            else Led7TurnOff();
-
-            if(Q1Module.RackSts) Led8TurnOn();
-            else Led8TurnOff();
-
-            if(Q1Module.Driver1ErrorItlk || Q1Module.Driver2ErrorItlk) Led9TurnOn();
-            else if(!InterlockRead()) Led9TurnOff();
-
-            if(InterlockRead()) Led10TurnOn();
-            else Led10TurnOff();
-
-            break;
-
-       case OUTPUT_Q4_MODULE:
-           check_q4_indications_leds();
            break;
 
-       case RECTIFIER_MODULE:
+        case OUTPUT_Q4_MODULE:
+
+           check_q4_indications_leds();
+
+           break;
+
+        case RECTIFIER_MODULE:
 
             // Rectifier Output Over Voltage
             if(Rectifier.VoutRectf1ItlkSts || Rectifier.VoutRectf2ItlkSts) Led2TurnOn();
@@ -1043,7 +865,7 @@ void LedIndicationStatus(void)
             
             break;
 
-       case INPUT_MODULE:
+        case INPUT_MODULE:
 
             // Input Over Current
             if(InputModule.IinItlkSts) Led2TurnOn();
@@ -1071,30 +893,30 @@ void LedIndicationStatus(void)
 
             break;
 
-       case COMMAND_DRAWER_MODULE:
-           if (CommandDrawer.VcapBankItlkSts) Led2TurnOn();
-           else if (CommandDrawer.VcapBankAlarmSts) Led2Toggle();
-           else Led2TurnOff();
+        case COMMAND_DRAWER_MODULE:
+            if (CommandDrawer.VcapBankItlkSts) Led2TurnOn();
+            else if (CommandDrawer.VcapBankAlarmSts) Led2Toggle();
+            else Led2TurnOff();
 
-           if (CommandDrawer.VoutItlkSts) Led3TurnOn();
-           else if (CommandDrawer.VoutAlarmSts) Led3Toggle();
-           else Led3TurnOff();
+            if (CommandDrawer.VoutItlkSts) Led3TurnOn();
+            else if (CommandDrawer.VoutAlarmSts) Led3Toggle();
+            else Led3TurnOff();
 
-           if (CommandDrawer.TempHeatSinkItlkSts) Led4TurnOn();
-           else if (CommandDrawer.TempHeatSinkAlarmSts) Led4Toggle();
-           else Led4TurnOff();
+            if (CommandDrawer.TempHeatSinkItlkSts) Led4TurnOn();
+            else if (CommandDrawer.TempHeatSinkAlarmSts) Led4Toggle();
+            else Led4TurnOff();
 
-           if (CommandDrawer.TempLItlkSts) Led5TurnOn();
-           else if (CommandDrawer.TempLAlarmSts) Led5TurnOff();
-           else Led5TurnOff();
+            if (CommandDrawer.TempLItlkSts) Led5TurnOn();
+            else if (CommandDrawer.TempLAlarmSts) Led5TurnOff();
+            else Led5TurnOff();
 
-           if (CommandDrawer.ExtItlkSts) Led6TurnOn();
-           else Led6TurnOff();
+            if (CommandDrawer.ExtItlkSts) Led6TurnOn();
+            else Led6TurnOff();
 
-           if (CommandDrawer.ExtItlk2Sts) Led7TurnOn();
-           else Led7TurnOff();
+            if (CommandDrawer.ExtItlk2Sts) Led7TurnOn();
+            else Led7TurnOff();
 
-           break;
+            break;
       }
       
 }
@@ -1102,71 +924,21 @@ void LedIndicationStatus(void)
 void Application(void)
 {
 
-      switch(PowerModuleModel)
-      {
-       case OUTPUT_Q1_MODULE:
+    switch(PowerModuleModel)
+    {
+        case OUTPUT_Q1_MODULE:
 
-           Q1Module.TempHeatSink = Pt100ReadCh1();//PT100 CH1
-           Q1Module.TempHeatSinkAlarmSts = Pt100ReadCh1AlarmSts();
-           if(!Q1Module.TempHeatSinkItlkSts)Q1Module.TempHeatSinkItlkSts        = Pt100ReadCh1TripSts();
+            q1_application_readings();
 
-           Q1Module.TempL = Pt100ReadCh2();//PT100 CH2
-           Q1Module.TempLAlarmSts = Pt100ReadCh2AlarmSts();
-           if(!Q1Module.TempLItlkSts)Q1Module.TempLItlkSts                      = Pt100ReadCh2TripSts();
-
-           Q1Module.TempIGBT1 = 0.0;
-           Q1Module.TempIGBT1AlarmSts = 0;
-           Q1Module.TempIGBT1ItlkSts = 0;
-
-           if(!Q1Module.TempIGBT1HwrItlkSts) Q1Module.TempIGBT1HwrItlkSts       = Driver1OverTempRead();
-
-           Q1Module.TempIGBT2 = 0.0;
-           Q1Module.TempIGBT2AlarmSts = 0;
-           Q1Module.TempIGBT2ItlkSts = 0;
-
-           if(!Q1Module.TempIGBT2HwrItlkSts) Q1Module.TempIGBT2HwrItlkSts       = Driver2OverTempRead();
-
-           Q1Module.IoutA1 = CurrentCh1Read();//HALL CH1
-           Q1Module.IoutA1AlarmSts = CurrentCh1AlarmStatusRead();
-           if(!Q1Module.IoutA1ItlkSts)Q1Module.IoutA1ItlkSts                    = CurrentCh1TripStatusRead();
-
-           Q1Module.IoutA2 = CurrentCh2Read();//HALL CH2
-           Q1Module.IoutA2AlarmSts = CurrentCh2AlarmStatusRead();
-           if(!Q1Module.IoutA2ItlkSts)Q1Module.IoutA2ItlkSts                    = CurrentCh2TripStatusRead();
-
-           Q1Module.Vin = LvCurrentCh1Read();
-           Q1Module.VinAlarmSts = LvCurrentCh1AlarmStatusRead();
-           if(!Q1Module.VinItlkSts)Q1Module.VinItlkSts                          = LvCurrentCh1TripStatusRead();
-
-           Q1Module.Vout = LvCurrentCh2Read();
-           Q1Module.VoutAlarmSts = LvCurrentCh2AlarmStatusRead();
-           if(!Q1Module.VoutItlkSts)Q1Module.VoutItlkSts                        = LvCurrentCh2TripStatusRead();
-
-           Q1Module.ExternalItlk = Gpdi1Read();
-           if(!Q1Module.ExternalItlkSts) Q1Module.ExternalItlkSts               = Gpdi1Read();
-
-           Q1Module.LeakageCurrent = Gpdi2Read();
-           if(!Q1Module.LeakageCurrentSts) Q1Module.LeakageCurrentSts           = Gpdi2Read();
-
-           Q1Module.Rack = Gpdi3Read();
-           if(!Q1Module.RackSts) Q1Module.RackSts                               = Gpdi3Read();
-
-           Q1Module.Relay = !Gpdi4Read();
-
-           Q1Module.Driver1Error = Driver1TopErrRead();
-           if(!Q1Module.Driver1ErrorItlk) Q1Module.Driver1ErrorItlk             = Driver1TopErrRead();
-
-           Q1Module.Driver2Error = Driver2TopErrRead();
-           if(!Q1Module.Driver2ErrorItlk) Q1Module.Driver2ErrorItlk             = Driver2TopErrRead();
-            
-           if(Q1Module.ExternalItlkSts || Q1Module.Driver2ErrorItlk || Q1Module.Driver2ErrorItlk) InterlockSet(); // If no signal over the port, then set Interlock action
-           break;
+            break;
        
-       case OUTPUT_Q4_MODULE:
-           q4_application_readings();
-           break;
+        case OUTPUT_Q4_MODULE:
+
+            q4_application_readings();
+
+            break;
             
-       case RECTIFIER_MODULE:
+        case RECTIFIER_MODULE:
             Rectifier.IoutRectf1 = CurrentCh1Read();
             Rectifier.IoutRectf1AlarmSts = CurrentCh1AlarmStatusRead();
             if(!Rectifier.IoutRectf1ItlkSts) Rectifier.IoutRectf1ItlkSts        = CurrentCh1TripStatusRead();
@@ -1334,218 +1106,7 @@ unsigned char AppType(void)
 }
 
 
-// 1Q Module
-//******************************************************************************
-float Q1ModuleVoutRead(void)
-{
-    return Q1Module.Vout;
-}
 
-unsigned char Q1ModuleVoutAlarmStsRead(void)
-{
-    return Q1Module.VoutAlarmSts;
-}
-
-unsigned char Q1ModuleVoutItlkStsRead(void)
-{
-    return Q1Module.VoutItlkSts;
-}
-
-//**********************************************
-float Q1ModuleVinRead(void)
-{
-    return Q1Module.Vin;
-}
-
-unsigned char Q1ModuleVinAlarmStsRead(void)
-{
-    return Q1Module.VinAlarmSts;
-}
-
-unsigned char Q1ModuleVinItlkStsRead(void)
-{
-    return Q1Module.VinItlkSts;
-}
-
-//**********************************************
-float Q1ModuleIoutA1Read(void)
-{
-    return Q1Module.IoutA1;
-}
-
-unsigned char Q1ModuleIoutA1AlarmStsRead(void)
-{
-    return Q1Module.IoutA1AlarmSts;
-}
-
-unsigned char Q1ModuleIoutA1ItlkStsRead(void)
-{
-    return Q1Module.IoutA1ItlkSts;
-}
-
-//**********************************************
-float Q1ModuleIoutA2Read(void)
-{
-    return Q1Module.IoutA2;
-}
-
-unsigned char Q1ModuleIoutA2AlarmStsRead(void)
-{
-    return Q1Module.IoutA2AlarmSts;
-}
-
-unsigned char Q1ModuleIoutA2ItlkStsRead(void)
-{
-    return Q1Module.IoutA2ItlkSts;
-}
-
-//**********************************************
-unsigned char Q1ModuleTempIGBT1Read(void)
-{
-    return Q1Module.TempIGBT1;
-}
-
-unsigned char Q1ModuleTempIGBT1AlarmStsRead(void)
-{
-    return Q1Module.TempIGBT1AlarmSts;
-}
-
-unsigned char Q1ModuleTempIGBT1ItlkStsRead(void)
-{
-    return Q1Module.TempIGBT1ItlkSts;
-}
-
-unsigned char Q1ModuleTempIGBT1HwrItlkRead(void)
-{
-    return Q1Module.TempIGBT1HwrItlk;
-}
-
-unsigned char Q1ModuleTempIGBT1HwrItlkStsRead(void)
-{
-    return Q1Module.TempIGBT1HwrItlkSts;
-}
-      
-//**********************************************
-unsigned char Q1ModuleTempIGBT2Read(void)
-{
-    return Q1Module.TempIGBT2;
-}
-
-unsigned char Q1ModuleTempIGBT2AlarmStsRead(void)
-{
-    return Q1Module.TempIGBT2AlarmSts;
-}
-
-unsigned char Q1ModuleTempIGBT2ItlkStsRead(void)
-{
-    return Q1Module.TempIGBT2ItlkSts;
-}
-
-unsigned char Q1ModuleTempIGBT2HwrItlkRead(void)
-{
-    return Q1Module.TempIGBT2HwrItlk;
-}
-
-unsigned char Q1ModuleTempIGBT2HwrItlkStsRead(void)
-{
-    return Q1Module.TempIGBT2HwrItlkSts;
-}
-
-//**********************************************
-unsigned char Q1ModuleTempHeatSinkRead(void)
-{
-    return Q1Module.TempHeatSink;
-}
-
-unsigned char Q1ModuleTempHeatSinkAlarmStsRead(void)
-{
-    return Q1Module.TempHeatSinkAlarmSts;
-}
-
-unsigned char Q1ModuleTempHeatSinkItlkStsRead(void)
-{
-    return Q1Module.TempHeatSinkItlkSts;
-}
-
-//**********************************************
-unsigned char Q1ModuleTempLRead(void)
-{
-    return Q1Module.TempL;
-}
-
-unsigned char Q1ModuleTempLAlarmStsRead(void)
-{
-    return Q1Module.TempLAlarmSts;
-}
-
-unsigned char Q1ModuleTempLItlkStsRead(void)
-{
-    return Q1Module.TempLItlkSts;
-}
-
-//**********************************************
-unsigned char Q1ModuleRelayRead(void)
-{
-    return Q1Module.Relay;
-}
-
-//**********************************************
-unsigned char Q1ModuleDriver1ErrorRead(void)
-{
-    return Q1Module.Driver1Error;
-}
-
-unsigned char Q1ModuleDriver1ErrorItlkRead(void)
-{
-    return Q1Module.Driver1ErrorItlk;
-}
-
-//**********************************************
-unsigned char Q1ModuleDriver2ErrorRead(void)
-{
-    return Q1Module.Driver2Error;
-}
-
-unsigned char Q1ModuleDriver2ErrorItlkRead(void)
-{
-    return Q1Module.Driver2ErrorItlk;
-}
-
-//**********************************************
-unsigned char Q1ModuleExternalItlkRead(void)
-{
-    return Q1Module.ExternalItlk;
-}
-
-unsigned char Q1ModuleExternalItlkStsRead(void)
-{
-    return Q1Module.ExternalItlkSts;
-}
-
-//**********************************************
-unsigned char Q1ModuleLeakageCurrentRead(void)
-{
-    return Q1Module.LeakageCurrent;
-
-}
-
-unsigned char Q1ModuleLeakageCurrentStsRead(void)
-{
-    return Q1Module.LeakageCurrentSts;
-
-}
-
-//**********************************************
-unsigned char Q1ModuleRackRead(void)
-{
-    return Q1Module.Rack;
-
-}
-
-unsigned char Q1ModuleRackStsRead(void)
-{
-    return Q1Module.RackSts;
-}
 
 // Rectifier
 //******************************************************************************

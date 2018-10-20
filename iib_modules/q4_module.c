@@ -19,9 +19,6 @@
  *
  */
 
-/**
- * TODO: Put here your includes
- */
 #include "q4_module.h"
 #include "iib_data.h"
 
@@ -199,7 +196,7 @@ void clear_q4_interlocks()
     q4_module.Driver2ErrorItlk        = 0;
 }
 
-uint8_t check_q4_interlocks(void)
+uint8_t check_q4_interlocks()
 {
     uint8_t test = 0;
 
@@ -218,6 +215,16 @@ uint8_t check_q4_interlocks(void)
     return test;
 }
 
+void clear_q4_alarms(void)
+{
+    q4_module.IinAlarmSts           = 0;
+    q4_module.IoutAlarmSts          = 0;
+    q4_module.VdcLinkAlarmSts       = 0;
+    q4_module.TempIGBT1AlarmSts     = 0;
+    q4_module.TempIGBT2AlarmSts     = 0;
+    q4_module.TempLAlarmSts         = 0;
+    q4_module.TempHeatSinkAlarmSts  = 0;
+}
 
 uint8_t check_q4_alarms(void)
 {
@@ -349,6 +356,3 @@ unsigned char q4_module_temp_igbt2_itlk_sts_read(void)
     return q4_module.TempIGBT2ItlkSts;
 }
 
-/**
- * TODO: Put here the implementation for your private functions.
- */
