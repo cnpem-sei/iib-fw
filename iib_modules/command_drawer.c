@@ -83,6 +83,9 @@ command_module_t command_module;
 uint32_t command_module_interlocks_indication   = 0;
 uint32_t command_module_alarms_indication       = 0;
 
+static void get_itlks_id();
+static void get_alarms_id();
+
 /**
  * TODO: Put here the implementation for your public functions.
  */
@@ -236,6 +239,9 @@ void command_module_application_readings()
     if(!command_module.ExtItlk2Sts) command_module.ExtItlk2Sts             = Gpdi5Read();
 
     command_module_map_vars();
+
+    get_alarms_id();
+    get_itlks_id();
 }
 
 void command_module_map_vars()
@@ -246,6 +252,24 @@ void command_module_map_vars()
     g_controller_iib.iib_signals[3].f       = command_module.Vout;
     g_controller_iib.iib_signals[4].u8[0]   = command_module.TempL;
     g_controller_iib.iib_signals[5].u8[0]   = command_module.TempHeatSink;
+}
+
+static void get_itlks_id()
+{
+    if (command_module.VcapBankItlkSts)         g_itlk_id |= CAPBANK_OVERVOLTAGE_ITLK;
+    if (command_module.VoutItlkSts)             g_itlk_id |= OUTPUT_OVERVOLTAGE_ITLK;
+    if (command_module.TempHeatSinkItlkSts)     g_itlk_id |= HS_OVERTEMP_ITLK;
+    if (command_module.TempLItlkSts)            g_itlk_id |= INDUC_OVERTEMP_ITLK;
+    if (command_module.ExtItlkSts)              g_itlk_id |= EXTERNAL1_ITLK;
+    if (command_module.ExtItlk2Sts)             g_itlk_id |= EXTERNAL2_ITLK;
+}
+
+static void get_alarms_id()
+{
+    if (command_module.VcapBankAlarmSts)     g_alarm_id |= CAPBANK_OVERVOLTAGE_ALM;
+    if (command_module.VoutItlkSts)          g_alarm_id |= OUTPUT_OVERVOLTAGE_ALM;
+    if (command_module.TempHeatSinkAlarmSts) g_alarm_id |= HS_OVERTEMP_ALM;
+    if (command_module.TempLAlarmSts)        g_alarm_id |= INDUC_OVERTEMP_ALM;
 }
 
 unsigned char command_drawer_temp_heatsink_read(void)

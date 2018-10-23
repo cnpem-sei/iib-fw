@@ -114,6 +114,9 @@ rectifier_module_t rectf_module;
 uint32_t rectf_module_interlocks_indication = 0;
 uint32_t rectf_module_alarms_indication     = 0;
 
+static void get_itlks_id();
+static void get_alarms_id();
+
 void init_rectifier_module()
 {
     //Set current range
@@ -407,6 +410,8 @@ void rectifier_application_readings()
     if(rectf_module.AcPhaseFault || rectf_module.AcOverCurrent || rectf_module.AcTransformerOverTemp || rectf_module.WaterFluxInterlock) InterlockSet();
 
     rectifier_map_vars();
+    get_itlks_id();
+    get_alarms_id();
 }
 
 void rectifier_map_vars()
@@ -424,6 +429,41 @@ void rectifier_map_vars()
     g_controller_iib.iib_signals[10].u8[0]  = rectf_module.TempModule2;
     g_controller_iib.iib_signals[11].u8[0]  = rectf_module.TempL1;
     g_controller_iib.iib_signals[12].u8[0]  = rectf_module.TempL2;
+}
+
+
+static void get_itlks_id()
+{
+    if (rectf_module.IoutRectf1ItlkSts)        g_itlk_id |= OUTPUT_OVERCURRENT_RECT1_ITLK;
+    if (rectf_module.IoutRectf2ItlkSts)        g_itlk_id |= OUTPUT_OVERCURRENT_RECT2_ITLK;
+    if (rectf_module.VoutRectf1ItlkSts)        g_itlk_id |= OUTPUT_OVERVOLTAGE_RECT1_ITLK;
+    if (rectf_module.VoutRectf2ItlkSts)        g_itlk_id |= OUTPUT_OVERVOLTAGE_RECT2_ITLK;
+    if (rectf_module.LeakageCurrentItlkSts)    g_itlk_id |= LEAKAGE_OVERCURRENT_ITLK;
+    if (rectf_module.TempHeatSinkItlkSts)      g_itlk_id |= HS_OVERTEMP_ITLK;
+    if (rectf_module.TempWaterItlkSts)         g_itlk_id |= WATER_OVERTEMP_ITLK;
+    if (rectf_module.TempModule1ItlkSts)       g_itlk_id |= MODULE1_OVERTEMP_ITLK;
+    if (rectf_module.TempModule2ItlkSts)       g_itlk_id |= MODULE2_OVERTEMP_ITLK;
+    if (rectf_module.TempL1ItlkSts)            g_itlk_id |= INDUCTOR1_OVERTEMP_ITLK;
+    if (rectf_module.TempL2ItlkSts)            g_itlk_id |= INDUCTOR2_OVERTEMP_ITLK;
+    if (rectf_module.AcPhaseFaultSts)          g_itlk_id |= PHASE_FAULT_ITLK;
+    if (rectf_module.AcOverCurrentSts)         g_itlk_id |= AC_OVERCURRENT_ITLK;
+    if (rectf_module.AcTransformerOverTempSts) g_itlk_id |= AC_TRANSF_OVERTEMP_ITLK;
+    if (rectf_module.WaterFluxInterlockSts)    g_itlk_id |= WATER_FLOW_ITLK;
+}
+
+static void get_alarms_id()
+{
+    if (rectf_module.IoutRectf1AlarmSts)        g_alarm_id |= OUTPUT_OVERCURRENT_RECT1_ALM;
+    if (rectf_module.IoutRectf2AlarmSts)        g_alarm_id |= OUTPUT_OVERCURRENT_RECT2_ALM;
+    if (rectf_module.VoutRectf1AlarmSts)        g_alarm_id |= OUTPUT_OVERVOLTAGE_RECT1_ALM;
+    if (rectf_module.VoutRectf2AlarmSts)        g_alarm_id |= OUTPUT_OVERVOLTAGE_RECT2_ALM;
+    if (rectf_module.LeakageCurrentAlarmSts)    g_alarm_id |= LEAKAGE_OVERCURRENT_ALM;
+    if (rectf_module.TempHeatSinkAlarmSts)      g_alarm_id |= HS_OVERTEMP_ALM;
+    if (rectf_module.TempWaterAlarmSts)         g_alarm_id |= WATER_OVERTEMP_ALM;
+    if (rectf_module.TempModule1AlarmSts)       g_alarm_id |= MODULE1_OVERTEMP_ALM;
+    if (rectf_module.TempModule2AlarmSts)       g_alarm_id |= MODULE2_OVERTEMP_ALM;
+    if (rectf_module.TempL1AlarmSts)            g_alarm_id |= INDUCTOR1_OVERTEMP_ALM;
+    if (rectf_module.TempL2AlarmSts)            g_alarm_id |= INDUCTOR2_OVERTEMP_ALM;
 }
 
 float rectifier_iout_rectf1_read(void)

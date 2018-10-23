@@ -9,6 +9,7 @@
 #include "leds.h"
 #include "can_bus.h"
 #include "input.h"
+#include "can_bus.h"
 
 #include "stdbool.h"
 #include "stdint.h"
@@ -234,8 +235,8 @@ void AppConfiguration(void)
     // This parameter guide the firmware behavior
     // Each Model has a different variable list that need to be check
 
-    //PowerModuleModel = OUTPUT_Q1_MODULE;
-    PowerModuleModel = OUTPUT_Q4_MODULE;
+    PowerModuleModel = OUTPUT_Q1_MODULE;
+    //PowerModuleModel = OUTPUT_Q4_MODULE;
     //PowerModuleModel = RECTIFIER_MODULE;
     //PowerModuleModel = INPUT_MODULE;
     //PowerModuleModel = COMMAND_DRAWER_MODULE;
@@ -345,6 +346,8 @@ void InterlockClearCheck(void)
                   break;
           }
           
+          g_itlk_id = 0;
+          g_alarm_id = 0;
       }
 }
 
@@ -468,7 +471,11 @@ void InterlockAppCheck(void)
    test |= Driver1CurrentTripStatusRead();
    test |= Driver2CurrentTripStatusRead();
 
-   if(test) InterlockSet();
+   if(test) {
+
+       InterlockSet();
+       send_interlock_message();
+   }
 
 }
 
@@ -512,7 +519,10 @@ void AlarmAppCheck(void)
    test |= RhAlarmStatusRead();
 
 
-   if(test) AlarmSet();
+   if(test) {
+       AlarmSet();
+       send_alarm_message();
+   }
 }
 
 
@@ -636,7 +646,8 @@ void Application(void)
       }
 
       InterlockClearCheck();
-      CheckCan();
+      //CheckCan();
+      //send_heart_beat_message();
 
 }
 

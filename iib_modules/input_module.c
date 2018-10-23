@@ -84,6 +84,10 @@ input_module_t input_module;
 uint32_t im_interlocks_indication = 0;
 uint32_t im_alarms_indication = 0;
 
+
+static void get_itlks_id();
+static void get_alarms_id();
+
 /**
  * TODO: Put here your function prototypes for private functions. Use
  * static in declaration.
@@ -252,6 +256,8 @@ void input_module_application_readings()
     if(!input_module.TempLItlkSts) input_module.TempLItlkSts                = Pt100ReadCh2TripSts();
 
     input_module_map_vars();
+    get_itlks_id();
+    get_alarms_id();
 }
 
 void input_module_map_vars()
@@ -262,6 +268,24 @@ void input_module_map_vars()
     g_controller_iib.iib_signals[3].f       = input_module.VdcLink;
     g_controller_iib.iib_signals[4].u8[0]   = input_module.TempL;
     g_controller_iib.iib_signals[5].u8[0]   = input_module.TempHeatsink;
+}
+
+static void get_itlks_id()
+{
+    if (input_module.IinItlkSts)           g_itlk_id |= INPUT_OVERCURRENT_ITLK;
+    if (input_module.VdcLinkItlkSts)       g_itlk_id |= DCLINK_OVERVOLTAGE_ITLK;
+    if (input_module.TempHeatsinkItlkSts)  g_itlk_id |= HS_OVERTEMP_ITLK;
+    if (input_module.TempLItlkSts)         g_itlk_id |= INDUC_OVERTEMP_ITLK;
+    if (input_module.Driver1ErrorItlk)     g_itlk_id |= DRIVER1_ERROR_ITLK;
+    if (input_module.Driver2ErrorItlk)     g_itlk_id |= DRIVER2_ERROR_ITLK;
+}
+
+static void get_alarms_id()
+{
+    if (input_module.IinAlarmSts)          g_alarm_id |= INPUT_OVERCURRENT_ALM;
+    if (input_module.VdcLinkAlarmSts)      g_alarm_id |= DCLINK_OVERVOLTAGE_ALM;
+    if (input_module.TempHeatsinkAlarmSts) g_alarm_id |= HS_OVERTEMP_ALM;
+    if (input_module.TempLAlarmSts)        g_alarm_id |= INDUC_OVERTEMP_ALM;
 }
 
 float input_module_iin_read(void)

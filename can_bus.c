@@ -45,29 +45,16 @@ tCANMsgObject transmit_message;
 tCANMsgObject event_message;
 tCANMsgObject receive_message;
 
-uint8_t event_message_data[EVENT_MESSAGE_LEN];
+uint8_t itlk_message_data[INTERLOCK_MESSAGE_LEN];
+uint8_t alarm_message_data[INTERLOCK_MESSAGE_LEN];
 uint8_t request_data_rx[DATA_REQUEST_MESSAGE_LEN];
 uint8_t request_data_tx[DATA_SEND_MESSAGE_LEN];
-uint8_t reset_msg_data[RESET_MESSAGE_LEN];
+uint8_t reset_msg_data[RESET_ITLK_MESSAGE_LEN];
+uint8_t heart_beat_data[HEART_BEAT_MESSAGE_LEN];
 
-
-//Rx
-tCANMsgObject sCANMessage;
-uint8_t pui8MsgData[8];
-
-//Tx
-tCANMsgObject sCANMessageTx;
-uint8_t pui8MsgDataTx[8];
-
-//-------------------------------------------------------------------------
-// variables
-//-------------------------------------------------------------------------
-
-uint16_t SecCount = 0;
-
-uint8_t CanId = 1;
-
-uint8_t CanScheduleVar = 0;
+volatile uint32_t g_itlk_id     = 0;
+volatile uint32_t g_alarm_id    = 0;
+volatile uint8_t can_address    = 0;
 
 // Partir o float em bytes
 static union
@@ -82,7 +69,11 @@ static union
     char        c[2];
 }u16Nchars;
 
-
+static union
+{
+    uint32_t    u32;
+    char        c[4];
+}u32Nchars;
 //*****************************************************************************
 //
 // This function is the interrupt handler for the CAN peripheral.  It checks
@@ -126,21 +117,16 @@ void can_isr(void)
     // Check if the cause is message object 1, which what we are using for
     // sending messages.
     //
-    else if(ui32Status == EVENT_MESSAGE_OBJ_ID)
+    else if(ui32Status == INTERLOCK_MESSAGE_OBJ_ID)
     {
         //
         // Getting to this point means that the TX interrupt occurred on
         // message object 1, and the message TX is complete.  Clear the
         // message object interrupt.
         //
-        CANIntClear(CAN0_BASE, EVENT_MESSAGE_OBJ_ID);
+        CANIntClear(CAN0_BASE, INTERLOCK_MESSAGE_OBJ_ID);
 
-        //
-        // Increment a counter to keep track of how many messages have been
-        // sent.  In a real application this could be used to set flags to
-        // indicate when a message is sent.
-
-
+        /* Tx object. Nothing to do for now. */
 
         //
         // Since the message was sent, clear any error flags.
@@ -148,42 +134,48 @@ void can_isr(void)
         g_bErrFlag = 0;
     }
 
-    else if(ui32Status == PARAMS_MESSAGE_OBJ_ID)
+    else if(ui32Status == ALARM_MESSAGE_OBJ_ID)
     {
-        CANIntClear(CAN0_BASE, PARAMS_MESSAGE_OBJ_ID);
+        CANIntClear(CAN0_BASE, ALARM_MESSAGE_OBJ_ID);
 
-        //TODO: Handle ISR
+        /* Tx object. Nothing to do for now. */
 
-        g_bRXFlag = 1;
         g_bErrFlag = 0;
     }
 
-    else if(ui32Status == RESET_MESSAGE_OBJ_ID)
+    else if(ui32Status == RESET_ITLK_MESSAGE_OBJ_ID)
     {
-        CANIntClear(CAN0_BASE, RESET_MESSAGE_OBJ_ID);
+        CANIntClear(CAN0_BASE, RESET_ITLK_MESSAGE_OBJ_ID);
 
         handle_reset_message();
 
-        g_bRXFlag = 1;
         g_bErrFlag = 0;
     }
 
-    else if(ui32Status == DATA_REQUEST_OBJ_ID)
+    else if(ui32Status == DATA_REQUEST_MESSAGE_OBJ_ID)
     {
-        CANIntClear(CAN0_BASE, DATA_REQUEST_OBJ_ID);
+        CANIntClear(CAN0_BASE, DATA_REQUEST_MESSAGE_OBJ_ID);
 
         handle_request_data_message();
 
-        g_bRXFlag = 1;
         g_bErrFlag = 0;
 
     }
 
-    else if(ui32Status == DATA_SEND_OBJ_ID)
+    else if(ui32Status == RECV_PARAM_MESSAGE_OBJ_ID)
     {
-        CANIntClear(CAN0_BASE, DATA_SEND_OBJ_ID);
+        CANIntClear(CAN0_BASE, RECV_PARAM_MESSAGE_OBJ_ID);
 
-        //TODO: Handle ISR
+        /* TODO: Update params. */
+
+        g_bErrFlag = 0;
+    }
+
+    else if (ui32Status == HEART_BEAT_MESSAGE_OB_ID)
+    {
+        CANIntClear(CAN0_BASE, HEART_BEAT_MESSAGE_OB_ID);
+
+        /* Tx object. Nothing to do for now. */
 
         g_bErrFlag = 0;
     }
@@ -198,417 +190,6 @@ void can_isr(void)
         //
         // Spurious interrupt handling can go here.
         //
-    }
-}
-
-void SendCanSchedule(void)
-{
-
-    if(SecCount >= 10)
-    {
-        SecCount = 0;
-    }
-
-
-    switch(CanScheduleVar)
-    {
-    case 0:
-        switch(AppType())
-        {
-            case OUTPUT_Q1_MODULE:
-
-                SendCan(Q1_I_ARMS);
-
-                break;
-
-            case OUTPUT_Q4_MODULE:
-
-                SendCan(Q4_I_OUT);
-
-                break;
-
-            case RECTIFIER_MODULE:
-
-                break;
-
-            case INPUT_MODULE:
-
-                break;
-
-            case COMMAND_DRAWER_MODULE:
-
-                SendCan(DRAWER_TEMP);
-
-                break;
-        }
-
-        CanScheduleVar = 1;
-        break;
-
-    case 1:
-        switch(AppType())
-        {
-            case OUTPUT_Q1_MODULE:
-                SendCan(Q1_V_IN_OUT);
-                break;
-            case OUTPUT_Q4_MODULE:
-                SendCan(Q4_TEMP);
-               break;
-            case RECTIFIER_MODULE:
-
-               break;
-            case INPUT_MODULE:
-
-               break;
-
-            case COMMAND_DRAWER_MODULE:
-                SendCan(DRAWER_V);
-               break;
-        }
-
-        CanScheduleVar = 2;
-        break;
-
-    case 2:
-        switch(AppType())
-        {
-            case OUTPUT_Q1_MODULE:
-
-                SendCan(Q1_SLOW_STS);
-
-               break;
-
-            case OUTPUT_Q4_MODULE:
-
-               break;
-
-            case RECTIFIER_MODULE:
-
-               break;
-
-            case INPUT_MODULE:
-
-               break;
-
-            case COMMAND_DRAWER_MODULE:
-
-               SendCan(DRAWER_ALARM_ITLK_STS);
-
-               break;
-        }
-
-        CanScheduleVar = 3;
-        break;
-
-    case 3:
-        switch(AppType())
-        {
-            case OUTPUT_Q1_MODULE:
-
-               break;
-            case OUTPUT_Q4_MODULE:
-
-               break;
-            case RECTIFIER_MODULE:
-
-               break;
-            case INPUT_MODULE:
-
-               break;
-
-            case COMMAND_DRAWER_MODULE:
-
-               break;
-        }
-
-        CanScheduleVar = 4;
-        break;
-
-    case 4:
-        switch(AppType())
-        {
-            case OUTPUT_Q1_MODULE:
-
-               break;
-            case OUTPUT_Q4_MODULE:
-
-               break;
-            case RECTIFIER_MODULE:
-
-               break;
-            case INPUT_MODULE:
-
-               break;
-
-            case COMMAND_DRAWER_MODULE:
-
-                break;
-        }
-
-        CanScheduleVar = 5;
-        break;
-
-    case 5:
-        switch(AppType())
-        {
-            case OUTPUT_Q1_MODULE:
-
-               break;
-
-            case OUTPUT_Q4_MODULE:
-
-               break;
-
-            case RECTIFIER_MODULE:
-
-               break;
-
-            case INPUT_MODULE:
-
-               break;
-
-            case COMMAND_DRAWER_MODULE:
-
-                break;
-        }
-
-        CanScheduleVar = 6;
-        break;
-
-    case 6:
-        switch(AppType())
-        {
-            case OUTPUT_Q1_MODULE:
-
-               break;
-
-            case OUTPUT_Q4_MODULE:
-
-               break;
-
-            case RECTIFIER_MODULE:
-
-               break;
-
-            case INPUT_MODULE:
-
-               break;
-
-            case COMMAND_DRAWER_MODULE:
-
-                break;
-        }
-
-        CanScheduleVar = 7;
-        break;
-
-    // 1s message
-    case 7:
-        switch(AppType())
-        {
-            case OUTPUT_Q1_MODULE:
-
-               if(SecCount == 7)
-               {
-
-                   toggle_pin(TP_1_BASE, TP_1_PIN);
-                   SendCan(Q1_SLOW_STS);
-                   toggle_pin(TP_1_BASE, TP_1_PIN);
-
-               }
-
-               break;
-
-            case OUTPUT_Q4_MODULE:
-
-               break;
-
-            case RECTIFIER_MODULE:
-
-               break;
-
-            case INPUT_MODULE:
-
-               break;
-
-            case COMMAND_DRAWER_MODULE:
-
-               break;
-        }
-
-        CanScheduleVar = 8;
-        break;
-
-    // 1s message
-    case 8:
-        switch(AppType())
-        {
-            case OUTPUT_Q1_MODULE:
-
-               if(SecCount == 8)
-               {
-                   toggle_pin(TP_1_BASE, TP_1_PIN);
-                   SendCan(Q1_ALARM_ITLK_STS);
-                   toggle_pin(TP_1_BASE, TP_1_PIN);
-               }
-
-               break;
-
-            case OUTPUT_Q4_MODULE:
-
-               break;
-
-            case RECTIFIER_MODULE:
-
-               break;
-
-            case INPUT_MODULE:
-
-               break;
-
-            case COMMAND_DRAWER_MODULE:
-
-                break;
-        }
-
-        CanScheduleVar = 9;
-        break;
-
-    case 9:
-        if(InterlockRead())
-        {
-            SendCan(ITLK_MESS);
-        }
-
-        CanScheduleVar = 0;
-
-        // Increase 1s CAN message counter
-        SecCount++;
-        break;
-
-    default:
-        CanScheduleVar = 0;
-        break;
-
-    }
-
-}
-
-void SendCan(unsigned char Message)
-{
-
-    switch (Message)
-    {
-
-    case ITLK_MESS:
-
-        pui8MsgDataTx[0] = InterlockRead();
-
-        sCANMessageTx.ui32MsgLen = 8;
-        sCANMessageTx.ui32MsgID = CanId + 15;
-
-        break;
-
-    }
-
-    CANMessageSet(CAN0_BASE, 2, &sCANMessageTx, MSG_OBJ_TYPE_TX);
-}
-
-
-void CheckCan(void)
-{
-
-    if(g_bRXFlag)
-    {
-        //
-        // Reuse the same message object that was used earlier to configure
-        // the CAN for receiving messages.  A buffer for storing the
-        // received data must also be provided, so set the buffer pointer
-        // within the message object.
-        //
-        sCANMessage.pui8MsgData = pui8MsgData;
-
-        //
-        // Read the message from the CAN.  Message object number 1 is used
-        // (which is not the same thing as CAN ID).  The interrupt clearing
-        // flag is not set because this interrupt was already cleared in
-        // the interrupt handler.
-        //
-        CANMessageGet(CAN0_BASE, 1, &sCANMessage, 0);
-
-        //
-        // Clear the pending message flag so that the interrupt handler can
-        // set it again when the next message arrives.
-        //
-        g_bRXFlag = 0;
-
-        InterlockClear();
-        AlarmClear();
-
-    }
-
-}
-
-void send_can_message(can_message_id_t msg_id, uint16_t field, float data)
-{
-    u16Nchars.u16   = field;
-    floatNchars.f   = data;
-
-    pui8MsgDataTx[0] = CanId;
-    pui8MsgDataTx[1] = 0;   // Master Id
-    pui8MsgDataTx[2] = u16Nchars.c[0];
-    pui8MsgDataTx[3] = u16Nchars.c[1];
-    pui8MsgDataTx[4] = floatNchars.c[0];
-    pui8MsgDataTx[5] = floatNchars.c[1];
-    pui8MsgDataTx[6] = floatNchars.c[2];
-    pui8MsgDataTx[7] = floatNchars.c[3];
-
-    sCANMessageTx.ui32MsgLen = 8;
-    sCANMessageTx.ui32MsgID = msg_id;
-
-    CANMessageSet(CAN0_BASE, 2, &sCANMessageTx, MSG_OBJ_TYPE_TX);
-}
-
-void send_board_readings()
-{
-    switch(AppType())
-    {
-        case OUTPUT_Q1_MODULE:
-
-            //send_can_message(Reading,   TempHeatSink,   33.0);
-            //send_can_message(Itlk,      TempL,          35.0);
-            //send_can_message(Alm,       VcapBank,       36.5);
-            //send_can_message(Reset,     Vout,           37.5);
-            //send_can_message(Reading,   Gpdi,           0);
-
-            break;
-
-        case OUTPUT_Q4_MODULE:
-
-            break;
-
-        case RECTIFIER_MODULE:
-
-            break;
-
-        case INPUT_MODULE:
-
-            break;
-
-        case COMMAND_DRAWER_MODULE:
-
-            //send_can_message(Reading,   TempHeatSink,   33.0);
-            //send_can_message(Itlk,      TempL,          35.0);
-            //send_can_message(Alm,       VcapBank,       36.5);
-            //send_can_message(Reset,     Vout,           37.5);
-            //send_can_message(Reading,   Gpdi,           0);
-
-            break;
-
-        default:
-
-            break;
-
     }
 }
 
@@ -655,56 +236,43 @@ void InitCan(uint32_t ui32SysClock)
     //
     CANEnable(CAN0_BASE);
 
-    /*
-     * Message object to send interlock and alarm data
-     * */
-
-    event_message.ui32MsgID = ItlkMsgId;
-    event_message.ui32MsgIDMask = 0;
-    event_message.ui32Flags = MSG_OBJ_TX_INT_ENABLE;
-    event_message.ui32MsgLen = EVENT_MESSAGE_LEN;
-
-    /*
-     * Message object to receive parameters
-     * */
 
     receive_message.ui32MsgID = ParamsSetMsgId;
     receive_message.ui32MsgIDMask = 0xfffff;
     receive_message.ui32Flags = MSG_OBJ_RX_INT_ENABLE | MSG_OBJ_USE_ID_FILTER;
-    receive_message.ui32MsgLen = PARAMS_MESSAGE_LEN;
+    receive_message.ui32MsgLen = RECV_PARAM_MESSAGE_LEN;
 
-    CANMessageSet(CAN0_BASE, PARAMS_MESSAGE_OBJ_ID, &receive_message,
+    CANMessageSet(CAN0_BASE, RECV_PARAM_MESSAGE_OBJ_ID, &receive_message,
                                                               MSG_OBJ_TYPE_RX);
     /*
      * Message object to reset events (interlock and alarms)
      * */
 
     receive_message.ui32MsgID = ResetMsgId;
-    receive_message.ui32MsgLen = RESET_MESSAGE_LEN;
+    receive_message.ui32MsgLen = RESET_ITLK_MESSAGE_LEN;
 
-    CANMessageSet(CAN0_BASE, RESET_MESSAGE_OBJ_ID, &receive_message,
+    CANMessageSet(CAN0_BASE, RESET_ITLK_MESSAGE_OBJ_ID, &receive_message,
                                                               MSG_OBJ_TYPE_RX);
 
     receive_message.ui32MsgID = DataRequestMsgId;
     receive_message.ui32MsgLen = DATA_REQUEST_MESSAGE_LEN;
 
-    CANMessageSet(CAN0_BASE, DATA_REQUEST_OBJ_ID, &receive_message,
+    CANMessageSet(CAN0_BASE, DATA_REQUEST_MESSAGE_OBJ_ID, &receive_message,
                                                               MSG_OBJ_TYPE_RX);
 
-    transmit_message.ui32MsgID = DataSendMsgId;
+    transmit_message.ui32MsgID = 0;
     transmit_message.ui32MsgIDMask = 0;
     transmit_message.ui32Flags = MSG_OBJ_TX_INT_ENABLE;
-    transmit_message.ui32MsgLen = DATA_SEND_MESSAGE_LEN;
 
     // Module ID
-    CanId = BoardAddressRead();
-    CanId = 1;
-    //CanId = CanId << 4;
+    can_address = BoardAddressRead();
+
+    if (can_address == 0) can_address = 1;
 
 }
 //---------------------------------------------------------------------------
 
-void send_event_message(can_message_id_t message_id)
+/*void send_event_message(can_message_id_t message_id)
 {
     if (message_id == ItlkMsgId) {
         // TODO: atribuir dados de interlock
@@ -718,20 +286,17 @@ void send_event_message(can_message_id_t message_id)
     CANMessageSet(CAN0_BASE, EVENT_MESSAGE_OBJ_ID, &event_message,
                                                               MSG_OBJ_TYPE_TX);
 
-}
-
-uint8_t hb_data[1];
+}*/
 
 void send_heart_beat_message()
 {
-    //uint8_t pui8MsgData[1];
-    hb_data[0] = 1;
-    //event_message.ui32MsgID = HeartBeatMsgId;
-    event_message.ui32MsgID = 1;
-    event_message.ui32MsgIDMask = 0xfffff;
-    event_message.ui32MsgLen = 4;
-    event_message.pui8MsgData = pui8MsgData;
-    CANMessageSet(CAN0_BASE, EVENT_MESSAGE_OBJ_ID, &event_message,
+    heart_beat_data[0] = can_address;
+
+    transmit_message.ui32MsgID = HeartBeatMsgId;
+    transmit_message.ui32MsgLen = HEART_BEAT_MESSAGE_LEN;
+    transmit_message.pui8MsgData = heart_beat_data;
+
+    CANMessageSet(CAN0_BASE, HEART_BEAT_MESSAGE_OB_ID, &transmit_message,
                                                               MSG_OBJ_TYPE_TX);
 }
 
@@ -741,13 +306,13 @@ void handle_request_data_message(void)
     uint8_t id;
 
     receive_message.pui8MsgData = request_data_rx;
-    CANMessageGet(CAN0_BASE, DATA_REQUEST_OBJ_ID, &receive_message, 0);
+    CANMessageGet(CAN0_BASE, DATA_REQUEST_MESSAGE_OBJ_ID, &receive_message, 0);
 
     id = request_data_rx[0];
 
-    if (id == CanId) {
+    if (id == can_address) {
 
-        request_data_tx[0] = CanId;
+        request_data_tx[0] = can_address;
         request_data_tx[1] = var;
         request_data_tx[2] = 0;
         request_data_tx[3] = 0;
@@ -756,6 +321,7 @@ void handle_request_data_message(void)
         request_data_tx[6] = g_controller_iib.iib_signals[var].u8[2];
         request_data_tx[7] = g_controller_iib.iib_signals[var].u8[3];
 
+        transmit_message.ui32MsgID =  DataSendMsgId;
         transmit_message.pui8MsgData = request_data_tx;
         CANMessageSet(CAN0_BASE, DATA_SEND_OBJ_ID, &transmit_message,
                                                               MSG_OBJ_TYPE_TX);
@@ -767,17 +333,59 @@ void handle_reset_message(void)
     uint8_t id;
 
     receive_message.pui8MsgData = reset_msg_data;
-    CANMessageGet(CAN0_BASE, RESET_MESSAGE_OBJ_ID, &receive_message, 0);
+    CANMessageGet(CAN0_BASE, RESET_ITLK_MESSAGE_OBJ_ID, &receive_message, 0);
 
     id = reset_msg_data[0];
 
-    if (id == CanId) {
+    if (id == can_address) {
         AlarmClear();
         InterlockClear();
     }
 }
 
-uint16_t CanIdRead(void)
+void send_interlock_message()
 {
-    return CanId;
+    itlk_message_data[0] = can_address;
+    itlk_message_data[1] = 0;
+    itlk_message_data[2] = 0;
+    itlk_message_data[3] = 0;
+
+    u32Nchars.u32 = g_itlk_id;
+
+    itlk_message_data[4] = u32Nchars.c[0];
+    itlk_message_data[5] = u32Nchars.c[1];
+    itlk_message_data[6] = u32Nchars.c[2];
+    itlk_message_data[7] = u32Nchars.c[3];
+
+    transmit_message.ui32MsgID = ItlkMsgId;
+    transmit_message.pui8MsgData = itlk_message_data;
+
+    CANMessageSet(CAN0_BASE, INTERLOCK_MESSAGE_OBJ_ID, &transmit_message,
+                                                              MSG_OBJ_TYPE_TX);
+}
+
+void send_alarm_message()
+{
+    alarm_message_data[0] = can_address;
+    alarm_message_data[1] = 0;
+    alarm_message_data[2] = 0;
+    alarm_message_data[3] = 0;
+
+    u32Nchars.u32 = g_alarm_id;
+
+    alarm_message_data[4] = u32Nchars.c[0];
+    alarm_message_data[5] = u32Nchars.c[1];
+    alarm_message_data[6] = u32Nchars.c[2];
+    alarm_message_data[7] = u32Nchars.c[3];
+
+    transmit_message.ui32MsgID = ItlkMsgId;
+    transmit_message.pui8MsgData = alarm_message_data;
+
+    CANMessageSet(CAN0_BASE, ALARM_MESSAGE_OBJ_ID, &transmit_message,
+                                                              MSG_OBJ_TYPE_TX);
+}
+
+uint16_t get_can_address(void)
+{
+    return can_address;
 }

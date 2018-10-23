@@ -147,8 +147,8 @@ int main(void)
 {
     uint32_t ui32SysClock;
 
-    ui32SysClock = SysCtlClockFreqSet((SYSCTL_OSC_MAIN | SYSCTL_USE_PLL | SYSCTL_XTAL_25MHZ |
-    SYSCTL_CFG_VCO_480), 120000000);
+    ui32SysClock = SysCtlClockFreqSet((SYSCTL_OSC_MAIN | SYSCTL_USE_PLL |
+                            SYSCTL_XTAL_25MHZ | SYSCTL_CFG_VCO_480), 120000000);
 
     pinout_config();
 
@@ -186,7 +186,7 @@ int main(void)
     LedPong();
 
     // Block application to sign that CAN Address is out of range
-    while(CanIdRead() == 0 || CanIdRead() >= 496)
+    while(get_can_address() == 0 || get_can_address() >= 496)
     {
         // Blink bar
         LedBarBlink();
@@ -199,7 +199,7 @@ int main(void)
     {
         Application();
         BoardTask();
-        send_heart_beat_message();
+        //send_heart_beat_message();
     }
 
     return 0;

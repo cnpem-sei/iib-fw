@@ -27,16 +27,16 @@ static unsigned char DvrCrnt = 0;
 
 //******************************************************************************
 
-#define HALL_CURRENT_CONST           0.06103515625; // 125A/2048
-#define VOLTAGE_CONST                0.0048828125; // 10V/2048
+#define HALL_CURRENT_CONST          0.06103515625; // 125A/2048
+#define VOLTAGE_CONST               0.0048828125; // 10V/2048
 
-#define DRIVER_VOLTAGE_CONST    0.00439453125; // 18V/4096
-#define DRIVER_CURRENT_CONST    0.003662109375;// 7,5A/2048
-#define ADC_OFFSET              0x0200;
+#define DRIVER_VOLTAGE_CONST        0.00439453125; // 18V/4096
+#define DRIVER_CURRENT_CONST        0.003662109375;// 7,5A/2048
+#define ADC_OFFSET                  0x0200;
 
-#define BURDEN                  50.0;
-#define MAX_V_INPUT_I_C         7.5;
-#define MAX_V_INPUT_L_C         3.0;
+#define BURDEN                      50.0;
+#define MAX_V_INPUT_I_C             7.5;
+#define MAX_V_INPUT_L_C             3.0;
 
 
 

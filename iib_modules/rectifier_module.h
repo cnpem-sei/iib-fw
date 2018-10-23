@@ -51,10 +51,6 @@
 #define MODULE2_OVERTEMP_ALM                0x00000100
 #define INDUCTOR1_OVERTEMP_ALM              0x00000200
 #define INDUCTOR2_OVERTEMP_ALM              0x00000400
-#define PHASE_FAULT_ALM                     0x00000800
-#define AC_OVERCURRENT_ALM                  0x00001000
-#define AC_TRANSF_OVERTEMP_ALM              0x00002000
-#define WATER_FLOW_ALM                      0x00004000
 
 extern void init_rectifier_module(void);
 extern void clear_rectifier_interlocks(void);

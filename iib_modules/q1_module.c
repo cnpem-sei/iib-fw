@@ -125,6 +125,9 @@ q1_module_t q1_module;
 uint32_t q1_interlocks_indication   = 0;
 uint32_t q1_alarms_indication       = 0;
 
+static void get_itlks_id();
+static void get_alarms_id();
+
 /**
  * TODO: Put here the implementation for your public functions.
  */
@@ -413,6 +416,8 @@ void q1_application_readings()
     if(q1_module.ExternalItlkSts || q1_module.Driver2ErrorItlk || q1_module.Driver2ErrorItlk) InterlockSet(); // If no signal over the port, then set Interlock action
 
     q1_map_vars();
+    get_itlks_id();
+    get_alarms_id();
 }
 
 void q1_map_vars()
@@ -430,6 +435,36 @@ void q1_map_vars()
     g_controller_iib.iib_signals[10].f      = q1_module.Drive2Current;
     g_controller_iib.iib_signals[11].u8[0]  = q1_module.TempL;
     g_controller_iib.iib_signals[12].u8[0]  = q1_module.TempHeatSink;
+}
+
+static void get_itlks_id()
+{
+    if (q1_module.VinItlkSts)           g_itlk_id |= INPUT_OVERVOLTAGE_ITLK;
+    if (q1_module.VoutItlkSts)          g_itlk_id |= OUTPUT_OVERVOLTAGE_ITLK;
+    if (q1_module.IoutA1ItlkSts)        g_itlk_id |= OUTPUT_OVERCURRENT_1_ITLK;
+    if (q1_module.IoutA2ItlkSts)        g_itlk_id |= OUTPUT_OVERCURRENT_2_ITLK;
+    if (q1_module.TempIGBT1ItlkSts)     g_itlk_id |= IGBT1_OVERTEMP_ITLK;
+    if (q1_module.TempIGBT2ItlkSts)     g_itlk_id |= IGBT2_OVERTEMP_ITLK;
+    if (q1_module.Driver1ErrorItlk)     g_itlk_id |= DRIVER1_ERROR_ITLK;
+    if (q1_module.Driver2ErrorItlk)     g_itlk_id |= DRIVER2_ERROR_ITLK;
+    if (q1_module.TempLItlkSts)         g_itlk_id |= INDUC_OVERTEMP_ITLK;
+    if (q1_module.TempHeatSinkItlkSts)  g_itlk_id |= HS_OVERTEMP_ITLK;
+    if (q1_module.Relay)                g_itlk_id |= RELAY_ITLK;
+    if (q1_module.ExternalItlkSts)      g_itlk_id |= EXTERNAL_ITLK;
+    if (q1_module.LeakageCurrentSts)    g_itlk_id |= LEAKAGE_CURRENT_ITLK;
+    if (q1_module.RackSts)              g_itlk_id |= RACK_ITLK;
+}
+
+static void get_alarms_id()
+{
+    if (q1_module.VinAlarmSts)          g_alarm_id |= INPUT_OVERVOLTAGE_ALM;
+    if (q1_module.VoutAlarmSts)         g_alarm_id |= OUTPUT_OVERVOLTAGE_ALM;
+    if (q1_module.IoutA1AlarmSts)       g_alarm_id |= OUTPUT_OVERCURRENT_1_ALM;
+    if (q1_module.IoutA2AlarmSts)       g_alarm_id |= OUTPUT_OVERCURRENT_2_ALM;
+    if (q1_module.TempIGBT1AlarmSts)    g_alarm_id |= IGBT1_OVERTEMP_ALM;
+    if (q1_module.TempIGBT2AlarmSts)    g_alarm_id |= IGBT2_OVERTEMP_ALM;
+    if (q1_module.TempLAlarmSts)        g_alarm_id |= INDUC_OVERTEMP_ALM;
+    if (q1_module.TempHeatSinkAlarmSts) g_alarm_id |= HS_OVERTEMP_ALM;
 }
 
 float q1_module_vout_read(void)

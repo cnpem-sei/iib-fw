@@ -32,8 +32,9 @@
 #define IGBT2_OVERTEMP_ITLK         0x00000020
 #define IGBT2_HWR_OVERTEMP_ITLK     0x00000040
 #define INDUC_OVERTEMP_ITLK         0x00000080
-#define DRIVER1_ERROR_ITLK          0x00000100
-#define DRIVER2_ERROR_ITLK          0x00000200
+#define HS_OVERTEMP_ITLK            0x00000100
+#define DRIVER1_ERROR_ITLK          0x00000200
+#define DRIVER2_ERROR_ITLK          0x00000400
 
 #define INPUT_OVERCURRENT_ALM       0x00000001
 #define OUTPUT_OVERCURRENT_ALM      0x00000002
@@ -43,6 +44,7 @@
 #define IGBT2_OVERTEMP_ALM          0x00000020
 #define IGBT2_HWR_OVERTEMP_ALM      0x00000040
 #define INDUC_OVERTEMP_ALM          0x00000080
+#define HS_OVERTEMP_ALM             0x00000100
 
 /**
  * TODO: Put here your functions prototypes. Just what need 

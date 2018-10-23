@@ -101,6 +101,9 @@ q4_module_t q4_module;
 uint32_t q4_interlocks_indication = 0;
 uint32_t q4_alarms_indication = 0;
 
+static void get_itlks_id();
+static void get_alarms_id();
+
 /**
  * TODO: Put here the implementation for your public functions.
  */
@@ -296,6 +299,8 @@ void q4_application_readings()
     if(!q4_module.TempLItlkSts)q4_module.TempLItlkSts = Pt100ReadCh2TripSts();
 
     q4_map_vars();
+    get_itlks_id();
+    get_alarms_id();
 }
 
 void q4_map_vars()
@@ -307,6 +312,33 @@ void q4_map_vars()
     g_controller_iib.iib_signals[4].f   = q4_module.VdcLink;
     g_controller_iib.iib_signals[5].f   = q4_module.TempHeatSink;
     g_controller_iib.iib_signals[6].f   = q4_module.TempL;
+}
+
+static void get_itlks_id()
+{
+    if (q4_module.IinItlkSts)           g_itlk_id |= INPUT_OVERCURRENT_ITLK;
+    if (q4_module.IoutItlkSts)          g_itlk_id |= OUTPUT_OVERCURRENT_ITLK;
+    if (q4_module.VdcLinkItlkSts)       g_itlk_id |= INPUT_OVERVOLTAGE_ITLK;
+    if (q4_module.TempIGBT1ItlkSts)     g_itlk_id |= IGBT1_OVERTEMP_ITLK;
+    if (q4_module.TempIGBT1HwrItlkSts)  g_itlk_id |= IGBT1_HWR_OVERTEMP_ITLK;
+    if (q4_module.TempIGBT2ItlkSts)     g_itlk_id |= IGBT2_OVERTEMP_ITLK;
+    if (q4_module.TempIGBT2HwrItlkSts)  g_itlk_id |= IGBT2_HWR_OVERTEMP_ITLK;
+    if (q4_module.Driver1ErrorItlk)     g_itlk_id |= DRIVER1_ERROR_ITLK;
+    if (q4_module.Driver2ErrorItlk)     g_itlk_id |= DRIVER2_ERROR_ITLK;
+    if (q4_module.TempLItlkSts)         g_itlk_id |= INDUC_OVERTEMP_ITLK;
+    if (q4_module.TempHeatSinkItlkSts)  g_itlk_id |= HS_OVERTEMP_ITLK;
+
+}
+
+static void get_alarms_id()
+{
+    if (q4_module.IinAlarmSts)          g_alarm_id |= INPUT_OVERCURRENT_ALM;
+    if (q4_module.IoutAlarmSts)         g_alarm_id |= OUTPUT_OVERCURRENT_ALM;
+    if (q4_module.VdcLinkAlarmSts)      g_alarm_id |= INPUT_OVERVOLTAGE_ALM;
+    if (q4_module.TempIGBT1AlarmSts)    g_alarm_id |= IGBT1_OVERTEMP_ALM;
+    if (q4_module.TempIGBT2AlarmSts)    g_alarm_id |= IGBT2_OVERTEMP_ALM;
+    if (q4_module.TempLAlarmSts)        g_alarm_id |= INDUC_OVERTEMP_ALM;
+    if (q4_module.TempHeatSinkAlarmSts) g_alarm_id |= HS_OVERTEMP_ALM;
 }
 
 float q4_module_iout_read(void)
