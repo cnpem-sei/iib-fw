@@ -68,39 +68,91 @@
 
 typedef struct
 {
-    float Vin;
+    union {
+        float   f;
+        uint8_t u8[4];
+    } Vin;
+
     bool VinAlarmSts;
     bool VinItlkSts;
-    float Vout;
+
+    union {
+        float   f;
+        uint8_t u8[4];
+    } Vout;
+
     bool VoutAlarmSts;
     bool VoutItlkSts;
-    float IoutA1;
+
+    union {
+        float   f;
+        uint8_t u8[4];
+    } IoutA1;
+
     bool IoutA1AlarmSts;
     bool IoutA1ItlkSts;
-    float IoutA2;
+
+    union {
+        float   f;
+        uint8_t u8[4];
+    } IoutA2;
+
     bool IoutA2AlarmSts;
     bool IoutA2ItlkSts;
-    uint8_t TempIGBT1;
+
+    union {
+        float   f;
+        uint8_t u8[4];
+    } TempIGBT1;
+
     bool TempIGBT1AlarmSts;
     bool TempIGBT1ItlkSts;
     bool TempIGBT1HwrItlk;
     bool TempIGBT1HwrItlkSts;
-    uint8_t TempIGBT2;
+
+    union {
+        float   f;
+        uint8_t u8[4];
+    } TempIGBT2;
+
     bool TempIGBT2AlarmSts;
     bool TempIGBT2ItlkSts;
     bool TempIGBT2HwrItlk;
     bool TempIGBT2HwrItlkSts;
-    float DriveVoltage;
-    float Drive1Current;
-    float Drive2Current;
+
+    union {
+        float   f;
+        uint8_t u[4];
+    } DriveVoltage;
+
+    union {
+        float   f;
+        uint8_t u[4];
+    } Drive1Current;
+
+    union {
+        float   f;
+        uint8_t u[4];
+    } Drive2Current;
+
     bool Driver1Error;
     bool Driver1ErrorItlk;
     bool Driver2Error;
     bool Driver2ErrorItlk;
-    uint8_t TempL;
+
+    union {
+        float   f;
+        uint8_t u[4];
+    } TempL;
+
     bool TempLAlarmSts;
     bool TempLItlkSts;
-    uint8_t TempHeatSink;
+
+    union {
+        float   f;
+        uint8_t u[4];
+    } TempHeatSink;
+
     bool TempHeatSinkAlarmSts;
     bool TempHeatSinkItlkSts;
     bool Relay;
@@ -199,39 +251,39 @@ void init_q1_module()
     Driver2ErrEnable();
 
     // Init Variables
-    q1_module.Vin                   = 0.0;
+    q1_module.Vin.f                 = 0.0;
     q1_module.VinAlarmSts           = 0;
     q1_module.VinItlkSts            = 0;
-    q1_module.Vout                  = 0.0;
+    q1_module.Vout.f                = 0.0;
     q1_module.VoutAlarmSts          = 0;
     q1_module.VoutItlkSts           = 0;
-    q1_module.IoutA1                = 0.0;
+    q1_module.IoutA1.f              = 0.0;
     q1_module.IoutA1AlarmSts        = 0;
     q1_module.IoutA1ItlkSts         = 0;
-    q1_module.IoutA2                = 0.0;
+    q1_module.IoutA2.f              = 0.0;
     q1_module.IoutA2AlarmSts        = 0;
     q1_module.IoutA2ItlkSts         = 0;
-    q1_module.TempIGBT1             = 0.0;
+    q1_module.TempIGBT1.f           = 0.0;
     q1_module.TempIGBT1AlarmSts     = 0;
     q1_module.TempIGBT1ItlkSts      = 0;
     q1_module.TempIGBT1HwrItlk      = 0;
     q1_module.TempIGBT1HwrItlkSts   = 0;
-    q1_module.TempIGBT2             = 0.0;
+    q1_module.TempIGBT2.f           = 0.0;
     q1_module.TempIGBT2AlarmSts     = 0;
     q1_module.TempIGBT2ItlkSts      = 0;
     q1_module.TempIGBT2HwrItlk      = 0;
     q1_module.TempIGBT2HwrItlkSts   = 0;
-    q1_module.DriveVoltage          = 0.0;
-    q1_module.Drive1Current         = 0.0;
-    q1_module.Drive2Current         = 0.0;
+    q1_module.DriveVoltage.f        = 0.0;
+    q1_module.Drive1Current.f       = 0.0;
+    q1_module.Drive2Current.f       = 0.0;
     q1_module.Driver1Error          = 0;
     q1_module.Driver1ErrorItlk      = 0;
     q1_module.Driver2Error          = 0;
     q1_module.Driver2ErrorItlk      = 0;
-    q1_module.TempL                 = 0;
+    q1_module.TempL.f               = 0;
     q1_module.TempLAlarmSts         = 0;
     q1_module.TempLItlkSts          = 0;
-    q1_module.TempHeatSink          = 0;
+    q1_module.TempHeatSink.f        = 0;
     q1_module.TempHeatSinkAlarmSts  = 0;
     q1_module.TempHeatSinkItlkSts   = 0;
     q1_module.Relay                 = 0;
@@ -360,39 +412,39 @@ void check_q1_indication_leds()
 
 void q1_application_readings()
 {
-    q1_module.TempHeatSink = Pt100ReadCh1();//PT100 CH1
+    q1_module.TempHeatSink.f = (float) Pt100ReadCh1();//PT100 CH1
     q1_module.TempHeatSinkAlarmSts = Pt100ReadCh1AlarmSts();
     if(!q1_module.TempHeatSinkItlkSts)q1_module.TempHeatSinkItlkSts        = Pt100ReadCh1TripSts();
 
-    q1_module.TempL = Pt100ReadCh2();//PT100 CH2
+    q1_module.TempL.f = (float) Pt100ReadCh2();//PT100 CH2
     q1_module.TempLAlarmSts = Pt100ReadCh2AlarmSts();
     if(!q1_module.TempLItlkSts)q1_module.TempLItlkSts                      = Pt100ReadCh2TripSts();
 
-    q1_module.TempIGBT1 = 0.0;
+    q1_module.TempIGBT1.f = 0.0;
     q1_module.TempIGBT1AlarmSts = 0;
     q1_module.TempIGBT1ItlkSts = 0;
 
     if(!q1_module.TempIGBT1HwrItlkSts) q1_module.TempIGBT1HwrItlkSts       = Driver1OverTempRead();
 
-    q1_module.TempIGBT2 = 0.0;
+    q1_module.TempIGBT2.f = 0.0;
     q1_module.TempIGBT2AlarmSts = 0;
     q1_module.TempIGBT2ItlkSts = 0;
 
     if(!q1_module.TempIGBT2HwrItlkSts) q1_module.TempIGBT2HwrItlkSts       = Driver2OverTempRead();
 
-    q1_module.IoutA1 = CurrentCh1Read();//HALL CH1
+    q1_module.IoutA1.f = CurrentCh1Read();//HALL CH1
     q1_module.IoutA1AlarmSts = CurrentCh1AlarmStatusRead();
     if(!q1_module.IoutA1ItlkSts)q1_module.IoutA1ItlkSts                    = CurrentCh1TripStatusRead();
 
-    q1_module.IoutA2 = CurrentCh2Read();//HALL CH2
+    q1_module.IoutA2.f = CurrentCh2Read();//HALL CH2
     q1_module.IoutA2AlarmSts = CurrentCh2AlarmStatusRead();
     if(!q1_module.IoutA2ItlkSts)q1_module.IoutA2ItlkSts                    = CurrentCh2TripStatusRead();
 
-    q1_module.Vin = LvCurrentCh1Read();
+    q1_module.Vin.f = LvCurrentCh1Read();
     q1_module.VinAlarmSts = LvCurrentCh1AlarmStatusRead();
     if(!q1_module.VinItlkSts)q1_module.VinItlkSts                          = LvCurrentCh1TripStatusRead();
 
-    q1_module.Vout = LvCurrentCh2Read();
+    q1_module.Vout.f = LvCurrentCh2Read();
     q1_module.VoutAlarmSts = LvCurrentCh2AlarmStatusRead();
     if(!q1_module.VoutItlkSts)q1_module.VoutItlkSts                        = LvCurrentCh2TripStatusRead();
 
@@ -424,17 +476,23 @@ void q1_map_vars()
 {
     g_controller_iib.iib_signals[0].u32     = q1_interlocks_indication;
     g_controller_iib.iib_signals[1].u32     = q1_alarms_indication;
-    g_controller_iib.iib_signals[2].f       = q1_module.Vin;
-    g_controller_iib.iib_signals[3].f       = q1_module.Vout;
-    g_controller_iib.iib_signals[4].f       = q1_module.IoutA1;
-    g_controller_iib.iib_signals[5].f       = q1_module.IoutA2;
-    g_controller_iib.iib_signals[6].u8[0]   = q1_module.TempIGBT1;
-    g_controller_iib.iib_signals[7].u8[0]   = q1_module.TempIGBT2;
-    g_controller_iib.iib_signals[8].f       = q1_module.DriveVoltage;
-    g_controller_iib.iib_signals[9].f       = q1_module.Drive1Current;
-    g_controller_iib.iib_signals[10].f      = q1_module.Drive2Current;
-    g_controller_iib.iib_signals[11].u8[0]  = q1_module.TempL;
-    g_controller_iib.iib_signals[12].u8[0]  = q1_module.TempHeatSink;
+    g_controller_iib.iib_signals[2].f       = q1_module.Vin.f;
+    g_controller_iib.iib_signals[3].f       = q1_module.Vout.f;
+    g_controller_iib.iib_signals[4].f       = q1_module.IoutA1.f;
+    g_controller_iib.iib_signals[5].f       = q1_module.IoutA2.f;
+    g_controller_iib.iib_signals[6].f       = q1_module.TempIGBT1.f;
+    g_controller_iib.iib_signals[7].f       = q1_module.TempIGBT2.f;
+    g_controller_iib.iib_signals[8].f       = q1_module.DriveVoltage.f;
+    g_controller_iib.iib_signals[9].f       = q1_module.Drive1Current.f;
+    g_controller_iib.iib_signals[10].f      = q1_module.Drive2Current.f;
+    g_controller_iib.iib_signals[11].f      = q1_module.TempL.f;
+    g_controller_iib.iib_signals[12].f      = q1_module.TempHeatSink.f;
+}
+
+void send_q1_module_data()
+{
+    uint8_t i;
+    for (i = 0; i < 13; i++) send_data_message(i);
 }
 
 static void get_itlks_id()
@@ -469,7 +527,7 @@ static void get_alarms_id()
 
 float q1_module_vout_read(void)
 {
-    return q1_module.Vout;
+    return q1_module.Vout.f;
 }
 
 unsigned char q1_module_vout_alarm_sts_read(void)
@@ -485,7 +543,7 @@ unsigned char q1_module_vout_itlk_sts_read(void)
 //**********************************************
 float q1_module_vin_read(void)
 {
-    return q1_module.Vin;
+    return q1_module.Vin.f;
 }
 
 unsigned char q1_module_vin_alarm_sts_read(void)
@@ -501,7 +559,7 @@ unsigned char q1_module_vin_itlk_sts_read(void)
 //**********************************************
 float q1_module_iout_a1_read(void)
 {
-    return q1_module.IoutA1;
+    return q1_module.IoutA1.f;
 }
 
 unsigned char q1_module_iout_a1_alarm_sts_read(void)
@@ -517,7 +575,7 @@ unsigned char q1_module_iout_a1_itlk_sts_read(void)
 //**********************************************
 float q1_module_iout_a2_read(void)
 {
-    return q1_module.IoutA2;
+    return q1_module.IoutA2.f;
 }
 
 unsigned char q1_module_iout_a2_alarm_sts_read(void)
@@ -533,7 +591,7 @@ unsigned char q1_module_iout_a2_itlk_sts_read(void)
 //**********************************************
 unsigned char q1_module_temp_IGBT1_read(void)
 {
-    return q1_module.TempIGBT1;
+    return q1_module.TempIGBT1.f;
 }
 
 unsigned char q1_module_temp_IGBT1_alarm_sts_read(void)
@@ -559,7 +617,7 @@ unsigned char q1_module_temp_IGBT1_hwr_itlk_sts_read(void)
 //**********************************************
 unsigned char q1_module_temp_IGBT2_read(void)
 {
-    return q1_module.TempIGBT2;
+    return q1_module.TempIGBT2.f;
 }
 
 unsigned char q1_module_temp_IGBT2_alarm_sts_read(void)
@@ -585,7 +643,7 @@ unsigned char q1_module_temp_IGBT2_hwr_itlk_sts_read(void)
 //**********************************************
 unsigned char q1_module_temp_heatsink_read(void)
 {
-    return q1_module.TempHeatSink;
+    return q1_module.TempHeatSink.f;
 }
 
 unsigned char q1_module_temp_heatsink_alarm_sts_read(void)
@@ -601,7 +659,7 @@ unsigned char q1_module_temp_heatsink_itlk_sts_read(void)
 //**********************************************
 unsigned char q1_module_tempL_read(void)
 {
-    return q1_module.TempL;
+    return q1_module.TempL.f;
 }
 
 unsigned char q1_module_tempL_alarm_sts_read(void)

@@ -235,11 +235,11 @@ void AppConfiguration(void)
     // This parameter guide the firmware behavior
     // Each Model has a different variable list that need to be check
 
-    PowerModuleModel = OUTPUT_Q1_MODULE;
+    //PowerModuleModel = OUTPUT_Q1_MODULE;
     //PowerModuleModel = OUTPUT_Q4_MODULE;
     //PowerModuleModel = RECTIFIER_MODULE;
     //PowerModuleModel = INPUT_MODULE;
-    //PowerModuleModel = COMMAND_DRAWER_MODULE;
+    PowerModuleModel = COMMAND_DRAWER_MODULE;
     
     switch(PowerModuleModel)
     {
@@ -646,9 +646,35 @@ void Application(void)
       }
 
       InterlockClearCheck();
-      //CheckCan();
-      //send_heart_beat_message();
+}
 
+void send_data_schedule()
+{
+    switch(AppType())
+    {
+        case OUTPUT_Q1_MODULE:
+            send_q1_module_data();
+            break;
+
+        case OUTPUT_Q4_MODULE:
+            send_q4_module_data();
+            break;
+
+        case RECTIFIER_MODULE:
+            send_rectifier_module_data();
+            break;
+
+        case INPUT_MODULE:
+            send_input_module_data();
+            break;
+
+        case COMMAND_DRAWER_MODULE:
+            send_command_module_data();
+            break;
+
+        default:
+            break;
+    }
 }
 
 // Application type

@@ -316,6 +316,8 @@ void BoardTask(void)
       LedIndicationStatus();
   }
 
+  send_data_schedule();
+
   //RunToggle();
 
 }

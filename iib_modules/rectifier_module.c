@@ -66,37 +66,91 @@
 
 typedef struct
 {
-    float IoutRectf1;
+    union {
+        float   f;
+        uint8_t u8[4];
+    } IoutRectf1;
+
     bool IoutRectf1AlarmSts;
     bool IoutRectf1ItlkSts;
-    float IoutRectf2;
+
+    union {
+        float   f;
+        uint8_t u8[4];
+    } IoutRectf2;
+
     bool IoutRectf2AlarmSts;
     bool IoutRectf2ItlkSts;
-    float VoutRectf1;
+
+    union {
+        float   f;
+        uint8_t u8[4];
+    } VoutRectf1;
+
     bool VoutRectf1AlarmSts;
     bool VoutRectf1ItlkSts;
-    float VoutRectf2;
+
+    union {
+        float   f;
+        uint8_t u8[4];
+    } VoutRectf2;
+
     bool VoutRectf2AlarmSts;
     bool VoutRectf2ItlkSts;
-    float LeakageCurrent;
+
+    union {
+        float   f;
+        uint8_t u8[4];
+    } LeakageCurrent;
+
     bool LeakageCurrentAlarmSts;
     bool LeakageCurrentItlkSts;
-    uint8_t TempHeatSink;
+
+    union {
+        float   f;
+        uint8_t u8[4];
+    } TempHeatSink;
+
     bool TempHeatSinkAlarmSts;
     bool TempHeatSinkItlkSts;
-    uint8_t TempWater;
+
+    union {
+        float   f;
+        uint8_t u8[4];
+    } TempWater;
+
     bool TempWaterAlarmSts;
     bool TempWaterItlkSts;
-    uint8_t TempModule1;
+
+    union {
+        float   f;
+        uint8_t u8[4];
+    } TempModule1;
+
     bool TempModule1AlarmSts;
     bool TempModule1ItlkSts;
-    uint8_t TempModule2;
+
+    union {
+        float   f;
+        uint8_t u8[4];
+    } TempModule2;
+
     bool TempModule2AlarmSts;
     bool TempModule2ItlkSts;
-    uint8_t TempL1;
+
+    union {
+        float   f;
+        uint8_t u8[4];
+    } TempL1;
+
     bool TempL1AlarmSts;
     bool TempL1ItlkSts;
-    uint8_t TempL2;
+
+    union {
+        float   f;
+        uint8_t u8[4];
+    } TempL2;
+
     bool TempL2AlarmSts;
     bool TempL2ItlkSts;
     bool AcPhaseFault;
@@ -194,47 +248,47 @@ void init_rectifier_module()
     Driver2ErrDisable();         // Driver1 Error Signal Disable
 
     // Init variables
-    rectf_module.IoutRectf1               = 0;
+    rectf_module.IoutRectf1.f             = 0;
     rectf_module.IoutRectf1AlarmSts       = 0;
     rectf_module.IoutRectf1ItlkSts        = 0;
 
-    rectf_module.IoutRectf2               = 0;
+    rectf_module.IoutRectf2.f             = 0;
     rectf_module.IoutRectf2AlarmSts       = 0;
     rectf_module.IoutRectf2ItlkSts        = 0;
 
-    rectf_module.VoutRectf1               = 0;
+    rectf_module.VoutRectf1.f             = 0;
     rectf_module.VoutRectf1AlarmSts       = 0;
     rectf_module.VoutRectf1ItlkSts        = 0;
 
-    rectf_module.VoutRectf2               = 0;
+    rectf_module.VoutRectf2.f             = 0;
     rectf_module.VoutRectf2AlarmSts       = 0;
     rectf_module.VoutRectf2ItlkSts        = 0;
 
-    rectf_module.LeakageCurrent           = 0;
+    rectf_module.LeakageCurrent.f         = 0;
     rectf_module.LeakageCurrentAlarmSts   = 0;
     rectf_module.LeakageCurrentItlkSts    = 0;
 
-    rectf_module.TempHeatSink             = 0;
+    rectf_module.TempHeatSink.f           = 0;
     rectf_module.TempHeatSinkAlarmSts     = 0;
     rectf_module.TempHeatSinkItlkSts      = 0;
 
-    rectf_module.TempWater                = 0;
+    rectf_module.TempWater.f              = 0;
     rectf_module.TempWaterAlarmSts        = 0;
     rectf_module.TempWaterItlkSts         = 0;
 
-    rectf_module.TempModule1              = 0;
+    rectf_module.TempModule1.f            = 0;
     rectf_module.TempModule1AlarmSts      = 0;
     rectf_module.TempModule1ItlkSts       = 0;
 
-    rectf_module.TempModule2              = 0;
+    rectf_module.TempModule2.f            = 0;
     rectf_module.TempModule2AlarmSts      = 0;
     rectf_module.TempModule2ItlkSts       = 0;
 
-    rectf_module.TempL1                   = 0;
+    rectf_module.TempL1.f                 = 0;
     rectf_module.TempL1AlarmSts           = 0;
     rectf_module.TempL1ItlkSts            = 0;
 
-    rectf_module.TempL2                   = 0;
+    rectf_module.TempL2.f                 = 0;
     rectf_module.TempL2AlarmSts           = 0;
     rectf_module.TempL2ItlkSts            = 0;
 
@@ -351,47 +405,47 @@ void check_rectifier_indication_leds()
 
 void rectifier_application_readings()
 {
-    rectf_module.IoutRectf1 = CurrentCh1Read();
+    rectf_module.IoutRectf1.f = CurrentCh1Read();
     rectf_module.IoutRectf1AlarmSts = CurrentCh1AlarmStatusRead();
     if(!rectf_module.IoutRectf1ItlkSts) rectf_module.IoutRectf1ItlkSts        = CurrentCh1TripStatusRead();
 
-    rectf_module.IoutRectf2 = CurrentCh2Read();
+    rectf_module.IoutRectf2.f = CurrentCh2Read();
     rectf_module.IoutRectf2AlarmSts = CurrentCh2AlarmStatusRead();
     if(!rectf_module.IoutRectf2ItlkSts) rectf_module.IoutRectf2ItlkSts        = CurrentCh2TripStatusRead();
 
-    rectf_module.VoutRectf1 = VoltageCh1Read();
+    rectf_module.VoutRectf1.f = VoltageCh1Read();
     rectf_module.VoutRectf1AlarmSts = VoltageCh1AlarmStatusRead();
     if(!rectf_module.VoutRectf1ItlkSts) rectf_module.VoutRectf1ItlkSts        = VoltageCh1TripStatusRead();
 
-    rectf_module.VoutRectf2 = VoltageCh2Read();
+    rectf_module.VoutRectf2.f = VoltageCh2Read();
     rectf_module.VoutRectf2AlarmSts = VoltageCh2AlarmStatusRead();
     if(!rectf_module.VoutRectf2ItlkSts) rectf_module.VoutRectf2ItlkSts        = VoltageCh2TripStatusRead();
 
-    rectf_module.LeakageCurrent = CurrentCh3Read();
+    rectf_module.LeakageCurrent.f = CurrentCh3Read();
     rectf_module.LeakageCurrentAlarmSts = CurrentCh3AlarmStatusRead();
     if(!rectf_module.LeakageCurrentItlkSts) rectf_module.LeakageCurrentItlkSts = CurrentCh3TripStatusRead();
 
-    rectf_module.TempHeatSink = Pt100ReadCh1();
+    rectf_module.TempHeatSink.f = (float) Pt100ReadCh1();
     rectf_module.TempHeatSinkAlarmSts = Pt100ReadCh1AlarmSts();
     if(!rectf_module.TempHeatSinkItlkSts) rectf_module.TempHeatSinkItlkSts    = Pt100ReadCh1TripSts();
 
-    rectf_module.TempWater = Pt100ReadCh4();
+    rectf_module.TempWater.f = (float) Pt100ReadCh4();
     rectf_module.TempWaterAlarmSts = Pt100ReadCh4AlarmSts();
     if(!rectf_module.TempWaterItlkSts) rectf_module.TempWaterItlkSts          = Pt100ReadCh4TripSts();
 
-    rectf_module.TempModule1 = VoltageCh3Read();
+    rectf_module.TempModule1.f = VoltageCh3Read();
     rectf_module.TempModule1AlarmSts = VoltageCh3AlarmStatusRead();
     if(!rectf_module.TempModule1ItlkSts) rectf_module.TempModule1ItlkSts      = VoltageCh3TripStatusRead();
 
-    rectf_module.TempModule2 = VoltageCh4Read();
+    rectf_module.TempModule2.f = VoltageCh4Read();
     rectf_module.TempModule2AlarmSts = VoltageCh4AlarmStatusRead();
     if(!rectf_module.TempModule2ItlkSts) rectf_module.TempModule2ItlkSts      = VoltageCh4TripStatusRead();
 
-    rectf_module.TempL1 = Pt100ReadCh2();
+    rectf_module.TempL1.f = (float) Pt100ReadCh2();
     rectf_module.TempL1AlarmSts = Pt100ReadCh2AlarmSts();
     if(!rectf_module.TempL1ItlkSts) rectf_module.TempL1ItlkSts                = Pt100ReadCh2TripSts();
 
-    rectf_module.TempL2 = Pt100ReadCh3();
+    rectf_module.TempL2.f = (float) Pt100ReadCh3();
     rectf_module.TempL2AlarmSts = Pt100ReadCh3AlarmSts();
     if(!rectf_module.TempL2ItlkSts) rectf_module.TempL2ItlkSts                = Pt100ReadCh3TripSts();
 
@@ -418,19 +472,24 @@ void rectifier_map_vars()
 {
     g_controller_iib.iib_signals[0].u32     = rectf_module_interlocks_indication;
     g_controller_iib.iib_signals[1].u32     = rectf_module_alarms_indication;
-    g_controller_iib.iib_signals[2].f       = rectf_module.IoutRectf1;
-    g_controller_iib.iib_signals[3].f       = rectf_module.IoutRectf2;
-    g_controller_iib.iib_signals[4].f       = rectf_module.VoutRectf1;
-    g_controller_iib.iib_signals[5].f       = rectf_module.VoutRectf2;
-    g_controller_iib.iib_signals[6].f       = rectf_module.LeakageCurrent;
-    g_controller_iib.iib_signals[7].u8[0]   = rectf_module.TempHeatSink;
-    g_controller_iib.iib_signals[8].u8[0]   = rectf_module.TempWater;
-    g_controller_iib.iib_signals[9].u8[0]   = rectf_module.TempModule1;
-    g_controller_iib.iib_signals[10].u8[0]  = rectf_module.TempModule2;
-    g_controller_iib.iib_signals[11].u8[0]  = rectf_module.TempL1;
-    g_controller_iib.iib_signals[12].u8[0]  = rectf_module.TempL2;
+    g_controller_iib.iib_signals[2].f       = rectf_module.IoutRectf1.f;
+    g_controller_iib.iib_signals[3].f       = rectf_module.IoutRectf2.f;
+    g_controller_iib.iib_signals[4].f       = rectf_module.VoutRectf1.f;
+    g_controller_iib.iib_signals[5].f       = rectf_module.VoutRectf2.f;
+    g_controller_iib.iib_signals[6].f       = rectf_module.LeakageCurrent.f;
+    g_controller_iib.iib_signals[7].f       = rectf_module.TempHeatSink.f;
+    g_controller_iib.iib_signals[8].f       = rectf_module.TempWater.f;
+    g_controller_iib.iib_signals[9].f       = rectf_module.TempModule1.f;
+    g_controller_iib.iib_signals[10].f      = rectf_module.TempModule2.f;
+    g_controller_iib.iib_signals[11].f      = rectf_module.TempL1.f;
+    g_controller_iib.iib_signals[12].f      = rectf_module.TempL2.f;
 }
 
+void send_rectifier_module_data()
+{
+    uint8_t i;
+    for (i = 0; i < 13; i++) send_data_message(i);
+}
 
 static void get_itlks_id()
 {
@@ -468,7 +527,7 @@ static void get_alarms_id()
 
 float rectifier_iout_rectf1_read(void)
 {
-    return rectf_module.IoutRectf1;
+    return rectf_module.IoutRectf1.f;
 }
 
 unsigned char rectifier_iout_rectf1_alarm_sts_read(void)
@@ -484,7 +543,7 @@ unsigned char rectifier_iout_rectf1_itlk_sts_read(void)
 //******************************************************************************
 float rectifier_iout_rectf2_read(void)
 {
-    return rectf_module.IoutRectf2;
+    return rectf_module.IoutRectf2.f;
 }
 
 unsigned char rectifier_iout_rectf2_alarm_sts_read(void)
@@ -500,7 +559,7 @@ unsigned char rectifier_iout_rectf2_itlk_sts_read(void)
 //******************************************************************************
 float rectifier_vout_rectf1_read(void)
 {
-    return rectf_module.VoutRectf1;
+    return rectf_module.VoutRectf1.f;
 }
 
 unsigned char rectifier_vout_rectf1_alarm_sts_read(void)
@@ -516,7 +575,7 @@ unsigned char rectifier_vout_rectf1_itlk_sts_read(void)
 //******************************************************************************
 float rectifier_vout_rectf2_read(void)
 {
-    return rectf_module.VoutRectf2;
+    return rectf_module.VoutRectf2.f;
 }
 
 unsigned char rectifier_vout_rectf2_alarm_sts_read(void)
@@ -532,7 +591,7 @@ unsigned char rectifier_vout_rectf2_itlk_sts_read(void)
 //******************************************************************************
 float rectifier_leakage_current_read(void)
 {
-    return rectf_module.LeakageCurrent;
+    return rectf_module.LeakageCurrent.f;
 }
 
 unsigned char rectifier_leakage_current_alarm_sts_read(void)
@@ -548,7 +607,7 @@ unsigned char rectifier_leakage_current_itlk_sts_read(void)
 //******************************************************************************
 unsigned char rectifier_temp_heatsink_read(void)
 {
-    return rectf_module.TempHeatSink;
+    return rectf_module.TempHeatSink.f;
 }
 
 unsigned char rectifier_temp_heatsink_alarm_sts_read(void)
@@ -564,7 +623,7 @@ unsigned char rectifier_temp_heatsink_itlk_sts_read(void)
 //******************************************************************************
 unsigned char rectifier_temp_water_read(void)
 {
-    return rectf_module.TempWater;
+    return rectf_module.TempWater.f;
 }
 
 unsigned char rectifier_temp_water_alarm_sts_read(void)
@@ -578,9 +637,9 @@ unsigned char rectifier_temp_water_itlk_sts_read(void)
 }
 
 //******************************************************************************
-unsigned char rectifier_temp_module1_read(void)
+float rectifier_temp_module1_read(void)
 {
-    return rectf_module.TempModule1;
+    return rectf_module.TempModule1.f;
 }
 
 unsigned char rectifier_temp_module1_alarm_sts_read(void)
@@ -594,9 +653,9 @@ unsigned char rectifier_temp_module1_itlk_sts_read(void)
 }
 
 //******************************************************************************
-unsigned char rectifier_temp_module2_read(void)
+float rectifier_temp_module2_read(void)
 {
-    return rectf_module.TempModule2;
+    return rectf_module.TempModule2.f;
 }
 
 unsigned char rectifier_temp_module2_Alarm_sts_read(void)
@@ -610,9 +669,9 @@ unsigned char rectifier_temp_module2_itlk_sts_read(void)
 }
 
 //******************************************************************************
-unsigned char Rectifier_tempL1_read(void)
+float Rectifier_tempL1_read(void)
 {
-    return rectf_module.TempL1;
+    return rectf_module.TempL1.f;
 }
 
 unsigned char rectifier_tempL1_alarm_sts_read(void)
@@ -626,9 +685,9 @@ unsigned char rectifier_tempL1_itlk_sts_read(void)
 }
 
 //******************************************************************************
-unsigned char rectifier_tempL2_read(void)
+float rectifier_tempL2_read(void)
 {
-    return rectf_module.TempL2;
+    return rectf_module.TempL2.f;
 }
 
 unsigned char rectifier_tempL2_alarm_sts_read(void)

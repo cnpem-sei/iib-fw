@@ -41,6 +41,10 @@ volatile bool g_bRXFlag = 0;
 /******************************************************************************
  *                          Object Messages
  *****************************************************************************/
+
+volatile uint8_t msg_obj_sent;
+
+
 tCANMsgObject transmit_message;
 tCANMsgObject event_message;
 tCANMsgObject receive_message;
@@ -56,7 +60,6 @@ volatile uint32_t g_itlk_id     = 0;
 volatile uint32_t g_alarm_id    = 0;
 volatile uint8_t can_address    = 0;
 
-// Partir o float em bytes
 static union
 {
    float f;
@@ -162,6 +165,15 @@ void can_isr(void)
 
     }
 
+    else if (ui32Status == DATA_SEND_OBJ_ID)
+    {
+        CANIntClear(CAN0_BASE, DATA_SEND_OBJ_ID);
+
+        msg_obj_sent = 1;
+
+        g_bErrFlag = 0;
+    }
+
     else if(ui32Status == RECV_PARAM_MESSAGE_OBJ_ID)
     {
         CANIntClear(CAN0_BASE, RECV_PARAM_MESSAGE_OBJ_ID);
@@ -186,7 +198,6 @@ void can_isr(void)
     //
     else
     {
-        CANIntClear(CAN0_BASE, 1);
         //
         // Spurious interrupt handling can go here.
         //
@@ -308,7 +319,8 @@ void handle_request_data_message(void)
     receive_message.pui8MsgData = request_data_rx;
     CANMessageGet(CAN0_BASE, DATA_REQUEST_MESSAGE_OBJ_ID, &receive_message, 0);
 
-    id = request_data_rx[0];
+    id  = request_data_rx[0];
+    var = request_data_rx[1];
 
     if (id == can_address) {
 
@@ -322,7 +334,9 @@ void handle_request_data_message(void)
         request_data_tx[7] = g_controller_iib.iib_signals[var].u8[3];
 
         transmit_message.ui32MsgID =  DataSendMsgId;
+        transmit_message.ui32MsgLen = DATA_SEND_MESSAGE_LEN;
         transmit_message.pui8MsgData = request_data_tx;
+
         CANMessageSet(CAN0_BASE, DATA_SEND_OBJ_ID, &transmit_message,
                                                               MSG_OBJ_TYPE_TX);
     }
@@ -383,6 +397,25 @@ void send_alarm_message()
 
     CANMessageSet(CAN0_BASE, ALARM_MESSAGE_OBJ_ID, &transmit_message,
                                                               MSG_OBJ_TYPE_TX);
+}
+
+void send_data_message(uint8_t var)
+{
+    request_data_tx[0] = can_address;
+    request_data_tx[1] = var;
+    request_data_tx[2] = 0;
+    request_data_tx[3] = 0;
+    request_data_tx[4] = g_controller_iib.iib_signals[var].u8[0];
+    request_data_tx[5] = g_controller_iib.iib_signals[var].u8[1];
+    request_data_tx[6] = g_controller_iib.iib_signals[var].u8[2];
+    request_data_tx[7] = g_controller_iib.iib_signals[var].u8[3];
+
+    transmit_message.ui32MsgID =  DataSendMsgId;
+    transmit_message.ui32MsgLen = DATA_SEND_MESSAGE_LEN;
+    transmit_message.pui8MsgData = request_data_tx;
+
+    CANMessageSet(CAN0_BASE, DATA_SEND_OBJ_ID, &transmit_message,
+                                                          MSG_OBJ_TYPE_TX);
 }
 
 uint16_t get_can_address(void)

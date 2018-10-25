@@ -50,17 +50,35 @@
 
 typedef struct
 {
+    union {
+        float   f;
+        uint8_t u8[4];
+    } Iin;
 
-    float Iin;
     bool IinAlarmSts;
     bool IinItlkSts;
-    float VdcLink;
+
+    union {
+        float   f;
+        uint8_t u8[4];
+    } VdcLink;
+
     bool VdcLinkAlarmSts;
     bool VdcLinkItlkSts;
-    uint8_t TempHeatsink;
+
+    union {
+        float   f;
+        uint8_t u8[4];
+    } TempHeatsink;
+
     bool TempHeatsinkAlarmSts;
     bool TempHeatsinkItlkSts;
-    uint8_t TempL;
+
+    union {
+        float   f;
+        uint8_t u8[4];
+    } TempL;
+
     bool TempLAlarmSts;
     bool TempLItlkSts;
     bool Driver1Error;
@@ -143,19 +161,19 @@ void init_input_module()
     Driver2ErrDisable();
 
     // Init Variables
-    input_module.Iin                        = 0.0;
+    input_module.Iin.f                      = 0.0;
     input_module.IinAlarmSts                = 0;
     input_module.IinItlkSts                 = 0;
 
-    input_module.VdcLink                    = 0.0;
+    input_module.VdcLink.f                  = 0.0;
     input_module.VdcLinkAlarmSts            = 0;
     input_module.VdcLinkItlkSts             = 0;
 
-    input_module.TempHeatsink               = 0.0;
+    input_module.TempHeatsink.f             = 0.0;
     input_module.TempHeatsinkAlarmSts       = 0;
     input_module.TempHeatsinkItlkSts        = 0;
 
-    input_module.TempL                      = 0.0;
+    input_module.TempL.f                    = 0.0;
     input_module.TempLAlarmSts              = 0;
     input_module.TempLItlkSts               = 0;
 
@@ -239,19 +257,19 @@ void check_input_module_indication_leds()
 
 void input_module_application_readings()
 {
-    input_module.Iin = CurrentCh1Read();
+    input_module.Iin.f = CurrentCh1Read();
     input_module.IinAlarmSts = CurrentCh1AlarmStatusRead();
     if(!input_module.IinItlkSts) input_module.IinItlkSts                  = CurrentCh1TripStatusRead();
 
-    input_module.VdcLink = LvCurrentCh1Read();
+    input_module.VdcLink.f = LvCurrentCh1Read();
     input_module.VdcLinkAlarmSts = CurrentCh1AlarmStatusRead();
     if(!input_module.VdcLinkItlkSts) input_module.VdcLinkItlkSts          = CurrentCh1TripStatusRead();
 
-    input_module.TempHeatsink = Pt100ReadCh1();
+    input_module.TempHeatsink.f = (float) Pt100ReadCh1();
     input_module.TempHeatsinkAlarmSts = Pt100ReadCh1AlarmSts();
     if(!input_module.TempHeatsinkItlkSts) input_module.TempHeatsinkItlkSts  = Pt100ReadCh1TripSts();
 
-    input_module.TempL = Pt100ReadCh2();
+    input_module.TempL.f = (float) Pt100ReadCh2();
     input_module.TempLAlarmSts = Pt100ReadCh2AlarmSts();
     if(!input_module.TempLItlkSts) input_module.TempLItlkSts                = Pt100ReadCh2TripSts();
 
@@ -264,10 +282,16 @@ void input_module_map_vars()
 {
     g_controller_iib.iib_signals[0].u32     = im_interlocks_indication;
     g_controller_iib.iib_signals[1].u32     = im_alarms_indication;
-    g_controller_iib.iib_signals[2].f       = input_module.Iin;
-    g_controller_iib.iib_signals[3].f       = input_module.VdcLink;
-    g_controller_iib.iib_signals[4].u8[0]   = input_module.TempL;
-    g_controller_iib.iib_signals[5].u8[0]   = input_module.TempHeatsink;
+    g_controller_iib.iib_signals[2].f       = input_module.Iin.f;
+    g_controller_iib.iib_signals[3].f       = input_module.VdcLink.f;
+    g_controller_iib.iib_signals[4].f       = input_module.TempL.f;
+    g_controller_iib.iib_signals[5].f       = input_module.TempHeatsink.f;
+}
+
+void send_input_module_data()
+{
+    uint8_t i;
+    for (i = 0; i < 6; i++) send_data_message(i);
 }
 
 static void get_itlks_id()
@@ -290,7 +314,7 @@ static void get_alarms_id()
 
 float input_module_iin_read(void)
 {
-    return input_module.Iin;
+    return input_module.Iin.f;
 }
 
 unsigned char input_module_iin_alarm_sts_read(void)
@@ -306,7 +330,7 @@ unsigned char input_module_iin_itlk_sts_read(void)
 //******************************************************************************
 float input_module_vdclink_read(void)
 {
-    return input_module.VdcLink;
+    return input_module.VdcLink.f;
 }
 
 unsigned char input_module_vdclink_alarm_sts_read(void)
@@ -320,9 +344,9 @@ unsigned char input_module_vdclink_itlk_sts_read(void)
 }
 
 //******************************************************************************
-unsigned char input_module_temp_heatsink_read(void)
+float input_module_temp_heatsink_read(void)
 {
-    return input_module.TempHeatsink;
+    return input_module.TempHeatsink.f;
 }
 
 unsigned char input_module_temp_heatsink_alarm_sts_read(void)
@@ -336,9 +360,9 @@ unsigned char input_module_temp_heatsink_itlk_sts_read(void)
 }
 
 //******************************************************************************
-unsigned char input_module_tempL_read(void)
+float input_module_tempL_read(void)
 {
-    return input_module.TempL;
+    return input_module.TempL.f;
 }
 
 unsigned char input_module_tempL_alarm_sts_read(void)

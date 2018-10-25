@@ -27,7 +27,6 @@ void AlarmAppCheck(void);
 void Application(void);
 unsigned char AppType(void);
 
-
 // 1Q Module
 extern float Q1ModuleVoutRead(void);
 extern unsigned char Q1ModuleVoutAlarmStsRead(void);
@@ -195,6 +194,8 @@ extern unsigned char CommandDrawerExt2ItlkStsRead();
 
 void ClearDiagnosticCount(void);
 void PrintDiagnosticVar(void);
+
+extern void send_data_schedule();
 
 
 #endif

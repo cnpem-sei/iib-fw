@@ -46,38 +46,42 @@
 
 typedef struct
 {
-    /* PT100CH1 */
-    uint8_t TempHeatSink;
+
+    union {
+        float       f;
+        uint8_t     u8[4];
+    }TempHeatSink;
+
     bool TempHeatSinkAlarmSts;
     bool TempHeatSinkItlkSts;
-    /* PT100CH2 */
-    uint8_t TempL;
+
+    union {
+        float       f;
+        uint8_t     u8[4];
+    }TempL;
+
     bool TempLAlarmSts;
     bool TempLItlkSts;
-    /* LCH1 */
-    float VcapBank;
+
+    union {
+        float       f;
+        uint8_t     u8[4];
+    }VcapBank;
+
     bool VcapBankAlarmSts;
     bool VcapBankItlkSts;
-    /* LCH2 */
-    float Vout;
+
+    union {
+        float       f;
+        uint8_t     u8[4];
+    }Vout;
+
     bool VoutAlarmSts;
     bool VoutItlkSts;
-    /* GPDIO1 */
     bool ExtItlkSts;
-    /* GPDI05*/
     bool ExtItlk2Sts;
 
 } command_module_t;
-
-/**
- * TODO: Put here your constants and variables. Always use static for
- * private members.
- */
-
-/**
- * TODO: Put here your function prototypes for private functions. Use
- * static in declaration.
- */
 
 command_module_t command_module;
 uint32_t command_module_interlocks_indication   = 0;
@@ -126,19 +130,19 @@ void init_command_module()
     // Delay 4 seconds
     Pt100SetCh4Delay(4);
 
-    command_module.VcapBank                 = 0.0;
+    command_module.VcapBank.f               = 0.0;
     command_module.VcapBankAlarmSts         = 0;
     command_module.VcapBankItlkSts          = 0;
 
-    command_module.Vout                     = 0.0;
+    command_module.Vout.f                   = 0.0;
     command_module.VoutAlarmSts             = 0;
     command_module.VoutItlkSts              = 0;
 
-    command_module.TempHeatSink             = 0;
+    command_module.TempHeatSink.f           = 0;
     command_module.TempHeatSinkAlarmSts     = 0;
     command_module.TempHeatSinkItlkSts      = 0;
 
-    command_module.TempL                    = 0;
+    command_module.TempL.f                  = 0;
     command_module.TempLAlarmSts            = 0;
     command_module.TempLItlkSts             = 0;
 
@@ -218,19 +222,19 @@ void check_command_module_indication_leds()
 
 void command_module_application_readings()
 {
-    command_module.TempHeatSink = Pt100ReadCh1();
+    command_module.TempHeatSink.f = (float) Pt100ReadCh1();
     command_module.TempHeatSinkAlarmSts = Pt100ReadCh1AlarmSts();
     if (!command_module.TempHeatSinkItlkSts) command_module.TempHeatSinkItlkSts = Pt100ReadCh1TripSts();
 
-    command_module.TempL = Pt100ReadCh2();
+    command_module.TempL.f = (float) Pt100ReadCh2();
     command_module.TempLAlarmSts = Pt100ReadCh2AlarmSts();
     if (!command_module.TempLItlkSts) command_module.TempLItlkSts          = Pt100ReadCh2TripSts();
 
-    command_module.VcapBank = VoltageCh1Read();
+    command_module.VcapBank.f = VoltageCh1Read();
     command_module.VcapBankAlarmSts = VoltageCh1AlarmStatusRead();
     if (!command_module.VcapBankItlkSts) command_module.VcapBankItlkSts    = VoltageCh1TripStatusRead();
 
-    command_module.Vout = VoltageCh2Read();
+    command_module.Vout.f = VoltageCh2Read();
     command_module.VoutAlarmSts = VoltageCh2AlarmStatusRead();
     if (!command_module.VoutItlkSts) command_module.VoutItlkSts            = VoltageCh2TripStatusRead();
 
@@ -248,10 +252,17 @@ void command_module_map_vars()
 {
     g_controller_iib.iib_signals[0].u32     = command_module_interlocks_indication;
     g_controller_iib.iib_signals[1].u32     = command_module_alarms_indication;
-    g_controller_iib.iib_signals[2].f       = command_module.VcapBank;
-    g_controller_iib.iib_signals[3].f       = command_module.Vout;
-    g_controller_iib.iib_signals[4].u8[0]   = command_module.TempL;
-    g_controller_iib.iib_signals[5].u8[0]   = command_module.TempHeatSink;
+    g_controller_iib.iib_signals[2].f       = command_module.VcapBank.f;
+    g_controller_iib.iib_signals[3].f       = command_module.Vout.f;
+    g_controller_iib.iib_signals[4].f       = command_module.TempL.f;
+    g_controller_iib.iib_signals[5].f       = command_module.TempHeatSink.f;
+}
+
+void send_command_module_data()
+{
+    uint8_t i;
+
+    for (i = 0; i < 6; i++) send_data_message(i);
 }
 
 static void get_itlks_id()
@@ -272,9 +283,9 @@ static void get_alarms_id()
     if (command_module.TempLAlarmSts)        g_alarm_id |= INDUC_OVERTEMP_ALM;
 }
 
-unsigned char command_drawer_temp_heatsink_read(void)
+float command_drawer_temp_heatsink_read(void)
 {
-    return command_module.TempHeatSink;
+    return command_module.TempHeatSink.f;
 }
 
 unsigned char command_drawer_temp_heatsink_alarm_sts_read(void)
@@ -288,9 +299,9 @@ unsigned char Command_Drawer_Temp_HeatSink_Itlk_sts_read(void)
 }
 
 //******************************************************************************
-unsigned char command_drawer_tempL_read(void)
+float command_drawer_tempL_read(void)
 {
-    return command_module.TempL;
+    return command_module.TempL.f;
 }
 
 unsigned char command_drawer_tempL_alarm_sts_read(void)
@@ -307,7 +318,7 @@ unsigned char command_drawer_tempL_itlk_sts_read(void)
 
 float command_drawer_vcapbank_read(void)
 {
-    return command_module.VcapBank;
+    return command_module.VcapBank.f;
 }
 
 unsigned char command_drawer_vcapbank_alarm_sts_read(void)
@@ -323,7 +334,7 @@ unsigned char command_drawer_vcapbank_itlk_sts_read(void)
 //******************************************************************************
 float command_drawer_vout_read(void)
 {
-    return command_module.Vout;
+    return command_module.Vout.f;
 }
 
 unsigned char command_drawer_vout_alarm_sts_read(void)
