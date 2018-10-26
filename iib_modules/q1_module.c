@@ -318,21 +318,21 @@ uint8_t check_q1_interlocks()
 {
     uint8_t test = 0;
 
-    test |= q1_module.VinItlkSts            = 0;
-    test |= q1_module.VoutItlkSts           = 0;
-    test |= q1_module.IoutA1ItlkSts         = 0;
-    test |= q1_module.IoutA2ItlkSts         = 0;
-    test |= q1_module.TempIGBT1ItlkSts      = 0;
-    test |= q1_module.TempIGBT1HwrItlkSts   = 0;
-    test |= q1_module.TempIGBT2ItlkSts      = 0;
-    test |= q1_module.TempIGBT2HwrItlkSts   = 0;
-    test |= q1_module.Driver1ErrorItlk      = 0;
-    test |= q1_module.Driver2ErrorItlk      = 0;
-    test |= q1_module.TempLItlkSts          = 0;
-    test |= q1_module.TempHeatSinkItlkSts   = 0;
-    test |= q1_module.ExternalItlkSts       = 0;
-    test |= q1_module.LeakageCurrentSts     = 0;
-    test |= q1_module.RackSts               = 0;
+    test |= q1_module.VinItlkSts;
+    test |= q1_module.VoutItlkSts;
+    test |= q1_module.IoutA1ItlkSts;
+    test |= q1_module.IoutA2ItlkSts;
+    test |= q1_module.TempIGBT1ItlkSts;
+    test |= q1_module.TempIGBT1HwrItlkSts;
+    test |= q1_module.TempIGBT2ItlkSts;
+    test |= q1_module.TempIGBT2HwrItlkSts;
+    test |= q1_module.Driver1ErrorItlk;
+    test |= q1_module.Driver2ErrorItlk;
+    test |= q1_module.TempLItlkSts;
+    test |= q1_module.TempHeatSinkItlkSts;
+    test |= q1_module.ExternalItlkSts;
+    test |= q1_module.LeakageCurrentSts;
+    test |= q1_module.RackSts;
 
     return test;
 }
@@ -360,14 +360,14 @@ uint8_t check_q1_alarms()
 {
     uint8_t test = 0;
 
-    test |= q1_module.VinAlarmSts           = 0;
-    test |= q1_module.VoutAlarmSts          = 0;
-    test |= q1_module.IoutA1AlarmSts        = 0;
-    test |= q1_module.IoutA2AlarmSts        = 0;
-    test |= q1_module.TempIGBT1AlarmSts     = 0;
-    test |= q1_module.TempIGBT2AlarmSts     = 0;
-    test |= q1_module.TempLAlarmSts         = 0;
-    test |= q1_module.TempHeatSinkAlarmSts  = 0;
+    test |= q1_module.VinAlarmSts;
+    test |= q1_module.VoutAlarmSts;
+    test |= q1_module.IoutA1AlarmSts;
+    test |= q1_module.IoutA2AlarmSts;
+    test |= q1_module.TempIGBT1AlarmSts;
+    test |= q1_module.TempIGBT2AlarmSts;
+    test |= q1_module.TempLAlarmSts;
+    test |= q1_module.TempHeatSinkAlarmSts;
 
     return test;
 }
