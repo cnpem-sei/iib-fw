@@ -50,7 +50,7 @@ tCANMsgObject event_message;
 tCANMsgObject receive_message;
 
 uint8_t itlk_message_data[INTERLOCK_MESSAGE_LEN];
-uint8_t alarm_message_data[INTERLOCK_MESSAGE_LEN];
+uint8_t alarm_message_data[ALARM_MESSAGE_LEN];
 uint8_t request_data_rx[DATA_REQUEST_MESSAGE_LEN];
 uint8_t request_data_tx[DATA_SEND_MESSAGE_LEN];
 uint8_t reset_msg_data[RESET_ITLK_MESSAGE_LEN];

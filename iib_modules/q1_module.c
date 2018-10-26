@@ -205,10 +205,10 @@ void init_q1_module()
     //     will most probably saturate during operation at 300 A. These
     //     measures are also performed by UDC, which guarantees these
     //     protections
-    CurrentCh1AlarmLevelSet(OUTPUT_OVERCURRENT_1_ALM);  // Corrente braço1
-    CurrentCh1TripLevelSet(OUTPUT_OVERCURRENT_1_ITLK);  // Corrente braço1
-    CurrentCh2AlarmLevelSet(OUTPUT_OVERCURRENT_2_ALM);  // Corrente braço2
-    CurrentCh2TripLevelSet(OUTPUT_OVERCURRENT_2_ITLK);  // Corrente braço2
+    CurrentCh1AlarmLevelSet(Q1_OUTPUT_OVERCURRENT_1_ALM);  // Corrente braço1
+    CurrentCh1TripLevelSet(Q1_OUTPUT_OVERCURRENT_1_ITLK);  // Corrente braço1
+    CurrentCh2AlarmLevelSet(Q1_OUTPUT_OVERCURRENT_2_ALM);  // Corrente braço2
+    CurrentCh2TripLevelSet(Q1_OUTPUT_OVERCURRENT_2_ITLK);  // Corrente braço2
 
     // NTC contiguration type
     //ConfigNtcType(SEMIX);
@@ -217,16 +217,16 @@ void init_q1_module()
     LvCurrentCh1Init(450.0, 0.025, 120.0, 3); // Tensão de entrada
     LvCurrentCh2Init(250.0, 0.025, 120.0, 3); // Tensão de saída
 
-    LvCurrentCh1AlarmLevelSet(INPUT_OVERVOLTAGE_ALM);   // Tensão de entrada Alarme
-    LvCurrentCh1TripLevelSet(INPUT_OVERVOLTAGE_ITLK);   // Tensão de entrada Interlock
-    LvCurrentCh2AlarmLevelSet(OUTPUT_OVERVOLTAGE_ALM);  // Tensão de saída Alarme
-    LvCurrentCh2TripLevelSet(OUTPUT_OVERVOLTAGE_ITLK);  // Tensão de saída Interlock
+    LvCurrentCh1AlarmLevelSet(Q1_INPUT_OVERVOLTAGE_ALM);   // Tensão de entrada Alarme
+    LvCurrentCh1TripLevelSet(Q1_INPUT_OVERVOLTAGE_ITLK);   // Tensão de entrada Interlock
+    LvCurrentCh2AlarmLevelSet(Q1_OUTPUT_OVERVOLTAGE_ALM);  // Tensão de saída Alarme
+    LvCurrentCh2TripLevelSet(Q1_OUTPUT_OVERVOLTAGE_ITLK);  // Tensão de saída Interlock
 
     // PT100 configuration limits
-    Pt100SetCh1AlarmLevel(HS_OVERTEMP_ALM);     // Temperatura Dissipador
-    Pt100SetCh1TripLevel(HS_OVERTEMP_ITLK);     // Temperatura Dissipador
-    Pt100SetCh2AlarmLevel(INDUC_OVERTEMP_ALM);  // Temperatura L
-    Pt100SetCh2TripLevel(INDUC_OVERTEMP_ITLK);  // Temperatura L
+    Pt100SetCh1AlarmLevel(Q1_HS_OVERTEMP_ALM);     // Temperatura Dissipador
+    Pt100SetCh1TripLevel(Q1_HS_OVERTEMP_ITLK);     // Temperatura Dissipador
+    Pt100SetCh2AlarmLevel(Q1_INDUC_OVERTEMP_ALM);  // Temperatura L
+    Pt100SetCh2TripLevel(Q1_INDUC_OVERTEMP_ITLK);  // Temperatura L
 
     // Delay 4 seconds
     Pt100SetCh1Delay(4);
