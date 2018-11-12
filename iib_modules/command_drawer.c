@@ -121,13 +121,9 @@ void init_command_module()
     Pt100Ch3Disable();
     Pt100Ch4Disable();
 
-    // Delay 4 seconds
     Pt100SetCh1Delay(4);
-    // Delay 4 seconds
     Pt100SetCh2Delay(4);
-    // Delay 4 seconds
     Pt100SetCh3Delay(4);
-    // Delay 4 seconds
     Pt100SetCh4Delay(4);
 
     command_module.VcapBank.f               = 0.0;
@@ -147,7 +143,6 @@ void init_command_module()
     command_module.TempLItlkSts             = 0;
 
     command_module.ExtItlkSts               = 0;
-
     command_module.ExtItlk2Sts              = 0;
 }
 
@@ -228,19 +223,19 @@ void command_module_application_readings()
 
     command_module.TempL.f = (float) Pt100ReadCh2();
     command_module.TempLAlarmSts = Pt100ReadCh2AlarmSts();
-    if (!command_module.TempLItlkSts) command_module.TempLItlkSts          = Pt100ReadCh2TripSts();
+    if (!command_module.TempLItlkSts) command_module.TempLItlkSts = Pt100ReadCh2TripSts();
 
     command_module.VcapBank.f = VoltageCh1Read();
     command_module.VcapBankAlarmSts = VoltageCh1AlarmStatusRead();
-    if (!command_module.VcapBankItlkSts) command_module.VcapBankItlkSts    = VoltageCh1TripStatusRead();
+    if (!command_module.VcapBankItlkSts) command_module.VcapBankItlkSts = VoltageCh1TripStatusRead();
 
     command_module.Vout.f = VoltageCh2Read();
     command_module.VoutAlarmSts = VoltageCh2AlarmStatusRead();
-    if (!command_module.VoutItlkSts) command_module.VoutItlkSts            = VoltageCh2TripStatusRead();
+    if (!command_module.VoutItlkSts) command_module.VoutItlkSts = VoltageCh2TripStatusRead();
 
-    if(!command_module.ExtItlkSts) command_module.ExtItlkSts               = Gpdi1Read();
+    if(!command_module.ExtItlkSts) command_module.ExtItlkSts = Gpdi1Read();
 
-    if(!command_module.ExtItlk2Sts) command_module.ExtItlk2Sts             = Gpdi5Read();
+    if(!command_module.ExtItlk2Sts) command_module.ExtItlk2Sts = Gpdi5Read();
 
     command_module_map_vars();
 

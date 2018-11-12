@@ -142,6 +142,7 @@ void timer_100us_init(void)
 
 /**
  * main.c
+ *
  */
 int main(void)
 {

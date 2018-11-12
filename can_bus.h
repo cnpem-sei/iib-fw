@@ -45,5 +45,6 @@ extern void CheckCan(void);
 extern uint16_t CanIdRead(void);
 extern void test_bus();
 extern void send_board_readings();
+extern void send_data_message(uint8_t var);
 
 #endif

@@ -59,12 +59,12 @@
 #define Q1_DRIVER2_OVERCURRENT_ITLK                 00.0    // Not in use
 #define Q1_INDUC_OVERTEMP_ALM                       50.0
 #define Q1_INDUC_OVERTEMP_ITLK                      60.0
-#define Q1_HS_OVERTEMP_ALM                          80.0
-#define Q1_HS_OVERTEMP_ITLK                         60.0
-#define Q1_RH_ALM                                   80.0
-#define Q1_RH_ITLK                                  90.0
-#define Q1_BOARD_TEMP_ALM                           80.0
-#define Q1_BOARD_TEMP_ITLK                          90.0
+#define Q1_HS_OVERTEMP_ALM                          80
+#define Q1_HS_OVERTEMP_ITLK                         60
+#define Q1_RH_ALM                                   80
+#define Q1_RH_ITLK                                  90
+#define Q1_BOARD_TEMP_ALM                           80
+#define Q1_BOARD_TEMP_ITLK                          90
 
 typedef struct
 {

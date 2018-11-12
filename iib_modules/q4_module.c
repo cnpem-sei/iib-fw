@@ -345,14 +345,16 @@ void q4_map_vars()
     g_controller_iib.iib_signals[2].f   = q4_module.Iin.f;
     g_controller_iib.iib_signals[3].f   = q4_module.Iout.f;
     g_controller_iib.iib_signals[4].f   = q4_module.VdcLink.f;
-    g_controller_iib.iib_signals[5].f   = q4_module.TempHeatSink.f;
-    g_controller_iib.iib_signals[6].f   = q4_module.TempL.f;
+    g_controller_iib.iib_signals[5].f   = q4_module.TempIGBT1.f;
+    g_controller_iib.iib_signals[6].f   = q4_module.TempIGBT2.f;
+    g_controller_iib.iib_signals[7].f   = q4_module.TempL.f;
+    g_controller_iib.iib_signals[8].f   = q4_module.TempHeatSink.f;
 }
 
 void send_q4_module_data()
 {
     uint8_t i;
-    for (i = 0; i < 7; i++) send_data_message(i);
+    for (i = 0; i < 9; i++) send_data_message(i);
 }
 
 static void get_itlks_id()

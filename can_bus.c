@@ -283,22 +283,6 @@ void InitCan(uint32_t ui32SysClock)
 }
 //---------------------------------------------------------------------------
 
-/*void send_event_message(can_message_id_t message_id)
-{
-    if (message_id == ItlkMsgId) {
-        // TODO: atribuir dados de interlock
-    }
-    else if (message_id == AlmMsgId) {
-        // TODO: atribuir dados de alarme
-    }
-
-    event_message.ui32MsgID = message_id;
-    // TODO: Configure size of message
-    CANMessageSet(CAN0_BASE, EVENT_MESSAGE_OBJ_ID, &event_message,
-                                                              MSG_OBJ_TYPE_TX);
-
-}*/
-
 void send_heart_beat_message()
 {
     heart_beat_data[0] = can_address;
