@@ -37,8 +37,8 @@
 
 #define IM_INPUT_OVERCURRENT_ALM            160.0
 #define IM_INPUT_OVERCURRENT_ITLK           170.0
-#define IM_DCLINK_OVERVOLTAGE_ALM           535.0
-#define IM_DCLINK_OVERVOLTAGE_ITLK          540.0
+#define IM_DCLINK_OVERVOLTAGE_ALM           550.0
+#define IM_DCLINK_OVERVOLTAGE_ITLK          555.0
 #define IM_HS_OVERTEMP_ALM                  45.0
 #define IM_HS_OVERTEMP_ITLK                 50.0
 #define IM_INDUC_OVERTEMP_ALM               55.0

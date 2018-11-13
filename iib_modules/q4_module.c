@@ -42,10 +42,10 @@
 
 #define Q4_INPUT_CURRENT_ALM        430.0
 #define Q4_INPUT_CURRENT_ITLK       440.0
-#define Q4_OUTPUT_CURRENT_ALM       550.0
+#define Q4_OUTPUT_CURRENT_ALM       555.0
 #define Q4_OUTPUT_CURRENT_ITLK      560.0
-#define Q4_INPUT_VOLTAGE_ALM        295.0
-#define Q4_INPUT_VOLTAGE_ITLK       300.0
+#define Q4_INPUT_VOLTAGE_ALM        280.0
+#define Q4_INPUT_VOLTAGE_ITLK       285.0
 #define Q4_HS_TEMP_ALM              35
 #define Q4_HS_TEMP_ITLK             40
 #define Q4_INDUC_TEMP_ALM           55
