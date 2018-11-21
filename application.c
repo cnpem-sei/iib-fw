@@ -29,9 +29,10 @@ void AppConfiguration(void)
     // Each Model has a different variable list that need to be check
 
     //PowerModuleModel = OUTPUT_Q1_MODULE;
+    PowerModuleModel = OUTPUT_Q1_300A_MODULE;
     //PowerModuleModel = OUTPUT_Q4_MODULE;
     //PowerModuleModel = RECTIFIER_MODULE;
-    PowerModuleModel = INPUT_MODULE;
+    //PowerModuleModel = INPUT_MODULE;
     //PowerModuleModel = COMMAND_DRAWER_MODULE;
     
     switch(PowerModuleModel)
@@ -64,6 +65,15 @@ void AppConfiguration(void)
 
             init_command_module();
 
+            break;
+
+        case OUTPUT_Q1_300A_MODULE:
+
+            init_q1_300A_module();
+
+            break;
+
+        default:
             break;
 
     }
@@ -137,6 +147,16 @@ void InterlockClearCheck(void)
                   clear_command_module_alarms();
 
                   break;
+
+              case OUTPUT_Q1_300A_MODULE:
+
+                  clear_q1_300A_interlocks();
+                  clear_q1_300A_alarms();
+
+                  break;
+
+              default:
+                  break;
           }
           
           g_itlk_id = 0;
@@ -194,6 +214,16 @@ void AppInterlock(void)
            ReleAuxTurnOff();
            ReleItlkTurnOff();
 
+           break;
+
+       case OUTPUT_Q1_300A_MODULE:
+
+           ReleAuxTurnOff();
+           ReleItlkTurnOff();
+
+           break;
+
+       default:
            break;
 
       }
@@ -256,6 +286,15 @@ void InterlockAppCheck(void)
            test = check_command_module_interlocks();
 
            break;
+
+       case OUTPUT_Q1_300A_MODULE:
+
+           test = check_q1_300A_interlocks();
+
+           break;
+
+       default:
+           break;
    }
 
    test |= RhTripStatusRead();
@@ -307,6 +346,15 @@ void AlarmAppCheck(void)
            test = check_command_module_alarms();
 
            break;
+
+       case OUTPUT_Q1_300A_MODULE:
+
+           test = check_q1_300A_alarms();
+
+           break;
+
+       default:
+           break;
    }
 
    test |= RhAlarmStatusRead();
@@ -353,6 +401,15 @@ void LedIndicationStatus(void)
             check_command_module_indication_leds();
 
             break;
+
+        case OUTPUT_Q1_300A_MODULE:
+
+            check_q1_300A_indication_leds();
+
+            break;
+
+        default:
+            break;
       }
       
 }
@@ -390,6 +447,15 @@ void Application(void)
 
            command_module_application_readings();
 
+           break;
+
+       case OUTPUT_Q1_300A_MODULE:
+
+           q1_300A_application_readings();
+
+           break;
+
+       default:
            break;
       }
 
@@ -435,6 +501,14 @@ void Application(void)
                  ReleAuxTurnOn();
                  ReleItlkTurnOn();
                  break;
+
+             case OUTPUT_Q1_300A_MODULE:
+                 ReleAuxTurnOn();
+                 ReleItlkTurnOn();
+                 break;
+
+             default:
+                 break;
             }
       }
 
@@ -463,6 +537,10 @@ void send_data_schedule()
 
         case COMMAND_DRAWER_MODULE:
             send_command_module_data();
+            break;
+
+        case OUTPUT_Q1_300A_MODULE:
+            send_q1_300A_module_data();
             break;
 
         default:

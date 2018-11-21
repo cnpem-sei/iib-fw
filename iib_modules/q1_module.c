@@ -43,10 +43,10 @@
 #define Q1_INPUT_OVERVOLTAGE_ITLK                   45.0
 #define Q1_OUTPUT_OVERVOLTAGE_ALM                   9.0
 #define Q1_OUTPUT_OVERVOLTAGE_ITLK                  10.0
-#define Q1_OUTPUT_OVERCURRENT_1_ALM                 151.0
-#define Q1_OUTPUT_OVERCURRENT_1_ITLK                152.0
-#define Q1_OUTPUT_OVERCURRENT_2_ALM                 151.5
-#define Q1_OUTPUT_OVERCURRENT_2_ITLK                152.0
+#define Q1_OUTPUT_OVERCURRENT_1_ALM                 80.0
+#define Q1_OUTPUT_OVERCURRENT_1_ITLK                85.0
+#define Q1_OUTPUT_OVERCURRENT_2_ALM                 80.0
+#define Q1_OUTPUT_OVERCURRENT_2_ITLK                85.0
 #define Q1_IGBT1_OVERTEMP_ALM                       00.0    // Not in use
 #define Q1_IGBT1_OVERTEMP_ITLK                      00.0    // Not in use
 #define Q1_IGBT2_OVERTEMP_ALM                       00.0    // Not in use
@@ -187,20 +187,10 @@ static void get_alarms_id();
 void init_q1_module()
 {
     //Set current range FAP 150 A
-    //CurrentCh1Init(130.0, 0.130, 50.0, 3); // Corrente braço1: Sensor Hall
-    //CurrentCh2Init(130.0, 0.130, 50.0, 3); // Corrente braço2: LEM LA 130-P
-
-    //Set current range FAP 300 A
-    CurrentCh1Init(150.0, 0.150, 50.0, 3); // Corrente braço1: Sensor Hall
-    CurrentCh2Init(150.0, 0.150, 50.0, 3); // Corrente braço2: LEM LA 130-
+    CurrentCh1Init(130.0, 0.130, 50.0, 3); // Corrente braço1: Sensor Hall
+    CurrentCh2Init(130.0, 0.130, 50.0, 3); // Corrente braço2: LEM LA 130-P
 
     //Set protection limits FAP 150 A
-    //CurrentCh1AlarmLevelSet(80.0); // Corrente braço1
-    //CurrentCh1TripLevelSet(85.0);  // Corrente braço1
-    //CurrentCh2AlarmLevelSet(80.0); // Corrente braço2
-    //CurrentCh2TripLevelSet(85.0);  // Corrente braço2
-
-    //Set protection limits FAP 300 A
     //     These interlocks are bypassed due to the fact that their ADC's
     //     will most probably saturate during operation at 300 A. These
     //     measures are also performed by UDC, which guarantees these

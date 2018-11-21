@@ -6,6 +6,7 @@
 #define  RECTIFIER_MODULE       2
 #define  INPUT_MODULE           3
 #define  COMMAND_DRAWER_MODULE  4
+#define  OUTPUT_Q1_300A_MODULE  5
 
 void LedIndicationStatus(void);
 void AppConfiguration(void);

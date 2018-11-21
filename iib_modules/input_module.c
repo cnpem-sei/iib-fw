@@ -121,7 +121,7 @@ void init_input_module()
     CurrentCh1TripLevelSet(IM_INPUT_OVERCURRENT_ITLK); // INPUT CURRENT TRIP LEVEL
 
     //LV20-P INPUTS
-    LvCurrentCh1Init(550.0, 0.025, 120.0, 10); // CONFIG CHANNEL FOR DC_LINK MEASURE
+    LvCurrentCh1Init(555.0, 0.025, 120.0, 10); // CONFIG CHANNEL FOR DC_LINK MEASURE
 
     //LV20-P LIMITS
     CurrentCh1AlarmLevelSet(IM_DCLINK_OVERVOLTAGE_ALM); // INPUT DC_LINK VOLTAGE ALARM LEVEL
@@ -259,11 +259,11 @@ void input_module_application_readings()
 {
     input_module.Iin.f = CurrentCh1Read();
     input_module.IinAlarmSts = CurrentCh1AlarmStatusRead();
-    if(!input_module.IinItlkSts) input_module.IinItlkSts                  = CurrentCh1TripStatusRead();
+    if(!input_module.IinItlkSts) input_module.IinItlkSts                    = CurrentCh1TripStatusRead();
 
     input_module.VdcLink.f = LvCurrentCh1Read();
     input_module.VdcLinkAlarmSts = CurrentCh1AlarmStatusRead();
-    if(!input_module.VdcLinkItlkSts) input_module.VdcLinkItlkSts          = CurrentCh1TripStatusRead();
+    if(!input_module.VdcLinkItlkSts) input_module.VdcLinkItlkSts            = CurrentCh1TripStatusRead();
 
     input_module.TempHeatsink.f = (float) Pt100ReadCh1();
     input_module.TempHeatsinkAlarmSts = Pt100ReadCh1AlarmSts();
