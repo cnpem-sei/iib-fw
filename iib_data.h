@@ -60,7 +60,6 @@ extern void init_control_framwork(volatile control_framwork_t *p_controller);
  * to be accessed by other modules.
  */
 
-
 /**
  * TODO: Put here your functions prototypes. Just what need 
  * to be accessed by other modules.

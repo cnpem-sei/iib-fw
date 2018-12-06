@@ -360,6 +360,7 @@ void send_interlock_message()
 
     CANMessageSet(CAN0_BASE, INTERLOCK_MESSAGE_OBJ_ID, &transmit_message,
                                                               MSG_OBJ_TYPE_TX);
+
 }
 
 void send_alarm_message()

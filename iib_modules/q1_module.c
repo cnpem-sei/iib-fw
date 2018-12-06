@@ -15,7 +15,7 @@
  * Detailed description
  *
  * @author allef.silva
- * @date 20 de out de 2018
+ * @date 20/10/2018
  *
  */
 

@@ -28,6 +28,9 @@ unsigned char BoardAddressRead(void)
      if(read_pin(CAN_ADD_3_BASE, CAN_ADD_3_PIN)) BoardAddress |= 0b00001000;
      if(read_pin(CAN_ADD_4_BASE, CAN_ADD_4_PIN)) BoardAddress |= 0b00010000;
 
+     BoardAddress ^= 0b11111;
+     BoardAddress &= 0b00011111;
+
      return BoardAddress;
 }
 

@@ -157,8 +157,6 @@ int main(void)
 
     AdcsInit();
 
-    InitCan(ui32SysClock);
-
     //Driver Voltage channel configuration
     DriverVoltageInit();
 
@@ -173,6 +171,8 @@ int main(void)
 
     //Digital Output initialization
     OutputInit();
+
+    InitCan(ui32SysClock);
 
     timer_1ms_init();
     timer_100us_init();
