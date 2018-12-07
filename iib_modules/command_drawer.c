@@ -87,6 +87,9 @@ command_module_t command_module;
 uint32_t command_module_interlocks_indication   = 0;
 uint32_t command_module_alarms_indication       = 0;
 
+static uint32_t itlk_id = 0;
+static uint32_t alarm_id = 0;
+
 static void get_itlks_id();
 static void get_alarms_id();
 
@@ -154,6 +157,8 @@ void clear_command_module_interlocks()
     command_module.TempLItlkSts            = 0;
     command_module.ExtItlkSts              = 0;
     command_module.ExtItlk2Sts             = 0;
+
+    itlk_id = 0;
 }
 
 uint8_t check_command_module_interlocks()
@@ -176,6 +181,8 @@ void clear_command_module_alarms()
     command_module.VoutAlarmSts            = 0;
     command_module.TempHeatSinkAlarmSts    = 0;
     command_module.TempLAlarmSts           = 0;
+
+    alarm_id = 0;
 }
 
 uint8_t check_command_module_alarms()
@@ -262,20 +269,25 @@ void send_command_module_data()
 
 static void get_itlks_id()
 {
-    if (command_module.VcapBankItlkSts)         g_itlk_id |= CAPBANK_OVERVOLTAGE_ITLK;
-    if (command_module.VoutItlkSts)             g_itlk_id |= OUTPUT_OVERVOLTAGE_ITLK;
-    if (command_module.TempHeatSinkItlkSts)     g_itlk_id |= HS_OVERTEMP_ITLK;
-    if (command_module.TempLItlkSts)            g_itlk_id |= INDUC_OVERTEMP_ITLK;
-    if (command_module.ExtItlkSts)              g_itlk_id |= EXTERNAL1_ITLK;
-    if (command_module.ExtItlk2Sts)             g_itlk_id |= EXTERNAL2_ITLK;
+    if (command_module.VcapBankItlkSts)        itlk_id |= CAPBANK_OVERVOLTAGE_ITLK;
+    if (command_module.VoutItlkSts)            itlk_id |= OUTPUT_OVERVOLTAGE_ITLK;
+    if (command_module.TempHeatSinkItlkSts)    itlk_id |= HS_OVERTEMP_ITLK;
+    if (command_module.TempLItlkSts)           itlk_id |= INDUC_OVERTEMP_ITLK;
+    if (command_module.ExtItlkSts)             itlk_id |= EXTERNAL1_ITLK;
+    if (command_module.ExtItlk2Sts)            itlk_id |= EXTERNAL2_ITLK;
 }
 
 static void get_alarms_id()
 {
-    if (command_module.VcapBankAlarmSts)     g_alarm_id |= CAPBANK_OVERVOLTAGE_ALM;
-    if (command_module.VoutItlkSts)          g_alarm_id |= OUTPUT_OVERVOLTAGE_ALM;
-    if (command_module.TempHeatSinkAlarmSts) g_alarm_id |= HS_OVERTEMP_ALM;
-    if (command_module.TempLAlarmSts)        g_alarm_id |= INDUC_OVERTEMP_ALM;
+    if (command_module.VcapBankAlarmSts)     alarm_id |= CAPBANK_OVERVOLTAGE_ALM;
+    if (command_module.VoutItlkSts)          alarm_id |= OUTPUT_OVERVOLTAGE_ALM;
+    if (command_module.TempHeatSinkAlarmSts) alarm_id |= HS_OVERTEMP_ALM;
+    if (command_module.TempLAlarmSts)        alarm_id |= INDUC_OVERTEMP_ALM;
+}
+
+void send_command_itlk_msg()
+{
+    send_interlock_message(itlk_id);
 }
 
 float command_drawer_temp_heatsink_read(void)
@@ -351,3 +363,4 @@ unsigned char command_drawer_ext2_itlk_sts_read()
 {
     return command_module.ExtItlk2Sts;
 }
+

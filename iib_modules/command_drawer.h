@@ -43,5 +43,6 @@ extern void clear_command_module_alarms(void);
 extern uint8_t check_command_module_alarms(void);
 extern void check_command_module_indication_leds(void);
 extern void command_module_application_readings(void);
+extern void send_command_itlk_msg(void);
 
 #endif /* COMMAND_DRAWER_H_ */

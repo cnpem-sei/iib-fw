@@ -102,6 +102,8 @@ input_module_t input_module;
 uint32_t im_interlocks_indication = 0;
 uint32_t im_alarms_indication = 0;
 
+static uint32_t itlk_id;
+static uint32_t alarm_id;
 
 static void get_itlks_id();
 static void get_alarms_id();
@@ -192,6 +194,8 @@ void clear_input_module_interlocks()
     input_module.TempLItlkSts              = 0;
     input_module.Driver1ErrorItlk          = 0;
     input_module.Driver2ErrorItlk          = 0;
+
+    itlk_id = 0;
 }
 
 uint8_t check_input_module_interlocks()
@@ -214,6 +218,8 @@ void clear_input_module_alarms()
     input_module.VdcLinkAlarmSts           = 0;
     input_module.TempHeatsinkAlarmSts      = 0;
     input_module.TempLAlarmSts             = 0;
+
+    alarm_id = 0;
 }
 
 uint8_t check_input_module_alarms()
@@ -296,20 +302,25 @@ void send_input_module_data()
 
 static void get_itlks_id()
 {
-    if (input_module.IinItlkSts)           g_itlk_id |= INPUT_OVERCURRENT_ITLK;
-    if (input_module.VdcLinkItlkSts)       g_itlk_id |= DCLINK_OVERVOLTAGE_ITLK;
-    if (input_module.TempHeatsinkItlkSts)  g_itlk_id |= HS_OVERTEMP_ITLK;
-    if (input_module.TempLItlkSts)         g_itlk_id |= INDUC_OVERTEMP_ITLK;
-    if (input_module.Driver1ErrorItlk)     g_itlk_id |= DRIVER1_ERROR_ITLK;
-    if (input_module.Driver2ErrorItlk)     g_itlk_id |= DRIVER2_ERROR_ITLK;
+    if (input_module.IinItlkSts)           itlk_id |= INPUT_OVERCURRENT_ITLK;
+    if (input_module.VdcLinkItlkSts)       itlk_id |= DCLINK_OVERVOLTAGE_ITLK;
+    if (input_module.TempHeatsinkItlkSts)  itlk_id |= HS_OVERTEMP_ITLK;
+    if (input_module.TempLItlkSts)         itlk_id |= INDUC_OVERTEMP_ITLK;
+    if (input_module.Driver1ErrorItlk)     itlk_id |= DRIVER1_ERROR_ITLK;
+    if (input_module.Driver2ErrorItlk)     itlk_id |= DRIVER2_ERROR_ITLK;
 }
 
 static void get_alarms_id()
 {
-    if (input_module.IinAlarmSts)          g_alarm_id |= INPUT_OVERCURRENT_ALM;
-    if (input_module.VdcLinkAlarmSts)      g_alarm_id |= DCLINK_OVERVOLTAGE_ALM;
-    if (input_module.TempHeatsinkAlarmSts) g_alarm_id |= HS_OVERTEMP_ALM;
-    if (input_module.TempLAlarmSts)        g_alarm_id |= INDUC_OVERTEMP_ALM;
+    if (input_module.IinAlarmSts)          alarm_id |= INPUT_OVERCURRENT_ALM;
+    if (input_module.VdcLinkAlarmSts)      alarm_id |= DCLINK_OVERVOLTAGE_ALM;
+    if (input_module.TempHeatsinkAlarmSts) alarm_id |= HS_OVERTEMP_ALM;
+    if (input_module.TempLAlarmSts)        alarm_id |= INDUC_OVERTEMP_ALM;
+}
+
+void send_input_itlk_msg()
+{
+    send_interlock_message(itlk_id);
 }
 
 float input_module_iin_read(void)

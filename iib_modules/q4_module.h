@@ -58,5 +58,6 @@ extern void clear_q4_alarms(void);
 extern uint8_t check_q4_alarms(void);
 extern void check_q4_indication_leds(void);
 extern void q4_application_readings(void);
+extern void send_output_q4_itlk_msg(void);
 
 #endif /* Q4_MODULE_H_ */

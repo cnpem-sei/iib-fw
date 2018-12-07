@@ -158,9 +158,6 @@ void InterlockClearCheck(void)
               default:
                   break;
           }
-          
-          g_itlk_id = 0;
-          g_alarm_id = 0;
       }
 }
 
@@ -306,7 +303,36 @@ void InterlockAppCheck(void)
    if(test) {
 
        InterlockSet();
-       send_interlock_message();
+
+       switch (PowerModuleModel)
+       {
+           case OUTPUT_Q1_MODULE:
+               send_output_q1_itlk_msg();
+               break;
+
+           case OUTPUT_Q4_MODULE:
+               send_output_q4_itlk_msg();
+               break;
+
+           case RECTIFIER_MODULE:
+               send_rectf_itlk_msg();
+               break;
+
+           case INPUT_MODULE:
+               send_input_itlk_msg();
+               break;
+
+           case COMMAND_DRAWER_MODULE:
+               send_command_itlk_msg();
+               break;
+
+           case OUTPUT_Q1_300A_MODULE:
+               send_output_q1_300A_itlk_msg();
+               break;
+
+           default:
+               break;
+       }
    }
 
 }

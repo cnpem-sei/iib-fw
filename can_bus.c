@@ -56,8 +56,6 @@ uint8_t request_data_tx[DATA_SEND_MESSAGE_LEN];
 uint8_t reset_msg_data[RESET_ITLK_MESSAGE_LEN];
 uint8_t heart_beat_data[HEART_BEAT_MESSAGE_LEN];
 
-volatile uint32_t g_itlk_id     = 0;
-volatile uint32_t g_alarm_id    = 0;
 volatile uint8_t can_address    = 0;
 
 static union
@@ -159,7 +157,7 @@ void can_isr(void)
     {
         CANIntClear(CAN0_BASE, DATA_REQUEST_MESSAGE_OBJ_ID);
 
-        handle_request_data_message();
+        // Do Nothing
 
         g_bErrFlag = 0;
 
@@ -295,37 +293,6 @@ void send_heart_beat_message()
                                                               MSG_OBJ_TYPE_TX);
 }
 
-void handle_request_data_message(void)
-{
-    uint8_t var;
-    uint8_t id;
-
-    receive_message.pui8MsgData = request_data_rx;
-    CANMessageGet(CAN0_BASE, DATA_REQUEST_MESSAGE_OBJ_ID, &receive_message, 0);
-
-    id  = request_data_rx[0];
-    var = request_data_rx[1];
-
-    if (id == can_address) {
-
-        request_data_tx[0] = can_address;
-        request_data_tx[1] = var;
-        request_data_tx[2] = 0;
-        request_data_tx[3] = 0;
-        request_data_tx[4] = g_controller_iib.iib_signals[var].u8[0];
-        request_data_tx[5] = g_controller_iib.iib_signals[var].u8[1];
-        request_data_tx[6] = g_controller_iib.iib_signals[var].u8[2];
-        request_data_tx[7] = g_controller_iib.iib_signals[var].u8[3];
-
-        transmit_message.ui32MsgID =  DataSendMsgId;
-        transmit_message.ui32MsgLen = DATA_SEND_MESSAGE_LEN;
-        transmit_message.pui8MsgData = request_data_tx;
-
-        CANMessageSet(CAN0_BASE, DATA_SEND_OBJ_ID, &transmit_message,
-                                                              MSG_OBJ_TYPE_TX);
-    }
-}
-
 void handle_reset_message(void)
 {
     uint8_t id;
@@ -341,14 +308,14 @@ void handle_reset_message(void)
     }
 }
 
-void send_interlock_message()
+void send_interlock_message(uint32_t itlk)
 {
     itlk_message_data[0] = can_address;
     itlk_message_data[1] = 0;
     itlk_message_data[2] = 0;
     itlk_message_data[3] = 0;
 
-    u32Nchars.u32 = g_itlk_id;
+    u32Nchars.u32 = itlk;
 
     itlk_message_data[4] = u32Nchars.c[0];
     itlk_message_data[5] = u32Nchars.c[1];
@@ -363,14 +330,14 @@ void send_interlock_message()
 
 }
 
-void send_alarm_message()
+void send_alarm_message(uint32_t alarm)
 {
     alarm_message_data[0] = can_address;
     alarm_message_data[1] = 0;
     alarm_message_data[2] = 0;
     alarm_message_data[3] = 0;
 
-    u32Nchars.u32 = g_alarm_id;
+    u32Nchars.u32 = alarm;
 
     alarm_message_data[4] = u32Nchars.c[0];
     alarm_message_data[5] = u32Nchars.c[1];

@@ -177,6 +177,9 @@ q1_module_t q1_module;
 uint32_t q1_interlocks_indication   = 0;
 uint32_t q1_alarms_indication       = 0;
 
+static uint32_t itlk_id;
+static uint32_t alarm_id;
+
 static void get_itlks_id();
 static void get_alarms_id();
 
@@ -302,6 +305,8 @@ void clear_q1_interlocks()
     q1_module.ExternalItlkSts       = 0;
     q1_module.LeakageCurrentSts     = 0;
     q1_module.RackSts               = 0;
+
+    itlk_id = 0;
 }
 
 uint8_t check_q1_interlocks()
@@ -344,6 +349,8 @@ void clear_q1_alarms()
     q1_module.ExternalItlkSts        = 0;
     q1_module.LeakageCurrentSts      = 0;
     q1_module.RackSts                = 0;
+
+    alarm_id = 0;
 }
 
 uint8_t check_q1_alarms()
@@ -487,32 +494,37 @@ void send_q1_module_data()
 
 static void get_itlks_id()
 {
-    if (q1_module.VinItlkSts)           g_itlk_id |= INPUT_OVERVOLTAGE_ITLK;
-    if (q1_module.VoutItlkSts)          g_itlk_id |= OUTPUT_OVERVOLTAGE_ITLK;
-    if (q1_module.IoutA1ItlkSts)        g_itlk_id |= OUTPUT_OVERCURRENT_1_ITLK;
-    if (q1_module.IoutA2ItlkSts)        g_itlk_id |= OUTPUT_OVERCURRENT_2_ITLK;
-    if (q1_module.TempIGBT1ItlkSts)     g_itlk_id |= IGBT1_OVERTEMP_ITLK;
-    if (q1_module.TempIGBT2ItlkSts)     g_itlk_id |= IGBT2_OVERTEMP_ITLK;
-    if (q1_module.Driver1ErrorItlk)     g_itlk_id |= DRIVER1_ERROR_ITLK;
-    if (q1_module.Driver2ErrorItlk)     g_itlk_id |= DRIVER2_ERROR_ITLK;
-    if (q1_module.TempLItlkSts)         g_itlk_id |= INDUC_OVERTEMP_ITLK;
-    if (q1_module.TempHeatSinkItlkSts)  g_itlk_id |= HS_OVERTEMP_ITLK;
-    if (q1_module.Relay)                g_itlk_id |= RELAY_ITLK;
-    if (q1_module.ExternalItlkSts)      g_itlk_id |= EXTERNAL_ITLK;
-    if (q1_module.LeakageCurrentSts)    g_itlk_id |= LEAKAGE_CURRENT_ITLK;
-    if (q1_module.RackSts)              g_itlk_id |= RACK_ITLK;
+    if (q1_module.VinItlkSts)          itlk_id |= INPUT_OVERVOLTAGE_ITLK;
+    if (q1_module.VoutItlkSts)         itlk_id |= OUTPUT_OVERVOLTAGE_ITLK;
+    if (q1_module.IoutA1ItlkSts)       itlk_id |= OUTPUT_OVERCURRENT_1_ITLK;
+    if (q1_module.IoutA2ItlkSts)       itlk_id |= OUTPUT_OVERCURRENT_2_ITLK;
+    if (q1_module.TempIGBT1ItlkSts)    itlk_id |= IGBT1_OVERTEMP_ITLK;
+    if (q1_module.TempIGBT2ItlkSts)    itlk_id |= IGBT2_OVERTEMP_ITLK;
+    if (q1_module.Driver1ErrorItlk)    itlk_id |= DRIVER1_ERROR_ITLK;
+    if (q1_module.Driver2ErrorItlk)    itlk_id |= DRIVER2_ERROR_ITLK;
+    if (q1_module.TempLItlkSts)        itlk_id |= INDUC_OVERTEMP_ITLK;
+    if (q1_module.TempHeatSinkItlkSts) itlk_id |= HS_OVERTEMP_ITLK;
+    if (q1_module.Relay)               itlk_id |= RELAY_ITLK;
+    if (q1_module.ExternalItlkSts)     itlk_id |= EXTERNAL_ITLK;
+    if (q1_module.LeakageCurrentSts)   itlk_id |= LEAKAGE_CURRENT_ITLK;
+    if (q1_module.RackSts)             itlk_id |= RACK_ITLK;
 }
 
 static void get_alarms_id()
 {
-    if (q1_module.VinAlarmSts)          g_alarm_id |= INPUT_OVERVOLTAGE_ALM;
-    if (q1_module.VoutAlarmSts)         g_alarm_id |= OUTPUT_OVERVOLTAGE_ALM;
-    if (q1_module.IoutA1AlarmSts)       g_alarm_id |= OUTPUT_OVERCURRENT_1_ALM;
-    if (q1_module.IoutA2AlarmSts)       g_alarm_id |= OUTPUT_OVERCURRENT_2_ALM;
-    if (q1_module.TempIGBT1AlarmSts)    g_alarm_id |= IGBT1_OVERTEMP_ALM;
-    if (q1_module.TempIGBT2AlarmSts)    g_alarm_id |= IGBT2_OVERTEMP_ALM;
-    if (q1_module.TempLAlarmSts)        g_alarm_id |= INDUC_OVERTEMP_ALM;
-    if (q1_module.TempHeatSinkAlarmSts) g_alarm_id |= HS_OVERTEMP_ALM;
+    if (q1_module.VinAlarmSts)          alarm_id |= INPUT_OVERVOLTAGE_ALM;
+    if (q1_module.VoutAlarmSts)         alarm_id |= OUTPUT_OVERVOLTAGE_ALM;
+    if (q1_module.IoutA1AlarmSts)       alarm_id |= OUTPUT_OVERCURRENT_1_ALM;
+    if (q1_module.IoutA2AlarmSts)       alarm_id |= OUTPUT_OVERCURRENT_2_ALM;
+    if (q1_module.TempIGBT1AlarmSts)    alarm_id |= IGBT1_OVERTEMP_ALM;
+    if (q1_module.TempIGBT2AlarmSts)    alarm_id |= IGBT2_OVERTEMP_ALM;
+    if (q1_module.TempLAlarmSts)        alarm_id |= INDUC_OVERTEMP_ALM;
+    if (q1_module.TempHeatSinkAlarmSts) alarm_id |= HS_OVERTEMP_ALM;
+}
+
+void send_output_q1_itlk_msg()
+{
+    send_interlock_message(itlk_id);
 }
 
 float q1_module_vout_read(void)

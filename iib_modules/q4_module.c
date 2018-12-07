@@ -136,6 +136,9 @@ q4_module_t q4_module;
 uint32_t q4_interlocks_indication = 0;
 uint32_t q4_alarms_indication = 0;
 
+static uint32_t itlk_id;
+static uint32_t alarm_id;
+
 static void get_itlks_id();
 static void get_alarms_id();
 
@@ -232,6 +235,8 @@ void clear_q4_interlocks()
     q4_module.TempHeatSinkItlkSts     = 0;
     q4_module.Driver1ErrorItlk        = 0;
     q4_module.Driver2ErrorItlk        = 0;
+
+    itlk_id = 0;
 }
 
 uint8_t check_q4_interlocks()
@@ -262,6 +267,8 @@ void clear_q4_alarms(void)
     q4_module.TempIGBT2AlarmSts     = 0;
     q4_module.TempLAlarmSts         = 0;
     q4_module.TempHeatSinkAlarmSts  = 0;
+
+    alarm_id = 0;
 }
 
 uint8_t check_q4_alarms(void)
@@ -359,29 +366,34 @@ void send_q4_module_data()
 
 static void get_itlks_id()
 {
-    if (q4_module.IinItlkSts)           g_itlk_id |= INPUT_OVERCURRENT_ITLK;
-    if (q4_module.IoutItlkSts)          g_itlk_id |= OUTPUT_OVERCURRENT_ITLK;
-    if (q4_module.VdcLinkItlkSts)       g_itlk_id |= INPUT_OVERVOLTAGE_ITLK;
-    if (q4_module.TempIGBT1ItlkSts)     g_itlk_id |= IGBT1_OVERTEMP_ITLK;
-    if (q4_module.TempIGBT1HwrItlkSts)  g_itlk_id |= IGBT1_HWR_OVERTEMP_ITLK;
-    if (q4_module.TempIGBT2ItlkSts)     g_itlk_id |= IGBT2_OVERTEMP_ITLK;
-    if (q4_module.TempIGBT2HwrItlkSts)  g_itlk_id |= IGBT2_HWR_OVERTEMP_ITLK;
-    if (q4_module.Driver1ErrorItlk)     g_itlk_id |= DRIVER1_ERROR_ITLK;
-    if (q4_module.Driver2ErrorItlk)     g_itlk_id |= DRIVER2_ERROR_ITLK;
-    if (q4_module.TempLItlkSts)         g_itlk_id |= INDUC_OVERTEMP_ITLK;
-    if (q4_module.TempHeatSinkItlkSts)  g_itlk_id |= HS_OVERTEMP_ITLK;
+    if (q4_module.IinItlkSts)           itlk_id |= INPUT_OVERCURRENT_ITLK;
+    if (q4_module.IoutItlkSts)          itlk_id |= OUTPUT_OVERCURRENT_ITLK;
+    if (q4_module.VdcLinkItlkSts)       itlk_id |= INPUT_OVERVOLTAGE_ITLK;
+    if (q4_module.TempIGBT1ItlkSts)     itlk_id |= IGBT1_OVERTEMP_ITLK;
+    if (q4_module.TempIGBT1HwrItlkSts)  itlk_id |= IGBT1_HWR_OVERTEMP_ITLK;
+    if (q4_module.TempIGBT2ItlkSts)     itlk_id |= IGBT2_OVERTEMP_ITLK;
+    if (q4_module.TempIGBT2HwrItlkSts)  itlk_id |= IGBT2_HWR_OVERTEMP_ITLK;
+    if (q4_module.Driver1ErrorItlk)     itlk_id |= DRIVER1_ERROR_ITLK;
+    if (q4_module.Driver2ErrorItlk)     itlk_id |= DRIVER2_ERROR_ITLK;
+    if (q4_module.TempLItlkSts)         itlk_id |= INDUC_OVERTEMP_ITLK;
+    if (q4_module.TempHeatSinkItlkSts)  itlk_id |= HS_OVERTEMP_ITLK;
 
 }
 
 static void get_alarms_id()
 {
-    if (q4_module.IinAlarmSts)          g_alarm_id |= INPUT_OVERCURRENT_ALM;
-    if (q4_module.IoutAlarmSts)         g_alarm_id |= OUTPUT_OVERCURRENT_ALM;
-    if (q4_module.VdcLinkAlarmSts)      g_alarm_id |= INPUT_OVERVOLTAGE_ALM;
-    if (q4_module.TempIGBT1AlarmSts)    g_alarm_id |= IGBT1_OVERTEMP_ALM;
-    if (q4_module.TempIGBT2AlarmSts)    g_alarm_id |= IGBT2_OVERTEMP_ALM;
-    if (q4_module.TempLAlarmSts)        g_alarm_id |= INDUC_OVERTEMP_ALM;
-    if (q4_module.TempHeatSinkAlarmSts) g_alarm_id |= HS_OVERTEMP_ALM;
+    if (q4_module.IinAlarmSts)          alarm_id |= INPUT_OVERCURRENT_ALM;
+    if (q4_module.IoutAlarmSts)         alarm_id |= OUTPUT_OVERCURRENT_ALM;
+    if (q4_module.VdcLinkAlarmSts)      alarm_id |= INPUT_OVERVOLTAGE_ALM;
+    if (q4_module.TempIGBT1AlarmSts)    alarm_id |= IGBT1_OVERTEMP_ALM;
+    if (q4_module.TempIGBT2AlarmSts)    alarm_id |= IGBT2_OVERTEMP_ALM;
+    if (q4_module.TempLAlarmSts)        alarm_id |= INDUC_OVERTEMP_ALM;
+    if (q4_module.TempHeatSinkAlarmSts) alarm_id |= HS_OVERTEMP_ALM;
+}
+
+void send_output_q4_itlk_msg()
+{
+    send_interlock_message(itlk_id);
 }
 
 float q4_module_iout_read(void)

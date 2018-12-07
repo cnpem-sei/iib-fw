@@ -43,5 +43,6 @@ extern void clear_input_module_alarms(void);
 extern uint8_t check_input_module_alarms(void);
 extern void check_input_module_indication_leds(void);
 extern void input_module_application_readings(void);
+extern void send_input_itlk_msg(void);
 
 #endif /* INPUT_MODULE_H_ */

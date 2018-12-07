@@ -66,5 +66,6 @@ extern void clear_q1_300A_alarms(void);
 extern uint8_t check_q1_300A_alarms(void);
 extern void check_q1_300A_indication_leds(void);
 extern void q1_300A_application_readings(void);
+extern void send_output_q1_300A_itlk_msg(void);
 
 #endif /* Q1_MODULE_H_ */
