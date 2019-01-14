@@ -39,14 +39,23 @@
  * TODO: Put here your defines. Just what is local. If you don't
  * need to access it from other module, consider use a constant (const)
  */
-#define Q1_INPUT_OVERVOLTAGE_ALM                    50.0
-#define Q1_INPUT_OVERVOLTAGE_ITLK                   55.0
-#define Q1_OUTPUT_OVERVOLTAGE_ALM                   35.0
-#define Q1_OUTPUT_OVERVOLTAGE_ITLK                  40.0
-#define Q1_OUTPUT_OVERCURRENT_1_ALM                 105.0
-#define Q1_OUTPUT_OVERCURRENT_1_ITLK                115.0
-#define Q1_OUTPUT_OVERCURRENT_2_ALM                 105.0
-#define Q1_OUTPUT_OVERCURRENT_2_ITLK                115.0
+//#define Q1_INPUT_OVERVOLTAGE_ALM                    50.0
+//#define Q1_INPUT_OVERVOLTAGE_ITLK                   55.0
+//#define Q1_OUTPUT_OVERVOLTAGE_ALM                   35.0
+//#define Q1_OUTPUT_OVERVOLTAGE_ITLK                  40.0
+//#define Q1_OUTPUT_OVERCURRENT_1_ALM                 105.0
+//#define Q1_OUTPUT_OVERCURRENT_1_ITLK                115.0
+//#define Q1_OUTPUT_OVERCURRENT_2_ALM                 105.0
+//#define Q1_OUTPUT_OVERCURRENT_2_ITLK                115.0
+#define Q1_INPUT_OVERVOLTAGE_ALM                    435.0
+#define Q1_INPUT_OVERVOLTAGE_ITLK                   440.0
+#define Q1_OUTPUT_OVERVOLTAGE_ALM                   230.0
+#define Q1_OUTPUT_OVERVOLTAGE_ITLK                  235.0
+#define Q1_OUTPUT_OVERCURRENT_1_ALM                 115.0
+#define Q1_OUTPUT_OVERCURRENT_1_ITLK                120.0
+#define Q1_OUTPUT_OVERCURRENT_2_ALM                 115.0
+#define Q1_OUTPUT_OVERCURRENT_2_ITLK                120.0
+
 #define Q1_IGBT1_OVERTEMP_ALM                       00.0    // Not in use
 #define Q1_IGBT1_OVERTEMP_ITLK                      00.0    // Not in use
 #define Q1_IGBT2_OVERTEMP_ALM                       00.0    // Not in use
