@@ -445,16 +445,16 @@ void q1_application_readings()
     q1_module.VoutAlarmSts = LvCurrentCh2AlarmStatusRead();
     if(!q1_module.VoutItlkSts)q1_module.VoutItlkSts                        = LvCurrentCh2TripStatusRead();
 
-    q1_module.ExternalItlk = Gpdi1Read();
+    q1_module.ExternalItlk = Gpdi5Read();
     if(!q1_module.ExternalItlkSts) q1_module.ExternalItlkSts               = Gpdi5Read();
 
-    q1_module.LeakageCurrent = Gpdi2Read();
+    q1_module.LeakageCurrent = Gpdi6Read();
     if(!q1_module.LeakageCurrentSts) q1_module.LeakageCurrentSts           = Gpdi6Read();
 
-    q1_module.Rack = Gpdi3Read();
+    q1_module.Rack = Gpdi7Read();
     if(!q1_module.RackSts) q1_module.RackSts                               = Gpdi7Read();
 
-    q1_module.Relay = !Gpdi4Read();
+    q1_module.Relay = !Gpdi8Read();
 
     q1_module.Driver1Error = Driver1TopErrRead();
     if(!q1_module.Driver1ErrorItlk) q1_module.Driver1ErrorItlk             = Driver1TopErrRead();
