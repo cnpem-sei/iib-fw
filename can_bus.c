@@ -257,7 +257,7 @@ void InitCan(uint32_t ui32SysClock)
      * Message object to reset events (interlock and alarms)
      * */
 
-    receive_message.ui32MsgID = ResetMsgId;
+    receive_message.ui32MsgID = 0;
     receive_message.ui32MsgLen = RESET_ITLK_MESSAGE_LEN;
 
     CANMessageSet(CAN0_BASE, RESET_ITLK_MESSAGE_OBJ_ID, &receive_message,
@@ -277,7 +277,6 @@ void InitCan(uint32_t ui32SysClock)
     can_address = BoardAddressRead();
 
     if (can_address == 0) can_address = 1;
-    can_address = 4;
 
 }
 //---------------------------------------------------------------------------

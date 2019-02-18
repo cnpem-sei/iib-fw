@@ -39,22 +39,23 @@
  * TODO: Put here your defines. Just what is local. If you don't
  * need to access it from other module, consider use a constant (const)
  */
-//#define Q1_INPUT_OVERVOLTAGE_ALM                    50.0
-//#define Q1_INPUT_OVERVOLTAGE_ITLK                   55.0
-//#define Q1_OUTPUT_OVERVOLTAGE_ALM                   35.0
-//#define Q1_OUTPUT_OVERVOLTAGE_ITLK                  40.0
-//#define Q1_OUTPUT_OVERCURRENT_1_ALM                 105.0
-//#define Q1_OUTPUT_OVERCURRENT_1_ITLK                115.0
-//#define Q1_OUTPUT_OVERCURRENT_2_ALM                 105.0
-//#define Q1_OUTPUT_OVERCURRENT_2_ITLK                115.0
-#define Q1_INPUT_OVERVOLTAGE_ALM                    435.0
-#define Q1_INPUT_OVERVOLTAGE_ITLK                   440.0
-#define Q1_OUTPUT_OVERVOLTAGE_ALM                   230.0
-#define Q1_OUTPUT_OVERVOLTAGE_ITLK                  235.0
-#define Q1_OUTPUT_OVERCURRENT_1_ALM                 115.0
-#define Q1_OUTPUT_OVERCURRENT_1_ITLK                120.0
-#define Q1_OUTPUT_OVERCURRENT_2_ALM                 115.0
-#define Q1_OUTPUT_OVERCURRENT_2_ITLK                120.0
+#define Q1_INPUT_OVERVOLTAGE_ALM                    50.0
+#define Q1_INPUT_OVERVOLTAGE_ITLK                   55.0
+#define Q1_OUTPUT_OVERVOLTAGE_ALM                   35.0
+#define Q1_OUTPUT_OVERVOLTAGE_ITLK                  40.0
+#define Q1_OUTPUT_OVERCURRENT_1_ALM                 105.0
+#define Q1_OUTPUT_OVERCURRENT_1_ITLK                115.0
+#define Q1_OUTPUT_OVERCURRENT_2_ALM                 105.0
+#define Q1_OUTPUT_OVERCURRENT_2_ITLK                115.0
+
+//#define Q1_INPUT_OVERVOLTAGE_ALM                    435.0
+//#define Q1_INPUT_OVERVOLTAGE_ITLK                   440.0
+//#define Q1_OUTPUT_OVERVOLTAGE_ALM                   230.0
+//#define Q1_OUTPUT_OVERVOLTAGE_ITLK                  235.0
+//#define Q1_OUTPUT_OVERCURRENT_1_ALM                 115.0
+//#define Q1_OUTPUT_OVERCURRENT_1_ITLK                120.0
+//#define Q1_OUTPUT_OVERCURRENT_2_ALM                 115.0
+//#define Q1_OUTPUT_OVERCURRENT_2_ITLK                120.0
 
 #define Q1_IGBT1_OVERTEMP_ALM                       00.0    // Not in use
 #define Q1_IGBT1_OVERTEMP_ITLK                      00.0    // Not in use
@@ -454,16 +455,20 @@ void q1_application_readings()
     q1_module.VoutAlarmSts = LvCurrentCh2AlarmStatusRead();
     if(!q1_module.VoutItlkSts)q1_module.VoutItlkSts                        = LvCurrentCh2TripStatusRead();
 
-    q1_module.ExternalItlk = Gpdi5Read();
-    if(!q1_module.ExternalItlkSts) q1_module.ExternalItlkSts               = Gpdi5Read();
+    //q1_module.ExternalItlk = Gpdi5Read();
+    //if(!q1_module.ExternalItlkSts) q1_module.ExternalItlkSts               = Gpdi5Read();
+    q1_module.ExternalItlk = Gpdi1Read();
+    if(!q1_module.ExternalItlkSts) q1_module.ExternalItlkSts               = Gpdi1Read();
 
-    q1_module.LeakageCurrent = Gpdi6Read();
-    if(!q1_module.LeakageCurrentSts) q1_module.LeakageCurrentSts           = Gpdi6Read();
+    //q1_module.LeakageCurrent = Gpdi6Read();
+    //if(!q1_module.LeakageCurrentSts) q1_module.LeakageCurrentSts           = Gpdi6Read();
+    q1_module.LeakageCurrent = Gpdi2Read();
+    if(!q1_module.LeakageCurrentSts) q1_module.LeakageCurrentSts           = Gpdi2Read();
 
-    q1_module.Rack = Gpdi7Read();
-    if(!q1_module.RackSts) q1_module.RackSts                               = Gpdi7Read();
-
-    q1_module.Relay = !Gpdi8Read();
+    //q1_module.Rack = Gpdi7Read();
+    //if(!q1_module.RackSts) q1_module.RackSts                               = Gpdi7Read();
+    q1_module.Rack = Gpdi3Read();
+    if(!q1_module.RackSts) q1_module.RackSts                               = Gpdi3Read();    q1_module.Relay = !Gpdi8Read();
 
     q1_module.Driver1Error = Driver1TopErrRead();
     if(!q1_module.Driver1ErrorItlk) q1_module.Driver1ErrorItlk             = Driver1TopErrRead();

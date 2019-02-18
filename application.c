@@ -28,9 +28,9 @@ void AppConfiguration(void)
     // This parameter guide the firmware behavior
     // Each Model has a different variable list that need to be check
 
-    PowerModuleModel = OUTPUT_Q1_MODULE;
+    //PowerModuleModel = OUTPUT_Q1_MODULE;
     //PowerModuleModel = OUTPUT_Q1_300A_MODULE;
-    //PowerModuleModel = OUTPUT_Q4_MODULE;
+    PowerModuleModel = OUTPUT_Q4_MODULE;
     //PowerModuleModel = RECTIFIER_MODULE;
     //PowerModuleModel = INPUT_MODULE;
     //PowerModuleModel = COMMAND_DRAWER_MODULE;
