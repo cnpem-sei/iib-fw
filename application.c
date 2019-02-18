@@ -388,7 +388,7 @@ void AlarmAppCheck(void)
 
    if(test) {
        AlarmSet();
-       send_alarm_message();
+       send_data_message(1);
    }
 }
 

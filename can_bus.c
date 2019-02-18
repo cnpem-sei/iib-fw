@@ -277,21 +277,11 @@ void InitCan(uint32_t ui32SysClock)
     can_address = BoardAddressRead();
 
     if (can_address == 0) can_address = 1;
+    can_address = 4;
 
 }
 //---------------------------------------------------------------------------
 
-void send_heart_beat_message()
-{
-    heart_beat_data[0] = can_address;
-
-    transmit_message.ui32MsgID = HeartBeatMsgId;
-    transmit_message.ui32MsgLen = HEART_BEAT_MESSAGE_LEN;
-    transmit_message.pui8MsgData = heart_beat_data;
-
-    CANMessageSet(CAN0_BASE, HEART_BEAT_MESSAGE_OB_ID, &transmit_message,
-                                                              MSG_OBJ_TYPE_TX);
-}
 
 void handle_reset_message(void)
 {
@@ -306,49 +296,6 @@ void handle_reset_message(void)
         AlarmClear();
         InterlockClear();
     }
-}
-
-void send_interlock_message(uint32_t itlk)
-{
-    itlk_message_data[0] = can_address;
-    itlk_message_data[1] = 0;
-    itlk_message_data[2] = 0;
-    itlk_message_data[3] = 0;
-
-    u32Nchars.u32 = itlk;
-
-    itlk_message_data[4] = u32Nchars.c[0];
-    itlk_message_data[5] = u32Nchars.c[1];
-    itlk_message_data[6] = u32Nchars.c[2];
-    itlk_message_data[7] = u32Nchars.c[3];
-
-    transmit_message.ui32MsgID = ItlkMsgId;
-    transmit_message.pui8MsgData = itlk_message_data;
-
-    CANMessageSet(CAN0_BASE, INTERLOCK_MESSAGE_OBJ_ID, &transmit_message,
-                                                              MSG_OBJ_TYPE_TX);
-
-}
-
-void send_alarm_message(uint32_t alarm)
-{
-    alarm_message_data[0] = can_address;
-    alarm_message_data[1] = 0;
-    alarm_message_data[2] = 0;
-    alarm_message_data[3] = 0;
-
-    u32Nchars.u32 = alarm;
-
-    alarm_message_data[4] = u32Nchars.c[0];
-    alarm_message_data[5] = u32Nchars.c[1];
-    alarm_message_data[6] = u32Nchars.c[2];
-    alarm_message_data[7] = u32Nchars.c[3];
-
-    transmit_message.ui32MsgID = ItlkMsgId;
-    transmit_message.pui8MsgData = alarm_message_data;
-
-    CANMessageSet(CAN0_BASE, ALARM_MESSAGE_OBJ_ID, &transmit_message,
-                                                              MSG_OBJ_TYPE_TX);
 }
 
 void send_data_message(uint8_t var)

@@ -240,9 +240,9 @@ void command_module_application_readings()
     command_module.VoutAlarmSts = VoltageCh2AlarmStatusRead();
     if (!command_module.VoutItlkSts) command_module.VoutItlkSts = VoltageCh2TripStatusRead();
 
-    if(!command_module.ExtItlkSts) command_module.ExtItlkSts = Gpdi1Read();
+    if(!command_module.ExtItlkSts) command_module.ExtItlkSts = Gpdi5Read();
 
-    if(!command_module.ExtItlk2Sts) command_module.ExtItlk2Sts = Gpdi5Read();
+    if(!command_module.ExtItlk2Sts) command_module.ExtItlk2Sts = Gpdi9Read();
 
     command_module_map_vars();
 
@@ -264,7 +264,7 @@ void send_command_module_data()
 {
     uint8_t i;
 
-    for (i = 0; i < 6; i++) send_data_message(i);
+    for (i = 2; i < 6; i++) send_data_message(i);
 }
 
 static void get_itlks_id()
@@ -287,7 +287,7 @@ static void get_alarms_id()
 
 void send_command_itlk_msg()
 {
-    send_interlock_message(itlk_id);
+    send_data_message(0);
 }
 
 float command_drawer_temp_heatsink_read(void)

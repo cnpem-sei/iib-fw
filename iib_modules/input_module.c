@@ -297,7 +297,7 @@ void input_module_map_vars()
 void send_input_module_data()
 {
     uint8_t i;
-    for (i = 0; i < 6; i++) send_data_message(i);
+    for (i = 2; i < 6; i++) send_data_message(i);
 }
 
 static void get_itlks_id()
@@ -320,7 +320,7 @@ static void get_alarms_id()
 
 void send_input_itlk_msg()
 {
-    send_interlock_message(itlk_id);
+    send_data_message(0);
 }
 
 float input_module_iin_read(void)

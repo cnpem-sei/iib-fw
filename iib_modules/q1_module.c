@@ -498,7 +498,7 @@ void q1_map_vars()
 void send_q1_module_data()
 {
     uint8_t i;
-    for (i = 0; i < 13; i++) send_data_message(i);
+    for (i = 2; i < 13; i++) send_data_message(i);
 }
 
 static void get_itlks_id()
@@ -533,7 +533,8 @@ static void get_alarms_id()
 
 void send_output_q1_itlk_msg()
 {
-    send_interlock_message(itlk_id);
+    //send_interlock_message(itlk_id);
+    send_data_message(0);
 }
 
 float q1_module_vout_read(void)
