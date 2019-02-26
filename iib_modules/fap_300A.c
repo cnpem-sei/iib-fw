@@ -373,39 +373,39 @@ uint8_t check_fap_300A_alarms()
 void check_fap_300A_indication_leds()
 {
     // Output over voltage
-    if(fap_300A.VoutItlkSts) Led2TurnOn();
+    if(fap_300A.VoutItlkSts) Led2TurnOff();
     else if(fap_300A.VoutAlarmSts) Led2Toggle();
-    else Led2TurnOff();
+    else Led2TurnOn();
 
     // Input over voltage
-    if(fap_300A.VinItlkSts) Led3TurnOn();
+    if(fap_300A.VinItlkSts) Led3TurnOff();
     else if(fap_300A.VinAlarmSts) Led3Toggle();
-    else Led3TurnOff();
+    else Led3TurnOn();
 
     // Output over current
-    if (fap_300A.IoutA1ItlkSts || fap_300A.IoutA2ItlkSts) Led4TurnOn();
+    if (fap_300A.IoutA1ItlkSts || fap_300A.IoutA2ItlkSts) Led4TurnOff();
     else if(fap_300A.IoutA1AlarmSts || fap_300A.IoutA2AlarmSts) Led4Toggle();
-    else Led4TurnOff();
+    else Led4TurnOn();
 
     // Over temperature
-    if(fap_300A.TempIGBT1ItlkSts || fap_300A.TempIGBT2ItlkSts ||  fap_300A.TempLItlkSts || fap_300A.TempHeatSinkItlkSts || fap_300A.TempIGBT1HwrItlkSts || fap_300A.TempIGBT2HwrItlkSts) Led5TurnOn();
+    if(fap_300A.TempIGBT1ItlkSts || fap_300A.TempIGBT2ItlkSts ||  fap_300A.TempLItlkSts || fap_300A.TempHeatSinkItlkSts || fap_300A.TempIGBT1HwrItlkSts || fap_300A.TempIGBT2HwrItlkSts) Led5TurnOff();
     else if(fap_300A.TempIGBT1AlarmSts || fap_300A.TempIGBT2AlarmSts ||  fap_300A.TempLAlarmSts || fap_300A.TempHeatSinkAlarmSts) Led5Toggle();
-    else Led5TurnOff();
+    else Led5TurnOn();
 
-    if(fap_300A.ExternalItlkSts) Led6TurnOn();
-    else Led6TurnOff();
+    if(fap_300A.ExternalItlkSts) Led6TurnOff();
+    else Led6TurnOn();
 
-    if(fap_300A.LeakageCurrentSts) Led7TurnOn();
-    else Led7TurnOff();
+    if(fap_300A.LeakageCurrentSts) Led7TurnOff();
+    else Led7TurnOn();
 
-    if(fap_300A.RackSts) Led8TurnOn();
-    else Led8TurnOff();
+    if(fap_300A.RackSts) Led8TurnOff();
+    else Led8TurnOn();
 
-    if(fap_300A.Driver1ErrorItlk || fap_300A.Driver2ErrorItlk) Led9TurnOn();
-    else if(!InterlockRead()) Led9TurnOff();
+    if(fap_300A.Driver1ErrorItlk || fap_300A.Driver2ErrorItlk) Led9TurnOff();
+    else if(!InterlockRead()) Led9TurnOn();
 
-    if(InterlockRead()) Led10TurnOn();
-    else Led10TurnOff();
+    if(InterlockRead()) Led10TurnOff();
+    else Led10TurnOn();
 }
 
 void fap_300A_application_readings()
@@ -468,6 +468,12 @@ void fap_300A_application_readings()
     fap_300A_map_vars();
     get_itlks_id();
     get_alarms_id();
+}
+
+void fap_300A_power_on_check()
+{
+    if (Gpdi4Read()) ReleItlkTurnOn();
+    else ReleItlkTurnOff();
 }
 
 void fap_300A_map_vars()

@@ -237,28 +237,28 @@ uint8_t check_input_module_alarms()
 void check_input_module_indication_leds()
 {
     // Input Over Current
-    if(input_module.IinItlkSts) Led2TurnOn();
+    if(input_module.IinItlkSts) Led2TurnOff();
     else if(input_module.IinAlarmSts) Led2Toggle();
-    else Led2TurnOff();
+    else Led2TurnOn();
 
     // Dc-Link Overvoltage
-    if(input_module.VdcLinkItlkSts) Led3TurnOn();
+    if(input_module.VdcLinkItlkSts) Led3TurnOff();
     else if(input_module.VdcLinkAlarmSts) Led3Toggle();
-    else Led3TurnOff();
+    else Led3TurnOn();
 
     // Heatsink Over Temperature
-    if(input_module.TempHeatsinkItlkSts) Led4TurnOn();
+    if(input_module.TempHeatsinkItlkSts) Led4TurnOff();
     else if(input_module.TempHeatsinkAlarmSts) Led4Toggle();
-    else Led4TurnOff();
+    else Led4TurnOn();
 
     // Inductor Over Temperature
-    if(input_module.TempLItlkSts) Led5TurnOn();
+    if(input_module.TempLItlkSts) Led5TurnOff();
     else if(input_module.TempLAlarmSts) Led5Toggle();
-    else Led5TurnOff();
+    else Led5TurnOn();
 
     // Driver Error
-    if(input_module.Driver1ErrorItlk || input_module.Driver2ErrorItlk) Led6TurnOn();
-    else Led6TurnOff();
+    if(input_module.Driver1ErrorItlk || input_module.Driver2ErrorItlk) Led6TurnOff();
+    else Led6TurnOn();
 }
 
 void input_module_application_readings()

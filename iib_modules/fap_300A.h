@@ -67,5 +67,6 @@ extern uint8_t check_fap_300A_alarms(void);
 extern void check_fap_300A_indication_leds(void);
 extern void fap_300A_application_readings(void);
 extern void send_output_fap_300A_itlk_msg(void);
+extern void fap_300A_power_on_check(void);
 
 #endif /* FAP_300A_H_ */

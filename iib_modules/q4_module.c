@@ -289,33 +289,33 @@ uint8_t check_q4_alarms(void)
 void check_q4_indications_leds()
 {
     // Input over voltage
-    if(q4_module.VdcLinkItlkSts) Led2TurnOn();
+    if(q4_module.VdcLinkItlkSts) Led2TurnOff();
     else if(q4_module.VdcLinkAlarmSts) Led2Toggle();
-    else Led2TurnOff();
+    else Led2TurnOn();
 
     // Input over current
-    if(q4_module.IinItlkSts) Led3TurnOn();
+    if(q4_module.IinItlkSts) Led3TurnOff();
     else if(q4_module.IinAlarmSts) Led3Toggle();
-    else Led3TurnOff();
+    else Led3TurnOn();
 
     // Output over current
-    if(q4_module.IoutItlkSts) Led4TurnOn();
+    if(q4_module.IoutItlkSts) Led4TurnOff();
     else if(q4_module.IoutAlarmSts) Led4Toggle();
-    else Led4TurnOff();
+    else Led4TurnOn();
 
     // Output over current
-    if(q4_module.Driver1ErrorItlk || q4_module.Driver2ErrorItlk) Led5TurnOn();
-    else Led5TurnOff();
+    if(q4_module.Driver1ErrorItlk || q4_module.Driver2ErrorItlk) Led5TurnOff();
+    else Led5TurnOn();
 
     // Heatsink Over temperature
-    if(q4_module.TempHeatSinkItlkSts) Led6TurnOn();
+    if(q4_module.TempHeatSinkItlkSts) Led6TurnOff();
     else if(q4_module.TempHeatSinkAlarmSts) Led6Toggle();
-    else Led6TurnOff();
+    else Led6TurnOn();
 
     // Inductor Over temperature
-    if(q4_module.TempLItlkSts) Led7TurnOn();
+    if(q4_module.TempLItlkSts) Led7TurnOff();
     else if(q4_module.TempLAlarmSts) Led7Toggle();
-    else Led7TurnOff();
+    else Led7TurnOn();
 }
 
 void q4_application_readings()

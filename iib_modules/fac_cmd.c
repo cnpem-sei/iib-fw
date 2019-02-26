@@ -199,27 +199,27 @@ uint8_t check_fac_cmd_alarms()
 
 void check_fac_cmd_indication_leds()
 {
-    if (fac_cmd.VcapBankItlkSts) Led2TurnOn();
+    if (fac_cmd.VcapBankItlkSts) Led2TurnOff();
     else if (fac_cmd.VcapBankAlarmSts) Led2Toggle();
-    else Led2TurnOff();
+    else Led2TurnOn();
 
-    if (fac_cmd.VoutItlkSts) Led3TurnOn();
+    if (fac_cmd.VoutItlkSts) Led3TurnOff();
     else if (fac_cmd.VoutAlarmSts) Led3Toggle();
-    else Led3TurnOff();
+    else Led3TurnOn();
 
-    if (fac_cmd.TempHeatSinkItlkSts) Led4TurnOn();
+    if (fac_cmd.TempHeatSinkItlkSts) Led4TurnOff();
     else if (fac_cmd.TempHeatSinkAlarmSts) Led4Toggle();
-    else Led4TurnOff();
+    else Led4TurnOn();
 
-    if (fac_cmd.TempLItlkSts) Led5TurnOn();
-    else if (fac_cmd.TempLAlarmSts) Led5TurnOff();
-    else Led5TurnOff();
+    if (fac_cmd.TempLItlkSts) Led5TurnOff();
+    else if (fac_cmd.TempLAlarmSts) Led5Toggle();
+    else Led5TurnOn();
 
-    if (fac_cmd.ExtItlkSts) Led6TurnOn();
-    else Led6TurnOff();
+    if (fac_cmd.ExtItlkSts) Led6TurnOff();
+    else Led6TurnOn();
 
-    if (fac_cmd.ExtItlk2Sts) Led7TurnOn();
-    else Led7TurnOff();
+    if (fac_cmd.ExtItlk2Sts) Led7TurnOff();
+    else Led7TurnOn();
 }
 
 void fac_cmd_application_readings()

@@ -79,8 +79,16 @@ void AppConfiguration(void)
     }
     // End of configuration
     // Turn on Led1 (board started)
-    Led1TurnOn();
-
+    Led1TurnOff();
+    Led2TurnOn();
+    Led3TurnOn();
+    Led4TurnOn();
+    Led5TurnOn();
+    Led6TurnOn();
+    Led7TurnOn();
+    Led8TurnOn();
+    Led9TurnOn();
+    Led10TurnOn();
 }
 
 // Set Interlock clear command
@@ -501,7 +509,7 @@ void Application(void)
             {
              case OUTPUT_FAP_MODULE:
                   ReleAuxTurnOn();
-                  ReleItlkTurnOn();
+                  ReleItlkTurnOff();
                   break;
 
              case OUTPUT_Q4_MODULE:
@@ -530,7 +538,7 @@ void Application(void)
 
              case OUTPUT_FAP_300A_MODULE:
                  ReleAuxTurnOn();
-                 ReleItlkTurnOn();
+                 ReleItlkTurnOff();
                  break;
 
              default:
@@ -567,6 +575,35 @@ void send_data_schedule()
 
         case OUTPUT_FAP_300A_MODULE:
             send_fap_300A_data();
+            break;
+
+        default:
+            break;
+    }
+}
+
+void power_on_check()
+{
+    switch(AppType())
+    {
+        case OUTPUT_FAP_MODULE:
+            fap_power_on_check();
+            break;
+
+        case OUTPUT_Q4_MODULE:
+            break;
+
+        case RECTIFIER_MODULE:
+            break;
+
+        case INPUT_MODULE:
+            break;
+
+        case FAC_CMD_MODULE:
+            break;
+
+        case OUTPUT_FAP_300A_MODULE:
+            fap_300A_power_on_check();
             break;
 
         default:

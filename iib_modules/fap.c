@@ -382,39 +382,39 @@ uint8_t check_fap_alarms()
 void check_fap_indication_leds()
 {
     // Output over voltage
-    if(fap.VoutItlkSts) Led2TurnOn();
+    if(fap.VoutItlkSts) Led2TurnOff();
     else if(fap.VoutAlarmSts) Led2Toggle();
-    else Led2TurnOff();
+    else Led2TurnOn();
 
     // Input over voltage
-    if(fap.VinItlkSts) Led3TurnOn();
+    if(fap.VinItlkSts) Led3TurnOff();
     else if(fap.VinAlarmSts) Led3Toggle();
-    else Led3TurnOff();
+    else Led3TurnOn();
 
     // Output over current
-    if (fap.IoutA1ItlkSts || fap.IoutA2ItlkSts) Led4TurnOn();
+    if (fap.IoutA1ItlkSts || fap.IoutA2ItlkSts) Led4TurnOff();
     else if(fap.IoutA1AlarmSts || fap.IoutA2AlarmSts) Led4Toggle();
-    else Led4TurnOff();
+    else Led4TurnOn();
 
     // Over temperature
-    if(fap.TempIGBT1ItlkSts || fap.TempIGBT2ItlkSts ||  fap.TempLItlkSts || fap.TempHeatSinkItlkSts || fap.TempIGBT1HwrItlkSts || fap.TempIGBT2HwrItlkSts) Led5TurnOn();
+    if(fap.TempIGBT1ItlkSts || fap.TempIGBT2ItlkSts ||  fap.TempLItlkSts || fap.TempHeatSinkItlkSts || fap.TempIGBT1HwrItlkSts || fap.TempIGBT2HwrItlkSts) Led5TurnOff();
     else if(fap.TempIGBT1AlarmSts || fap.TempIGBT2AlarmSts ||  fap.TempLAlarmSts || fap.TempHeatSinkAlarmSts) Led5Toggle();
-    else Led5TurnOff();
+    else Led5TurnOn();
 
-    if(fap.ExternalItlkSts) Led6TurnOn();
-    else Led6TurnOff();
+    if(fap.ExternalItlkSts) Led6TurnOff();
+    else Led6TurnOn();
 
-    if(fap.LeakageCurrentSts) Led7TurnOn();
-    else Led7TurnOff();
+    if(fap.LeakageCurrentSts) Led7TurnOff();
+    else Led7TurnOn();
 
-    if(fap.RackSts) Led8TurnOn();
-    else Led8TurnOff();
+    if(fap.RackSts) Led8TurnOff();
+    else Led8TurnOn();
 
-    if(fap.Driver1ErrorItlk || fap.Driver2ErrorItlk) Led9TurnOn();
-    else if(!InterlockRead()) Led9TurnOff();
+    if(fap.Driver1ErrorItlk || fap.Driver2ErrorItlk) Led9TurnOff();
+    else if(!InterlockRead()) Led9TurnOn();
 
-    if(InterlockRead()) Led10TurnOn();
-    else Led10TurnOff();
+    if(InterlockRead()) Led10TurnOff();
+    else Led10TurnOn();
 }
 
 void fap_application_readings()
@@ -468,7 +468,9 @@ void fap_application_readings()
     //fap.Rack = Gpdi7Read();
     //if(!fap.RackSts) fap.RackSts                               = Gpdi7Read();
     fap.Rack = Gpdi3Read();
-    if(!fap.RackSts) fap.RackSts                               = Gpdi3Read();    fap.Relay = !Gpdi8Read();
+    if(!fap.RackSts) fap.RackSts                               = Gpdi3Read();
+
+    fap.Relay = !Gpdi8Read();
 
     fap.Driver1Error = Driver1TopErrRead();
     if(!fap.Driver1ErrorItlk) fap.Driver1ErrorItlk             = Driver1TopErrRead();
@@ -482,6 +484,13 @@ void fap_application_readings()
     get_itlks_id();
     get_alarms_id();
 }
+
+void fap_power_on_check()
+{
+    if (Gpdi8Read()) ReleItlkTurnOn();
+    else ReleItlkTurnOff();
+}
+
 
 void fap_map_vars()
 {

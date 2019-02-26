@@ -67,5 +67,6 @@ extern uint8_t check_fap_alarms(void);
 extern void check_fap_indication_leds(void);
 extern void fap_application_readings(void);
 extern void send_output_fap_itlk_msg(void);
+extern void fap_power_on_check(void);
 
 #endif /* FAP_H_ */

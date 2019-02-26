@@ -391,23 +391,23 @@ uint8_t check_rectifier_alarms()
 void check_rectifier_indication_leds()
 {
     // Rectifier Output Over Voltage
-    if(rectf_module.VoutRectf1ItlkSts || rectf_module.VoutRectf2ItlkSts) Led2TurnOn();
+    if(rectf_module.VoutRectf1ItlkSts || rectf_module.VoutRectf2ItlkSts) Led2TurnOff();
     else if(rectf_module.VoutRectf1AlarmSts || rectf_module.VoutRectf2AlarmSts) Led2Toggle();
-    else Led2TurnOff();
+    else Led2TurnOn();
 
     // Rectifier Output Over Current
-    if(rectf_module.IoutRectf1ItlkSts || rectf_module.IoutRectf1ItlkSts) Led3TurnOn();
+    if(rectf_module.IoutRectf1ItlkSts || rectf_module.IoutRectf1ItlkSts) Led3TurnOff();
     else if(rectf_module.IoutRectf1AlarmSts || rectf_module.IoutRectf1AlarmSts) Led3Toggle();
-    else Led3TurnOff();
+    else Led3TurnOn();
 
     // Rectifier Over Temperature
-    if(rectf_module.TempHeatSinkItlkSts || rectf_module.TempWaterItlkSts || rectf_module.TempModule1ItlkSts || rectf_module.TempModule2ItlkSts || rectf_module.TempL1ItlkSts || rectf_module.TempL2ItlkSts) Led4TurnOn();
+    if(rectf_module.TempHeatSinkItlkSts || rectf_module.TempWaterItlkSts || rectf_module.TempModule1ItlkSts || rectf_module.TempModule2ItlkSts || rectf_module.TempL1ItlkSts || rectf_module.TempL2ItlkSts) Led4TurnOff();
     else if(rectf_module.TempHeatSinkAlarmSts || rectf_module.TempWaterAlarmSts || rectf_module.TempModule1AlarmSts || rectf_module.TempModule2AlarmSts || rectf_module.TempL1AlarmSts || rectf_module.TempL2AlarmSts) Led4Toggle();
-    else Led4TurnOff();
+    else Led4TurnOn();
 
     // External interlock or Driver error
-    if(rectf_module.AcPhaseFaultSts || rectf_module.AcOverCurrentSts || rectf_module.AcTransformerOverTempSts || rectf_module.WaterFluxInterlockSts) Led5TurnOn();
-    else if(!InterlockRead())Led5TurnOff();
+    if(rectf_module.AcPhaseFaultSts || rectf_module.AcOverCurrentSts || rectf_module.AcTransformerOverTempSts || rectf_module.WaterFluxInterlockSts) Led5TurnOff();
+    else if(!InterlockRead())Led5TurnOn();
 }
 
 void rectifier_application_readings()
