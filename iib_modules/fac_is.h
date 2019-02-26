@@ -37,13 +37,5 @@
 #define FAC_IS_INDUC_OVERTEMP_ALM              0x00000008
 
 extern void init_fac_is(void);
-extern void clear_fac_is_interlocks(void);
-extern uint8_t check_fac_is_interlocks(void);
-extern void clear_fac_is_alarms(void);
-extern uint8_t check_fac_is_alarms(void);
-extern void check_fac_is_indication_leds(void);
-extern void fac_is_application_readings(void);
-extern void send_fac_is_itlk_msg(void);
-extern void send_fac_is_data(void);
 
 #endif /* FAC_IS_H_ */

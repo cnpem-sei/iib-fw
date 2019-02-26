@@ -31,6 +31,7 @@
 #include "leds.h"
 #include "can_bus.h"
 #include "input.h"
+#include "iib_module.h"
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -183,9 +184,289 @@ static uint32_t alarm_id;
 
 static void get_itlks_id();
 static void get_alarms_id();
-static void fap_map_vars();
+static void map_vars();
+static void configure_module();
+static void clear_interlocks();
+static uint8_t check_interlocks();
+static void clear_alarms();
+static uint8_t check_alarms();
+static void check_indication_leds();
+static void application_readings();
+static void send_data();
+static void send_itlk_msg();
+static void power_on_check();
 
 void init_fap()
+{
+    init_iib_module(&g_iib_module, &clear_interlocks, &check_interlocks,
+                        &clear_alarms, &check_alarms, &check_indication_leds,
+                        &application_readings, &power_on_check,
+                        &send_data, &send_itlk_msg);
+
+    configure_module();
+}
+
+static void clear_interlocks()
+{
+    fap.VinItlkSts            = 0;
+    fap.VoutItlkSts           = 0;
+    fap.IoutA1ItlkSts         = 0;
+    fap.IoutA2ItlkSts         = 0;
+    fap.TempIGBT1ItlkSts      = 0;
+    fap.TempIGBT1HwrItlkSts   = 0;
+    fap.TempIGBT2ItlkSts      = 0;
+    fap.TempIGBT2HwrItlkSts   = 0;
+    fap.Driver1ErrorItlk      = 0;
+    fap.Driver2ErrorItlk      = 0;
+    fap.TempLItlkSts          = 0;
+    fap.TempHeatSinkItlkSts   = 0;
+    fap.ExternalItlkSts       = 0;
+    fap.LeakageCurrentSts     = 0;
+    fap.RackSts               = 0;
+
+    itlk_id = 0;
+}
+
+static uint8_t check_interlocks()
+{
+    uint8_t test = 0;
+
+    test |= fap.VinItlkSts;
+    test |= fap.VoutItlkSts;
+    test |= fap.IoutA1ItlkSts;
+    test |= fap.IoutA2ItlkSts;
+    test |= fap.TempIGBT1ItlkSts;
+    test |= fap.TempIGBT1HwrItlkSts;
+    test |= fap.TempIGBT2ItlkSts;
+    test |= fap.TempIGBT2HwrItlkSts;
+    test |= fap.Driver1ErrorItlk;
+    test |= fap.Driver2ErrorItlk;
+    test |= fap.TempLItlkSts;
+    test |= fap.TempHeatSinkItlkSts;
+    test |= fap.ExternalItlkSts;
+    test |= fap.LeakageCurrentSts;
+    test |= fap.RackSts;
+
+    return test;
+}
+
+static void clear_alarms()
+{
+    fap.VinItlkSts             = 0;
+    fap.VoutItlkSts            = 0;
+    fap.IoutA1ItlkSts          = 0;
+    fap.IoutA2ItlkSts          = 0;
+    fap.TempIGBT1ItlkSts       = 0;
+    fap.TempIGBT1HwrItlkSts    = 0;
+    fap.TempIGBT2ItlkSts       = 0;
+    fap.TempIGBT2HwrItlkSts    = 0;
+    fap.Driver1ErrorItlk       = 0;
+    fap.Driver2ErrorItlk       = 0;
+    fap.TempLItlkSts           = 0;
+    fap.TempHeatSinkItlkSts    = 0;
+    fap.ExternalItlkSts        = 0;
+    fap.LeakageCurrentSts      = 0;
+    fap.RackSts                = 0;
+
+    alarm_id = 0;
+}
+
+static uint8_t check_alarms()
+{
+    uint8_t test = 0;
+
+    test |= fap.VinAlarmSts;
+    test |= fap.VoutAlarmSts;
+    test |= fap.IoutA1AlarmSts;
+    test |= fap.IoutA2AlarmSts;
+    test |= fap.TempIGBT1AlarmSts;
+    test |= fap.TempIGBT2AlarmSts;
+    test |= fap.TempLAlarmSts;
+    test |= fap.TempHeatSinkAlarmSts;
+
+    return test;
+}
+
+static void check_indication_leds()
+{
+    // Output over voltage
+    if(fap.VoutItlkSts) Led2TurnOff();
+    else if(fap.VoutAlarmSts) Led2Toggle();
+    else Led2TurnOn();
+
+    // Input over voltage
+    if(fap.VinItlkSts) Led3TurnOff();
+    else if(fap.VinAlarmSts) Led3Toggle();
+    else Led3TurnOn();
+
+    // Output over current
+    if (fap.IoutA1ItlkSts || fap.IoutA2ItlkSts) Led4TurnOff();
+    else if(fap.IoutA1AlarmSts || fap.IoutA2AlarmSts) Led4Toggle();
+    else Led4TurnOn();
+
+    // Over temperature
+    if(fap.TempIGBT1ItlkSts || fap.TempIGBT2ItlkSts ||  fap.TempLItlkSts || fap.TempHeatSinkItlkSts || fap.TempIGBT1HwrItlkSts || fap.TempIGBT2HwrItlkSts) Led5TurnOff();
+    else if(fap.TempIGBT1AlarmSts || fap.TempIGBT2AlarmSts ||  fap.TempLAlarmSts || fap.TempHeatSinkAlarmSts) Led5Toggle();
+    else Led5TurnOn();
+
+    if(fap.ExternalItlkSts) Led6TurnOff();
+    else Led6TurnOn();
+
+    if(fap.LeakageCurrentSts) Led7TurnOff();
+    else Led7TurnOn();
+
+    if(fap.RackSts) Led8TurnOff();
+    else Led8TurnOn();
+
+    if(fap.Driver1ErrorItlk || fap.Driver2ErrorItlk) Led9TurnOff();
+    else if(!InterlockRead()) Led9TurnOn();
+
+    if(InterlockRead()) Led10TurnOff();
+    else Led10TurnOn();
+}
+
+static void application_readings()
+{
+    fap.TempHeatSink.f = (float) Pt100ReadCh1();//PT100 CH1
+    fap.TempHeatSinkAlarmSts = Pt100ReadCh1AlarmSts();
+    if(!fap.TempHeatSinkItlkSts)fap.TempHeatSinkItlkSts        = Pt100ReadCh1TripSts();
+
+    fap.TempL.f = (float) Pt100ReadCh2();//PT100 CH2
+    fap.TempLAlarmSts = Pt100ReadCh2AlarmSts();
+    if(!fap.TempLItlkSts)fap.TempLItlkSts                      = Pt100ReadCh2TripSts();
+
+    fap.TempIGBT1.f = 0.0;
+    fap.TempIGBT1AlarmSts = 0;
+    fap.TempIGBT1ItlkSts = 0;
+
+    if(!fap.TempIGBT1HwrItlkSts) fap.TempIGBT1HwrItlkSts       = Driver1OverTempRead();
+
+    fap.TempIGBT2.f = 0.0;
+    fap.TempIGBT2AlarmSts = 0;
+    fap.TempIGBT2ItlkSts = 0;
+
+    if(!fap.TempIGBT2HwrItlkSts) fap.TempIGBT2HwrItlkSts       = Driver2OverTempRead();
+
+    fap.IoutA1.f = CurrentCh1Read();//HALL CH1
+    fap.IoutA1AlarmSts = CurrentCh1AlarmStatusRead();
+    if(!fap.IoutA1ItlkSts)fap.IoutA1ItlkSts                    = CurrentCh1TripStatusRead();
+
+    fap.IoutA2.f = CurrentCh2Read();//HALL CH2
+    fap.IoutA2AlarmSts = CurrentCh2AlarmStatusRead();
+    if(!fap.IoutA2ItlkSts)fap.IoutA2ItlkSts                    = CurrentCh2TripStatusRead();
+
+    fap.Vin.f = LvCurrentCh1Read();
+    fap.VinAlarmSts = LvCurrentCh1AlarmStatusRead();
+    if(!fap.VinItlkSts)fap.VinItlkSts                          = LvCurrentCh1TripStatusRead();
+
+    fap.Vout.f = LvCurrentCh2Read();
+    fap.VoutAlarmSts = LvCurrentCh2AlarmStatusRead();
+    if(!fap.VoutItlkSts)fap.VoutItlkSts                        = LvCurrentCh2TripStatusRead();
+
+    //fap.ExternalItlk = Gpdi5Read();
+    //if(!fap.ExternalItlkSts) fap.ExternalItlkSts               = Gpdi5Read();
+    fap.ExternalItlk = Gpdi1Read();
+    if(!fap.ExternalItlkSts) fap.ExternalItlkSts               = Gpdi1Read();
+
+    //fap.LeakageCurrent = Gpdi6Read();
+    //if(!fap.LeakageCurrentSts) fap.LeakageCurrentSts           = Gpdi6Read();
+    fap.LeakageCurrent = Gpdi2Read();
+    if(!fap.LeakageCurrentSts) fap.LeakageCurrentSts           = Gpdi2Read();
+
+    //fap.Rack = Gpdi7Read();
+    //if(!fap.RackSts) fap.RackSts                               = Gpdi7Read();
+    fap.Rack = Gpdi3Read();
+    if(!fap.RackSts) fap.RackSts                               = Gpdi3Read();
+
+    fap.Relay = Gpdi4Read();
+
+    fap.Driver1Error = Driver1TopErrRead();
+    if(!fap.Driver1ErrorItlk) fap.Driver1ErrorItlk             = Driver1TopErrRead();
+
+    fap.Driver2Error = Driver2TopErrRead();
+    if(!fap.Driver2ErrorItlk) fap.Driver2ErrorItlk             = Driver2TopErrRead();
+
+    if(fap.ExternalItlkSts || fap.Driver2ErrorItlk || fap.Driver2ErrorItlk) InterlockSet(); // If no signal over the port, then set Interlock action
+
+    map_vars();
+    get_itlks_id();
+    get_alarms_id();
+}
+
+
+static void power_on_check()
+{
+    if (Gpdi4Read()) {
+        Led1TurnOff();
+        ReleItlkTurnOff();
+    }
+    else {
+        Led1TurnOn();
+        ReleItlkTurnOn();
+    }
+}
+
+
+static void map_vars()
+{
+    g_controller_iib.iib_signals[0].u32     = fap_interlocks_indication;
+    g_controller_iib.iib_signals[1].u32     = fap_alarms_indication;
+    g_controller_iib.iib_signals[2].f       = fap.Vin.f;
+    g_controller_iib.iib_signals[3].f       = fap.Vout.f;
+    g_controller_iib.iib_signals[4].f       = fap.IoutA1.f;
+    g_controller_iib.iib_signals[5].f       = fap.IoutA2.f;
+    g_controller_iib.iib_signals[6].f       = fap.TempIGBT1.f;
+    g_controller_iib.iib_signals[7].f       = fap.TempIGBT2.f;
+    g_controller_iib.iib_signals[8].f       = fap.DriveVoltage.f;
+    g_controller_iib.iib_signals[9].f       = fap.Drive1Current.f;
+    g_controller_iib.iib_signals[10].f      = fap.Drive2Current.f;
+    g_controller_iib.iib_signals[11].f      = fap.TempL.f;
+    g_controller_iib.iib_signals[12].f      = fap.TempHeatSink.f;
+}
+
+static void send_data()
+{
+    uint8_t i;
+    for (i = 2; i < 13; i++) send_data_message(i);
+}
+
+static void send_itlk_msg()
+{
+    //send_interlock_message(itlk_id);
+    send_data_message(0);
+}
+
+static void get_itlks_id()
+{
+    if (fap.VinItlkSts)          itlk_id |= FAP_INPUT_OVERVOLTAGE_ITLK;
+    if (fap.VoutItlkSts)         itlk_id |= FAP_OUTPUT_OVERVOLTAGE_ITLK;
+    if (fap.IoutA1ItlkSts)       itlk_id |= FAP_OUTPUT_OVERCURRENT_1_ITLK;
+    if (fap.IoutA2ItlkSts)       itlk_id |= FAP_OUTPUT_OVERCURRENT_2_ITLK;
+    if (fap.TempIGBT1ItlkSts)    itlk_id |= FAP_IGBT1_OVERTEMP_ITLK;
+    if (fap.TempIGBT2ItlkSts)    itlk_id |= FAP_IGBT2_OVERTEMP_ITLK;
+    if (fap.Driver1ErrorItlk)    itlk_id |= FAP_DRIVER1_ERROR_ITLK;
+    if (fap.Driver2ErrorItlk)    itlk_id |= FAP_DRIVER2_ERROR_ITLK;
+    if (fap.TempLItlkSts)        itlk_id |= FAP_INDUC_OVERTEMP_ITLK;
+    if (fap.TempHeatSinkItlkSts) itlk_id |= FAP_HS_OVERTEMP_ITLK;
+    if (fap.Relay)               itlk_id |= FAP_RELAY_ITLK;
+    if (fap.ExternalItlkSts)     itlk_id |= FAP_EXTERNAL_ITLK;
+    if (fap.LeakageCurrentSts)   itlk_id |= FAP_LEAKAGE_CURRENT_ITLK;
+    if (fap.RackSts)             itlk_id |= FAP_RACK_ITLK;
+}
+
+static void get_alarms_id()
+{
+    if (fap.VinAlarmSts)          alarm_id |= FAP_INPUT_OVERVOLTAGE_ALM;
+    if (fap.VoutAlarmSts)         alarm_id |= FAP_OUTPUT_OVERVOLTAGE_ALM;
+    if (fap.IoutA1AlarmSts)       alarm_id |= FAP_OUTPUT_OVERCURRENT_1_ALM;
+    if (fap.IoutA2AlarmSts)       alarm_id |= FAP_OUTPUT_OVERCURRENT_2_ALM;
+    if (fap.TempIGBT1AlarmSts)    alarm_id |= FAP_IGBT1_OVERTEMP_ALM;
+    if (fap.TempIGBT2AlarmSts)    alarm_id |= FAP_IGBT2_OVERTEMP_ALM;
+    if (fap.TempLAlarmSts)        alarm_id |= FAP_INDUC_OVERTEMP_ALM;
+    if (fap.TempHeatSinkAlarmSts) alarm_id |= FAP_HS_OVERTEMP_ALM;
+}
+
+static void configure_module ()
 {
     //Set current range FAP 150 A
     CurrentCh1Init(130.0, 0.130, 50.0, 3); // Corrente braço1: Sensor Hall
@@ -286,473 +567,3 @@ void init_fap()
     fap.RackSts               = 0;
 }
 
-void clear_fap_interlocks()
-{
-    fap.VinItlkSts            = 0;
-    fap.VoutItlkSts           = 0;
-    fap.IoutA1ItlkSts         = 0;
-    fap.IoutA2ItlkSts         = 0;
-    fap.TempIGBT1ItlkSts      = 0;
-    fap.TempIGBT1HwrItlkSts   = 0;
-    fap.TempIGBT2ItlkSts      = 0;
-    fap.TempIGBT2HwrItlkSts   = 0;
-    fap.Driver1ErrorItlk      = 0;
-    fap.Driver2ErrorItlk      = 0;
-    fap.TempLItlkSts          = 0;
-    fap.TempHeatSinkItlkSts   = 0;
-    fap.ExternalItlkSts       = 0;
-    fap.LeakageCurrentSts     = 0;
-    fap.RackSts               = 0;
-
-    itlk_id = 0;
-}
-
-uint8_t check_fap_interlocks()
-{
-    uint8_t test = 0;
-
-    test |= fap.VinItlkSts;
-    test |= fap.VoutItlkSts;
-    test |= fap.IoutA1ItlkSts;
-    test |= fap.IoutA2ItlkSts;
-    test |= fap.TempIGBT1ItlkSts;
-    test |= fap.TempIGBT1HwrItlkSts;
-    test |= fap.TempIGBT2ItlkSts;
-    test |= fap.TempIGBT2HwrItlkSts;
-    test |= fap.Driver1ErrorItlk;
-    test |= fap.Driver2ErrorItlk;
-    test |= fap.TempLItlkSts;
-    test |= fap.TempHeatSinkItlkSts;
-    test |= fap.ExternalItlkSts;
-    test |= fap.LeakageCurrentSts;
-    test |= fap.RackSts;
-
-    return test;
-}
-
-void clear_fap_alarms()
-{
-    fap.VinItlkSts             = 0;
-    fap.VoutItlkSts            = 0;
-    fap.IoutA1ItlkSts          = 0;
-    fap.IoutA2ItlkSts          = 0;
-    fap.TempIGBT1ItlkSts       = 0;
-    fap.TempIGBT1HwrItlkSts    = 0;
-    fap.TempIGBT2ItlkSts       = 0;
-    fap.TempIGBT2HwrItlkSts    = 0;
-    fap.Driver1ErrorItlk       = 0;
-    fap.Driver2ErrorItlk       = 0;
-    fap.TempLItlkSts           = 0;
-    fap.TempHeatSinkItlkSts    = 0;
-    fap.ExternalItlkSts        = 0;
-    fap.LeakageCurrentSts      = 0;
-    fap.RackSts                = 0;
-
-    alarm_id = 0;
-}
-
-uint8_t check_fap_alarms()
-{
-    uint8_t test = 0;
-
-    test |= fap.VinAlarmSts;
-    test |= fap.VoutAlarmSts;
-    test |= fap.IoutA1AlarmSts;
-    test |= fap.IoutA2AlarmSts;
-    test |= fap.TempIGBT1AlarmSts;
-    test |= fap.TempIGBT2AlarmSts;
-    test |= fap.TempLAlarmSts;
-    test |= fap.TempHeatSinkAlarmSts;
-
-    return test;
-}
-
-void check_fap_indication_leds()
-{
-    // Output over voltage
-    if(fap.VoutItlkSts) Led2TurnOff();
-    else if(fap.VoutAlarmSts) Led2Toggle();
-    else Led2TurnOn();
-
-    // Input over voltage
-    if(fap.VinItlkSts) Led3TurnOff();
-    else if(fap.VinAlarmSts) Led3Toggle();
-    else Led3TurnOn();
-
-    // Output over current
-    if (fap.IoutA1ItlkSts || fap.IoutA2ItlkSts) Led4TurnOff();
-    else if(fap.IoutA1AlarmSts || fap.IoutA2AlarmSts) Led4Toggle();
-    else Led4TurnOn();
-
-    // Over temperature
-    if(fap.TempIGBT1ItlkSts || fap.TempIGBT2ItlkSts ||  fap.TempLItlkSts || fap.TempHeatSinkItlkSts || fap.TempIGBT1HwrItlkSts || fap.TempIGBT2HwrItlkSts) Led5TurnOff();
-    else if(fap.TempIGBT1AlarmSts || fap.TempIGBT2AlarmSts ||  fap.TempLAlarmSts || fap.TempHeatSinkAlarmSts) Led5Toggle();
-    else Led5TurnOn();
-
-    if(fap.ExternalItlkSts) Led6TurnOff();
-    else Led6TurnOn();
-
-    if(fap.LeakageCurrentSts) Led7TurnOff();
-    else Led7TurnOn();
-
-    if(fap.RackSts) Led8TurnOff();
-    else Led8TurnOn();
-
-    if(fap.Driver1ErrorItlk || fap.Driver2ErrorItlk) Led9TurnOff();
-    else if(!InterlockRead()) Led9TurnOn();
-
-    if(InterlockRead()) Led10TurnOff();
-    else Led10TurnOn();
-}
-
-void fap_application_readings()
-{
-    fap.TempHeatSink.f = (float) Pt100ReadCh1();//PT100 CH1
-    fap.TempHeatSinkAlarmSts = Pt100ReadCh1AlarmSts();
-    if(!fap.TempHeatSinkItlkSts)fap.TempHeatSinkItlkSts        = Pt100ReadCh1TripSts();
-
-    fap.TempL.f = (float) Pt100ReadCh2();//PT100 CH2
-    fap.TempLAlarmSts = Pt100ReadCh2AlarmSts();
-    if(!fap.TempLItlkSts)fap.TempLItlkSts                      = Pt100ReadCh2TripSts();
-
-    fap.TempIGBT1.f = 0.0;
-    fap.TempIGBT1AlarmSts = 0;
-    fap.TempIGBT1ItlkSts = 0;
-
-    if(!fap.TempIGBT1HwrItlkSts) fap.TempIGBT1HwrItlkSts       = Driver1OverTempRead();
-
-    fap.TempIGBT2.f = 0.0;
-    fap.TempIGBT2AlarmSts = 0;
-    fap.TempIGBT2ItlkSts = 0;
-
-    if(!fap.TempIGBT2HwrItlkSts) fap.TempIGBT2HwrItlkSts       = Driver2OverTempRead();
-
-    fap.IoutA1.f = CurrentCh1Read();//HALL CH1
-    fap.IoutA1AlarmSts = CurrentCh1AlarmStatusRead();
-    if(!fap.IoutA1ItlkSts)fap.IoutA1ItlkSts                    = CurrentCh1TripStatusRead();
-
-    fap.IoutA2.f = CurrentCh2Read();//HALL CH2
-    fap.IoutA2AlarmSts = CurrentCh2AlarmStatusRead();
-    if(!fap.IoutA2ItlkSts)fap.IoutA2ItlkSts                    = CurrentCh2TripStatusRead();
-
-    fap.Vin.f = LvCurrentCh1Read();
-    fap.VinAlarmSts = LvCurrentCh1AlarmStatusRead();
-    if(!fap.VinItlkSts)fap.VinItlkSts                          = LvCurrentCh1TripStatusRead();
-
-    fap.Vout.f = LvCurrentCh2Read();
-    fap.VoutAlarmSts = LvCurrentCh2AlarmStatusRead();
-    if(!fap.VoutItlkSts)fap.VoutItlkSts                        = LvCurrentCh2TripStatusRead();
-
-    //fap.ExternalItlk = Gpdi5Read();
-    //if(!fap.ExternalItlkSts) fap.ExternalItlkSts               = Gpdi5Read();
-    fap.ExternalItlk = Gpdi1Read();
-    if(!fap.ExternalItlkSts) fap.ExternalItlkSts               = Gpdi1Read();
-
-    //fap.LeakageCurrent = Gpdi6Read();
-    //if(!fap.LeakageCurrentSts) fap.LeakageCurrentSts           = Gpdi6Read();
-    fap.LeakageCurrent = Gpdi2Read();
-    if(!fap.LeakageCurrentSts) fap.LeakageCurrentSts           = Gpdi2Read();
-
-    //fap.Rack = Gpdi7Read();
-    //if(!fap.RackSts) fap.RackSts                               = Gpdi7Read();
-    fap.Rack = Gpdi3Read();
-    if(!fap.RackSts) fap.RackSts                               = Gpdi3Read();
-
-    fap.Relay = Gpdi4Read();
-
-    fap.Driver1Error = Driver1TopErrRead();
-    if(!fap.Driver1ErrorItlk) fap.Driver1ErrorItlk             = Driver1TopErrRead();
-
-    fap.Driver2Error = Driver2TopErrRead();
-    if(!fap.Driver2ErrorItlk) fap.Driver2ErrorItlk             = Driver2TopErrRead();
-
-    if(fap.ExternalItlkSts || fap.Driver2ErrorItlk || fap.Driver2ErrorItlk) InterlockSet(); // If no signal over the port, then set Interlock action
-
-    fap_map_vars();
-    get_itlks_id();
-    get_alarms_id();
-}
-
-
-void fap_power_on_check()
-{
-    if (Gpdi4Read()) {
-        Led1TurnOff();
-        ReleItlkTurnOff();
-    }
-    else {
-        Led1TurnOn();
-        ReleItlkTurnOn();
-    }
-}
-
-
-void fap_map_vars()
-{
-    g_controller_iib.iib_signals[0].u32     = fap_interlocks_indication;
-    g_controller_iib.iib_signals[1].u32     = fap_alarms_indication;
-    g_controller_iib.iib_signals[2].f       = fap.Vin.f;
-    g_controller_iib.iib_signals[3].f       = fap.Vout.f;
-    g_controller_iib.iib_signals[4].f       = fap.IoutA1.f;
-    g_controller_iib.iib_signals[5].f       = fap.IoutA2.f;
-    g_controller_iib.iib_signals[6].f       = fap.TempIGBT1.f;
-    g_controller_iib.iib_signals[7].f       = fap.TempIGBT2.f;
-    g_controller_iib.iib_signals[8].f       = fap.DriveVoltage.f;
-    g_controller_iib.iib_signals[9].f       = fap.Drive1Current.f;
-    g_controller_iib.iib_signals[10].f      = fap.Drive2Current.f;
-    g_controller_iib.iib_signals[11].f      = fap.TempL.f;
-    g_controller_iib.iib_signals[12].f      = fap.TempHeatSink.f;
-}
-
-void send_fap_data()
-{
-    uint8_t i;
-    for (i = 2; i < 13; i++) send_data_message(i);
-}
-
-static void get_itlks_id()
-{
-    if (fap.VinItlkSts)          itlk_id |= FAP_INPUT_OVERVOLTAGE_ITLK;
-    if (fap.VoutItlkSts)         itlk_id |= FAP_OUTPUT_OVERVOLTAGE_ITLK;
-    if (fap.IoutA1ItlkSts)       itlk_id |= FAP_OUTPUT_OVERCURRENT_1_ITLK;
-    if (fap.IoutA2ItlkSts)       itlk_id |= FAP_OUTPUT_OVERCURRENT_2_ITLK;
-    if (fap.TempIGBT1ItlkSts)    itlk_id |= FAP_IGBT1_OVERTEMP_ITLK;
-    if (fap.TempIGBT2ItlkSts)    itlk_id |= FAP_IGBT2_OVERTEMP_ITLK;
-    if (fap.Driver1ErrorItlk)    itlk_id |= FAP_DRIVER1_ERROR_ITLK;
-    if (fap.Driver2ErrorItlk)    itlk_id |= FAP_DRIVER2_ERROR_ITLK;
-    if (fap.TempLItlkSts)        itlk_id |= FAP_INDUC_OVERTEMP_ITLK;
-    if (fap.TempHeatSinkItlkSts) itlk_id |= FAP_HS_OVERTEMP_ITLK;
-    if (fap.Relay)               itlk_id |= FAP_RELAY_ITLK;
-    if (fap.ExternalItlkSts)     itlk_id |= FAP_EXTERNAL_ITLK;
-    if (fap.LeakageCurrentSts)   itlk_id |= FAP_LEAKAGE_CURRENT_ITLK;
-    if (fap.RackSts)             itlk_id |= FAP_RACK_ITLK;
-}
-
-static void get_alarms_id()
-{
-    if (fap.VinAlarmSts)          alarm_id |= FAP_INPUT_OVERVOLTAGE_ALM;
-    if (fap.VoutAlarmSts)         alarm_id |= FAP_OUTPUT_OVERVOLTAGE_ALM;
-    if (fap.IoutA1AlarmSts)       alarm_id |= FAP_OUTPUT_OVERCURRENT_1_ALM;
-    if (fap.IoutA2AlarmSts)       alarm_id |= FAP_OUTPUT_OVERCURRENT_2_ALM;
-    if (fap.TempIGBT1AlarmSts)    alarm_id |= FAP_IGBT1_OVERTEMP_ALM;
-    if (fap.TempIGBT2AlarmSts)    alarm_id |= FAP_IGBT2_OVERTEMP_ALM;
-    if (fap.TempLAlarmSts)        alarm_id |= FAP_INDUC_OVERTEMP_ALM;
-    if (fap.TempHeatSinkAlarmSts) alarm_id |= FAP_HS_OVERTEMP_ALM;
-}
-
-void send_fap_itlk_msg()
-{
-    //send_interlock_message(itlk_id);
-    send_data_message(0);
-}
-
-float fap_vout_read(void)
-{
-    return fap.Vout.f;
-}
-
-unsigned char fap_vout_alarm_sts_read(void)
-{
-    return fap.VoutAlarmSts;
-}
-
-unsigned char fap_vout_itlk_sts_read(void)
-{
-    return fap.VoutItlkSts;
-}
-
-//**********************************************
-float fap_vin_read(void)
-{
-    return fap.Vin.f;
-}
-
-unsigned char fap_vin_alarm_sts_read(void)
-{
-    return fap.VinAlarmSts;
-}
-
-unsigned char fap_vin_itlk_sts_read(void)
-{
-    return fap.VinItlkSts;
-}
-
-//**********************************************
-float fap_iout_a1_read(void)
-{
-    return fap.IoutA1.f;
-}
-
-unsigned char fap_iout_a1_alarm_sts_read(void)
-{
-    return fap.IoutA1AlarmSts;
-}
-
-unsigned char fap_iout_a1_itlk_sts_read(void)
-{
-    return fap.IoutA1ItlkSts;
-}
-
-//**********************************************
-float fap_iout_a2_read(void)
-{
-    return fap.IoutA2.f;
-}
-
-unsigned char fap_iout_a2_alarm_sts_read(void)
-{
-    return fap.IoutA2AlarmSts;
-}
-
-unsigned char fap_iout_a2_itlk_sts_read(void)
-{
-    return fap.IoutA2ItlkSts;
-}
-
-//**********************************************
-unsigned char fap_temp_IGBT1_read(void)
-{
-    return fap.TempIGBT1.f;
-}
-
-unsigned char fap_temp_IGBT1_alarm_sts_read(void)
-{
-    return fap.TempIGBT1AlarmSts;
-}
-
-unsigned char fap_temp_IGBT1_itlk_sts_read(void)
-{
-    return fap.TempIGBT1ItlkSts;
-}
-
-unsigned char fap_temp_IGBT1_hwr_itlk_read(void)
-{
-    return fap.TempIGBT1HwrItlk;
-}
-
-unsigned char fap_temp_IGBT1_hwr_itlk_sts_read(void)
-{
-    return fap.TempIGBT1HwrItlkSts;
-}
-
-//**********************************************
-unsigned char fap_temp_IGBT2_read(void)
-{
-    return fap.TempIGBT2.f;
-}
-
-unsigned char fap_temp_IGBT2_alarm_sts_read(void)
-{
-    return fap.TempIGBT2AlarmSts;
-}
-
-unsigned char fap_temp_IGBT2_itlk_sts_read(void)
-{
-    return fap.TempIGBT2ItlkSts;
-}
-
-unsigned char fap_temp_IGBT2_hwr_itlk_read(void)
-{
-    return fap.TempIGBT2HwrItlk;
-}
-
-unsigned char fap_temp_IGBT2_hwr_itlk_sts_read(void)
-{
-    return fap.TempIGBT2HwrItlkSts;
-}
-
-//**********************************************
-unsigned char fap_temp_heatsink_read(void)
-{
-    return fap.TempHeatSink.f;
-}
-
-unsigned char fap_temp_heatsink_alarm_sts_read(void)
-{
-    return fap.TempHeatSinkAlarmSts;
-}
-
-unsigned char fap_temp_heatsink_itlk_sts_read(void)
-{
-    return fap.TempHeatSinkItlkSts;
-}
-
-//**********************************************
-unsigned char fap_tempL_read(void)
-{
-    return fap.TempL.f;
-}
-
-unsigned char fap_tempL_alarm_sts_read(void)
-{
-    return fap.TempLAlarmSts;
-}
-
-unsigned char fap_tempL_itlk_sts_read(void)
-{
-    return fap.TempLItlkSts;
-}
-
-//**********************************************
-unsigned char fap_relay_read(void)
-{
-    return fap.Relay;
-}
-
-//**********************************************
-unsigned char fap_driver1_error_read(void)
-{
-    return fap.Driver1Error;
-}
-
-unsigned char fap_driver1_error_itlk_read(void)
-{
-    return fap.Driver1ErrorItlk;
-}
-
-//**********************************************
-unsigned char fap_driver2_error_read(void)
-{
-    return fap.Driver2Error;
-}
-
-unsigned char fap_driver2_error_itlk_read(void)
-{
-    return fap.Driver2ErrorItlk;
-}
-
-//**********************************************
-unsigned char fap_external_itlk_read(void)
-{
-    return fap.ExternalItlk;
-}
-
-unsigned char fap_external_itlk_sts_read(void)
-{
-    return fap.ExternalItlkSts;
-}
-
-//**********************************************
-unsigned char fap_leakage_current_read(void)
-{
-    return fap.LeakageCurrent;
-
-}
-
-unsigned char fap_leakage_current_sts_read(void)
-{
-    return fap.LeakageCurrentSts;
-
-}
-
-//**********************************************
-unsigned char fapRackRead(void)
-{
-    return fap.Rack;
-
-}
-
-unsigned char fap_rack_sts_read(void)
-{
-    return fap.RackSts;
-}

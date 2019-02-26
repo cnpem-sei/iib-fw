@@ -21,6 +21,7 @@
 
 #include <iib_modules/fac_cmd.h>
 #include "iib_data.h"
+#include "iib_module.h"
 
 #include "adc_internal.h"
 #include "application.h"
@@ -92,13 +93,175 @@ static uint32_t alarm_id = 0;
 
 static void get_itlks_id();
 static void get_alarms_id();
-static void fac_cmd_map_vars();
-
-/**
- * TODO: Put here the implementation for your public functions.
- */
+static void map_vars();
+static void configure_module();
+static void clear_interlocks();
+static uint8_t check_interlocks();
+static void clear_alarms();
+static uint8_t check_alarms();
+static void check_indication_leds();
+static void application_readings();
+static void send_data();
+static void send_itlk_msg();
+static void power_on_check();
 
 void init_fac_cmd()
+{
+    init_iib_module(&g_iib_module, &clear_interlocks, &check_interlocks,
+                        &clear_alarms, &check_alarms, &check_indication_leds,
+                        &application_readings, &power_on_check, &send_data,
+                        &send_itlk_msg);
+
+    configure_module();
+}
+
+static void clear_interlocks()
+{
+    fac_cmd.VcapBankItlkSts         = 0;
+    fac_cmd.VoutItlkSts             = 0;
+    fac_cmd.TempHeatSinkItlkSts     = 0;
+    fac_cmd.TempLItlkSts            = 0;
+    fac_cmd.ExtItlkSts              = 0;
+    fac_cmd.ExtItlk2Sts             = 0;
+
+    itlk_id = 0;
+}
+
+static uint8_t check_interlocks()
+{
+    uint8_t test = 0;
+
+    test |= fac_cmd.TempHeatSinkItlkSts;
+    test |= fac_cmd.TempLItlkSts;
+    test |= fac_cmd.VcapBankItlkSts;
+    test |= fac_cmd.VoutItlkSts;
+    test |= fac_cmd.ExtItlkSts;
+    test |= fac_cmd.ExtItlk2Sts;
+
+    return test;
+}
+
+static void clear_alarms()
+{
+    fac_cmd.VcapBankAlarmSts        = 0;
+    fac_cmd.VoutAlarmSts            = 0;
+    fac_cmd.TempHeatSinkAlarmSts    = 0;
+    fac_cmd.TempLAlarmSts           = 0;
+
+    alarm_id = 0;
+}
+
+static uint8_t check_alarms()
+{
+    uint8_t test = 0;
+
+    test |= fac_cmd.TempHeatSinkAlarmSts;
+    test |= fac_cmd.TempLAlarmSts;
+    test |= fac_cmd.VcapBankAlarmSts;
+    test |= fac_cmd.VoutAlarmSts;
+
+    return 0;
+}
+
+static void check_indication_leds()
+{
+    if (fac_cmd.VcapBankItlkSts) Led2TurnOff();
+    else if (fac_cmd.VcapBankAlarmSts) Led2Toggle();
+    else Led2TurnOn();
+
+    if (fac_cmd.VoutItlkSts) Led3TurnOff();
+    else if (fac_cmd.VoutAlarmSts) Led3Toggle();
+    else Led3TurnOn();
+
+    if (fac_cmd.TempHeatSinkItlkSts) Led4TurnOff();
+    else if (fac_cmd.TempHeatSinkAlarmSts) Led4Toggle();
+    else Led4TurnOn();
+
+    if (fac_cmd.TempLItlkSts) Led5TurnOff();
+    else if (fac_cmd.TempLAlarmSts) Led5Toggle();
+    else Led5TurnOn();
+
+    if (fac_cmd.ExtItlkSts) Led6TurnOff();
+    else Led6TurnOn();
+
+    if (fac_cmd.ExtItlk2Sts) Led7TurnOff();
+    else Led7TurnOn();
+}
+
+static void application_readings()
+{
+    fac_cmd.TempHeatSink.f = (float) Pt100ReadCh1();
+    fac_cmd.TempHeatSinkAlarmSts = Pt100ReadCh1AlarmSts();
+    if (!fac_cmd.TempHeatSinkItlkSts) fac_cmd.TempHeatSinkItlkSts = Pt100ReadCh1TripSts();
+
+    fac_cmd.TempL.f = (float) Pt100ReadCh2();
+    fac_cmd.TempLAlarmSts = Pt100ReadCh2AlarmSts();
+    if (!fac_cmd.TempLItlkSts) fac_cmd.TempLItlkSts = Pt100ReadCh2TripSts();
+
+    fac_cmd.VcapBank.f = VoltageCh1Read();
+    fac_cmd.VcapBankAlarmSts = VoltageCh1AlarmStatusRead();
+    if (!fac_cmd.VcapBankItlkSts) fac_cmd.VcapBankItlkSts = VoltageCh1TripStatusRead();
+
+    fac_cmd.Vout.f = VoltageCh2Read();
+    fac_cmd.VoutAlarmSts = VoltageCh2AlarmStatusRead();
+    if (!fac_cmd.VoutItlkSts) fac_cmd.VoutItlkSts = VoltageCh2TripStatusRead();
+
+    if(!fac_cmd.ExtItlkSts) fac_cmd.ExtItlkSts = Gpdi5Read();
+
+    if(!fac_cmd.ExtItlk2Sts) fac_cmd.ExtItlk2Sts = Gpdi9Read();
+
+    map_vars();
+
+    get_alarms_id();
+    get_itlks_id();
+}
+
+static void power_on_check()
+{
+    Led1TurnOn();
+}
+
+static void map_vars()
+{
+    g_controller_iib.iib_signals[0].u32     = fac_cmd_interlocks_indication;
+    g_controller_iib.iib_signals[1].u32     = fac_cmd_alarms_indication;
+    g_controller_iib.iib_signals[2].f       = fac_cmd.VcapBank.f;
+    g_controller_iib.iib_signals[3].f       = fac_cmd.Vout.f;
+    g_controller_iib.iib_signals[4].f       = fac_cmd.TempL.f;
+    g_controller_iib.iib_signals[5].f       = fac_cmd.TempHeatSink.f;
+}
+
+static void send_data()
+{
+    uint8_t i;
+
+    for (i = 2; i < 6; i++) send_data_message(i);
+}
+
+static void get_itlks_id()
+{
+    if (fac_cmd.VcapBankItlkSts)        itlk_id |= FAC_CMD_CAPBANK_OVERVOLTAGE_ITLK;
+    if (fac_cmd.VoutItlkSts)            itlk_id |= FAC_CMD_OUTPUT_OVERVOLTAGE_ITLK;
+    if (fac_cmd.TempHeatSinkItlkSts)    itlk_id |= FAC_CMD_HS_OVERTEMP_ITLK;
+    if (fac_cmd.TempLItlkSts)           itlk_id |= FAC_CMD_INDUC_OVERTEMP_ITLK;
+    if (fac_cmd.ExtItlkSts)             itlk_id |= FAC_CMD_EXTERNAL1_ITLK;
+    if (fac_cmd.ExtItlk2Sts)            itlk_id |= FAC_CMD_EXTERNAL2_ITLK;
+}
+
+static void get_alarms_id()
+{
+    if (fac_cmd.VcapBankAlarmSts)     alarm_id |= FAC_CMD_CAPBANK_OVERVOLTAGE_ALM;
+    if (fac_cmd.VoutItlkSts)          alarm_id |= FAC_CMD_OUTPUT_OVERVOLTAGE_ALM;
+    if (fac_cmd.TempHeatSinkAlarmSts) alarm_id |= FAC_CMD_HS_OVERTEMP_ALM;
+    if (fac_cmd.TempLAlarmSts)        alarm_id |= FAC_CMD_INDUC_OVERTEMP_ALM;
+}
+
+static void send_itlk_msg()
+{
+    send_data_message(0);
+}
+
+static void configure_module()
 {
     //Setar ranges de entrada
     VoltageCh1Init(330.0, 3);                 // Capacitors Voltage Configuration.
@@ -148,146 +311,5 @@ void init_fac_cmd()
 
     fac_cmd.ExtItlkSts               = 0;
     fac_cmd.ExtItlk2Sts              = 0;
-}
-
-void clear_fac_cmd_interlocks()
-{
-    fac_cmd.VcapBankItlkSts         = 0;
-    fac_cmd.VoutItlkSts             = 0;
-    fac_cmd.TempHeatSinkItlkSts     = 0;
-    fac_cmd.TempLItlkSts            = 0;
-    fac_cmd.ExtItlkSts              = 0;
-    fac_cmd.ExtItlk2Sts             = 0;
-
-    itlk_id = 0;
-}
-
-uint8_t check_fac_cmd_interlocks()
-{
-    uint8_t test = 0;
-
-    test |= fac_cmd.TempHeatSinkItlkSts;
-    test |= fac_cmd.TempLItlkSts;
-    test |= fac_cmd.VcapBankItlkSts;
-    test |= fac_cmd.VoutItlkSts;
-    test |= fac_cmd.ExtItlkSts;
-    test |= fac_cmd.ExtItlk2Sts;
-
-    return test;
-}
-
-void clear_fac_cmd_alarms()
-{
-    fac_cmd.VcapBankAlarmSts        = 0;
-    fac_cmd.VoutAlarmSts            = 0;
-    fac_cmd.TempHeatSinkAlarmSts    = 0;
-    fac_cmd.TempLAlarmSts           = 0;
-
-    alarm_id = 0;
-}
-
-uint8_t check_fac_cmd_alarms()
-{
-    uint8_t test = 0;
-
-    test |= fac_cmd.TempHeatSinkAlarmSts;
-    test |= fac_cmd.TempLAlarmSts;
-    test |= fac_cmd.VcapBankAlarmSts;
-    test |= fac_cmd.VoutAlarmSts;
-
-    return 0;
-}
-
-void check_fac_cmd_indication_leds()
-{
-    if (fac_cmd.VcapBankItlkSts) Led2TurnOff();
-    else if (fac_cmd.VcapBankAlarmSts) Led2Toggle();
-    else Led2TurnOn();
-
-    if (fac_cmd.VoutItlkSts) Led3TurnOff();
-    else if (fac_cmd.VoutAlarmSts) Led3Toggle();
-    else Led3TurnOn();
-
-    if (fac_cmd.TempHeatSinkItlkSts) Led4TurnOff();
-    else if (fac_cmd.TempHeatSinkAlarmSts) Led4Toggle();
-    else Led4TurnOn();
-
-    if (fac_cmd.TempLItlkSts) Led5TurnOff();
-    else if (fac_cmd.TempLAlarmSts) Led5Toggle();
-    else Led5TurnOn();
-
-    if (fac_cmd.ExtItlkSts) Led6TurnOff();
-    else Led6TurnOn();
-
-    if (fac_cmd.ExtItlk2Sts) Led7TurnOff();
-    else Led7TurnOn();
-}
-
-void fac_cmd_application_readings()
-{
-    fac_cmd.TempHeatSink.f = (float) Pt100ReadCh1();
-    fac_cmd.TempHeatSinkAlarmSts = Pt100ReadCh1AlarmSts();
-    if (!fac_cmd.TempHeatSinkItlkSts) fac_cmd.TempHeatSinkItlkSts = Pt100ReadCh1TripSts();
-
-    fac_cmd.TempL.f = (float) Pt100ReadCh2();
-    fac_cmd.TempLAlarmSts = Pt100ReadCh2AlarmSts();
-    if (!fac_cmd.TempLItlkSts) fac_cmd.TempLItlkSts = Pt100ReadCh2TripSts();
-
-    fac_cmd.VcapBank.f = VoltageCh1Read();
-    fac_cmd.VcapBankAlarmSts = VoltageCh1AlarmStatusRead();
-    if (!fac_cmd.VcapBankItlkSts) fac_cmd.VcapBankItlkSts = VoltageCh1TripStatusRead();
-
-    fac_cmd.Vout.f = VoltageCh2Read();
-    fac_cmd.VoutAlarmSts = VoltageCh2AlarmStatusRead();
-    if (!fac_cmd.VoutItlkSts) fac_cmd.VoutItlkSts = VoltageCh2TripStatusRead();
-
-    if(!fac_cmd.ExtItlkSts) fac_cmd.ExtItlkSts = Gpdi5Read();
-
-    if(!fac_cmd.ExtItlk2Sts) fac_cmd.ExtItlk2Sts = Gpdi9Read();
-
-    fac_cmd_map_vars();
-
-    get_alarms_id();
-    get_itlks_id();
-}
-
-void fac_cmd_map_vars()
-{
-    g_controller_iib.iib_signals[0].u32     = fac_cmd_interlocks_indication;
-    g_controller_iib.iib_signals[1].u32     = fac_cmd_alarms_indication;
-    g_controller_iib.iib_signals[2].f       = fac_cmd.VcapBank.f;
-    g_controller_iib.iib_signals[3].f       = fac_cmd.Vout.f;
-    g_controller_iib.iib_signals[4].f       = fac_cmd.TempL.f;
-    g_controller_iib.iib_signals[5].f       = fac_cmd.TempHeatSink.f;
-}
-
-void send_fac_cmd_data()
-{
-    uint8_t i;
-
-    for (i = 2; i < 6; i++) send_data_message(i);
-}
-
-static void get_itlks_id()
-{
-    if (fac_cmd.VcapBankItlkSts)        itlk_id |= FAC_CMD_CAPBANK_OVERVOLTAGE_ITLK;
-    if (fac_cmd.VoutItlkSts)            itlk_id |= FAC_CMD_OUTPUT_OVERVOLTAGE_ITLK;
-    if (fac_cmd.TempHeatSinkItlkSts)    itlk_id |= FAC_CMD_HS_OVERTEMP_ITLK;
-    if (fac_cmd.TempLItlkSts)           itlk_id |= FAC_CMD_INDUC_OVERTEMP_ITLK;
-    if (fac_cmd.ExtItlkSts)             itlk_id |= FAC_CMD_EXTERNAL1_ITLK;
-    if (fac_cmd.ExtItlk2Sts)            itlk_id |= FAC_CMD_EXTERNAL2_ITLK;
-}
-
-static void get_alarms_id()
-{
-    if (fac_cmd.VcapBankAlarmSts)     alarm_id |= FAC_CMD_CAPBANK_OVERVOLTAGE_ALM;
-    if (fac_cmd.VoutItlkSts)          alarm_id |= FAC_CMD_OUTPUT_OVERVOLTAGE_ALM;
-    if (fac_cmd.TempHeatSinkAlarmSts) alarm_id |= FAC_CMD_HS_OVERTEMP_ALM;
-    if (fac_cmd.TempLAlarmSts)        alarm_id |= FAC_CMD_INDUC_OVERTEMP_ALM;
-}
-
-void send_fac_cmd_itlk_msg()
-{
-    send_data_message(0);
 }
 

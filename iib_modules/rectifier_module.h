@@ -53,14 +53,6 @@
 #define RM_INDUCTOR2_OVERTEMP_ALM              0x00000400
 
 extern void init_rectifier_module(void);
-extern void clear_rectifier_interlocks(void);
-extern uint8_t check_rectifier_interlocks(void);
-extern void clear_rectifier_alarms(void);
-extern uint8_t check_rectifier_alarms(void);
-extern void check_rectifier_indication_leds(void);
-extern void rectifier_application_readings(void);
-extern void rectifier_map_vars(void);
-extern void send_rectf_itlk_msg(void);
-extern void send_rm_data(void);
+
 
 #endif /* RECTIFIER_MODULE_H_ */

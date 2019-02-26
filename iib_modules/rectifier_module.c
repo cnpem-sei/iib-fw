@@ -21,6 +21,7 @@
 
 #include "rectifier_module.h"
 #include "iib_data.h"
+#include "iib_module.h"
 
 #include "adc_internal.h"
 #include "application.h"
@@ -173,8 +174,263 @@ static uint32_t alarm_id;
 
 static void get_itlks_id();
 static void get_alarms_id();
+static void map_vars();
+static void configure_module();
+static void clear_interlocks();
+static uint8_t check_interlocks();
+static void clear_alarms();
+static uint8_t check_alarms();
+static void check_indication_leds();
+static void application_readings();
+static void send_data();
+static void send_itlk_msg();
+static void power_on_check();
 
 void init_rectifier_module()
+{
+    init_iib_module(&g_iib_module, &clear_interlocks, &check_interlocks,
+                        &clear_alarms, &check_alarms, &check_indication_leds,
+                        &application_readings, &power_on_check, &send_data,
+                        &send_itlk_msg);
+
+    configure_module();
+}
+
+static void clear_interlocks()
+{
+    rectf_module.IoutRectf1ItlkSts           = 0;
+    rectf_module.IoutRectf2ItlkSts           = 0;
+    rectf_module.VoutRectf1ItlkSts           = 0;
+    rectf_module.VoutRectf2ItlkSts           = 0;
+    rectf_module.LeakageCurrentItlkSts       = 0;
+    rectf_module.TempHeatSinkItlkSts         = 0;
+    rectf_module.TempWaterItlkSts            = 0;
+    rectf_module.TempModule1ItlkSts          = 0;
+    rectf_module.TempModule2ItlkSts          = 0;
+    rectf_module.TempL1ItlkSts               = 0;
+    rectf_module.TempL2ItlkSts               = 0;
+    rectf_module.AcPhaseFaultSts             = 0;
+    rectf_module.AcOverCurrentSts            = 0;
+    rectf_module.AcTransformerOverTempSts    = 0;
+    rectf_module.WaterFluxInterlockSts       = 0;
+
+    itlk_id = 0;
+}
+
+static uint8_t check_interlocks()
+{
+    uint8_t test = 0;
+
+    test |= rectf_module.IoutRectf1ItlkSts;
+    test |= rectf_module.IoutRectf2ItlkSts;
+    test |= rectf_module.VoutRectf1ItlkSts;
+    test |= rectf_module.VoutRectf2ItlkSts;
+    test |= rectf_module.LeakageCurrentItlkSts;
+    test |= rectf_module.TempHeatSinkItlkSts;
+    test |= rectf_module.TempWaterItlkSts;
+    test |= rectf_module.TempModule1ItlkSts;
+    test |= rectf_module.TempModule2ItlkSts;
+    test |= rectf_module.TempL1ItlkSts;
+    test |= rectf_module.TempL2ItlkSts;
+    test |= rectf_module.AcPhaseFaultSts;
+    test |= rectf_module.AcOverCurrentSts;
+    test |= rectf_module.AcTransformerOverTempSts;
+    test |= rectf_module.WaterFluxInterlockSts;
+
+    return test;
+}
+
+static void clear_alarms()
+{
+    rectf_module.IoutRectf1AlarmSts          = 0;
+    rectf_module.IoutRectf2AlarmSts          = 0;
+    rectf_module.VoutRectf1AlarmSts          = 0;
+    rectf_module.VoutRectf2AlarmSts          = 0;
+    rectf_module.LeakageCurrentAlarmSts      = 0;
+    rectf_module.TempHeatSinkAlarmSts        = 0;
+    rectf_module.TempWaterAlarmSts           = 0;
+    rectf_module.TempModule1AlarmSts         = 0;
+    rectf_module.TempModule2AlarmSts         = 0;
+    rectf_module.TempL1AlarmSts              = 0;
+    rectf_module.TempL2AlarmSts              = 0;
+
+    alarm_id = 0;
+}
+
+static uint8_t check_alarms()
+{
+    uint8_t test = 0;
+
+    test |= rectf_module.IoutRectf1AlarmSts;
+    test |= rectf_module.IoutRectf2AlarmSts;
+    test |= rectf_module.VoutRectf1AlarmSts;
+    test |= rectf_module.VoutRectf2AlarmSts;
+    test |= rectf_module.LeakageCurrentAlarmSts;
+    test |= rectf_module.TempHeatSinkAlarmSts;
+    test |= rectf_module.TempWaterAlarmSts;
+    test |= rectf_module.TempModule1AlarmSts;
+    test |= rectf_module.TempModule2AlarmSts;
+    test |= rectf_module.TempL1AlarmSts;
+    test |= rectf_module.TempL2AlarmSts;
+
+    return test;
+}
+
+static void check_indication_leds()
+{
+    // Rectifier Output Over Voltage
+    if(rectf_module.VoutRectf1ItlkSts || rectf_module.VoutRectf2ItlkSts) Led2TurnOff();
+    else if(rectf_module.VoutRectf1AlarmSts || rectf_module.VoutRectf2AlarmSts) Led2Toggle();
+    else Led2TurnOn();
+
+    // Rectifier Output Over Current
+    if(rectf_module.IoutRectf1ItlkSts || rectf_module.IoutRectf1ItlkSts) Led3TurnOff();
+    else if(rectf_module.IoutRectf1AlarmSts || rectf_module.IoutRectf1AlarmSts) Led3Toggle();
+    else Led3TurnOn();
+
+    // Rectifier Over Temperature
+    if(rectf_module.TempHeatSinkItlkSts || rectf_module.TempWaterItlkSts || rectf_module.TempModule1ItlkSts || rectf_module.TempModule2ItlkSts || rectf_module.TempL1ItlkSts || rectf_module.TempL2ItlkSts) Led4TurnOff();
+    else if(rectf_module.TempHeatSinkAlarmSts || rectf_module.TempWaterAlarmSts || rectf_module.TempModule1AlarmSts || rectf_module.TempModule2AlarmSts || rectf_module.TempL1AlarmSts || rectf_module.TempL2AlarmSts) Led4Toggle();
+    else Led4TurnOn();
+
+    // External interlock or Driver error
+    if(rectf_module.AcPhaseFaultSts || rectf_module.AcOverCurrentSts || rectf_module.AcTransformerOverTempSts || rectf_module.WaterFluxInterlockSts) Led5TurnOff();
+    else if(!InterlockRead())Led5TurnOn();
+}
+
+static void application_readings()
+{
+    rectf_module.IoutRectf1.f = CurrentCh1Read();
+    rectf_module.IoutRectf1AlarmSts = CurrentCh1AlarmStatusRead();
+    if(!rectf_module.IoutRectf1ItlkSts) rectf_module.IoutRectf1ItlkSts        = CurrentCh1TripStatusRead();
+
+    rectf_module.IoutRectf2.f = CurrentCh2Read();
+    rectf_module.IoutRectf2AlarmSts = CurrentCh2AlarmStatusRead();
+    if(!rectf_module.IoutRectf2ItlkSts) rectf_module.IoutRectf2ItlkSts        = CurrentCh2TripStatusRead();
+
+    rectf_module.VoutRectf1.f = VoltageCh1Read();
+    rectf_module.VoutRectf1AlarmSts = VoltageCh1AlarmStatusRead();
+    if(!rectf_module.VoutRectf1ItlkSts) rectf_module.VoutRectf1ItlkSts        = VoltageCh1TripStatusRead();
+
+    rectf_module.VoutRectf2.f = VoltageCh2Read();
+    rectf_module.VoutRectf2AlarmSts = VoltageCh2AlarmStatusRead();
+    if(!rectf_module.VoutRectf2ItlkSts) rectf_module.VoutRectf2ItlkSts        = VoltageCh2TripStatusRead();
+
+    rectf_module.LeakageCurrent.f = CurrentCh3Read();
+    rectf_module.LeakageCurrentAlarmSts = CurrentCh3AlarmStatusRead();
+    if(!rectf_module.LeakageCurrentItlkSts) rectf_module.LeakageCurrentItlkSts = CurrentCh3TripStatusRead();
+
+    rectf_module.TempHeatSink.f = (float) Pt100ReadCh1();
+    rectf_module.TempHeatSinkAlarmSts = Pt100ReadCh1AlarmSts();
+    if(!rectf_module.TempHeatSinkItlkSts) rectf_module.TempHeatSinkItlkSts    = Pt100ReadCh1TripSts();
+
+    rectf_module.TempWater.f = (float) Pt100ReadCh4();
+    rectf_module.TempWaterAlarmSts = Pt100ReadCh4AlarmSts();
+    if(!rectf_module.TempWaterItlkSts) rectf_module.TempWaterItlkSts          = Pt100ReadCh4TripSts();
+
+    rectf_module.TempModule1.f = VoltageCh3Read();
+    rectf_module.TempModule1AlarmSts = VoltageCh3AlarmStatusRead();
+    if(!rectf_module.TempModule1ItlkSts) rectf_module.TempModule1ItlkSts      = VoltageCh3TripStatusRead();
+
+    rectf_module.TempModule2.f = VoltageCh4Read();
+    rectf_module.TempModule2AlarmSts = VoltageCh4AlarmStatusRead();
+    if(!rectf_module.TempModule2ItlkSts) rectf_module.TempModule2ItlkSts      = VoltageCh4TripStatusRead();
+
+    rectf_module.TempL1.f = (float) Pt100ReadCh2();
+    rectf_module.TempL1AlarmSts = Pt100ReadCh2AlarmSts();
+    if(!rectf_module.TempL1ItlkSts) rectf_module.TempL1ItlkSts                = Pt100ReadCh2TripSts();
+
+    rectf_module.TempL2.f = (float) Pt100ReadCh3();
+    rectf_module.TempL2AlarmSts = Pt100ReadCh3AlarmSts();
+    if(!rectf_module.TempL2ItlkSts) rectf_module.TempL2ItlkSts                = Pt100ReadCh3TripSts();
+
+    rectf_module.AcPhaseFault = !Gpdi1Read();
+    if(!rectf_module.AcPhaseFaultSts) rectf_module.AcPhaseFaultSts            = !Gpdi1Read();
+
+    rectf_module.AcOverCurrent = !Gpdi2Read();
+    if(!rectf_module.AcOverCurrentSts) rectf_module.AcOverCurrentSts          = !Gpdi2Read();
+
+    rectf_module.AcTransformerOverTemp = !Gpdi3Read();
+    if(!rectf_module.AcTransformerOverTempSts) rectf_module.AcTransformerOverTempSts = !Gpdi3Read();
+
+    rectf_module.WaterFluxInterlock = !Gpdi4Read();
+    if(!rectf_module.WaterFluxInterlockSts) rectf_module.WaterFluxInterlockSts = !Gpdi4Read();
+
+    if(rectf_module.AcPhaseFault || rectf_module.AcOverCurrent || rectf_module.AcTransformerOverTemp || rectf_module.WaterFluxInterlock) InterlockSet();
+
+    map_vars();
+    get_itlks_id();
+    get_alarms_id();
+}
+
+static void power_on_check()
+{
+    Led1TurnOn();
+}
+
+static void map_vars()
+{
+    g_controller_iib.iib_signals[0].u32     = rectf_module_interlocks_indication;
+    g_controller_iib.iib_signals[1].u32     = rectf_module_alarms_indication;
+    g_controller_iib.iib_signals[2].f       = rectf_module.IoutRectf1.f;
+    g_controller_iib.iib_signals[3].f       = rectf_module.IoutRectf2.f;
+    g_controller_iib.iib_signals[4].f       = rectf_module.VoutRectf1.f;
+    g_controller_iib.iib_signals[5].f       = rectf_module.VoutRectf2.f;
+    g_controller_iib.iib_signals[6].f       = rectf_module.LeakageCurrent.f;
+    g_controller_iib.iib_signals[7].f       = rectf_module.TempHeatSink.f;
+    g_controller_iib.iib_signals[8].f       = rectf_module.TempWater.f;
+    g_controller_iib.iib_signals[9].f       = rectf_module.TempModule1.f;
+    g_controller_iib.iib_signals[10].f      = rectf_module.TempModule2.f;
+    g_controller_iib.iib_signals[11].f      = rectf_module.TempL1.f;
+    g_controller_iib.iib_signals[12].f      = rectf_module.TempL2.f;
+}
+
+static void send_data()
+{
+    uint8_t i;
+    for (i = 2; i < 13; i++) send_data_message(i);
+}
+
+static void get_itlks_id()
+{
+    if (rectf_module.IoutRectf1ItlkSts)        itlk_id |= RM_OUTPUT_OVERCURRENT_RECT1_ITLK;
+    if (rectf_module.IoutRectf2ItlkSts)        itlk_id |= RM_OUTPUT_OVERCURRENT_RECT2_ITLK;
+    if (rectf_module.VoutRectf1ItlkSts)        itlk_id |= RM_OUTPUT_OVERVOLTAGE_RECT1_ITLK;
+    if (rectf_module.VoutRectf2ItlkSts)        itlk_id |= RM_OUTPUT_OVERVOLTAGE_RECT2_ITLK;
+    if (rectf_module.LeakageCurrentItlkSts)    itlk_id |= RM_LEAKAGE_OVERCURRENT_ITLK;
+    if (rectf_module.TempHeatSinkItlkSts)      itlk_id |= RM_HS_OVERTEMP_ITLK;
+    if (rectf_module.TempWaterItlkSts)         itlk_id |= RM_WATER_OVERTEMP_ITLK;
+    if (rectf_module.TempModule1ItlkSts)       itlk_id |= RM_MODULE1_OVERTEMP_ITLK;
+    if (rectf_module.TempModule2ItlkSts)       itlk_id |= RM_MODULE2_OVERTEMP_ITLK;
+    if (rectf_module.TempL1ItlkSts)            itlk_id |= RM_INDUCTOR1_OVERTEMP_ITLK;
+    if (rectf_module.TempL2ItlkSts)            itlk_id |= RM_INDUCTOR2_OVERTEMP_ITLK;
+    if (rectf_module.AcPhaseFaultSts)          itlk_id |= RM_PHASE_FAULT_ITLK;
+    if (rectf_module.AcOverCurrentSts)         itlk_id |= RM_AC_OVERCURRENT_ITLK;
+    if (rectf_module.AcTransformerOverTempSts) itlk_id |= RM_AC_TRANSF_OVERTEMP_ITLK;
+    if (rectf_module.WaterFluxInterlockSts)    itlk_id |= RM_WATER_FLOW_ITLK;
+}
+
+static void get_alarms_id()
+{
+    if (rectf_module.IoutRectf1AlarmSts)      alarm_id |= RM_OUTPUT_OVERCURRENT_RECT1_ALM;
+    if (rectf_module.IoutRectf2AlarmSts)      alarm_id |= RM_OUTPUT_OVERCURRENT_RECT2_ALM;
+    if (rectf_module.VoutRectf1AlarmSts)      alarm_id |= RM_OUTPUT_OVERVOLTAGE_RECT1_ALM;
+    if (rectf_module.VoutRectf2AlarmSts)      alarm_id |= RM_OUTPUT_OVERVOLTAGE_RECT2_ALM;
+    if (rectf_module.LeakageCurrentAlarmSts)  alarm_id |= RM_LEAKAGE_OVERCURRENT_ALM;
+    if (rectf_module.TempHeatSinkAlarmSts)    alarm_id |= RM_HS_OVERTEMP_ALM;
+    if (rectf_module.TempWaterAlarmSts)       alarm_id |= RM_WATER_OVERTEMP_ALM;
+    if (rectf_module.TempModule1AlarmSts)     alarm_id |= RM_MODULE1_OVERTEMP_ALM;
+    if (rectf_module.TempModule2AlarmSts)     alarm_id |= RM_MODULE2_OVERTEMP_ALM;
+    if (rectf_module.TempL1AlarmSts)          alarm_id |= RM_INDUCTOR1_OVERTEMP_ALM;
+    if (rectf_module.TempL2AlarmSts)          alarm_id |= RM_INDUCTOR2_OVERTEMP_ALM;
+}
+
+static void send_itlk_msg()
+{
+    send_data_message(0);
+}
+
+static void configure_module()
 {
     //Set current range
     CurrentCh1Init(300.0, 0.150, 50.0, 3);  // Rectifier1 Output Current Sensor Configuration: Hall Sensor
@@ -306,233 +562,4 @@ void init_rectifier_module()
 
     rectf_module.WaterFluxInterlock       = 0;
     rectf_module.WaterFluxInterlockSts    = 0;
-}
-
-void clear_rectifier_interlocks()
-{
-    rectf_module.IoutRectf1ItlkSts           = 0;
-    rectf_module.IoutRectf2ItlkSts           = 0;
-    rectf_module.VoutRectf1ItlkSts           = 0;
-    rectf_module.VoutRectf2ItlkSts           = 0;
-    rectf_module.LeakageCurrentItlkSts       = 0;
-    rectf_module.TempHeatSinkItlkSts         = 0;
-    rectf_module.TempWaterItlkSts            = 0;
-    rectf_module.TempModule1ItlkSts          = 0;
-    rectf_module.TempModule2ItlkSts          = 0;
-    rectf_module.TempL1ItlkSts               = 0;
-    rectf_module.TempL2ItlkSts               = 0;
-    rectf_module.AcPhaseFaultSts             = 0;
-    rectf_module.AcOverCurrentSts            = 0;
-    rectf_module.AcTransformerOverTempSts    = 0;
-    rectf_module.WaterFluxInterlockSts       = 0;
-
-    itlk_id = 0;
-}
-
-uint8_t check_rectifier_interlocks()
-{
-    uint8_t test = 0;
-
-    test |= rectf_module.IoutRectf1ItlkSts;
-    test |= rectf_module.IoutRectf2ItlkSts;
-    test |= rectf_module.VoutRectf1ItlkSts;
-    test |= rectf_module.VoutRectf2ItlkSts;
-    test |= rectf_module.LeakageCurrentItlkSts;
-    test |= rectf_module.TempHeatSinkItlkSts;
-    test |= rectf_module.TempWaterItlkSts;
-    test |= rectf_module.TempModule1ItlkSts;
-    test |= rectf_module.TempModule2ItlkSts;
-    test |= rectf_module.TempL1ItlkSts;
-    test |= rectf_module.TempL2ItlkSts;
-    test |= rectf_module.AcPhaseFaultSts;
-    test |= rectf_module.AcOverCurrentSts;
-    test |= rectf_module.AcTransformerOverTempSts;
-    test |= rectf_module.WaterFluxInterlockSts;
-
-    return test;
-}
-
-void clear_rectifier_alarms()
-{
-    rectf_module.IoutRectf1AlarmSts          = 0;
-    rectf_module.IoutRectf2AlarmSts          = 0;
-    rectf_module.VoutRectf1AlarmSts          = 0;
-    rectf_module.VoutRectf2AlarmSts          = 0;
-    rectf_module.LeakageCurrentAlarmSts      = 0;
-    rectf_module.TempHeatSinkAlarmSts        = 0;
-    rectf_module.TempWaterAlarmSts           = 0;
-    rectf_module.TempModule1AlarmSts         = 0;
-    rectf_module.TempModule2AlarmSts         = 0;
-    rectf_module.TempL1AlarmSts              = 0;
-    rectf_module.TempL2AlarmSts              = 0;
-
-    alarm_id = 0;
-}
-
-uint8_t check_rectifier_alarms()
-{
-    uint8_t test = 0;
-
-    test |= rectf_module.IoutRectf1AlarmSts;
-    test |= rectf_module.IoutRectf2AlarmSts;
-    test |= rectf_module.VoutRectf1AlarmSts;
-    test |= rectf_module.VoutRectf2AlarmSts;
-    test |= rectf_module.LeakageCurrentAlarmSts;
-    test |= rectf_module.TempHeatSinkAlarmSts;
-    test |= rectf_module.TempWaterAlarmSts;
-    test |= rectf_module.TempModule1AlarmSts;
-    test |= rectf_module.TempModule2AlarmSts;
-    test |= rectf_module.TempL1AlarmSts;
-    test |= rectf_module.TempL2AlarmSts;
-
-    return test;
-}
-
-void check_rectifier_indication_leds()
-{
-    // Rectifier Output Over Voltage
-    if(rectf_module.VoutRectf1ItlkSts || rectf_module.VoutRectf2ItlkSts) Led2TurnOff();
-    else if(rectf_module.VoutRectf1AlarmSts || rectf_module.VoutRectf2AlarmSts) Led2Toggle();
-    else Led2TurnOn();
-
-    // Rectifier Output Over Current
-    if(rectf_module.IoutRectf1ItlkSts || rectf_module.IoutRectf1ItlkSts) Led3TurnOff();
-    else if(rectf_module.IoutRectf1AlarmSts || rectf_module.IoutRectf1AlarmSts) Led3Toggle();
-    else Led3TurnOn();
-
-    // Rectifier Over Temperature
-    if(rectf_module.TempHeatSinkItlkSts || rectf_module.TempWaterItlkSts || rectf_module.TempModule1ItlkSts || rectf_module.TempModule2ItlkSts || rectf_module.TempL1ItlkSts || rectf_module.TempL2ItlkSts) Led4TurnOff();
-    else if(rectf_module.TempHeatSinkAlarmSts || rectf_module.TempWaterAlarmSts || rectf_module.TempModule1AlarmSts || rectf_module.TempModule2AlarmSts || rectf_module.TempL1AlarmSts || rectf_module.TempL2AlarmSts) Led4Toggle();
-    else Led4TurnOn();
-
-    // External interlock or Driver error
-    if(rectf_module.AcPhaseFaultSts || rectf_module.AcOverCurrentSts || rectf_module.AcTransformerOverTempSts || rectf_module.WaterFluxInterlockSts) Led5TurnOff();
-    else if(!InterlockRead())Led5TurnOn();
-}
-
-void rectifier_application_readings()
-{
-    rectf_module.IoutRectf1.f = CurrentCh1Read();
-    rectf_module.IoutRectf1AlarmSts = CurrentCh1AlarmStatusRead();
-    if(!rectf_module.IoutRectf1ItlkSts) rectf_module.IoutRectf1ItlkSts        = CurrentCh1TripStatusRead();
-
-    rectf_module.IoutRectf2.f = CurrentCh2Read();
-    rectf_module.IoutRectf2AlarmSts = CurrentCh2AlarmStatusRead();
-    if(!rectf_module.IoutRectf2ItlkSts) rectf_module.IoutRectf2ItlkSts        = CurrentCh2TripStatusRead();
-
-    rectf_module.VoutRectf1.f = VoltageCh1Read();
-    rectf_module.VoutRectf1AlarmSts = VoltageCh1AlarmStatusRead();
-    if(!rectf_module.VoutRectf1ItlkSts) rectf_module.VoutRectf1ItlkSts        = VoltageCh1TripStatusRead();
-
-    rectf_module.VoutRectf2.f = VoltageCh2Read();
-    rectf_module.VoutRectf2AlarmSts = VoltageCh2AlarmStatusRead();
-    if(!rectf_module.VoutRectf2ItlkSts) rectf_module.VoutRectf2ItlkSts        = VoltageCh2TripStatusRead();
-
-    rectf_module.LeakageCurrent.f = CurrentCh3Read();
-    rectf_module.LeakageCurrentAlarmSts = CurrentCh3AlarmStatusRead();
-    if(!rectf_module.LeakageCurrentItlkSts) rectf_module.LeakageCurrentItlkSts = CurrentCh3TripStatusRead();
-
-    rectf_module.TempHeatSink.f = (float) Pt100ReadCh1();
-    rectf_module.TempHeatSinkAlarmSts = Pt100ReadCh1AlarmSts();
-    if(!rectf_module.TempHeatSinkItlkSts) rectf_module.TempHeatSinkItlkSts    = Pt100ReadCh1TripSts();
-
-    rectf_module.TempWater.f = (float) Pt100ReadCh4();
-    rectf_module.TempWaterAlarmSts = Pt100ReadCh4AlarmSts();
-    if(!rectf_module.TempWaterItlkSts) rectf_module.TempWaterItlkSts          = Pt100ReadCh4TripSts();
-
-    rectf_module.TempModule1.f = VoltageCh3Read();
-    rectf_module.TempModule1AlarmSts = VoltageCh3AlarmStatusRead();
-    if(!rectf_module.TempModule1ItlkSts) rectf_module.TempModule1ItlkSts      = VoltageCh3TripStatusRead();
-
-    rectf_module.TempModule2.f = VoltageCh4Read();
-    rectf_module.TempModule2AlarmSts = VoltageCh4AlarmStatusRead();
-    if(!rectf_module.TempModule2ItlkSts) rectf_module.TempModule2ItlkSts      = VoltageCh4TripStatusRead();
-
-    rectf_module.TempL1.f = (float) Pt100ReadCh2();
-    rectf_module.TempL1AlarmSts = Pt100ReadCh2AlarmSts();
-    if(!rectf_module.TempL1ItlkSts) rectf_module.TempL1ItlkSts                = Pt100ReadCh2TripSts();
-
-    rectf_module.TempL2.f = (float) Pt100ReadCh3();
-    rectf_module.TempL2AlarmSts = Pt100ReadCh3AlarmSts();
-    if(!rectf_module.TempL2ItlkSts) rectf_module.TempL2ItlkSts                = Pt100ReadCh3TripSts();
-
-    rectf_module.AcPhaseFault = !Gpdi1Read();
-    if(!rectf_module.AcPhaseFaultSts) rectf_module.AcPhaseFaultSts            = !Gpdi1Read();
-
-    rectf_module.AcOverCurrent = !Gpdi2Read();
-    if(!rectf_module.AcOverCurrentSts) rectf_module.AcOverCurrentSts          = !Gpdi2Read();
-
-    rectf_module.AcTransformerOverTemp = !Gpdi3Read();
-    if(!rectf_module.AcTransformerOverTempSts) rectf_module.AcTransformerOverTempSts = !Gpdi3Read();
-
-    rectf_module.WaterFluxInterlock = !Gpdi4Read();
-    if(!rectf_module.WaterFluxInterlockSts) rectf_module.WaterFluxInterlockSts = !Gpdi4Read();
-
-    if(rectf_module.AcPhaseFault || rectf_module.AcOverCurrent || rectf_module.AcTransformerOverTemp || rectf_module.WaterFluxInterlock) InterlockSet();
-
-    rectifier_map_vars();
-    get_itlks_id();
-    get_alarms_id();
-}
-
-void rectifier_map_vars()
-{
-    g_controller_iib.iib_signals[0].u32     = rectf_module_interlocks_indication;
-    g_controller_iib.iib_signals[1].u32     = rectf_module_alarms_indication;
-    g_controller_iib.iib_signals[2].f       = rectf_module.IoutRectf1.f;
-    g_controller_iib.iib_signals[3].f       = rectf_module.IoutRectf2.f;
-    g_controller_iib.iib_signals[4].f       = rectf_module.VoutRectf1.f;
-    g_controller_iib.iib_signals[5].f       = rectf_module.VoutRectf2.f;
-    g_controller_iib.iib_signals[6].f       = rectf_module.LeakageCurrent.f;
-    g_controller_iib.iib_signals[7].f       = rectf_module.TempHeatSink.f;
-    g_controller_iib.iib_signals[8].f       = rectf_module.TempWater.f;
-    g_controller_iib.iib_signals[9].f       = rectf_module.TempModule1.f;
-    g_controller_iib.iib_signals[10].f      = rectf_module.TempModule2.f;
-    g_controller_iib.iib_signals[11].f      = rectf_module.TempL1.f;
-    g_controller_iib.iib_signals[12].f      = rectf_module.TempL2.f;
-}
-
-void send_rm_data()
-{
-    uint8_t i;
-    for (i = 2; i < 13; i++) send_data_message(i);
-}
-
-static void get_itlks_id()
-{
-    if (rectf_module.IoutRectf1ItlkSts)        itlk_id |= RM_OUTPUT_OVERCURRENT_RECT1_ITLK;
-    if (rectf_module.IoutRectf2ItlkSts)        itlk_id |= RM_OUTPUT_OVERCURRENT_RECT2_ITLK;
-    if (rectf_module.VoutRectf1ItlkSts)        itlk_id |= RM_OUTPUT_OVERVOLTAGE_RECT1_ITLK;
-    if (rectf_module.VoutRectf2ItlkSts)        itlk_id |= RM_OUTPUT_OVERVOLTAGE_RECT2_ITLK;
-    if (rectf_module.LeakageCurrentItlkSts)    itlk_id |= RM_LEAKAGE_OVERCURRENT_ITLK;
-    if (rectf_module.TempHeatSinkItlkSts)      itlk_id |= RM_HS_OVERTEMP_ITLK;
-    if (rectf_module.TempWaterItlkSts)         itlk_id |= RM_WATER_OVERTEMP_ITLK;
-    if (rectf_module.TempModule1ItlkSts)       itlk_id |= RM_MODULE1_OVERTEMP_ITLK;
-    if (rectf_module.TempModule2ItlkSts)       itlk_id |= RM_MODULE2_OVERTEMP_ITLK;
-    if (rectf_module.TempL1ItlkSts)            itlk_id |= RM_INDUCTOR1_OVERTEMP_ITLK;
-    if (rectf_module.TempL2ItlkSts)            itlk_id |= RM_INDUCTOR2_OVERTEMP_ITLK;
-    if (rectf_module.AcPhaseFaultSts)          itlk_id |= RM_PHASE_FAULT_ITLK;
-    if (rectf_module.AcOverCurrentSts)         itlk_id |= RM_AC_OVERCURRENT_ITLK;
-    if (rectf_module.AcTransformerOverTempSts) itlk_id |= RM_AC_TRANSF_OVERTEMP_ITLK;
-    if (rectf_module.WaterFluxInterlockSts)    itlk_id |= RM_WATER_FLOW_ITLK;
-}
-
-static void get_alarms_id()
-{
-    if (rectf_module.IoutRectf1AlarmSts)      alarm_id |= RM_OUTPUT_OVERCURRENT_RECT1_ALM;
-    if (rectf_module.IoutRectf2AlarmSts)      alarm_id |= RM_OUTPUT_OVERCURRENT_RECT2_ALM;
-    if (rectf_module.VoutRectf1AlarmSts)      alarm_id |= RM_OUTPUT_OVERVOLTAGE_RECT1_ALM;
-    if (rectf_module.VoutRectf2AlarmSts)      alarm_id |= RM_OUTPUT_OVERVOLTAGE_RECT2_ALM;
-    if (rectf_module.LeakageCurrentAlarmSts)  alarm_id |= RM_LEAKAGE_OVERCURRENT_ALM;
-    if (rectf_module.TempHeatSinkAlarmSts)    alarm_id |= RM_HS_OVERTEMP_ALM;
-    if (rectf_module.TempWaterAlarmSts)       alarm_id |= RM_WATER_OVERTEMP_ALM;
-    if (rectf_module.TempModule1AlarmSts)     alarm_id |= RM_MODULE1_OVERTEMP_ALM;
-    if (rectf_module.TempModule2AlarmSts)     alarm_id |= RM_MODULE2_OVERTEMP_ALM;
-    if (rectf_module.TempL1AlarmSts)          alarm_id |= RM_INDUCTOR1_OVERTEMP_ALM;
-    if (rectf_module.TempL2AlarmSts)          alarm_id |= RM_INDUCTOR2_OVERTEMP_ALM;
-}
-
-void send_rectf_itlk_msg()
-{
-    send_data_message(0);
 }

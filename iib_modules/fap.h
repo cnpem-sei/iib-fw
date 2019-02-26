@@ -60,14 +60,5 @@
  */
 
 extern void init_fap(void);
-extern void clear_fap_interlocks(void);
-extern uint8_t check_fap_interlocks(void);
-extern void clear_fap_alarms(void);
-extern uint8_t check_fap_alarms(void);
-extern void check_fap_indication_leds(void);
-extern void fap_application_readings(void);
-extern void send_fap_itlk_msg(void);
-extern void fap_power_on_check(void);
-extern void send_fap_data();
 
 #endif /* FAP_H_ */

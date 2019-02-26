@@ -21,6 +21,7 @@
 
 #include <iib_modules/fac_is.h>
 #include "iib_data.h"
+#include "iib_module.h"
 
 #include "adc_internal.h"
 #include "application.h"
@@ -107,7 +108,17 @@ static uint32_t alarm_id;
 
 static void get_itlks_id();
 static void get_alarms_id();
-static void fac_is_map_vars();
+static void map_vars();
+static void configure_module();
+static void clear_interlocks();
+static uint8_t check_interlocks();
+static void clear_alarms();
+static uint8_t check_alarms();
+static void check_indication_leds();
+static void application_readings();
+static void send_data();
+static void send_itlk_msg();
+static void power_on_check();
 
 /**
  * TODO: Put here your function prototypes for private functions. Use
@@ -115,6 +126,158 @@ static void fac_is_map_vars();
  */
 
 void init_fac_is()
+{
+    init_iib_module(&g_iib_module, &clear_interlocks, &check_interlocks,
+                        &clear_alarms, &check_alarms, &check_indication_leds,
+                        &application_readings, &power_on_check, &send_data,
+                        &send_itlk_msg);
+
+    configure_module();
+}
+
+static void clear_interlocks()
+{
+    fac_is.IinItlkSts                = 0;
+    fac_is.VdcLinkItlkSts            = 0;
+    fac_is.TempHeatsinkItlkSts       = 0;
+    fac_is.TempLItlkSts              = 0;
+    fac_is.Driver1ErrorItlk          = 0;
+    fac_is.Driver2ErrorItlk          = 0;
+
+    itlk_id = 0;
+}
+
+static uint8_t check_interlocks()
+{
+    uint8_t test = 0;
+
+    test |= fac_is.IinItlkSts;
+    test |= fac_is.VdcLinkItlkSts;
+    test |= fac_is.TempHeatsinkItlkSts;
+    test |= fac_is.TempLItlkSts;
+    test |= fac_is.Driver1ErrorItlk;
+    test |= fac_is.Driver2ErrorItlk;
+
+    return test;
+}
+
+static void clear_alarms()
+{
+    fac_is.IinAlarmSts               = 0;
+    fac_is.VdcLinkAlarmSts           = 0;
+    fac_is.TempHeatsinkAlarmSts      = 0;
+    fac_is.TempLAlarmSts             = 0;
+
+    alarm_id = 0;
+}
+
+static uint8_t check_alarms()
+{
+    uint8_t test = 0;
+
+    test |= fac_is.IinAlarmSts;
+    test |= fac_is.TempHeatsinkAlarmSts;
+    test |= fac_is.TempLAlarmSts;
+    test |= fac_is.VdcLinkAlarmSts;
+
+    return test;
+}
+
+static void check_indication_leds()
+{
+    // Input Over Current
+    if(fac_is.IinItlkSts) Led2TurnOff();
+    else if(fac_is.IinAlarmSts) Led2Toggle();
+    else Led2TurnOn();
+
+    // Dc-Link Overvoltage
+    if(fac_is.VdcLinkItlkSts) Led3TurnOff();
+    else if(fac_is.VdcLinkAlarmSts) Led3Toggle();
+    else Led3TurnOn();
+
+    // Heatsink Over Temperature
+    if(fac_is.TempHeatsinkItlkSts) Led4TurnOff();
+    else if(fac_is.TempHeatsinkAlarmSts) Led4Toggle();
+    else Led4TurnOn();
+
+    // Inductor Over Temperature
+    if(fac_is.TempLItlkSts) Led5TurnOff();
+    else if(fac_is.TempLAlarmSts) Led5Toggle();
+    else Led5TurnOn();
+
+    // Driver Error
+    if(fac_is.Driver1ErrorItlk || fac_is.Driver2ErrorItlk) Led6TurnOff();
+    else Led6TurnOn();
+}
+
+static void application_readings()
+{
+    fac_is.Iin.f = CurrentCh1Read();
+    fac_is.IinAlarmSts = CurrentCh1AlarmStatusRead();
+    if(!fac_is.IinItlkSts) fac_is.IinItlkSts                    = CurrentCh1TripStatusRead();
+
+    fac_is.VdcLink.f = LvCurrentCh1Read();
+    fac_is.VdcLinkAlarmSts = CurrentCh1AlarmStatusRead();
+    if(!fac_is.VdcLinkItlkSts) fac_is.VdcLinkItlkSts            = CurrentCh1TripStatusRead();
+
+    fac_is.TempHeatsink.f = (float) Pt100ReadCh1();
+    fac_is.TempHeatsinkAlarmSts = Pt100ReadCh1AlarmSts();
+    if(!fac_is.TempHeatsinkItlkSts) fac_is.TempHeatsinkItlkSts  = Pt100ReadCh1TripSts();
+
+    fac_is.TempL.f = (float) Pt100ReadCh2();
+    fac_is.TempLAlarmSts = Pt100ReadCh2AlarmSts();
+    if(!fac_is.TempLItlkSts) fac_is.TempLItlkSts                = Pt100ReadCh2TripSts();
+
+    map_vars();
+    get_itlks_id();
+    get_alarms_id();
+}
+
+static void power_on_check()
+{
+    Led1TurnOn();
+}
+
+static void map_vars()
+{
+    g_controller_iib.iib_signals[0].u32     = im_interlocks_indication;
+    g_controller_iib.iib_signals[1].u32     = im_alarms_indication;
+    g_controller_iib.iib_signals[2].f       = fac_is.Iin.f;
+    g_controller_iib.iib_signals[3].f       = fac_is.VdcLink.f;
+    g_controller_iib.iib_signals[4].f       = fac_is.TempL.f;
+    g_controller_iib.iib_signals[5].f       = fac_is.TempHeatsink.f;
+}
+
+static void send_data()
+{
+    uint8_t i;
+    for (i = 2; i < 6; i++) send_data_message(i);
+}
+
+static void get_itlks_id()
+{
+    if (fac_is.IinItlkSts)           itlk_id |= FAC_IS_INPUT_OVERCURRENT_ITLK;
+    if (fac_is.VdcLinkItlkSts)       itlk_id |= FAC_IS_DCLINK_OVERVOLTAGE_ITLK;
+    if (fac_is.TempHeatsinkItlkSts)  itlk_id |= FAC_IS_HS_OVERTEMP_ITLK;
+    if (fac_is.TempLItlkSts)         itlk_id |= FAC_IS_INDUC_OVERTEMP_ITLK;
+    if (fac_is.Driver1ErrorItlk)     itlk_id |= FAC_IS_DRIVER1_ERROR_ITLK;
+    if (fac_is.Driver2ErrorItlk)     itlk_id |= FAC_IS_DRIVER2_ERROR_ITLK;
+}
+
+static void get_alarms_id()
+{
+    if (fac_is.IinAlarmSts)          alarm_id |= FAC_IS_INPUT_OVERCURRENT_ALM;
+    if (fac_is.VdcLinkAlarmSts)      alarm_id |= FAC_IS_DCLINK_OVERVOLTAGE_ALM;
+    if (fac_is.TempHeatsinkAlarmSts) alarm_id |= FAC_IS_HS_OVERTEMP_ALM;
+    if (fac_is.TempLAlarmSts)        alarm_id |= FAC_IS_INDUC_OVERTEMP_ALM;
+}
+
+static void send_itlk_msg()
+{
+    send_data_message(0);
+}
+
+static void configure_module()
 {
     //Set Current Range
     CurrentCh1Init(300.0, 0.150, 50.0, 10);    // INPUT CURRENT
@@ -185,204 +348,4 @@ void init_fac_is()
 
     fac_is.Driver2Error               = 0;
     fac_is.Driver2ErrorItlk           = 0;
-}
-
-void clear_fac_is_interlocks()
-{
-    fac_is.IinItlkSts                = 0;
-    fac_is.VdcLinkItlkSts            = 0;
-    fac_is.TempHeatsinkItlkSts       = 0;
-    fac_is.TempLItlkSts              = 0;
-    fac_is.Driver1ErrorItlk          = 0;
-    fac_is.Driver2ErrorItlk          = 0;
-
-    itlk_id = 0;
-}
-
-uint8_t check_fac_is_interlocks()
-{
-    uint8_t test = 0;
-
-    test |= fac_is.IinItlkSts;
-    test |= fac_is.VdcLinkItlkSts;
-    test |= fac_is.TempHeatsinkItlkSts;
-    test |= fac_is.TempLItlkSts;
-    test |= fac_is.Driver1ErrorItlk;
-    test |= fac_is.Driver2ErrorItlk;
-
-    return test;
-}
-
-void clear_fac_is_alarms()
-{
-    fac_is.IinAlarmSts               = 0;
-    fac_is.VdcLinkAlarmSts           = 0;
-    fac_is.TempHeatsinkAlarmSts      = 0;
-    fac_is.TempLAlarmSts             = 0;
-
-    alarm_id = 0;
-}
-
-uint8_t check_fac_is_alarms()
-{
-    uint8_t test = 0;
-
-    test |= fac_is.IinAlarmSts;
-    test |= fac_is.TempHeatsinkAlarmSts;
-    test |= fac_is.TempLAlarmSts;
-    test |= fac_is.VdcLinkAlarmSts;
-
-    return test;
-}
-
-void check_fac_is_indication_leds()
-{
-    // Input Over Current
-    if(fac_is.IinItlkSts) Led2TurnOff();
-    else if(fac_is.IinAlarmSts) Led2Toggle();
-    else Led2TurnOn();
-
-    // Dc-Link Overvoltage
-    if(fac_is.VdcLinkItlkSts) Led3TurnOff();
-    else if(fac_is.VdcLinkAlarmSts) Led3Toggle();
-    else Led3TurnOn();
-
-    // Heatsink Over Temperature
-    if(fac_is.TempHeatsinkItlkSts) Led4TurnOff();
-    else if(fac_is.TempHeatsinkAlarmSts) Led4Toggle();
-    else Led4TurnOn();
-
-    // Inductor Over Temperature
-    if(fac_is.TempLItlkSts) Led5TurnOff();
-    else if(fac_is.TempLAlarmSts) Led5Toggle();
-    else Led5TurnOn();
-
-    // Driver Error
-    if(fac_is.Driver1ErrorItlk || fac_is.Driver2ErrorItlk) Led6TurnOff();
-    else Led6TurnOn();
-}
-
-void fac_is_application_readings()
-{
-    fac_is.Iin.f = CurrentCh1Read();
-    fac_is.IinAlarmSts = CurrentCh1AlarmStatusRead();
-    if(!fac_is.IinItlkSts) fac_is.IinItlkSts                    = CurrentCh1TripStatusRead();
-
-    fac_is.VdcLink.f = LvCurrentCh1Read();
-    fac_is.VdcLinkAlarmSts = CurrentCh1AlarmStatusRead();
-    if(!fac_is.VdcLinkItlkSts) fac_is.VdcLinkItlkSts            = CurrentCh1TripStatusRead();
-
-    fac_is.TempHeatsink.f = (float) Pt100ReadCh1();
-    fac_is.TempHeatsinkAlarmSts = Pt100ReadCh1AlarmSts();
-    if(!fac_is.TempHeatsinkItlkSts) fac_is.TempHeatsinkItlkSts  = Pt100ReadCh1TripSts();
-
-    fac_is.TempL.f = (float) Pt100ReadCh2();
-    fac_is.TempLAlarmSts = Pt100ReadCh2AlarmSts();
-    if(!fac_is.TempLItlkSts) fac_is.TempLItlkSts                = Pt100ReadCh2TripSts();
-
-    fac_is_map_vars();
-    get_itlks_id();
-    get_alarms_id();
-}
-
-void fac_is_map_vars()
-{
-    g_controller_iib.iib_signals[0].u32     = im_interlocks_indication;
-    g_controller_iib.iib_signals[1].u32     = im_alarms_indication;
-    g_controller_iib.iib_signals[2].f       = fac_is.Iin.f;
-    g_controller_iib.iib_signals[3].f       = fac_is.VdcLink.f;
-    g_controller_iib.iib_signals[4].f       = fac_is.TempL.f;
-    g_controller_iib.iib_signals[5].f       = fac_is.TempHeatsink.f;
-}
-
-void send_fac_is_data()
-{
-    uint8_t i;
-    for (i = 2; i < 6; i++) send_data_message(i);
-}
-
-static void get_itlks_id()
-{
-    if (fac_is.IinItlkSts)           itlk_id |= FAC_IS_INPUT_OVERCURRENT_ITLK;
-    if (fac_is.VdcLinkItlkSts)       itlk_id |= FAC_IS_DCLINK_OVERVOLTAGE_ITLK;
-    if (fac_is.TempHeatsinkItlkSts)  itlk_id |= FAC_IS_HS_OVERTEMP_ITLK;
-    if (fac_is.TempLItlkSts)         itlk_id |= FAC_IS_INDUC_OVERTEMP_ITLK;
-    if (fac_is.Driver1ErrorItlk)     itlk_id |= FAC_IS_DRIVER1_ERROR_ITLK;
-    if (fac_is.Driver2ErrorItlk)     itlk_id |= FAC_IS_DRIVER2_ERROR_ITLK;
-}
-
-static void get_alarms_id()
-{
-    if (fac_is.IinAlarmSts)          alarm_id |= FAC_IS_INPUT_OVERCURRENT_ALM;
-    if (fac_is.VdcLinkAlarmSts)      alarm_id |= FAC_IS_DCLINK_OVERVOLTAGE_ALM;
-    if (fac_is.TempHeatsinkAlarmSts) alarm_id |= FAC_IS_HS_OVERTEMP_ALM;
-    if (fac_is.TempLAlarmSts)        alarm_id |= FAC_IS_INDUC_OVERTEMP_ALM;
-}
-
-void send_fac_is_itlk_msg()
-{
-    send_data_message(0);
-}
-
-float fac_is_iin_read(void)
-{
-    return fac_is.Iin.f;
-}
-
-unsigned char fac_is_iin_alarm_sts_read(void)
-{
-    return fac_is.IinAlarmSts;
-}
-
-unsigned char fac_is_iin_itlk_sts_read(void)
-{
-    return fac_is.IinItlkSts;
-}
-
-//******************************************************************************
-float fac_is_vdclink_read(void)
-{
-    return fac_is.VdcLink.f;
-}
-
-unsigned char fac_is_vdclink_alarm_sts_read(void)
-{
-    return fac_is.VdcLinkAlarmSts;
-}
-
-unsigned char fac_is_vdclink_itlk_sts_read(void)
-{
-    return fac_is.VdcLinkItlkSts;
-}
-
-//******************************************************************************
-float fac_is_temp_heatsink_read(void)
-{
-    return fac_is.TempHeatsink.f;
-}
-
-unsigned char fac_is_temp_heatsink_alarm_sts_read(void)
-{
-    return fac_is.TempHeatsinkAlarmSts;
-}
-
-unsigned char fac_is_temp_heatsink_itlk_sts_read(void)
-{
-    return fac_is.TempHeatsinkItlkSts;
-}
-
-//******************************************************************************
-float fac_is_tempL_read(void)
-{
-    return fac_is.TempL.f;
-}
-
-unsigned char fac_is_tempL_alarm_sts_read(void)
-{
-    return fac_is.TempLAlarmSts;
-}
-
-unsigned char fac_is_tempL_itlk_sts_read(void)
-{
-    return fac_is.TempLItlkSts;
 }

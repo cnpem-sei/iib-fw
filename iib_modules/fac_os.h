@@ -52,13 +52,6 @@
  */
 
 extern void init_fac_os(void);
-extern void clear_fac_os_interlocks(void);
-extern uint8_t check_fac_os_interlocks(void);
-extern void clear_fac_os_alarms(void);
-extern uint8_t check_fac_os_alarms(void);
-extern void check_fac_os_indication_leds(void);
-extern void fac_os_application_readings(void);
-extern void send_output_fac_os_itlk_msg(void);
-extern void send_fac_os_data(void);
+
 
 #endif /* FAC_OS_H_ */

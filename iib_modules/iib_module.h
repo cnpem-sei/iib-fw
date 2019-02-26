@@ -11,17 +11,29 @@
 #include<stdint.h>
 
 typedef struct {
-    void (*configure_module) (void);
     void (*clear_interlocks) (void);
-    void (*check_interlocks) (void);
+    uint8_t (*check_interlocks) (void);
     void (*clear_alarms) (void);
-    void (*check_alarms) (void);
+    uint8_t (*check_alarms) (void);
     void (*check_indication_leds) (void);
     void (*application_readings) (void);
-    void (*map_vars) (void);
+    void (*power_on_check) (void);
     void (*send_data) (void);
     void (*send_itlk_msg) (void);
 
 } iib_module_t;
+
+extern iib_module_t g_iib_module;
+
+extern void init_iib_module(iib_module_t *iib_module,
+                     void (*clear_interlocks) (void),
+                     uint8_t (*check_interlocks) (void),
+                     void (*clear_alarms) (void),
+                     uint8_t (*check_alarms) (void),
+                     void (*check_indication_leds) (void),
+                     void (*application_readings) (void),
+                     void (*power_on_check) (void),
+                     void (*send_data) (void),
+                     void (*send_itlk_msg) (void));
 
 #endif /* IIB_MODULE_H_ */

@@ -37,13 +37,5 @@
 #define FAC_CMD_INDUC_OVERTEMP_ALM          0x00000008
 
 extern void init_fac_cmd(void);
-extern void clear_fac_cmd_interlocks(void);
-extern uint8_t check_fac_cmd_interlocks(void);
-extern void clear_fac_cmd_alarms(void);
-extern uint8_t check_fac_cmd_alarms(void);
-extern void check_fac_cmd_indication_leds(void);
-extern void fac_cmd_application_readings(void);
-extern void send_fac_cmd_itlk_msg(void);
-extern void send_fac_cmd_data(void);
 
 #endif /* COMMAND_DRAWER_H_ */

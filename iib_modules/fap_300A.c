@@ -31,6 +31,7 @@
 #include "leds.h"
 #include "can_bus.h"
 #include "input.h"
+#include "iib_module.h"
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -182,13 +183,282 @@ static uint32_t alarm_id;
 
 static void get_itlks_id();
 static void get_alarms_id();
-static void fap_300A_map_vars();
-
-/**
- * TODO: Put here the implementation for your public functions.
- */
+static void map_vars();
+static void configure_module();
+static void clear_interlocks();
+static uint8_t check_interlocks();
+static void clear_alarms();
+static uint8_t check_alarms();
+static void check_indication_leds();
+static void application_readings();
+static void power_on_check();
+static void send_data();
+static void send_itlk_msg();
+static void power_on_check();
 
 void init_fap_300A()
+{
+    init_iib_module(&g_iib_module, &clear_interlocks, &check_interlocks,
+                        &clear_alarms, &check_alarms, &check_indication_leds,
+                        &application_readings, &power_on_check, &send_data,
+                        &send_itlk_msg);
+
+    configure_module();
+}
+
+static void clear_interlocks()
+{
+    fap_300A.VinItlkSts            = 0;
+    fap_300A.VoutItlkSts           = 0;
+    fap_300A.IoutA1ItlkSts         = 0;
+    fap_300A.IoutA2ItlkSts         = 0;
+    fap_300A.TempIGBT1ItlkSts      = 0;
+    fap_300A.TempIGBT1HwrItlkSts   = 0;
+    fap_300A.TempIGBT2ItlkSts      = 0;
+    fap_300A.TempIGBT2HwrItlkSts   = 0;
+    fap_300A.Driver1ErrorItlk      = 0;
+    fap_300A.Driver2ErrorItlk      = 0;
+    fap_300A.TempLItlkSts          = 0;
+    fap_300A.TempHeatSinkItlkSts   = 0;
+    fap_300A.ExternalItlkSts       = 0;
+    fap_300A.LeakageCurrentSts     = 0;
+    fap_300A.RackSts               = 0;
+
+    itlk_id = 0;
+}
+
+static uint8_t check_interlocks()
+{
+    uint8_t test = 0;
+
+    test |= fap_300A.VinItlkSts;
+    test |= fap_300A.VoutItlkSts;
+    test |= fap_300A.IoutA1ItlkSts;
+    test |= fap_300A.IoutA2ItlkSts;
+    test |= fap_300A.TempIGBT1ItlkSts;
+    test |= fap_300A.TempIGBT1HwrItlkSts;
+    test |= fap_300A.TempIGBT2ItlkSts;
+    test |= fap_300A.TempIGBT2HwrItlkSts;
+    test |= fap_300A.Driver1ErrorItlk;
+    test |= fap_300A.Driver2ErrorItlk;
+    test |= fap_300A.TempLItlkSts;
+    test |= fap_300A.TempHeatSinkItlkSts;
+    test |= fap_300A.ExternalItlkSts;
+    test |= fap_300A.LeakageCurrentSts;
+    test |= fap_300A.RackSts;
+
+    return test;
+}
+
+static void clear_alarms()
+{
+    fap_300A.VinItlkSts             = 0;
+    fap_300A.VoutItlkSts            = 0;
+    fap_300A.IoutA1ItlkSts          = 0;
+    fap_300A.IoutA2ItlkSts          = 0;
+    fap_300A.TempIGBT1ItlkSts       = 0;
+    fap_300A.TempIGBT1HwrItlkSts    = 0;
+    fap_300A.TempIGBT2ItlkSts       = 0;
+    fap_300A.TempIGBT2HwrItlkSts    = 0;
+    fap_300A.Driver1ErrorItlk       = 0;
+    fap_300A.Driver2ErrorItlk       = 0;
+    fap_300A.TempLItlkSts           = 0;
+    fap_300A.TempHeatSinkItlkSts    = 0;
+    fap_300A.ExternalItlkSts        = 0;
+    fap_300A.LeakageCurrentSts      = 0;
+    fap_300A.RackSts                = 0;
+
+    alarm_id = 0;
+}
+
+static uint8_t check_alarms()
+{
+    uint8_t test = 0;
+
+    test |= fap_300A.VinAlarmSts;
+    test |= fap_300A.VoutAlarmSts;
+    test |= fap_300A.IoutA1AlarmSts;
+    test |= fap_300A.IoutA2AlarmSts;
+    test |= fap_300A.TempIGBT1AlarmSts;
+    test |= fap_300A.TempIGBT2AlarmSts;
+    test |= fap_300A.TempLAlarmSts;
+    test |= fap_300A.TempHeatSinkAlarmSts;
+
+    return test;
+}
+
+static void check_indication_leds()
+{
+    // Output over voltage
+    if(fap_300A.VoutItlkSts) Led2TurnOff();
+    else if(fap_300A.VoutAlarmSts) Led2Toggle();
+    else Led2TurnOn();
+
+    // Input over voltage
+    if(fap_300A.VinItlkSts) Led3TurnOff();
+    else if(fap_300A.VinAlarmSts) Led3Toggle();
+    else Led3TurnOn();
+
+    // Output over current
+    if (fap_300A.IoutA1ItlkSts || fap_300A.IoutA2ItlkSts) Led4TurnOff();
+    else if(fap_300A.IoutA1AlarmSts || fap_300A.IoutA2AlarmSts) Led4Toggle();
+    else Led4TurnOn();
+
+    // Over temperature
+    if(fap_300A.TempIGBT1ItlkSts || fap_300A.TempIGBT2ItlkSts ||  fap_300A.TempLItlkSts || fap_300A.TempHeatSinkItlkSts || fap_300A.TempIGBT1HwrItlkSts || fap_300A.TempIGBT2HwrItlkSts) Led5TurnOff();
+    else if(fap_300A.TempIGBT1AlarmSts || fap_300A.TempIGBT2AlarmSts ||  fap_300A.TempLAlarmSts || fap_300A.TempHeatSinkAlarmSts) Led5Toggle();
+    else Led5TurnOn();
+
+    if(fap_300A.ExternalItlkSts) Led6TurnOff();
+    else Led6TurnOn();
+
+    if(fap_300A.LeakageCurrentSts) Led7TurnOff();
+    else Led7TurnOn();
+
+    if(fap_300A.RackSts) Led8TurnOff();
+    else Led8TurnOn();
+
+    if(fap_300A.Driver1ErrorItlk || fap_300A.Driver2ErrorItlk) Led9TurnOff();
+    else if(!InterlockRead()) Led9TurnOn();
+
+    if(InterlockRead()) Led10TurnOff();
+    else Led10TurnOn();
+}
+
+static void application_readings()
+{
+    fap_300A.TempHeatSink.f = (float) Pt100ReadCh1();//PT100 CH1
+    fap_300A.TempHeatSinkAlarmSts = Pt100ReadCh1AlarmSts();
+    if(!fap_300A.TempHeatSinkItlkSts)fap_300A.TempHeatSinkItlkSts        = Pt100ReadCh1TripSts();
+
+    fap_300A.TempL.f = (float) Pt100ReadCh2();//PT100 CH2
+    fap_300A.TempLAlarmSts = Pt100ReadCh2AlarmSts();
+    if(!fap_300A.TempLItlkSts)fap_300A.TempLItlkSts                      = Pt100ReadCh2TripSts();
+
+    fap_300A.TempIGBT1.f = 0.0;
+    fap_300A.TempIGBT1AlarmSts = 0;
+    fap_300A.TempIGBT1ItlkSts = 0;
+
+    if(!fap_300A.TempIGBT1HwrItlkSts) fap_300A.TempIGBT1HwrItlkSts       = Driver1OverTempRead();
+
+    fap_300A.TempIGBT2.f = 0.0;
+    fap_300A.TempIGBT2AlarmSts = 0;
+    fap_300A.TempIGBT2ItlkSts = 0;
+
+    if(!fap_300A.TempIGBT2HwrItlkSts) fap_300A.TempIGBT2HwrItlkSts       = Driver2OverTempRead();
+
+    fap_300A.IoutA1.f = CurrentCh1Read();//HALL CH1
+    fap_300A.IoutA1AlarmSts = CurrentCh1AlarmStatusRead();
+    if(!fap_300A.IoutA1ItlkSts)fap_300A.IoutA1ItlkSts                    = CurrentCh1TripStatusRead();
+
+    fap_300A.IoutA2.f = CurrentCh2Read();//HALL CH2
+    fap_300A.IoutA2AlarmSts = CurrentCh2AlarmStatusRead();
+    if(!fap_300A.IoutA2ItlkSts)fap_300A.IoutA2ItlkSts                    = CurrentCh2TripStatusRead();
+
+    fap_300A.Vin.f = LvCurrentCh1Read();
+    fap_300A.VinAlarmSts = LvCurrentCh1AlarmStatusRead();
+    if(!fap_300A.VinItlkSts)fap_300A.VinItlkSts                          = LvCurrentCh1TripStatusRead();
+
+    fap_300A.Vout.f = LvCurrentCh2Read();
+    fap_300A.VoutAlarmSts = LvCurrentCh2AlarmStatusRead();
+    if(!fap_300A.VoutItlkSts)fap_300A.VoutItlkSts                        = LvCurrentCh2TripStatusRead();
+
+    fap_300A.ExternalItlk = Gpdi1Read();
+    if(!fap_300A.ExternalItlkSts) fap_300A.ExternalItlkSts               = Gpdi1Read();
+
+    fap_300A.LeakageCurrent = Gpdi2Read();
+    if(!fap_300A.LeakageCurrentSts) fap_300A.LeakageCurrentSts           = Gpdi2Read();
+
+    fap_300A.Rack = Gpdi3Read();
+    if(!fap_300A.RackSts) fap_300A.RackSts                               = Gpdi3Read();
+
+    fap_300A.Relay = Gpdi4Read();
+
+    fap_300A.Driver1Error = Driver1TopErrRead();
+    if(!fap_300A.Driver1ErrorItlk) fap_300A.Driver1ErrorItlk             = Driver1TopErrRead();
+
+    fap_300A.Driver2Error = Driver2TopErrRead();
+    if(!fap_300A.Driver2ErrorItlk) fap_300A.Driver2ErrorItlk             = Driver2TopErrRead();
+
+    if(fap_300A.ExternalItlkSts || fap_300A.Driver2ErrorItlk || fap_300A.Driver2ErrorItlk) InterlockSet(); // If no signal over the port, then set Interlock action
+
+    map_vars();
+    get_itlks_id();
+    get_alarms_id();
+}
+
+static void power_on_check()
+{
+    if (Gpdi4Read()) {
+        Led1TurnOff();
+        ReleItlkTurnOff();
+    }
+    else {
+        Led1TurnOn();
+        ReleItlkTurnOn();
+    }
+}
+
+static void map_vars()
+{
+    g_controller_iib.iib_signals[0].u32     = fap_300A_interlocks_indication;
+    g_controller_iib.iib_signals[1].u32     = fap_300A_alarms_indication;
+    g_controller_iib.iib_signals[2].f       = fap_300A.Vin.f;
+    g_controller_iib.iib_signals[3].f       = fap_300A.Vout.f;
+    g_controller_iib.iib_signals[4].f       = fap_300A.IoutA1.f;
+    g_controller_iib.iib_signals[5].f       = fap_300A.IoutA2.f;
+    g_controller_iib.iib_signals[6].f       = fap_300A.TempIGBT1.f;
+    g_controller_iib.iib_signals[7].f       = fap_300A.TempIGBT2.f;
+    g_controller_iib.iib_signals[8].f       = fap_300A.DriveVoltage.f;
+    g_controller_iib.iib_signals[9].f       = fap_300A.Drive1Current.f;
+    g_controller_iib.iib_signals[10].f      = fap_300A.Drive2Current.f;
+    g_controller_iib.iib_signals[11].f      = fap_300A.TempL.f;
+    g_controller_iib.iib_signals[12].f      = fap_300A.TempHeatSink.f;
+}
+
+static void send_data()
+{
+    uint8_t i;
+    for (i = 2; i < 13; i++) send_data_message(i);
+}
+
+static void send_itlk_msg()
+{
+    send_data_message(0);
+}
+
+
+static void get_itlks_id()
+{
+    if (fap_300A.VinItlkSts)          itlk_id |= FAP_300A_INPUT_OVERVOLTAGE_ITLK;
+    if (fap_300A.VoutItlkSts)         itlk_id |= FAP_300A_OUTPUT_OVERVOLTAGE_ITLK;
+    if (fap_300A.IoutA1ItlkSts)       itlk_id |= FAP_300A_OUTPUT_OVERCURRENT_1_ITLK;
+    if (fap_300A.IoutA2ItlkSts)       itlk_id |= FAP_300A_OUTPUT_OVERCURRENT_2_ITLK;
+    if (fap_300A.TempIGBT1ItlkSts)    itlk_id |= FAP_300A_IGBT1_OVERTEMP_ITLK;
+    if (fap_300A.TempIGBT2ItlkSts)    itlk_id |= FAP_300A_IGBT2_OVERTEMP_ITLK;
+    if (fap_300A.Driver1ErrorItlk)    itlk_id |= FAP_300A_DRIVER1_ERROR_ITLK;
+    if (fap_300A.Driver2ErrorItlk)    itlk_id |= FAP_300A_DRIVER2_ERROR_ITLK;
+    if (fap_300A.TempLItlkSts)        itlk_id |= FAP_300A_INDUC_OVERTEMP_ITLK;
+    if (fap_300A.TempHeatSinkItlkSts) itlk_id |= FAP_300A_HS_OVERTEMP_ITLK;
+    if (fap_300A.Relay)               itlk_id |= FAP_300A_RELAY_ITLK;
+    if (fap_300A.ExternalItlkSts)     itlk_id |= FAP_300A_EXTERNAL_ITLK;
+    if (fap_300A.LeakageCurrentSts)   itlk_id |= FAP_300A_LEAKAGE_CURRENT_ITLK;
+    if (fap_300A.RackSts)             itlk_id |= FAP_300A_RACK_ITLK;
+}
+
+static void get_alarms_id()
+{
+    if (fap_300A.VinAlarmSts)          alarm_id |= FAP_300A_INPUT_OVERVOLTAGE_ALM;
+    if (fap_300A.VoutAlarmSts)         alarm_id |= FAP_300A_OUTPUT_OVERVOLTAGE_ALM;
+    if (fap_300A.IoutA1AlarmSts)       alarm_id |= FAP_300A_OUTPUT_OVERCURRENT_1_ALM;
+    if (fap_300A.IoutA2AlarmSts)       alarm_id |= FAP_300A_OUTPUT_OVERCURRENT_2_ALM;
+    if (fap_300A.TempIGBT1AlarmSts)    alarm_id |= FAP_300A_IGBT1_OVERTEMP_ALM;
+    if (fap_300A.TempIGBT2AlarmSts)    alarm_id |= FAP_300A_IGBT2_OVERTEMP_ALM;
+    if (fap_300A.TempLAlarmSts)        alarm_id |= FAP_300A_INDUC_OVERTEMP_ALM;
+    if (fap_300A.TempHeatSinkAlarmSts) alarm_id |= FAP_300A_HS_OVERTEMP_ALM;
+}
+
+static void configure_module()
 {
     //Set current range FAP 300 A
     CurrentCh1Init(150.0, 0.150, 50.0, 3); // Corrente braço1: Sensor Hall
@@ -288,466 +558,4 @@ void init_fap_300A()
     fap_300A.LeakageCurrentSts     = 0;
     fap_300A.Rack                  = 0;
     fap_300A.RackSts               = 0;
-}
-
-void clear_fap_300A_interlocks()
-{
-    fap_300A.VinItlkSts            = 0;
-    fap_300A.VoutItlkSts           = 0;
-    fap_300A.IoutA1ItlkSts         = 0;
-    fap_300A.IoutA2ItlkSts         = 0;
-    fap_300A.TempIGBT1ItlkSts      = 0;
-    fap_300A.TempIGBT1HwrItlkSts   = 0;
-    fap_300A.TempIGBT2ItlkSts      = 0;
-    fap_300A.TempIGBT2HwrItlkSts   = 0;
-    fap_300A.Driver1ErrorItlk      = 0;
-    fap_300A.Driver2ErrorItlk      = 0;
-    fap_300A.TempLItlkSts          = 0;
-    fap_300A.TempHeatSinkItlkSts   = 0;
-    fap_300A.ExternalItlkSts       = 0;
-    fap_300A.LeakageCurrentSts     = 0;
-    fap_300A.RackSts               = 0;
-
-    itlk_id = 0;
-}
-
-uint8_t check_fap_300A_interlocks()
-{
-    uint8_t test = 0;
-
-    test |= fap_300A.VinItlkSts;
-    test |= fap_300A.VoutItlkSts;
-    test |= fap_300A.IoutA1ItlkSts;
-    test |= fap_300A.IoutA2ItlkSts;
-    test |= fap_300A.TempIGBT1ItlkSts;
-    test |= fap_300A.TempIGBT1HwrItlkSts;
-    test |= fap_300A.TempIGBT2ItlkSts;
-    test |= fap_300A.TempIGBT2HwrItlkSts;
-    test |= fap_300A.Driver1ErrorItlk;
-    test |= fap_300A.Driver2ErrorItlk;
-    test |= fap_300A.TempLItlkSts;
-    test |= fap_300A.TempHeatSinkItlkSts;
-    test |= fap_300A.ExternalItlkSts;
-    test |= fap_300A.LeakageCurrentSts;
-    test |= fap_300A.RackSts;
-
-    return test;
-}
-
-void clear_fap_300A_alarms()
-{
-    fap_300A.VinItlkSts             = 0;
-    fap_300A.VoutItlkSts            = 0;
-    fap_300A.IoutA1ItlkSts          = 0;
-    fap_300A.IoutA2ItlkSts          = 0;
-    fap_300A.TempIGBT1ItlkSts       = 0;
-    fap_300A.TempIGBT1HwrItlkSts    = 0;
-    fap_300A.TempIGBT2ItlkSts       = 0;
-    fap_300A.TempIGBT2HwrItlkSts    = 0;
-    fap_300A.Driver1ErrorItlk       = 0;
-    fap_300A.Driver2ErrorItlk       = 0;
-    fap_300A.TempLItlkSts           = 0;
-    fap_300A.TempHeatSinkItlkSts    = 0;
-    fap_300A.ExternalItlkSts        = 0;
-    fap_300A.LeakageCurrentSts      = 0;
-    fap_300A.RackSts                = 0;
-
-    alarm_id = 0;
-}
-
-uint8_t check_fap_300A_alarms()
-{
-    uint8_t test = 0;
-
-    test |= fap_300A.VinAlarmSts;
-    test |= fap_300A.VoutAlarmSts;
-    test |= fap_300A.IoutA1AlarmSts;
-    test |= fap_300A.IoutA2AlarmSts;
-    test |= fap_300A.TempIGBT1AlarmSts;
-    test |= fap_300A.TempIGBT2AlarmSts;
-    test |= fap_300A.TempLAlarmSts;
-    test |= fap_300A.TempHeatSinkAlarmSts;
-
-    return test;
-}
-
-void check_fap_300A_indication_leds()
-{
-    // Output over voltage
-    if(fap_300A.VoutItlkSts) Led2TurnOff();
-    else if(fap_300A.VoutAlarmSts) Led2Toggle();
-    else Led2TurnOn();
-
-    // Input over voltage
-    if(fap_300A.VinItlkSts) Led3TurnOff();
-    else if(fap_300A.VinAlarmSts) Led3Toggle();
-    else Led3TurnOn();
-
-    // Output over current
-    if (fap_300A.IoutA1ItlkSts || fap_300A.IoutA2ItlkSts) Led4TurnOff();
-    else if(fap_300A.IoutA1AlarmSts || fap_300A.IoutA2AlarmSts) Led4Toggle();
-    else Led4TurnOn();
-
-    // Over temperature
-    if(fap_300A.TempIGBT1ItlkSts || fap_300A.TempIGBT2ItlkSts ||  fap_300A.TempLItlkSts || fap_300A.TempHeatSinkItlkSts || fap_300A.TempIGBT1HwrItlkSts || fap_300A.TempIGBT2HwrItlkSts) Led5TurnOff();
-    else if(fap_300A.TempIGBT1AlarmSts || fap_300A.TempIGBT2AlarmSts ||  fap_300A.TempLAlarmSts || fap_300A.TempHeatSinkAlarmSts) Led5Toggle();
-    else Led5TurnOn();
-
-    if(fap_300A.ExternalItlkSts) Led6TurnOff();
-    else Led6TurnOn();
-
-    if(fap_300A.LeakageCurrentSts) Led7TurnOff();
-    else Led7TurnOn();
-
-    if(fap_300A.RackSts) Led8TurnOff();
-    else Led8TurnOn();
-
-    if(fap_300A.Driver1ErrorItlk || fap_300A.Driver2ErrorItlk) Led9TurnOff();
-    else if(!InterlockRead()) Led9TurnOn();
-
-    if(InterlockRead()) Led10TurnOff();
-    else Led10TurnOn();
-}
-
-void fap_300A_application_readings()
-{
-    fap_300A.TempHeatSink.f = (float) Pt100ReadCh1();//PT100 CH1
-    fap_300A.TempHeatSinkAlarmSts = Pt100ReadCh1AlarmSts();
-    if(!fap_300A.TempHeatSinkItlkSts)fap_300A.TempHeatSinkItlkSts        = Pt100ReadCh1TripSts();
-
-    fap_300A.TempL.f = (float) Pt100ReadCh2();//PT100 CH2
-    fap_300A.TempLAlarmSts = Pt100ReadCh2AlarmSts();
-    if(!fap_300A.TempLItlkSts)fap_300A.TempLItlkSts                      = Pt100ReadCh2TripSts();
-
-    fap_300A.TempIGBT1.f = 0.0;
-    fap_300A.TempIGBT1AlarmSts = 0;
-    fap_300A.TempIGBT1ItlkSts = 0;
-
-    if(!fap_300A.TempIGBT1HwrItlkSts) fap_300A.TempIGBT1HwrItlkSts       = Driver1OverTempRead();
-
-    fap_300A.TempIGBT2.f = 0.0;
-    fap_300A.TempIGBT2AlarmSts = 0;
-    fap_300A.TempIGBT2ItlkSts = 0;
-
-    if(!fap_300A.TempIGBT2HwrItlkSts) fap_300A.TempIGBT2HwrItlkSts       = Driver2OverTempRead();
-
-    fap_300A.IoutA1.f = CurrentCh1Read();//HALL CH1
-    fap_300A.IoutA1AlarmSts = CurrentCh1AlarmStatusRead();
-    if(!fap_300A.IoutA1ItlkSts)fap_300A.IoutA1ItlkSts                    = CurrentCh1TripStatusRead();
-
-    fap_300A.IoutA2.f = CurrentCh2Read();//HALL CH2
-    fap_300A.IoutA2AlarmSts = CurrentCh2AlarmStatusRead();
-    if(!fap_300A.IoutA2ItlkSts)fap_300A.IoutA2ItlkSts                    = CurrentCh2TripStatusRead();
-
-    fap_300A.Vin.f = LvCurrentCh1Read();
-    fap_300A.VinAlarmSts = LvCurrentCh1AlarmStatusRead();
-    if(!fap_300A.VinItlkSts)fap_300A.VinItlkSts                          = LvCurrentCh1TripStatusRead();
-
-    fap_300A.Vout.f = LvCurrentCh2Read();
-    fap_300A.VoutAlarmSts = LvCurrentCh2AlarmStatusRead();
-    if(!fap_300A.VoutItlkSts)fap_300A.VoutItlkSts                        = LvCurrentCh2TripStatusRead();
-
-    fap_300A.ExternalItlk = Gpdi1Read();
-    if(!fap_300A.ExternalItlkSts) fap_300A.ExternalItlkSts               = Gpdi1Read();
-
-    fap_300A.LeakageCurrent = Gpdi2Read();
-    if(!fap_300A.LeakageCurrentSts) fap_300A.LeakageCurrentSts           = Gpdi2Read();
-
-    fap_300A.Rack = Gpdi3Read();
-    if(!fap_300A.RackSts) fap_300A.RackSts                               = Gpdi3Read();
-
-    fap_300A.Relay = Gpdi4Read();
-
-    fap_300A.Driver1Error = Driver1TopErrRead();
-    if(!fap_300A.Driver1ErrorItlk) fap_300A.Driver1ErrorItlk             = Driver1TopErrRead();
-
-    fap_300A.Driver2Error = Driver2TopErrRead();
-    if(!fap_300A.Driver2ErrorItlk) fap_300A.Driver2ErrorItlk             = Driver2TopErrRead();
-
-    if(fap_300A.ExternalItlkSts || fap_300A.Driver2ErrorItlk || fap_300A.Driver2ErrorItlk) InterlockSet(); // If no signal over the port, then set Interlock action
-
-    fap_300A_map_vars();
-    get_itlks_id();
-    get_alarms_id();
-}
-
-void fap_300A_power_on_check()
-{
-    if (Gpdi4Read()) {
-        Led1TurnOff();
-        ReleItlkTurnOff();
-    }
-    else {
-        Led1TurnOn();
-        ReleItlkTurnOn();
-    }
-}
-
-void fap_300A_map_vars()
-{
-    g_controller_iib.iib_signals[0].u32     = fap_300A_interlocks_indication;
-    g_controller_iib.iib_signals[1].u32     = fap_300A_alarms_indication;
-    g_controller_iib.iib_signals[2].f       = fap_300A.Vin.f;
-    g_controller_iib.iib_signals[3].f       = fap_300A.Vout.f;
-    g_controller_iib.iib_signals[4].f       = fap_300A.IoutA1.f;
-    g_controller_iib.iib_signals[5].f       = fap_300A.IoutA2.f;
-    g_controller_iib.iib_signals[6].f       = fap_300A.TempIGBT1.f;
-    g_controller_iib.iib_signals[7].f       = fap_300A.TempIGBT2.f;
-    g_controller_iib.iib_signals[8].f       = fap_300A.DriveVoltage.f;
-    g_controller_iib.iib_signals[9].f       = fap_300A.Drive1Current.f;
-    g_controller_iib.iib_signals[10].f      = fap_300A.Drive2Current.f;
-    g_controller_iib.iib_signals[11].f      = fap_300A.TempL.f;
-    g_controller_iib.iib_signals[12].f      = fap_300A.TempHeatSink.f;
-}
-
-void send_fap_300A_data()
-{
-    uint8_t i;
-    for (i = 2; i < 13; i++) send_data_message(i);
-}
-
-static void get_itlks_id()
-{
-    if (fap_300A.VinItlkSts)          itlk_id |= FAP_300A_INPUT_OVERVOLTAGE_ITLK;
-    if (fap_300A.VoutItlkSts)         itlk_id |= FAP_300A_OUTPUT_OVERVOLTAGE_ITLK;
-    if (fap_300A.IoutA1ItlkSts)       itlk_id |= FAP_300A_OUTPUT_OVERCURRENT_1_ITLK;
-    if (fap_300A.IoutA2ItlkSts)       itlk_id |= FAP_300A_OUTPUT_OVERCURRENT_2_ITLK;
-    if (fap_300A.TempIGBT1ItlkSts)    itlk_id |= FAP_300A_IGBT1_OVERTEMP_ITLK;
-    if (fap_300A.TempIGBT2ItlkSts)    itlk_id |= FAP_300A_IGBT2_OVERTEMP_ITLK;
-    if (fap_300A.Driver1ErrorItlk)    itlk_id |= FAP_300A_DRIVER1_ERROR_ITLK;
-    if (fap_300A.Driver2ErrorItlk)    itlk_id |= FAP_300A_DRIVER2_ERROR_ITLK;
-    if (fap_300A.TempLItlkSts)        itlk_id |= FAP_300A_INDUC_OVERTEMP_ITLK;
-    if (fap_300A.TempHeatSinkItlkSts) itlk_id |= FAP_300A_HS_OVERTEMP_ITLK;
-    if (fap_300A.Relay)               itlk_id |= FAP_300A_RELAY_ITLK;
-    if (fap_300A.ExternalItlkSts)     itlk_id |= FAP_300A_EXTERNAL_ITLK;
-    if (fap_300A.LeakageCurrentSts)   itlk_id |= FAP_300A_LEAKAGE_CURRENT_ITLK;
-    if (fap_300A.RackSts)             itlk_id |= FAP_300A_RACK_ITLK;
-}
-
-static void get_alarms_id()
-{
-    if (fap_300A.VinAlarmSts)          alarm_id |= FAP_300A_INPUT_OVERVOLTAGE_ALM;
-    if (fap_300A.VoutAlarmSts)         alarm_id |= FAP_300A_OUTPUT_OVERVOLTAGE_ALM;
-    if (fap_300A.IoutA1AlarmSts)       alarm_id |= FAP_300A_OUTPUT_OVERCURRENT_1_ALM;
-    if (fap_300A.IoutA2AlarmSts)       alarm_id |= FAP_300A_OUTPUT_OVERCURRENT_2_ALM;
-    if (fap_300A.TempIGBT1AlarmSts)    alarm_id |= FAP_300A_IGBT1_OVERTEMP_ALM;
-    if (fap_300A.TempIGBT2AlarmSts)    alarm_id |= FAP_300A_IGBT2_OVERTEMP_ALM;
-    if (fap_300A.TempLAlarmSts)        alarm_id |= FAP_300A_INDUC_OVERTEMP_ALM;
-    if (fap_300A.TempHeatSinkAlarmSts) alarm_id |= FAP_300A_HS_OVERTEMP_ALM;
-}
-
-void send_fap_300A_itlk_msg()
-{
-    send_data_message(0);
-}
-
-float fap_300A_vout_read(void)
-{
-    return fap_300A.Vout.f;
-}
-
-unsigned char fap_300A_vout_alarm_sts_read(void)
-{
-    return fap_300A.VoutAlarmSts;
-}
-
-unsigned char fap_30A_module_vout_itlk_sts_read(void)
-{
-    return fap_300A.VoutItlkSts;
-}
-
-//**********************************************
-float fap_300A_vin_read(void)
-{
-    return fap_300A.Vin.f;
-}
-
-unsigned char fap_300A_vin_alarm_sts_read(void)
-{
-    return fap_300A.VinAlarmSts;
-}
-
-unsigned char fap_300A_vin_itlk_sts_read(void)
-{
-    return fap_300A.VinItlkSts;
-}
-
-//**********************************************
-float fap_300A_iout_a1_read(void)
-{
-    return fap_300A.IoutA1.f;
-}
-
-unsigned char fap_300A_iout_a1_alarm_sts_read(void)
-{
-    return fap_300A.IoutA1AlarmSts;
-}
-
-unsigned char fap_300A_iout_a1_itlk_sts_read(void)
-{
-    return fap_300A.IoutA1ItlkSts;
-}
-
-//**********************************************
-float fap_300A_iout_a2_read(void)
-{
-    return fap_300A.IoutA2.f;
-}
-
-unsigned char fap_300A_iout_a2_alarm_sts_read(void)
-{
-    return fap_300A.IoutA2AlarmSts;
-}
-
-unsigned char fap_300A_iout_a2_itlk_sts_read(void)
-{
-    return fap_300A.IoutA2ItlkSts;
-}
-
-//**********************************************
-unsigned char fap_300A_temp_IGBT1_read(void)
-{
-    return fap_300A.TempIGBT1.f;
-}
-
-unsigned char fap_300A_temp_IGBT1_alarm_sts_read(void)
-{
-    return fap_300A.TempIGBT1AlarmSts;
-}
-
-unsigned char fap_300A_temp_IGBT1_itlk_sts_read(void)
-{
-    return fap_300A.TempIGBT1ItlkSts;
-}
-
-unsigned char fap_300A_temp_IGBT1_hwr_itlk_read(void)
-{
-    return fap_300A.TempIGBT1HwrItlk;
-}
-
-unsigned char fap_300A_temp_IGBT1_hwr_itlk_sts_read(void)
-{
-    return fap_300A.TempIGBT1HwrItlkSts;
-}
-
-//**********************************************
-unsigned char fap_300A_temp_IGBT2_read(void)
-{
-    return fap_300A.TempIGBT2.f;
-}
-
-unsigned char fap_300A_temp_IGBT2_alarm_sts_read(void)
-{
-    return fap_300A.TempIGBT2AlarmSts;
-}
-
-unsigned char fap_300A_temp_IGBT2_itlk_sts_read(void)
-{
-    return fap_300A.TempIGBT2ItlkSts;
-}
-
-unsigned char fap_300A_temp_IGBT2_hwr_itlk_read(void)
-{
-    return fap_300A.TempIGBT2HwrItlk;
-}
-
-unsigned char fap_300A_temp_IGBT2_hwr_itlk_sts_read(void)
-{
-    return fap_300A.TempIGBT2HwrItlkSts;
-}
-
-//**********************************************
-unsigned char fap_300A_temp_heatsink_read(void)
-{
-    return fap_300A.TempHeatSink.f;
-}
-
-unsigned char fap_300A_temp_heatsink_alarm_sts_read(void)
-{
-    return fap_300A.TempHeatSinkAlarmSts;
-}
-
-unsigned char fap_300A_temp_heatsink_itlk_sts_read(void)
-{
-    return fap_300A.TempHeatSinkItlkSts;
-}
-
-//**********************************************
-unsigned char fap_300A_tempL_read(void)
-{
-    return fap_300A.TempL.f;
-}
-
-unsigned char fap_300A_tempL_alarm_sts_read(void)
-{
-    return fap_300A.TempLAlarmSts;
-}
-
-unsigned char fap_300A_tempL_itlk_sts_read(void)
-{
-    return fap_300A.TempLItlkSts;
-}
-
-//**********************************************
-unsigned char fap_300A_relay_read(void)
-{
-    return fap_300A.Relay;
-}
-
-//**********************************************
-unsigned char fap_300A_driver1_error_read(void)
-{
-    return fap_300A.Driver1Error;
-}
-
-unsigned char fap_300A_driver1_error_itlk_read(void)
-{
-    return fap_300A.Driver1ErrorItlk;
-}
-
-//**********************************************
-unsigned char fap_300A_driver2_error_read(void)
-{
-    return fap_300A.Driver2Error;
-}
-
-unsigned char fap_300A_driver2_error_itlk_read(void)
-{
-    return fap_300A.Driver2ErrorItlk;
-}
-
-//**********************************************
-unsigned char fap_300A_external_itlk_read(void)
-{
-    return fap_300A.ExternalItlk;
-}
-
-unsigned char fap_300A_external_itlk_sts_read(void)
-{
-    return fap_300A.ExternalItlkSts;
-}
-
-//**********************************************
-unsigned char fap_300A_leakage_current_read(void)
-{
-    return fap_300A.LeakageCurrent;
-
-}
-
-unsigned char fap_300A_leakage_current_sts_read(void)
-{
-    return fap_300A.LeakageCurrentSts;
-
-}
-
-//**********************************************
-unsigned char fap_300ARackRead(void)
-{
-    return fap_300A.Rack;
-
-}
-
-unsigned char fap_300A_rack_sts_read(void)
-{
-    return fap_300A.RackSts;
 }
