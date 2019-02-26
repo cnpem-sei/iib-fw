@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef Q1_MODULE_H_
-#define Q1_MODULE_H_
+#ifndef FAP_300A_H_
+#define FAP_300A_H_
 
 #include <stdint.h>
 
@@ -59,13 +59,13 @@
  * to be accessed by other modules.
  */
 
-extern void init_q1_module(void);
-extern void clear_q1_interlocks(void);
-extern uint8_t check_q1_interlocks(void);
-extern void clear_q1_alarms(void);
-extern uint8_t check_q1_alarms(void);
-extern void check_q1_indication_leds(void);
-extern void q1_application_readings(void);
-extern void send_output_q1_itlk_msg(void);
+extern void init_fap_300A(void);
+extern void clear_fap_300A_interlocks(void);
+extern uint8_t check_fap_300A_interlocks(void);
+extern void clear_fap_300A_alarms(void);
+extern uint8_t check_fap_300A_alarms(void);
+extern void check_fap_300A_indication_leds(void);
+extern void fap_300A_application_readings(void);
+extern void send_output_fap_300A_itlk_msg(void);
 
-#endif /* Q1_MODULE_H_ */
+#endif /* FAP_300A_H_ */

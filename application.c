@@ -28,8 +28,8 @@ void AppConfiguration(void)
     // This parameter guide the firmware behavior
     // Each Model has a different variable list that need to be check
 
-    //PowerModuleModel = OUTPUT_Q1_MODULE;
-    //PowerModuleModel = OUTPUT_Q1_300A_MODULE;
+    //PowerModuleModel = OUTPUT_FAP_MODULE;
+    //PowerModuleModel = FAP_300A;
     //PowerModuleModel = OUTPUT_Q4_MODULE;
     //PowerModuleModel = RECTIFIER_MODULE;
     //PowerModuleModel = INPUT_MODULE;
@@ -37,9 +37,9 @@ void AppConfiguration(void)
     
     switch(PowerModuleModel)
     {
-        case OUTPUT_Q1_MODULE:
+        case OUTPUT_FAP_MODULE:
 
-            init_q1_module();
+            init_fap();
 
             break;
 
@@ -67,9 +67,9 @@ void AppConfiguration(void)
 
             break;
 
-        case OUTPUT_Q1_300A_MODULE:
+        case OUTPUT_FAP_300A_MODULE:
 
-            init_q1_300A_module();
+            init_fap_300A();
 
             break;
 
@@ -113,10 +113,10 @@ void InterlockClearCheck(void)
           
           switch(PowerModuleModel)
           {
-              case OUTPUT_Q1_MODULE:
+              case OUTPUT_FAP_MODULE:
 
-                  clear_q1_interlocks();
-                  clear_q1_alarms();
+                  clear_fap_interlocks();
+                  clear_fap_alarms();
 
                   break;
 
@@ -148,10 +148,10 @@ void InterlockClearCheck(void)
 
                   break;
 
-              case OUTPUT_Q1_300A_MODULE:
+              case OUTPUT_FAP_300A_MODULE:
 
-                  clear_q1_300A_interlocks();
-                  clear_q1_300A_alarms();
+                  clear_fap_300A_interlocks();
+                  clear_fap_300A_alarms();
 
                   break;
 
@@ -176,7 +176,7 @@ void AppInterlock(void)
       
       switch(PowerModuleModel)
       {
-       case OUTPUT_Q1_MODULE:
+       case OUTPUT_FAP_MODULE:
 
             ReleAuxTurnOff();
             ReleItlkTurnOff();
@@ -213,7 +213,7 @@ void AppInterlock(void)
 
            break;
 
-       case OUTPUT_Q1_300A_MODULE:
+       case OUTPUT_FAP_300A_MODULE:
 
            ReleAuxTurnOff();
            ReleItlkTurnOff();
@@ -254,9 +254,9 @@ void InterlockAppCheck(void)
 
    switch(PowerModuleModel)
    {
-       case OUTPUT_Q1_MODULE:
+       case OUTPUT_FAP_MODULE:
 
-           test = check_q1_interlocks();
+           test = check_fap_interlocks();
 
            break;
        
@@ -284,9 +284,9 @@ void InterlockAppCheck(void)
 
            break;
 
-       case OUTPUT_Q1_300A_MODULE:
+       case OUTPUT_FAP_300A_MODULE:
 
-           test = check_q1_300A_interlocks();
+           test = check_fap_300A_interlocks();
 
            break;
 
@@ -306,8 +306,8 @@ void InterlockAppCheck(void)
 
        switch (PowerModuleModel)
        {
-           case OUTPUT_Q1_MODULE:
-               send_output_q1_itlk_msg();
+           case OUTPUT_FAP_MODULE:
+               send_output_fap_itlk_msg();
                break;
 
            case OUTPUT_Q4_MODULE:
@@ -326,8 +326,8 @@ void InterlockAppCheck(void)
                send_fac_cmd_itlk_msg();
                break;
 
-           case OUTPUT_Q1_300A_MODULE:
-               send_output_q1_300A_itlk_msg();
+           case OUTPUT_FAP_300A_MODULE:
+               send_output_fap_300A_itlk_msg();
                break;
 
            default:
@@ -343,9 +343,9 @@ void AlarmAppCheck(void)
    
    switch(PowerModuleModel)
    {
-       case OUTPUT_Q1_MODULE:
+       case OUTPUT_FAP_MODULE:
 
-           test = check_q1_alarms();
+           test = check_fap_alarms();
 
            break;
 
@@ -373,9 +373,9 @@ void AlarmAppCheck(void)
 
            break;
 
-       case OUTPUT_Q1_300A_MODULE:
+       case OUTPUT_FAP_300A_MODULE:
 
-           test = check_q1_300A_alarms();
+           test = check_fap_300A_alarms();
 
            break;
 
@@ -398,9 +398,9 @@ void LedIndicationStatus(void)
 {
     switch(PowerModuleModel)
     {
-        case OUTPUT_Q1_MODULE:
+        case OUTPUT_FAP_MODULE:
 
-           check_q1_indication_leds();
+           check_fap_indication_leds();
 
            break;
 
@@ -428,9 +428,9 @@ void LedIndicationStatus(void)
 
             break;
 
-        case OUTPUT_Q1_300A_MODULE:
+        case OUTPUT_FAP_300A_MODULE:
 
-            check_q1_300A_indication_leds();
+            check_fap_300A_indication_leds();
 
             break;
 
@@ -445,9 +445,9 @@ void Application(void)
 
     switch(PowerModuleModel)
     {
-        case OUTPUT_Q1_MODULE:
+        case OUTPUT_FAP_MODULE:
 
-            q1_application_readings();
+            fap_application_readings();
 
             break;
        
@@ -475,9 +475,9 @@ void Application(void)
 
            break;
 
-       case OUTPUT_Q1_300A_MODULE:
+       case OUTPUT_FAP_300A_MODULE:
 
-           q1_300A_application_readings();
+           fap_300A_application_readings();
 
            break;
 
@@ -499,7 +499,7 @@ void Application(void)
 
             switch(PowerModuleModel)
             {
-             case OUTPUT_Q1_MODULE:
+             case OUTPUT_FAP_MODULE:
                   ReleAuxTurnOn();
                   ReleItlkTurnOn();
                   break;
@@ -528,7 +528,7 @@ void Application(void)
                  ReleItlkTurnOn();
                  break;
 
-             case OUTPUT_Q1_300A_MODULE:
+             case OUTPUT_FAP_300A_MODULE:
                  ReleAuxTurnOn();
                  ReleItlkTurnOn();
                  break;
@@ -545,8 +545,8 @@ void send_data_schedule()
 {
     switch(AppType())
     {
-        case OUTPUT_Q1_MODULE:
-            send_q1_module_data();
+        case OUTPUT_FAP_MODULE:
+            send_fap_data();
             break;
 
         case OUTPUT_Q4_MODULE:
@@ -565,8 +565,8 @@ void send_data_schedule()
             send_fac_cmd_data();
             break;
 
-        case OUTPUT_Q1_300A_MODULE:
-            send_q1_300A_module_data();
+        case OUTPUT_FAP_300A_MODULE:
+            send_fap_300A_data();
             break;
 
         default:
