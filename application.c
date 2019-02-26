@@ -30,10 +30,10 @@ void AppConfiguration(void)
 
     //PowerModuleModel = OUTPUT_Q1_MODULE;
     //PowerModuleModel = OUTPUT_Q1_300A_MODULE;
-    PowerModuleModel = OUTPUT_Q4_MODULE;
+    //PowerModuleModel = OUTPUT_Q4_MODULE;
     //PowerModuleModel = RECTIFIER_MODULE;
     //PowerModuleModel = INPUT_MODULE;
-    //PowerModuleModel = COMMAND_DRAWER_MODULE;
+    PowerModuleModel = FAC_CMD_MODULE;
     
     switch(PowerModuleModel)
     {
@@ -61,9 +61,9 @@ void AppConfiguration(void)
 
             break;
 
-        case COMMAND_DRAWER_MODULE:
+        case FAC_CMD_MODULE:
 
-            init_command_module();
+            init_fac_cmd();
 
             break;
 
@@ -141,10 +141,10 @@ void InterlockClearCheck(void)
 
                   break;
 
-              case COMMAND_DRAWER_MODULE:
+              case FAC_CMD_MODULE:
 
-                  clear_command_module_interlocks();
-                  clear_command_module_alarms();
+                  clear_fac_cmd_interlocks();
+                  clear_fac_cmd_alarms();
 
                   break;
 
@@ -206,7 +206,7 @@ void AppInterlock(void)
 
             break;
 
-       case COMMAND_DRAWER_MODULE:
+       case FAC_CMD_MODULE:
 
            ReleAuxTurnOff();
            ReleItlkTurnOff();
@@ -278,9 +278,9 @@ void InterlockAppCheck(void)
 
            break;
 
-       case COMMAND_DRAWER_MODULE:
+       case FAC_CMD_MODULE:
 
-           test = check_command_module_interlocks();
+           test = check_fac_cmd_interlocks();
 
            break;
 
@@ -322,8 +322,8 @@ void InterlockAppCheck(void)
                send_input_itlk_msg();
                break;
 
-           case COMMAND_DRAWER_MODULE:
-               send_command_itlk_msg();
+           case FAC_CMD_MODULE:
+               send_fac_cmd_itlk_msg();
                break;
 
            case OUTPUT_Q1_300A_MODULE:
@@ -367,9 +367,9 @@ void AlarmAppCheck(void)
 
            break;
 
-       case COMMAND_DRAWER_MODULE:
+       case FAC_CMD_MODULE:
 
-           test = check_command_module_alarms();
+           test = check_fac_cmd_alarms();
 
            break;
 
@@ -422,9 +422,9 @@ void LedIndicationStatus(void)
 
             break;
 
-        case COMMAND_DRAWER_MODULE:
+        case FAC_CMD_MODULE:
 
-            check_command_module_indication_leds();
+            check_fac_cmd_indication_leds();
 
             break;
 
@@ -469,9 +469,9 @@ void Application(void)
 
            break;
 
-       case COMMAND_DRAWER_MODULE:
+       case FAC_CMD_MODULE:
 
-           command_module_application_readings();
+           fac_cmd_application_readings();
 
            break;
 
@@ -523,7 +523,7 @@ void Application(void)
                   ReleItlkTurnOn();
                   break;
 
-             case COMMAND_DRAWER_MODULE:
+             case FAC_CMD_MODULE:
                  ReleAuxTurnOn();
                  ReleItlkTurnOn();
                  break;
@@ -561,8 +561,8 @@ void send_data_schedule()
             send_input_module_data();
             break;
 
-        case COMMAND_DRAWER_MODULE:
-            send_command_module_data();
+        case FAC_CMD_MODULE:
+            send_fac_cmd_data();
             break;
 
         case OUTPUT_Q1_300A_MODULE:

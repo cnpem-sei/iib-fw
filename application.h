@@ -5,7 +5,7 @@
 #define  OUTPUT_Q4_MODULE       1
 #define  RECTIFIER_MODULE       2
 #define  INPUT_MODULE           3
-#define  COMMAND_DRAWER_MODULE  4
+#define  FAC_CMD_MODULE         4
 #define  OUTPUT_Q1_300A_MODULE  5
 
 void LedIndicationStatus(void);
