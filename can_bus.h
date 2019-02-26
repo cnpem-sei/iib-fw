@@ -41,8 +41,7 @@ extern volatile uint32_t g_alarm_id;
 extern void SendCanSchedule(void);
 extern void SendCan(unsigned char Message);
 extern void InitCan(uint32_t ui32SysClock);
-extern void CheckCan(void);
-extern uint16_t CanIdRead(void);
 extern void send_data_message(uint8_t var);
+extern uint16_t get_can_address(void);
 
 #endif

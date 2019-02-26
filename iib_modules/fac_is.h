@@ -24,17 +24,17 @@
 
 #include <stdint.h>
 
-#define INPUT_OVERCURRENT_ITLK          0x00000001
-#define DCLINK_OVERVOLTAGE_ITLK         0x00000002
-#define HS_OVERTEMP_ITLK                0x00000004
-#define INDUC_OVERTEMP_ITLK             0x00000008
-#define DRIVER1_ERROR_ITLK              0x00000010
-#define DRIVER2_ERROR_ITLK              0x00000020
+#define FAC_IS_INPUT_OVERCURRENT_ITLK          0x00000001
+#define FAC_IS_DCLINK_OVERVOLTAGE_ITLK         0x00000002
+#define FAC_IS_HS_OVERTEMP_ITLK                0x00000004
+#define FAC_IS_INDUC_OVERTEMP_ITLK             0x00000008
+#define FAC_IS_DRIVER1_ERROR_ITLK              0x00000010
+#define FAC_IS_DRIVER2_ERROR_ITLK              0x00000020
 
-#define INPUT_OVERCURRENT_ALM           0x00000001
-#define DCLINK_OVERVOLTAGE_ALM          0x00000002
-#define HS_OVERTEMP_ALM                 0x00000004
-#define INDUC_OVERTEMP_ALM              0x00000008
+#define FAC_IS_INPUT_OVERCURRENT_ALM           0x00000001
+#define FAC_IS_DCLINK_OVERVOLTAGE_ALM          0x00000002
+#define FAC_IS_HS_OVERTEMP_ALM                 0x00000004
+#define FAC_IS_INDUC_OVERTEMP_ALM              0x00000008
 
 extern void init_fac_is(void);
 extern void clear_fac_is_interlocks(void);
@@ -44,5 +44,6 @@ extern uint8_t check_fac_is_alarms(void);
 extern void check_fac_is_indication_leds(void);
 extern void fac_is_application_readings(void);
 extern void send_fac_is_itlk_msg(void);
+extern void send_fac_is_data(void);
 
 #endif /* FAC_IS_H_ */

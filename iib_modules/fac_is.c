@@ -35,18 +35,18 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define FAC_IS_INPUT_OVERCURRENT_ALM            160.0
-#define FAC_IS_INPUT_OVERCURRENT_ITLK           170.0
-#define FAC_IS_DCLINK_OVERVOLTAGE_ALM           550.0
-#define FAC_IS_DCLINK_OVERVOLTAGE_ITLK          555.0
-#define FAC_IS_HS_OVERTEMP_ALM                  45.0
-#define FAC_IS_HS_OVERTEMP_ITLK                 50.0
-#define FAC_IS_INDUC_OVERTEMP_ALM               55.0
-#define FAC_IS_INDUC_OVERTEMP_ITLK              60.0
-#define FAC_IS_RH_ALM                           80.0
-#define FAC_IS_RH_ITLK                          90.0
-#define FAC_IS_BOARD_TEMP_ALM                   80.0
-#define FAC_IS_BOARD_TEMP_ITLK                  90.0
+#define FAC_IS_INPUT_OVERCURRENT_ALM_LIM            160.0
+#define FAC_IS_INPUT_OVERCURRENT_ITLK_LIM           170.0
+#define FAC_IS_DCLINK_OVERVOLTAGE_ALM_LIM           550.0
+#define FAC_IS_DCLINK_OVERVOLTAGE_ITLK_LIM          555.0
+#define FAC_IS_HS_OVERTEMP_ALM_LIM                  45.0
+#define FAC_IS_HS_OVERTEMP_ITLK_LIM                 50.0
+#define FAC_IS_INDUC_OVERTEMP_ALM_LIM               55.0
+#define FAC_IS_INDUC_OVERTEMP_ITLK_LIM              60.0
+#define FAC_IS_RH_ALM_LIM                           80.0
+#define FAC_IS_RH_ITLK_LIM                          90.0
+#define FAC_IS_BOARD_TEMP_ALM_LIM                   80.0
+#define FAC_IS_BOARD_TEMP_ITLK_LIM                  90.0
 
 typedef struct
 {
@@ -107,6 +107,7 @@ static uint32_t alarm_id;
 
 static void get_itlks_id();
 static void get_alarms_id();
+static void fac_is_map_vars();
 
 /**
  * TODO: Put here your function prototypes for private functions. Use
@@ -119,21 +120,21 @@ void init_fac_is()
     CurrentCh1Init(300.0, 0.150, 50.0, 10);    // INPUT CURRENT
 
     //Set Protection Limits
-    CurrentCh1AlarmLevelSet(FAC_IS_INPUT_OVERCURRENT_ALM); // INPUT CURRENT ALARM LEVEL
-    CurrentCh1TripLevelSet(FAC_IS_INPUT_OVERCURRENT_ITLK); // INPUT CURRENT TRIP LEVEL
+    CurrentCh1AlarmLevelSet(FAC_IS_INPUT_OVERCURRENT_ALM_LIM); // INPUT CURRENT ALARM LEVEL
+    CurrentCh1TripLevelSet(FAC_IS_INPUT_OVERCURRENT_ITLK_LIM); // INPUT CURRENT TRIP LEVEL
 
     //LV20-P INPUTS
     LvCurrentCh1Init(555.0, 0.025, 120.0, 10); // CONFIG CHANNEL FOR DC_LINK MEASURE
 
     //LV20-P LIMITS
-    CurrentCh1AlarmLevelSet(FAC_IS_DCLINK_OVERVOLTAGE_ALM); // INPUT DC_LINK VOLTAGE ALARM LEVEL
-    CurrentCh1TripLevelSet(FAC_IS_DCLINK_OVERVOLTAGE_ITLK); // INPUT DC_LINK VOLTAGE TRIP LEVEL
+    CurrentCh1AlarmLevelSet(FAC_IS_DCLINK_OVERVOLTAGE_ALM_LIM); // INPUT DC_LINK VOLTAGE ALARM LEVEL
+    CurrentCh1TripLevelSet(FAC_IS_DCLINK_OVERVOLTAGE_ITLK_LIM); // INPUT DC_LINK VOLTAGE TRIP LEVEL
 
     // PT100 configuration limits
-    Pt100SetCh1AlarmLevel(FAC_IS_HS_OVERTEMP_ALM); // HEATSINK TEMPERATURE ALARM LEVEL
-    Pt100SetCh1TripLevel(FAC_IS_HS_OVERTEMP_ITLK); // HEATSINK TEMPERATURE TRIP LEVEL
-    Pt100SetCh2AlarmLevel(FAC_IS_INDUC_OVERTEMP_ALM); // INDUCTOR TEMPERATURE ALARM LEVEL
-    Pt100SetCh2TripLevel(FAC_IS_INPUT_OVERCURRENT_ITLK); // INDUCTOR TEMPERATURE TRIP LEVEL
+    Pt100SetCh1AlarmLevel(FAC_IS_HS_OVERTEMP_ALM_LIM); // HEATSINK TEMPERATURE ALARM LEVEL
+    Pt100SetCh1TripLevel(FAC_IS_HS_OVERTEMP_ITLK_LIM); // HEATSINK TEMPERATURE TRIP LEVEL
+    Pt100SetCh2AlarmLevel(FAC_IS_INDUC_OVERTEMP_ALM_LIM); // INDUCTOR TEMPERATURE ALARM LEVEL
+    Pt100SetCh2TripLevel(FAC_IS_INPUT_OVERCURRENT_ITLK_LIM); // INDUCTOR TEMPERATURE TRIP LEVEL
 
     // PT100 channel enable
     Pt100Ch1Enable();                     // HEATSINK TEMPERATURE CHANNEL ENABLE
@@ -151,12 +152,12 @@ void init_fac_is()
     Pt100SetCh4Delay(4);
 
     // Rh configuration limits
-    RhAlarmLimitSet(FAC_IS_RH_ALM);
-    RhTripLimitSet(FAC_IS_RH_ITLK);
+    RhAlarmLimitSet(FAC_IS_RH_ALM_LIM);
+    RhTripLimitSet(FAC_IS_RH_ITLK_LIM);
 
     // Temp board configuration limits
-    TempBoardAlarmLimitSet(FAC_IS_BOARD_TEMP_ALM);
-    TempBoardTripLimitSet(FAC_IS_BOARD_TEMP_ITLK);
+    TempBoardAlarmLimitSet(FAC_IS_BOARD_TEMP_ALM_LIM);
+    TempBoardTripLimitSet(FAC_IS_BOARD_TEMP_ITLK_LIM);
 
     // Disable all Driver Error Monitoring
     Driver1ErrDisable();
@@ -302,20 +303,20 @@ void send_fac_is_data()
 
 static void get_itlks_id()
 {
-    if (fac_is.IinItlkSts)           itlk_id |= INPUT_OVERCURRENT_ITLK;
-    if (fac_is.VdcLinkItlkSts)       itlk_id |= DCLINK_OVERVOLTAGE_ITLK;
-    if (fac_is.TempHeatsinkItlkSts)  itlk_id |= HS_OVERTEMP_ITLK;
-    if (fac_is.TempLItlkSts)         itlk_id |= INDUC_OVERTEMP_ITLK;
-    if (fac_is.Driver1ErrorItlk)     itlk_id |= DRIVER1_ERROR_ITLK;
-    if (fac_is.Driver2ErrorItlk)     itlk_id |= DRIVER2_ERROR_ITLK;
+    if (fac_is.IinItlkSts)           itlk_id |= FAC_IS_INPUT_OVERCURRENT_ITLK;
+    if (fac_is.VdcLinkItlkSts)       itlk_id |= FAC_IS_DCLINK_OVERVOLTAGE_ITLK;
+    if (fac_is.TempHeatsinkItlkSts)  itlk_id |= FAC_IS_HS_OVERTEMP_ITLK;
+    if (fac_is.TempLItlkSts)         itlk_id |= FAC_IS_INDUC_OVERTEMP_ITLK;
+    if (fac_is.Driver1ErrorItlk)     itlk_id |= FAC_IS_DRIVER1_ERROR_ITLK;
+    if (fac_is.Driver2ErrorItlk)     itlk_id |= FAC_IS_DRIVER2_ERROR_ITLK;
 }
 
 static void get_alarms_id()
 {
-    if (fac_is.IinAlarmSts)          alarm_id |= INPUT_OVERCURRENT_ALM;
-    if (fac_is.VdcLinkAlarmSts)      alarm_id |= DCLINK_OVERVOLTAGE_ALM;
-    if (fac_is.TempHeatsinkAlarmSts) alarm_id |= HS_OVERTEMP_ALM;
-    if (fac_is.TempLAlarmSts)        alarm_id |= INDUC_OVERTEMP_ALM;
+    if (fac_is.IinAlarmSts)          alarm_id |= FAC_IS_INPUT_OVERCURRENT_ALM;
+    if (fac_is.VdcLinkAlarmSts)      alarm_id |= FAC_IS_DCLINK_OVERVOLTAGE_ALM;
+    if (fac_is.TempHeatsinkAlarmSts) alarm_id |= FAC_IS_HS_OVERTEMP_ALM;
+    if (fac_is.TempLAlarmSts)        alarm_id |= FAC_IS_INDUC_OVERTEMP_ALM;
 }
 
 void send_fac_is_itlk_msg()

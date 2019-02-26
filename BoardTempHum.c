@@ -36,7 +36,6 @@
 #define q1  0.00237
 
 
-static unsigned char id_chip;
 static float RelativeHumidity = 0.0;
 static float Temperature = 0.0;
 static unsigned char Start1 = 0x01;
@@ -193,10 +192,6 @@ void RhTempSenseInit(void)
    clear_pin(GPIO_PORTB_BASE, GPIO_PIN_2);
    
    delay_ms(100);
-   
-   // READ CHIP ID
-   id_chip = I2C5Receive(SlaveAddress, RegisterAddress11);
-   
 }
 
 unsigned char RhRead(void)

@@ -17,16 +17,6 @@ static int Adc_Value = 0;
 static float Adc_Float = 0.0;
 
 
-// Variaveis para comunicação externa
-//******************************************************************************
-
-// Tensão de alimentação do driver, ganho da varivel = 0,1
-static unsigned char DvrVtg = 0;
-// Corrente consumida pelo driver, ganho da varivel = 0,1
-static unsigned char DvrCrnt = 0;
-
-//******************************************************************************
-
 #define HALL_CURRENT_CONST          0.06103515625; // 125A/2048
 #define VOLTAGE_CONST               0.0048828125; // 10V/2048
 

@@ -1,24 +1,27 @@
-#include "adc_internal.h"
 #include "application.h"
-
+#include "adc_internal.h"
 #include "BoardTempHum.h"
 #include "pt100.h"
 #include "output.h"
-//#include "rs485.h"
 #include "leds.h"
 #include "can_bus.h"
 #include "input.h"
 #include "can_bus.h"
-
 #include "stdbool.h"
 #include "stdint.h"
+#include "fac_cmd.h"
+#include "fac_is.h"
+#include "fac_os.h"
+#include "fap.h"
+#include "fap_300A.h"
+#include "rectifier_module.h"
+
 
 static unsigned char PowerModuleModel = 0;
 static unsigned char Interlock = 0;
 static unsigned char InterlockOld = 0;
 static unsigned char ItlkClrCmd = 0;
 static unsigned char InitApp = 0;
-static unsigned char InitAppOld = 0;
 static unsigned char Alarm = 0;
 
 void AppConfiguration(void)
@@ -111,7 +114,6 @@ void InterlockClearCheck(void)
           InterlockOld = 0;
 
           InitApp = 0;
-          InitAppOld = 0;
 
           AdcClearAlarmTrip();
           Pt100ClearAlarmTrip();
@@ -315,7 +317,7 @@ void InterlockAppCheck(void)
        switch (PowerModuleModel)
        {
            case FAP:
-               send_output_fap_itlk_msg();
+               send_fap_itlk_msg();
                break;
 
            case FAC_OS:
@@ -335,7 +337,7 @@ void InterlockAppCheck(void)
                break;
 
            case FAP_300A:
-               send_output_fap_300A_itlk_msg();
+               send_fap_300A_itlk_msg();
                break;
 
            default:
@@ -414,7 +416,7 @@ void LedIndicationStatus(void)
 
         case FAC_OS:
 
-           check_fac_os_indications_leds();
+           check_fac_os_indication_leds();
 
            break;
 
@@ -562,7 +564,7 @@ void send_data_schedule()
             break;
 
         case RECTIFIER_MODULE:
-            send_rectifier_module_data();
+            send_rm_data();
             break;
 
         case FAC_IS:

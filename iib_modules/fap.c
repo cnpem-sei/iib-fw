@@ -39,42 +39,42 @@
  * TODO: Put here your defines. Just what is local. If you don't
  * need to access it from other module, consider use a constant (const)
  */
-#define FAP_INPUT_OVERVOLTAGE_ALM                    50.0
-#define FAP_INPUT_OVERVOLTAGE_ITLK                   55.0
-#define FAP_OUTPUT_OVERVOLTAGE_ALM                   35.0
-#define FAP_OUTPUT_OVERVOLTAGE_ITLK                  40.0
-#define FAP_OUTPUT_OVERCURRENT_1_ALM                 105.0
-#define FAP_OUTPUT_OVERCURRENT_1_ITLK                115.0
-#define FAP_OUTPUT_OVERCURRENT_2_ALM                 105.0
-#define FAP_OUTPUT_OVERCURRENT_2_ITLK                115.0
+#define FAP_INPUT_OVERVOLTAGE_ALM_LIM                    50.0
+#define FAP_INPUT_OVERVOLTAGE_ITLK_LIM                   55.0
+#define FAP_OUTPUT_OVERVOLTAGE_ALM_LIM                   35.0
+#define FAP_OUTPUT_OVERVOLTAGE_ITLK_LIM                  40.0
+#define FAP_OUTPUT_OVERCURRENT_1_ALM_LIM                 105.0
+#define FAP_OUTPUT_OVERCURRENT_1_ITLK_LIM                115.0
+#define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM                 105.0
+#define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM                115.0
 
-//#define FAP_INPUT_OVERVOLTAGE_ALM                    435.0
-//#define FAP_INPUT_OVERVOLTAGE_ITLK                   440.0
-//#define FAP_OUTPUT_OVERVOLTAGE_ALM                   230.0
-//#define FAP_OUTPUT_OVERVOLTAGE_ITLK                  235.0
-//#define FAP_OUTPUT_OVERCURRENT_1_ALM                 115.0
-//#define FAP_OUTPUT_OVERCURRENT_1_ITLK                120.0
-//#define FAP_OUTPUT_OVERCURRENT_2_ALM                 115.0
-//#define FAP_OUTPUT_OVERCURRENT_2_ITLK                120.0
+//#define FAP_INPUT_OVERVOLTAGE_ALM_LIM                    435.0
+//#define FAP_INPUT_OVERVOLTAGE_ITLK_LIM                   440.0
+//#define FAP_OUTPUT_OVERVOLTAGE_ALM_LIM                   230.0
+//#define FAP_OUTPUT_OVERVOLTAGE_ITLK_LIM                  235.0
+//#define FAP_OUTPUT_OVERCURRENT_1_ALM_LIM                 115.0
+//#define FAP_OUTPUT_OVERCURRENT_1_ITLK_LIM                120.0
+//#define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM                 115.0
+//#define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM                120.0
 
-#define FAP_IGBT1_OVERTEMP_ALM                       00.0    // Not in use
-#define FAP_IGBT1_OVERTEMP_ITLK                      00.0    // Not in use
-#define FAP_IGBT2_OVERTEMP_ALM                       00.0    // Not in use
-#define FAP_IGBT2_OVERTEMP_ITLK                      00.0    // Not in use
-#define FAP_DRIVER_OVERVOLTAGE_ALM                   00.0    // Not in use
-#define FAP_DRIVER_OVERVOLTAGE_ITLK                  00.0    // Not in use
-#define FAP_DRIVER1_OVERCURRENT_ALM                  00.0    // Not in use
-#define FAP_DRIVER1_OVERCURRENT_ITLK                 00.0    // Not in use
-#define FAP_DRIVER2_OVERCURRENT_ALM                  00.0    // Not in use
-#define FAP_DRIVER2_OVERCURRENT_ITLK                 00.0    // Not in use
-#define FAP_INDUC_OVERTEMP_ALM                       50.0
-#define FAP_INDUC_OVERTEMP_ITLK                      60.0
-#define FAP_HS_OVERTEMP_ALM                          60
-#define FAP_HS_OVERTEMP_ITLK                         80
-#define FAP_RH_ALM                                   80
-#define FAP_RH_ITLK                                  90
-#define FAP_BOARD_TEMP_ALM                           80
-#define FAP_BOARD_TEMP_ITLK                          90
+#define FAP_IGBT1_OVERTEMP_ALM_LIM                       00.0    // Not in use
+#define FAP_IGBT1_OVERTEMP_ITLK_LIM                      00.0    // Not in use
+#define FAP_IGBT2_OVERTEMP_ALM_LIM                       00.0    // Not in use
+#define FAP_IGBT2_OVERTEMP_ITLK_LIM                      00.0    // Not in use
+#define FAP_DRIVER_OVERVOLTAGE_ALM_LIM_LIM               00.0    // Not in use
+#define FAP_DRIVER_OVERVOLTAGE_ITLK_LIM                  00.0    // Not in use
+#define FAP_DRIVER1_OVERCURRENT_ALM_LIM                  00.0    // Not in use
+#define FAP_DRIVER1_OVERCURRENT_ITLK_LIM                 00.0    // Not in use
+#define FAP_DRIVER2_OVERCURRENT_ALM_LIM                  00.0    // Not in use
+#define FAP_DRIVER2_OVERCURRENT_ITLK_LIM                 00.0    // Not in use
+#define FAP_INDUC_OVERTEMP_ALM_LIM                       50.0
+#define FAP_INDUC_OVERTEMP_ITLK_LIM                      60.0
+#define FAP_HS_OVERTEMP_ALM_LIM                          60
+#define FAP_HS_OVERTEMP_ITLK_LIM                         80
+#define FAP_RH_ALM_LIM                                   80
+#define FAP_RH_ITLK_LIM                                  90
+#define FAP_BOARD_TEMP_ALM_LIM                           80
+#define FAP_BOARD_TEMP_ITLK_LIM                          90
 
 typedef struct
 {
@@ -174,15 +174,6 @@ typedef struct
     bool RackSts;
 } fap_t;
 
-/**
- * TODO: Put here your constants and variables. Always use static for 
- * private members.
- */
-
-/**
- * TODO: Put here your function prototypes for private functions. Use
- * static in declaration.
- */
 fap_t fap;
 uint32_t fap_interlocks_indication   = 0;
 uint32_t fap_alarms_indication       = 0;
@@ -192,10 +183,7 @@ static uint32_t alarm_id;
 
 static void get_itlks_id();
 static void get_alarms_id();
-
-/**
- * TODO: Put here the implementation for your public functions.
- */
+static void fap_map_vars();
 
 void init_fap()
 {
@@ -208,10 +196,10 @@ void init_fap()
     //     will most probably saturate during operation at 300 A. These
     //     measures are also performed by UDC, which guarantees these
     //     protections
-    CurrentCh1AlarmLevelSet(FAP_OUTPUT_OVERCURRENT_1_ALM);  // Corrente braço1
-    CurrentCh1TripLevelSet(FAP_OUTPUT_OVERCURRENT_1_ITLK);  // Corrente braço1
-    CurrentCh2AlarmLevelSet(FAP_OUTPUT_OVERCURRENT_2_ALM);  // Corrente braço2
-    CurrentCh2TripLevelSet(FAP_OUTPUT_OVERCURRENT_2_ITLK);  // Corrente braço2
+    CurrentCh1AlarmLevelSet(FAP_OUTPUT_OVERCURRENT_1_ALM_LIM);  // Corrente braço1
+    CurrentCh1TripLevelSet(FAP_OUTPUT_OVERCURRENT_1_ITLK_LIM);  // Corrente braço1
+    CurrentCh2AlarmLevelSet(FAP_OUTPUT_OVERCURRENT_2_ALM_LIM);  // Corrente braço2
+    CurrentCh2TripLevelSet(FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM);  // Corrente braço2
 
     // NTC contiguration type
     //ConfigNtcType(SEMIX);
@@ -220,16 +208,16 @@ void init_fap()
     LvCurrentCh1Init(450.0, 0.025, 120.0, 3); // Tensão de entrada
     LvCurrentCh2Init(250.0, 0.025, 120.0, 3); // Tensão de saída
 
-    LvCurrentCh1AlarmLevelSet(FAP_INPUT_OVERVOLTAGE_ALM);   // Tensão de entrada Alarme
-    LvCurrentCh1TripLevelSet(FAP_INPUT_OVERVOLTAGE_ITLK);   // Tensão de entrada Interlock
-    LvCurrentCh2AlarmLevelSet(FAP_OUTPUT_OVERVOLTAGE_ALM);  // Tensão de saída Alarme
-    LvCurrentCh2TripLevelSet(FAP_OUTPUT_OVERVOLTAGE_ITLK);  // Tensão de saída Interlock
+    LvCurrentCh1AlarmLevelSet(FAP_INPUT_OVERVOLTAGE_ALM_LIM);   // Tensão de entrada Alarme
+    LvCurrentCh1TripLevelSet(FAP_INPUT_OVERVOLTAGE_ITLK_LIM);   // Tensão de entrada Interlock
+    LvCurrentCh2AlarmLevelSet(FAP_OUTPUT_OVERVOLTAGE_ALM_LIM);  // Tensão de saída Alarme
+    LvCurrentCh2TripLevelSet(FAP_OUTPUT_OVERVOLTAGE_ITLK_LIM);  // Tensão de saída Interlock
 
     // PT100 configuration limits
-    Pt100SetCh1AlarmLevel(FAP_HS_OVERTEMP_ALM);     // Temperatura Dissipador
-    Pt100SetCh1TripLevel(FAP_HS_OVERTEMP_ITLK);     // Temperatura Dissipador
-    Pt100SetCh2AlarmLevel(FAP_INDUC_OVERTEMP_ALM);  // Temperatura L
-    Pt100SetCh2TripLevel(FAP_INDUC_OVERTEMP_ITLK);  // Temperatura L
+    Pt100SetCh1AlarmLevel(FAP_HS_OVERTEMP_ALM_LIM);     // Temperatura Dissipador
+    Pt100SetCh1TripLevel(FAP_HS_OVERTEMP_ITLK_LIM);     // Temperatura Dissipador
+    Pt100SetCh2AlarmLevel(FAP_INDUC_OVERTEMP_ALM_LIM);  // Temperatura L
+    Pt100SetCh2TripLevel(FAP_INDUC_OVERTEMP_ITLK_LIM);  // Temperatura L
 
     // Delay 4 seconds
     Pt100SetCh1Delay(4);
@@ -243,12 +231,12 @@ void init_fap()
     Pt100Ch4Disable();
 
     // Rh configuration limits
-    RhAlarmLimitSet(FAP_RH_ALM);
-    RhTripLimitSet(FAP_RH_ITLK);
+    RhAlarmLimitSet(FAP_RH_ALM_LIM);
+    RhTripLimitSet(FAP_RH_ITLK_LIM);
 
     // Temp board configuration limits
-    TempBoardAlarmLimitSet(FAP_BOARD_TEMP_ALM);
-    TempBoardTripLimitSet(FAP_BOARD_TEMP_ITLK);
+    TempBoardAlarmLimitSet(FAP_BOARD_TEMP_ALM_LIM);
+    TempBoardTripLimitSet(FAP_BOARD_TEMP_ITLK_LIM);
 
     Driver1ErrEnable();
     Driver2ErrEnable();
@@ -524,35 +512,35 @@ void send_fap_data()
 
 static void get_itlks_id()
 {
-    if (fap.VinItlkSts)          itlk_id |= INPUT_OVERVOLTAGE_ITLK;
-    if (fap.VoutItlkSts)         itlk_id |= OUTPUT_OVERVOLTAGE_ITLK;
-    if (fap.IoutA1ItlkSts)       itlk_id |= OUTPUT_OVERCURRENT_1_ITLK;
-    if (fap.IoutA2ItlkSts)       itlk_id |= OUTPUT_OVERCURRENT_2_ITLK;
-    if (fap.TempIGBT1ItlkSts)    itlk_id |= IGBT1_OVERTEMP_ITLK;
-    if (fap.TempIGBT2ItlkSts)    itlk_id |= IGBT2_OVERTEMP_ITLK;
-    if (fap.Driver1ErrorItlk)    itlk_id |= DRIVER1_ERROR_ITLK;
-    if (fap.Driver2ErrorItlk)    itlk_id |= DRIVER2_ERROR_ITLK;
-    if (fap.TempLItlkSts)        itlk_id |= INDUC_OVERTEMP_ITLK;
-    if (fap.TempHeatSinkItlkSts) itlk_id |= HS_OVERTEMP_ITLK;
-    if (fap.Relay)               itlk_id |= RELAY_ITLK;
-    if (fap.ExternalItlkSts)     itlk_id |= EXTERNAL_ITLK;
-    if (fap.LeakageCurrentSts)   itlk_id |= LEAKAGE_CURRENT_ITLK;
-    if (fap.RackSts)             itlk_id |= RACK_ITLK;
+    if (fap.VinItlkSts)          itlk_id |= FAP_INPUT_OVERVOLTAGE_ITLK;
+    if (fap.VoutItlkSts)         itlk_id |= FAP_OUTPUT_OVERVOLTAGE_ITLK;
+    if (fap.IoutA1ItlkSts)       itlk_id |= FAP_OUTPUT_OVERCURRENT_1_ITLK;
+    if (fap.IoutA2ItlkSts)       itlk_id |= FAP_OUTPUT_OVERCURRENT_2_ITLK;
+    if (fap.TempIGBT1ItlkSts)    itlk_id |= FAP_IGBT1_OVERTEMP_ITLK;
+    if (fap.TempIGBT2ItlkSts)    itlk_id |= FAP_IGBT2_OVERTEMP_ITLK;
+    if (fap.Driver1ErrorItlk)    itlk_id |= FAP_DRIVER1_ERROR_ITLK;
+    if (fap.Driver2ErrorItlk)    itlk_id |= FAP_DRIVER2_ERROR_ITLK;
+    if (fap.TempLItlkSts)        itlk_id |= FAP_INDUC_OVERTEMP_ITLK;
+    if (fap.TempHeatSinkItlkSts) itlk_id |= FAP_HS_OVERTEMP_ITLK;
+    if (fap.Relay)               itlk_id |= FAP_RELAY_ITLK;
+    if (fap.ExternalItlkSts)     itlk_id |= FAP_EXTERNAL_ITLK;
+    if (fap.LeakageCurrentSts)   itlk_id |= FAP_LEAKAGE_CURRENT_ITLK;
+    if (fap.RackSts)             itlk_id |= FAP_RACK_ITLK;
 }
 
 static void get_alarms_id()
 {
-    if (fap.VinAlarmSts)          alarm_id |= INPUT_OVERVOLTAGE_ALM;
-    if (fap.VoutAlarmSts)         alarm_id |= OUTPUT_OVERVOLTAGE_ALM;
-    if (fap.IoutA1AlarmSts)       alarm_id |= OUTPUT_OVERCURRENT_1_ALM;
-    if (fap.IoutA2AlarmSts)       alarm_id |= OUTPUT_OVERCURRENT_2_ALM;
-    if (fap.TempIGBT1AlarmSts)    alarm_id |= IGBT1_OVERTEMP_ALM;
-    if (fap.TempIGBT2AlarmSts)    alarm_id |= IGBT2_OVERTEMP_ALM;
-    if (fap.TempLAlarmSts)        alarm_id |= INDUC_OVERTEMP_ALM;
-    if (fap.TempHeatSinkAlarmSts) alarm_id |= HS_OVERTEMP_ALM;
+    if (fap.VinAlarmSts)          alarm_id |= FAP_INPUT_OVERVOLTAGE_ALM;
+    if (fap.VoutAlarmSts)         alarm_id |= FAP_OUTPUT_OVERVOLTAGE_ALM;
+    if (fap.IoutA1AlarmSts)       alarm_id |= FAP_OUTPUT_OVERCURRENT_1_ALM;
+    if (fap.IoutA2AlarmSts)       alarm_id |= FAP_OUTPUT_OVERCURRENT_2_ALM;
+    if (fap.TempIGBT1AlarmSts)    alarm_id |= FAP_IGBT1_OVERTEMP_ALM;
+    if (fap.TempIGBT2AlarmSts)    alarm_id |= FAP_IGBT2_OVERTEMP_ALM;
+    if (fap.TempLAlarmSts)        alarm_id |= FAP_INDUC_OVERTEMP_ALM;
+    if (fap.TempHeatSinkAlarmSts) alarm_id |= FAP_HS_OVERTEMP_ALM;
 }
 
-void send_output_fap_itlk_msg()
+void send_fap_itlk_msg()
 {
     //send_interlock_message(itlk_id);
     send_data_message(0);

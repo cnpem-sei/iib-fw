@@ -19,22 +19,22 @@
  *
  */
 
-#ifndef COMMAND_DRAWER_H_
-#define COMMAND_DRAWER_H_
+#ifndef FAC_CMD_H_
+#define FAC_CMD_H_
 
 #include <stdint.h>
 
-#define CAPBANK_OVERVOLTAGE_ITLK    0x00000001
-#define OUTPUT_OVERVOLTAGE_ITLK     0x00000002
-#define HS_OVERTEMP_ITLK            0x00000004
-#define INDUC_OVERTEMP_ITLK         0x00000008
-#define EXTERNAL1_ITLK              0x00000010
-#define EXTERNAL2_ITLK              0x00000020
+#define FAC_CMD_CAPBANK_OVERVOLTAGE_ITLK    0x00000001
+#define FAC_CMD_OUTPUT_OVERVOLTAGE_ITLK     0x00000002
+#define FAC_CMD_HS_OVERTEMP_ITLK            0x00000004
+#define FAC_CMD_INDUC_OVERTEMP_ITLK         0x00000008
+#define FAC_CMD_EXTERNAL1_ITLK              0x00000010
+#define FAC_CMD_EXTERNAL2_ITLK              0x00000020
 
-#define CAPBANK_OVERVOLTAGE_ALM     0x00000001
-#define OUTPUT_OVERVOLTAGE_ALM      0x00000002
-#define HS_OVERTEMP_ALM             0x00000004
-#define INDUC_OVERTEMP_ALM          0x00000008
+#define FAC_CMD_CAPBANK_OVERVOLTAGE_ALM     0x00000001
+#define FAC_CMD_OUTPUT_OVERVOLTAGE_ALM      0x00000002
+#define FAC_CMD_HS_OVERTEMP_ALM             0x00000004
+#define FAC_CMD_INDUC_OVERTEMP_ALM          0x00000008
 
 extern void init_fac_cmd(void);
 extern void clear_fac_cmd_interlocks(void);
@@ -44,5 +44,6 @@ extern uint8_t check_fac_cmd_alarms(void);
 extern void check_fac_cmd_indication_leds(void);
 extern void fac_cmd_application_readings(void);
 extern void send_fac_cmd_itlk_msg(void);
+extern void send_fac_cmd_data(void);
 
 #endif /* COMMAND_DRAWER_H_ */

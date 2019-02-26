@@ -40,18 +40,18 @@
  * need to access it from other module, consider use a constant (const)
  */
 
-#define FAC_OS_INPUT_CURRENT_ALM        430.0
-#define FAC_OS_INPUT_CURRENT_ITLK       440.0
-#define FAC_OS_OUTPUT_CURRENT_ALM       555.0
-#define FAC_OS_OUTPUT_CURRENT_ITLK      560.0
-#define FAC_OS_INPUT_VOLTAGE_ALM        280.0
-#define FAC_OS_INPUT_VOLTAGE_ITLK       285.0
-#define FAC_OS_HS_TEMP_ALM              35
-#define FAC_OS_HS_TEMP_ITLK             40
-#define FAC_OS_INDUC_TEMP_ALM           55
-#define FAC_OS_INDUC_TEMP_ITLK          60
-#define FAC_OS_RH_TEMP_ALM              80
-#define FAC_OS_RH_TEMP_ITLK             90
+#define FAC_OS_INPUT_CURRENT_ALM_LIM        430.0
+#define FAC_OS_INPUT_CURRENT_ITLK_LIM       440.0
+#define FAC_OS_OUTPUT_CURRENT_ALM_LIM       555.0
+#define FAC_OS_OUTPUT_CURRENT_ITLK_LIM      560.0
+#define FAC_OS_INPUT_VOLTAGE_ALM_LIM        280.0
+#define FAC_OS_INPUT_VOLTAGE_ITLK_LIM       285.0
+#define FAC_OS_HS_TEMP_ALM_LIM              35
+#define FAC_OS_HS_TEMP_ITLK_LIM             40
+#define FAC_OS_INDUC_TEMP_ALM_LIM           55
+#define FAC_OS_INDUC_TEMP_ITLK_LIM          60
+#define FAC_OS_RH_TEMP_ALM_LIM              80
+#define FAC_OS_RH_TEMP_ITLK_LIM             90
 
 typedef struct
 {
@@ -141,6 +141,7 @@ static uint32_t alarm_id;
 
 static void get_itlks_id();
 static void get_alarms_id();
+static void fac_os_map_vars();
 
 /**
  * TODO: Put here the implementation for your public functions.
@@ -153,22 +154,22 @@ void init_fac_os()
     CurrentCh2Init(500.0, 0.100, 50.0, 0); /* Output */
 
     /* Protection Limits */
-    CurrentCh1AlarmLevelSet(FAC_OS_INPUT_CURRENT_ALM);
-    CurrentCh1TripLevelSet(FAC_OS_INPUT_CURRENT_ITLK);
-    CurrentCh2AlarmLevelSet(FAC_OS_OUTPUT_CURRENT_ALM);
-    CurrentCh2TripLevelSet(FAC_OS_OUTPUT_CURRENT_ITLK);
+    CurrentCh1AlarmLevelSet(FAC_OS_INPUT_CURRENT_ALM_LIM);
+    CurrentCh1TripLevelSet(FAC_OS_INPUT_CURRENT_ITLK_LIM);
+    CurrentCh2AlarmLevelSet(FAC_OS_OUTPUT_CURRENT_ALM_LIM);
+    CurrentCh2TripLevelSet(FAC_OS_OUTPUT_CURRENT_ITLK_LIM);
 
     /* Isolated Voltage */
     LvCurrentCh1Init(330.0, 0.025, 120.0, 3); /* Input Voltage */
 
-    LvCurrentCh1AlarmLevelSet(FAC_OS_INPUT_VOLTAGE_ALM);
-    LvCurrentCh1TripLevelSet(FAC_OS_INPUT_VOLTAGE_ITLK);
+    LvCurrentCh1AlarmLevelSet(FAC_OS_INPUT_VOLTAGE_ALM_LIM);
+    LvCurrentCh1TripLevelSet(FAC_OS_INPUT_VOLTAGE_ITLK_LIM);
 
     /* Pt-100 Configuration Limits */
-    Pt100SetCh1AlarmLevel(FAC_OS_HS_TEMP_ALM);
-    Pt100SetCh1TripLevel(FAC_OS_HS_TEMP_ITLK);
-    Pt100SetCh2AlarmLevel(FAC_OS_INDUC_TEMP_ALM);
-    Pt100SetCh2TripLevel(FAC_OS_INDUC_TEMP_ITLK);
+    Pt100SetCh1AlarmLevel(FAC_OS_HS_TEMP_ALM_LIM);
+    Pt100SetCh1TripLevel(FAC_OS_HS_TEMP_ITLK_LIM);
+    Pt100SetCh2AlarmLevel(FAC_OS_INDUC_TEMP_ALM_LIM);
+    Pt100SetCh2TripLevel(FAC_OS_INDUC_TEMP_ITLK_LIM);
 
     /* Pt-100 channel enable */
     Pt100Ch1Enable();
@@ -286,7 +287,7 @@ uint8_t check_fac_os_alarms(void)
     return test;
 }
 
-void check_fac_os_indications_leds()
+void check_fac_os_indication_leds()
 {
     // Input over voltage
     if(fac_os.VdcLinkItlkSts) Led2TurnOff();
@@ -366,29 +367,29 @@ void send_fac_os_data()
 
 static void get_itlks_id()
 {
-    if (fac_os.IinItlkSts)           itlk_id |= INPUT_OVERCURRENT_ITLK;
-    if (fac_os.IoutItlkSts)          itlk_id |= OUTPUT_OVERCURRENT_ITLK;
-    if (fac_os.VdcLinkItlkSts)       itlk_id |= INPUT_OVERVOLTAGE_ITLK;
-    if (fac_os.TempIGBT1ItlkSts)     itlk_id |= IGBT1_OVERTEMP_ITLK;
-    if (fac_os.TempIGBT1HwrItlkSts)  itlk_id |= IGBT1_HWR_OVERTEMP_ITLK;
-    if (fac_os.TempIGBT2ItlkSts)     itlk_id |= IGBT2_OVERTEMP_ITLK;
-    if (fac_os.TempIGBT2HwrItlkSts)  itlk_id |= IGBT2_HWR_OVERTEMP_ITLK;
-    if (fac_os.Driver1ErrorItlk)     itlk_id |= DRIVER1_ERROR_ITLK;
-    if (fac_os.Driver2ErrorItlk)     itlk_id |= DRIVER2_ERROR_ITLK;
-    if (fac_os.TempLItlkSts)         itlk_id |= INDUC_OVERTEMP_ITLK;
-    if (fac_os.TempHeatSinkItlkSts)  itlk_id |= HS_OVERTEMP_ITLK;
+    if (fac_os.IinItlkSts)           itlk_id |= FAC_OS_INPUT_OVERCURRENT_ITLK;
+    if (fac_os.IoutItlkSts)          itlk_id |= FAC_OS_OUTPUT_OVERCURRENT_ITLK;
+    if (fac_os.VdcLinkItlkSts)       itlk_id |= FAC_OS_INPUT_OVERVOLTAGE_ITLK;
+    if (fac_os.TempIGBT1ItlkSts)     itlk_id |= FAC_OS_IGBT1_OVERTEMP_ITLK;
+    if (fac_os.TempIGBT1HwrItlkSts)  itlk_id |= FAC_OS_IGBT1_HWR_OVERTEMP_ITLK;
+    if (fac_os.TempIGBT2ItlkSts)     itlk_id |= FAC_OS_IGBT2_OVERTEMP_ITLK;
+    if (fac_os.TempIGBT2HwrItlkSts)  itlk_id |= FAC_OS_IGBT2_HWR_OVERTEMP_ITLK;
+    if (fac_os.Driver1ErrorItlk)     itlk_id |= FAC_OS_DRIVER1_ERROR_ITLK;
+    if (fac_os.Driver2ErrorItlk)     itlk_id |= FAC_OS_DRIVER2_ERROR_ITLK;
+    if (fac_os.TempLItlkSts)         itlk_id |= FAC_OS_INDUC_OVERTEMP_ITLK;
+    if (fac_os.TempHeatSinkItlkSts)  itlk_id |= FAC_OS_HS_OVERTEMP_ITLK;
 
 }
 
 static void get_alarms_id()
 {
-    if (fac_os.IinAlarmSts)          alarm_id |= INPUT_OVERCURRENT_ALM;
-    if (fac_os.IoutAlarmSts)         alarm_id |= OUTPUT_OVERCURRENT_ALM;
-    if (fac_os.VdcLinkAlarmSts)      alarm_id |= INPUT_OVERVOLTAGE_ALM;
-    if (fac_os.TempIGBT1AlarmSts)    alarm_id |= IGBT1_OVERTEMP_ALM;
-    if (fac_os.TempIGBT2AlarmSts)    alarm_id |= IGBT2_OVERTEMP_ALM;
-    if (fac_os.TempLAlarmSts)        alarm_id |= INDUC_OVERTEMP_ALM;
-    if (fac_os.TempHeatSinkAlarmSts) alarm_id |= HS_OVERTEMP_ALM;
+    if (fac_os.IinAlarmSts)          alarm_id |= FAC_OS_INPUT_OVERCURRENT_ALM;
+    if (fac_os.IoutAlarmSts)         alarm_id |= FAC_OS_OUTPUT_OVERCURRENT_ALM;
+    if (fac_os.VdcLinkAlarmSts)      alarm_id |= FAC_OS_INPUT_OVERVOLTAGE_ALM;
+    if (fac_os.TempIGBT1AlarmSts)    alarm_id |= FAC_OS_IGBT1_OVERTEMP_ALM;
+    if (fac_os.TempIGBT2AlarmSts)    alarm_id |= FAC_OS_IGBT2_OVERTEMP_ALM;
+    if (fac_os.TempLAlarmSts)        alarm_id |= FAC_OS_INDUC_OVERTEMP_ALM;
+    if (fac_os.TempHeatSinkAlarmSts) alarm_id |= FAC_OS_HS_OVERTEMP_ALM;
 }
 
 void send_output_fac_os_itlk_msg()

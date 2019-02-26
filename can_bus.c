@@ -58,23 +58,8 @@ uint8_t heart_beat_data[HEART_BEAT_MESSAGE_LEN];
 
 volatile uint8_t can_address    = 0;
 
-static union
-{
-   float f;
-   char c[4];
-} floatNchars;
+static void handle_reset_message(void);
 
-static union
-{
-    uint16_t    u16;
-    char        c[2];
-}u16Nchars;
-
-static union
-{
-    uint32_t    u32;
-    char        c[4];
-}u32Nchars;
 //*****************************************************************************
 //
 // This function is the interrupt handler for the CAN peripheral.  It checks

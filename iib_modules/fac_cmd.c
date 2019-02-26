@@ -35,14 +35,14 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define FAC_CMD_CAPBANK_OVERVOLTAGE_ITLK        300.0
-#define FAC_CMD_CAPBANK_OVERVOLTAGE_ALM         250.0
-#define FAC_CMD_OUTPUT_OVERVOLTAGE_ITLK         210.0
-#define FAC_CMD_OUTPUT_OVERVOLTAGE_ALM          180.0
-#define FAC_CMD_HS_OVERTEMP_ITLK                60.0
-#define FAC_CMD_HS_OVERTEMP_ALM                 55.0
-#define FAC_CMD_INDUC_OVERTEMP_ITLK             60.0
-#define FAC_CMD_INDUC_OVERTEMP_ALM              55.0
+#define FAC_CMD_CAPBANK_OVERVOLTAGE_ITLK_LIM        300.0
+#define FAC_CMD_CAPBANK_OVERVOLTAGE_ALM_LIM         250.0
+#define FAC_CMD_OUTPUT_OVERVOLTAGE_ITLK_LIM         210.0
+#define FAC_CMD_OUTPUT_OVERVOLTAGE_ALM_LIM          180.0
+#define FAC_CMD_HS_OVERTEMP_ITLK_LIM                60.0
+#define FAC_CMD_HS_OVERTEMP_ALM_LIM                 55.0
+#define FAC_CMD_INDUC_OVERTEMP_ITLK_LIM             60.0
+#define FAC_CMD_INDUC_OVERTEMP_ALM_LIM              55.0
 
 typedef struct
 {
@@ -92,6 +92,7 @@ static uint32_t alarm_id = 0;
 
 static void get_itlks_id();
 static void get_alarms_id();
+static void fac_cmd_map_vars();
 
 /**
  * TODO: Put here the implementation for your public functions.
@@ -107,16 +108,16 @@ void init_fac_cmd()
     ConfigVoltCh2AsNtc(0);                 // Config Voltage Ch2 as a voltage input
 
     //Setar limites
-    VoltageCh1AlarmLevelSet(FAC_CMD_CAPBANK_OVERVOLTAGE_ALM); // Rectifier1 Voltage Alarm
-    VoltageCh1TripLevelSet(FAC_CMD_CAPBANK_OVERVOLTAGE_ITLK); // Rectifier1 Voltage Trip
-    VoltageCh2AlarmLevelSet(FAC_CMD_OUTPUT_OVERVOLTAGE_ALM); // Rectifier2 Voltage Alarm
-    VoltageCh2TripLevelSet(FAC_CMD_OUTPUT_OVERVOLTAGE_ITLK); // Rectifier2 Voltage Trip
+    VoltageCh1AlarmLevelSet(FAC_CMD_CAPBANK_OVERVOLTAGE_ALM_LIM); // Rectifier1 Voltage Alarm
+    VoltageCh1TripLevelSet(FAC_CMD_CAPBANK_OVERVOLTAGE_ITLK_LIM); // Rectifier1 Voltage Trip
+    VoltageCh2AlarmLevelSet(FAC_CMD_OUTPUT_OVERVOLTAGE_ALM_LIM); // Rectifier2 Voltage Alarm
+    VoltageCh2TripLevelSet(FAC_CMD_OUTPUT_OVERVOLTAGE_ITLK_LIM); // Rectifier2 Voltage Trip
 
     // PT100 configuration limits
-    Pt100SetCh1AlarmLevel(FAC_CMD_HS_OVERTEMP_ALM); // HEATSINK TEMPERATURE ALARM LEVEL
-    Pt100SetCh1TripLevel(FAC_CMD_HS_OVERTEMP_ITLK); // HEATSINK TEMPERATURE TRIP LEVEL
-    Pt100SetCh2AlarmLevel(FAC_CMD_INDUC_OVERTEMP_ALM); // INDUCTOR TEMPERATURE ALARM LEVEL
-    Pt100SetCh2TripLevel(FAC_CMD_INDUC_OVERTEMP_ITLK); // INDUCTOR TEMPERATURE TRIP LEVEL
+    Pt100SetCh1AlarmLevel(FAC_CMD_HS_OVERTEMP_ALM_LIM); // HEATSINK TEMPERATURE ALARM LEVEL
+    Pt100SetCh1TripLevel(FAC_CMD_HS_OVERTEMP_ITLK_LIM); // HEATSINK TEMPERATURE TRIP LEVEL
+    Pt100SetCh2AlarmLevel(FAC_CMD_INDUC_OVERTEMP_ALM_LIM); // INDUCTOR TEMPERATURE ALARM LEVEL
+    Pt100SetCh2TripLevel(FAC_CMD_INDUC_OVERTEMP_ITLK_LIM); // INDUCTOR TEMPERATURE TRIP LEVEL
 
     // PT100 channel enable
     Pt100Ch1Enable();                     // HEATSINK TEMPERATURE CHANNEL ENABLE
@@ -269,20 +270,20 @@ void send_fac_cmd_data()
 
 static void get_itlks_id()
 {
-    if (fac_cmd.VcapBankItlkSts)        itlk_id |= CAPBANK_OVERVOLTAGE_ITLK;
-    if (fac_cmd.VoutItlkSts)            itlk_id |= OUTPUT_OVERVOLTAGE_ITLK;
-    if (fac_cmd.TempHeatSinkItlkSts)    itlk_id |= HS_OVERTEMP_ITLK;
-    if (fac_cmd.TempLItlkSts)           itlk_id |= INDUC_OVERTEMP_ITLK;
-    if (fac_cmd.ExtItlkSts)             itlk_id |= EXTERNAL1_ITLK;
-    if (fac_cmd.ExtItlk2Sts)            itlk_id |= EXTERNAL2_ITLK;
+    if (fac_cmd.VcapBankItlkSts)        itlk_id |= FAC_CMD_CAPBANK_OVERVOLTAGE_ITLK;
+    if (fac_cmd.VoutItlkSts)            itlk_id |= FAC_CMD_OUTPUT_OVERVOLTAGE_ITLK;
+    if (fac_cmd.TempHeatSinkItlkSts)    itlk_id |= FAC_CMD_HS_OVERTEMP_ITLK;
+    if (fac_cmd.TempLItlkSts)           itlk_id |= FAC_CMD_INDUC_OVERTEMP_ITLK;
+    if (fac_cmd.ExtItlkSts)             itlk_id |= FAC_CMD_EXTERNAL1_ITLK;
+    if (fac_cmd.ExtItlk2Sts)            itlk_id |= FAC_CMD_EXTERNAL2_ITLK;
 }
 
 static void get_alarms_id()
 {
-    if (fac_cmd.VcapBankAlarmSts)     alarm_id |= CAPBANK_OVERVOLTAGE_ALM;
-    if (fac_cmd.VoutItlkSts)          alarm_id |= OUTPUT_OVERVOLTAGE_ALM;
-    if (fac_cmd.TempHeatSinkAlarmSts) alarm_id |= HS_OVERTEMP_ALM;
-    if (fac_cmd.TempLAlarmSts)        alarm_id |= INDUC_OVERTEMP_ALM;
+    if (fac_cmd.VcapBankAlarmSts)     alarm_id |= FAC_CMD_CAPBANK_OVERVOLTAGE_ALM;
+    if (fac_cmd.VoutItlkSts)          alarm_id |= FAC_CMD_OUTPUT_OVERVOLTAGE_ALM;
+    if (fac_cmd.TempHeatSinkAlarmSts) alarm_id |= FAC_CMD_HS_OVERTEMP_ALM;
+    if (fac_cmd.TempLAlarmSts)        alarm_id |= FAC_CMD_INDUC_OVERTEMP_ALM;
 }
 
 void send_fac_cmd_itlk_msg()

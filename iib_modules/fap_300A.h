@@ -24,35 +24,35 @@
 
 #include <stdint.h>
 
-#define INPUT_OVERVOLTAGE_ITLK          0x00000001
-#define OUTPUT_OVERVOLTAGE_ITLK         0x00000002
-#define OUTPUT_OVERCURRENT_1_ITLK       0x00000004
-#define OUTPUT_OVERCURRENT_2_ITLK       0x00000008
-#define IGBT1_OVERTEMP_ITLK             0x00000010
-#define IGBT2_OVERTEMP_ITLK             0x00000020
-#define DRIVER_OVERVOLTAGE_ITLK         0x00000040
-#define DRIVER1_OVERCURRENT_ITLK        0x00000080
-#define DRIVER2_OVERCURRENT_ITLK        0x00000100
-#define DRIVER1_ERROR_ITLK              0x00000200
-#define DRIVER2_ERROR_ITLK              0x00000400
-#define INDUC_OVERTEMP_ITLK             0x00000800
-#define HS_OVERTEMP_ITLK                0x00001000
-#define RELAY_ITLK                      0x00002000
-#define EXTERNAL_ITLK                   0x00004000
-#define LEAKAGE_CURRENT_ITLK            0x00008000
-#define RACK_ITLK                       0x00010000
+#define FAP_300A_INPUT_OVERVOLTAGE_ITLK          0x00000001
+#define FAP_300A_OUTPUT_OVERVOLTAGE_ITLK         0x00000002
+#define FAP_300A_OUTPUT_OVERCURRENT_1_ITLK       0x00000004
+#define FAP_300A_OUTPUT_OVERCURRENT_2_ITLK       0x00000008
+#define FAP_300A_IGBT1_OVERTEMP_ITLK             0x00000010
+#define FAP_300A_IGBT2_OVERTEMP_ITLK             0x00000020
+#define FAP_300A_DRIVER_OVERVOLTAGE_ITLK         0x00000040
+#define FAP_300A_DRIVER1_OVERCURRENT_ITLK        0x00000080
+#define FAP_300A_DRIVER2_OVERCURRENT_ITLK        0x00000100
+#define FAP_300A_DRIVER1_ERROR_ITLK              0x00000200
+#define FAP_300A_DRIVER2_ERROR_ITLK              0x00000400
+#define FAP_300A_INDUC_OVERTEMP_ITLK             0x00000800
+#define FAP_300A_HS_OVERTEMP_ITLK                0x00001000
+#define FAP_300A_RELAY_ITLK                      0x00002000
+#define FAP_300A_EXTERNAL_ITLK                   0x00004000
+#define FAP_300A_LEAKAGE_CURRENT_ITLK            0x00008000
+#define FAP_300A_RACK_ITLK                       0x00010000
 
-#define INPUT_OVERVOLTAGE_ALM           0x00000001
-#define OUTPUT_OVERVOLTAGE_ALM          0x00000002
-#define OUTPUT_OVERCURRENT_1_ALM        0x00000004
-#define OUTPUT_OVERCURRENT_2_ALM        0x00000008
-#define IGBT1_OVERTEMP_ALM              0x00000010
-#define IGBT2_OVERTEMP_ALM              0x00000020
-#define DRIVER_OVERVOLTAGE_ALM          0x00000040
-#define DRIVER1_OVERCURRENT_ALM         0x00000080
-#define DRIVER2_OVERCURRENT_ALM         0x00000100
-#define INDUC_OVERTEMP_ALM              0x00000800
-#define HS_OVERTEMP_ALM                 0x00001000
+#define FAP_300A_INPUT_OVERVOLTAGE_ALM           0x00000001
+#define FAP_300A_OUTPUT_OVERVOLTAGE_ALM          0x00000002
+#define FAP_300A_OUTPUT_OVERCURRENT_1_ALM        0x00000004
+#define FAP_300A_OUTPUT_OVERCURRENT_2_ALM        0x00000008
+#define FAP_300A_IGBT1_OVERTEMP_ALM              0x00000010
+#define FAP_300A_IGBT2_OVERTEMP_ALM              0x00000020
+#define FAP_300A_DRIVER_OVERVOLTAGE_ALM          0x00000040
+#define FAP_300A_DRIVER1_OVERCURRENT_ALM         0x00000080
+#define FAP_300A_DRIVER2_OVERCURRENT_ALM         0x00000100
+#define FAP_300A_INDUC_OVERTEMP_ALM              0x00000800
+#define FAP_300A_HS_OVERTEMP_ALM                 0x00001000
 
 /**
  * TODO: Put here your functions prototypes. Just what need 
@@ -66,7 +66,8 @@ extern void clear_fap_300A_alarms(void);
 extern uint8_t check_fap_300A_alarms(void);
 extern void check_fap_300A_indication_leds(void);
 extern void fap_300A_application_readings(void);
-extern void send_output_fap_300A_itlk_msg(void);
+extern void send_fap_300A_itlk_msg(void);
 extern void fap_300A_power_on_check(void);
+extern void send_fap_300A_data();
 
 #endif /* FAP_300A_H_ */
