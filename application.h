@@ -1,12 +1,12 @@
 #ifndef __APPLICATION_H__
 #define __APPLICATION_H__
 
-#define  FAP_MODULE                 0
-#define  OUTPUT_Q4_MODULE           1
+#define  FAP                        0
+#define  FAC_OS                     1
 #define  RECTIFIER_MODULE           2
 #define  FAC_IS                     3
 #define  FAC_CMD_MODULE             4
-#define  OUTPUT_FAP_300A_MODULE     5
+#define  FAP_300A                   5
 
 void LedIndicationStatus(void);
 void AppConfiguration(void);
