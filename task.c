@@ -319,6 +319,4 @@ void BoardTask(void)
   power_on_check();
   send_data_schedule();
 
-  //RunToggle();
-
 }

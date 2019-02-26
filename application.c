@@ -28,16 +28,16 @@ void AppConfiguration(void)
     // This parameter guide the firmware behavior
     // Each Model has a different variable list that need to be check
 
-    //PowerModuleModel = OUTPUT_FAP_MODULE;
+    PowerModuleModel = FAP_MODULE;
     //PowerModuleModel = FAP_300A;
     //PowerModuleModel = OUTPUT_Q4_MODULE;
     //PowerModuleModel = RECTIFIER_MODULE;
     //PowerModuleModel = INPUT_MODULE;
-    PowerModuleModel = FAC_CMD_MODULE;
+    //PowerModuleModel = FAC_CMD_MODULE;
     
     switch(PowerModuleModel)
     {
-        case OUTPUT_FAP_MODULE:
+        case FAP_MODULE:
 
             init_fap();
 
@@ -121,7 +121,7 @@ void InterlockClearCheck(void)
           
           switch(PowerModuleModel)
           {
-              case OUTPUT_FAP_MODULE:
+              case FAP_MODULE:
 
                   clear_fap_interlocks();
                   clear_fap_alarms();
@@ -184,7 +184,7 @@ void AppInterlock(void)
       
       switch(PowerModuleModel)
       {
-       case OUTPUT_FAP_MODULE:
+       case FAP_MODULE:
 
             ReleAuxTurnOff();
             ReleItlkTurnOff();
@@ -262,7 +262,7 @@ void InterlockAppCheck(void)
 
    switch(PowerModuleModel)
    {
-       case OUTPUT_FAP_MODULE:
+       case FAP_MODULE:
 
            test = check_fap_interlocks();
 
@@ -314,7 +314,7 @@ void InterlockAppCheck(void)
 
        switch (PowerModuleModel)
        {
-           case OUTPUT_FAP_MODULE:
+           case FAP_MODULE:
                send_output_fap_itlk_msg();
                break;
 
@@ -351,7 +351,7 @@ void AlarmAppCheck(void)
    
    switch(PowerModuleModel)
    {
-       case OUTPUT_FAP_MODULE:
+       case FAP_MODULE:
 
            test = check_fap_alarms();
 
@@ -406,7 +406,7 @@ void LedIndicationStatus(void)
 {
     switch(PowerModuleModel)
     {
-        case OUTPUT_FAP_MODULE:
+        case FAP_MODULE:
 
            check_fap_indication_leds();
 
@@ -453,7 +453,7 @@ void Application(void)
 
     switch(PowerModuleModel)
     {
-        case OUTPUT_FAP_MODULE:
+        case FAP_MODULE:
 
             fap_application_readings();
 
@@ -507,7 +507,7 @@ void Application(void)
 
             switch(PowerModuleModel)
             {
-             case OUTPUT_FAP_MODULE:
+             case FAP_MODULE:
                   ReleAuxTurnOn();
                   ReleItlkTurnOff();
                   break;
@@ -553,7 +553,7 @@ void send_data_schedule()
 {
     switch(AppType())
     {
-        case OUTPUT_FAP_MODULE:
+        case FAP_MODULE:
             send_fap_data();
             break;
 
@@ -586,7 +586,7 @@ void power_on_check()
 {
     switch(AppType())
     {
-        case OUTPUT_FAP_MODULE:
+        case FAP_MODULE:
             fap_power_on_check();
             break;
 

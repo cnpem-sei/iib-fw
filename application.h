@@ -1,7 +1,7 @@
 #ifndef __APPLICATION_H__
 #define __APPLICATION_H__
 
-#define  OUTPUT_FAP_MODULE          0
+#define  FAP_MODULE                 0
 #define  OUTPUT_Q4_MODULE           1
 #define  RECTIFIER_MODULE           2
 #define  INPUT_MODULE               3

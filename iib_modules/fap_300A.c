@@ -455,7 +455,7 @@ void fap_300A_application_readings()
     fap_300A.Rack = Gpdi3Read();
     if(!fap_300A.RackSts) fap_300A.RackSts                               = Gpdi3Read();
 
-    fap_300A.Relay = !Gpdi4Read();
+    fap_300A.Relay = Gpdi4Read();
 
     fap_300A.Driver1Error = Driver1TopErrRead();
     if(!fap_300A.Driver1ErrorItlk) fap_300A.Driver1ErrorItlk             = Driver1TopErrRead();
@@ -472,8 +472,14 @@ void fap_300A_application_readings()
 
 void fap_300A_power_on_check()
 {
-    if (Gpdi4Read()) ReleItlkTurnOn();
-    else ReleItlkTurnOff();
+    if (Gpdi4Read()) {
+        Led1TurnOff();
+        ReleItlkTurnOff();
+    }
+    else {
+        Led1TurnOn();
+        ReleItlkTurnOn();
+    }
 }
 
 void fap_300A_map_vars()

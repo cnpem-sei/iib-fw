@@ -470,7 +470,7 @@ void fap_application_readings()
     fap.Rack = Gpdi3Read();
     if(!fap.RackSts) fap.RackSts                               = Gpdi3Read();
 
-    fap.Relay = !Gpdi8Read();
+    fap.Relay = Gpdi4Read();
 
     fap.Driver1Error = Driver1TopErrRead();
     if(!fap.Driver1ErrorItlk) fap.Driver1ErrorItlk             = Driver1TopErrRead();
@@ -485,10 +485,17 @@ void fap_application_readings()
     get_alarms_id();
 }
 
+
 void fap_power_on_check()
 {
-    if (Gpdi8Read()) ReleItlkTurnOn();
-    else ReleItlkTurnOff();
+    if (Gpdi4Read()) {
+        Led1TurnOff();
+        ReleItlkTurnOff();
+    }
+    else {
+        Led1TurnOn();
+        ReleItlkTurnOn();
+    }
 }
 
 
