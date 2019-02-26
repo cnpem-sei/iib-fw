@@ -32,7 +32,7 @@ void AppConfiguration(void)
     //PowerModuleModel = FAP_300A;
     //PowerModuleModel = OUTPUT_Q4_MODULE;
     //PowerModuleModel = RECTIFIER_MODULE;
-    //PowerModuleModel = INPUT_MODULE;
+    //PowerModuleModel = FAC_IS;
     //PowerModuleModel = FAC_CMD_MODULE;
     
     switch(PowerModuleModel)
@@ -55,9 +55,9 @@ void AppConfiguration(void)
 
             break;
 
-        case INPUT_MODULE:
+        case FAC_IS:
 
-            init_input_module();
+            init_fac_is();
 
             break;
 
@@ -142,10 +142,10 @@ void InterlockClearCheck(void)
 
                   break;
                
-              case INPUT_MODULE:
+              case FAC_IS:
 
-                  clear_input_module_interlocks();
-                  clear_input_module_alarms();
+                  clear_fac_is_interlocks();
+                  clear_fac_is_alarms();
 
                   break;
 
@@ -207,7 +207,7 @@ void AppInterlock(void)
 
             break;
 
-       case INPUT_MODULE:
+       case FAC_IS:
 
             ReleAuxTurnOff();
             ReleItlkTurnOff();
@@ -280,9 +280,9 @@ void InterlockAppCheck(void)
 
            break;
        
-       case INPUT_MODULE:
+       case FAC_IS:
 
-           test = check_input_module_interlocks();
+           test = check_fac_is_interlocks();
 
            break;
 
@@ -326,8 +326,8 @@ void InterlockAppCheck(void)
                send_rectf_itlk_msg();
                break;
 
-           case INPUT_MODULE:
-               send_input_itlk_msg();
+           case FAC_IS:
+               send_fac_is_itlk_msg();
                break;
 
            case FAC_CMD_MODULE:
@@ -369,9 +369,9 @@ void AlarmAppCheck(void)
 
            break;
 
-       case INPUT_MODULE:
+       case FAC_IS:
 
-           test = check_input_module_alarms();
+           test = check_fac_is_alarms();
 
            break;
 
@@ -424,9 +424,9 @@ void LedIndicationStatus(void)
             
             break;
 
-        case INPUT_MODULE:
+        case FAC_IS:
 
-            check_input_module_indication_leds();
+            check_fac_is_indication_leds();
 
             break;
 
@@ -471,9 +471,9 @@ void Application(void)
             
             break;
             
-       case INPUT_MODULE:
+       case FAC_IS:
 
-           input_module_application_readings();
+           fac_is_application_readings();
 
            break;
 
@@ -526,7 +526,7 @@ void Application(void)
                   ReleItlkTurnOn();
                   break;
 
-             case INPUT_MODULE:
+             case FAC_IS:
                   ReleAuxTurnOn();
                   ReleItlkTurnOn();
                   break;
@@ -565,8 +565,8 @@ void send_data_schedule()
             send_rectifier_module_data();
             break;
 
-        case INPUT_MODULE:
-            send_input_module_data();
+        case FAC_IS:
+            send_fac_is_data();
             break;
 
         case FAC_CMD_MODULE:
@@ -596,7 +596,7 @@ void power_on_check()
         case RECTIFIER_MODULE:
             break;
 
-        case INPUT_MODULE:
+        case FAC_IS:
             break;
 
         case FAC_CMD_MODULE:

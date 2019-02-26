@@ -9,7 +9,7 @@
  *****************************************************************************/
 
 /**
- * @file input_module.h
+ * @file fac_is.h
  * @brief Brief description of module
  * 
  * Detailed description
@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef INPUT_MODULE_H_
-#define INPUT_MODULE_H_
+#ifndef FAC_IS_H_
+#define FAC_IS_H_
 
 #include <stdint.h>
 
@@ -36,13 +36,13 @@
 #define HS_OVERTEMP_ALM                 0x00000004
 #define INDUC_OVERTEMP_ALM              0x00000008
 
-extern void init_input_module(void);
-extern void clear_input_module_interlocks(void);
-extern uint8_t check_input_module_interlocks(void);
-extern void clear_input_module_alarms(void);
-extern uint8_t check_input_module_alarms(void);
-extern void check_input_module_indication_leds(void);
-extern void input_module_application_readings(void);
-extern void send_input_itlk_msg(void);
+extern void init_fac_is(void);
+extern void clear_fac_is_interlocks(void);
+extern uint8_t check_fac_is_interlocks(void);
+extern void clear_fac_is_alarms(void);
+extern uint8_t check_fac_is_alarms(void);
+extern void check_fac_is_indication_leds(void);
+extern void fac_is_application_readings(void);
+extern void send_fac_is_itlk_msg(void);
 
-#endif /* INPUT_MODULE_H_ */
+#endif /* FAC_IS_H_ */
