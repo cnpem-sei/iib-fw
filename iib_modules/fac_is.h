@@ -45,5 +45,6 @@ extern void check_fac_is_indication_leds(void);
 extern void fac_is_application_readings(void);
 extern void send_fac_is_itlk_msg(void);
 extern void send_fac_is_data(void);
+extern void fac_is_power_on_check();
 
 #endif /* FAC_IS_H_ */

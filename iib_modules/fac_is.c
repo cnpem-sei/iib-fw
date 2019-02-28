@@ -39,8 +39,8 @@
 #define FAC_IS_INPUT_OVERCURRENT_ITLK_LIM           170.0
 #define FAC_IS_DCLINK_OVERVOLTAGE_ALM_LIM           550.0
 #define FAC_IS_DCLINK_OVERVOLTAGE_ITLK_LIM          555.0
-#define FAC_IS_HS_OVERTEMP_ALM_LIM                  45.0
-#define FAC_IS_HS_OVERTEMP_ITLK_LIM                 50.0
+#define FAC_IS_HS_OVERTEMP_ALM_LIM                  50.0
+#define FAC_IS_HS_OVERTEMP_ITLK_LIM                 60.0
 #define FAC_IS_INDUC_OVERTEMP_ALM_LIM               55.0
 #define FAC_IS_INDUC_OVERTEMP_ITLK_LIM              60.0
 #define FAC_IS_RH_ALM_LIM                           80.0
@@ -283,6 +283,11 @@ void fac_is_application_readings()
     fac_is_map_vars();
     get_itlks_id();
     get_alarms_id();
+}
+
+void fac_is_power_on_check()
+{
+    Led1TurnOn();
 }
 
 void fac_is_map_vars()

@@ -31,11 +31,11 @@ void AppConfiguration(void)
     // This parameter guide the firmware behavior
     // Each Model has a different variable list that need to be check
 
-    PowerModuleModel = FAP;
+    //PowerModuleModel = FAP;
     //PowerModuleModel = FAP_300A;
     //PowerModuleModel = FAC_OS;
     //PowerModuleModel = RECTIFIER_MODULE;
-    //PowerModuleModel = FAC_IS;
+    PowerModuleModel = FAC_IS;
     //PowerModuleModel = FAC_CMD_MODULE;
     
     switch(PowerModuleModel)
@@ -593,15 +593,18 @@ void power_on_check()
             break;
 
         case FAC_OS:
+            fac_os_power_on_check();
             break;
 
         case RECTIFIER_MODULE:
             break;
 
         case FAC_IS:
+            fac_is_power_on_check();
             break;
 
         case FAC_CMD_MODULE:
+            fac_cmd_power_on_check();
             break;
 
         case FAP_300A:

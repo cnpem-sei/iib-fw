@@ -45,5 +45,6 @@ extern void check_fac_cmd_indication_leds(void);
 extern void fac_cmd_application_readings(void);
 extern void send_fac_cmd_itlk_msg(void);
 extern void send_fac_cmd_data(void);
+extern void fac_cmd_power_on_check();
 
 #endif /* COMMAND_DRAWER_H_ */

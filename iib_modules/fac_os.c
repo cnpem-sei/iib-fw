@@ -346,6 +346,11 @@ void fac_os_application_readings()
     get_alarms_id();
 }
 
+void fac_os_power_on_check()
+{
+    Led1TurnOn();
+}
+
 void fac_os_map_vars()
 {
     g_controller_iib.iib_signals[0].u32 = fac_os_interlocks_indication;

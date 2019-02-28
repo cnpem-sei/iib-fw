@@ -251,6 +251,11 @@ void fac_cmd_application_readings()
     get_itlks_id();
 }
 
+void fac_cmd_power_on_check()
+{
+    Led1TurnOn();
+}
+
 void fac_cmd_map_vars()
 {
     g_controller_iib.iib_signals[0].u32     = fac_cmd_interlocks_indication;

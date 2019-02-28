@@ -60,5 +60,6 @@ extern void check_fac_os_indication_leds(void);
 extern void fac_os_application_readings(void);
 extern void send_output_fac_os_itlk_msg(void);
 extern void send_fac_os_data(void);
+extern void fac_os_power_on_check();
 
 #endif /* FAC_OS_H_ */
