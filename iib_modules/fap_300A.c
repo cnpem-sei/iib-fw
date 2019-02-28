@@ -39,10 +39,10 @@
  * TODO: Put here your defines. Just what is local. If you don't
  * need to access it from other module, consider use a constant (const)
  */
-#define FAP_INPUT_OVERVOLTAGE_ALM_LIM                    40.0
-#define FAP_INPUT_OVERVOLTAGE_ITLK_LIM                   45.0
-#define FAP_OUTPUT_OVERVOLTAGE_ALM_LIM                   9.0
-#define FAP_OUTPUT_OVERVOLTAGE_ITLK_LIM                  10.0
+#define FAP_INPUT_OVERVOLTAGE_ALM_LIM                    55.0
+#define FAP_INPUT_OVERVOLTAGE_ITLK_LIM                   60.0
+#define FAP_OUTPUT_OVERVOLTAGE_ALM_LIM                   17.0
+#define FAP_OUTPUT_OVERVOLTAGE_ITLK_LIM                  20.0
 #define FAP_OUTPUT_OVERCURRENT_1_ALM_LIM                 151.0
 #define FAP_OUTPUT_OVERCURRENT_1_ITLK_LIM                152.0
 #define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM                 151.5

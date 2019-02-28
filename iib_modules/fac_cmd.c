@@ -243,7 +243,7 @@ void fac_cmd_application_readings()
 
     if(!fac_cmd.ExtItlkSts) fac_cmd.ExtItlkSts = Gpdi5Read();
 
-    if(!fac_cmd.ExtItlk2Sts) fac_cmd.ExtItlk2Sts = Gpdi9Read();
+    if(!fac_cmd.ExtItlk2Sts) fac_cmd.ExtItlk2Sts = Gpdi6Read();
 
     fac_cmd_map_vars();
 
