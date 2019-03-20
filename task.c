@@ -186,9 +186,11 @@ void task_1_ms(void)
     // trigger for 1s period tasks (no critical tasks)
     switch(Second)
     {
+    case 20:
+        SendCanData = 1;
+        break;
     case 100:
        TempCh1Read = 1;
-       SendCanData = 1;
        break;
     case 200:
        RhSample = 1;
