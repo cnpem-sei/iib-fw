@@ -74,6 +74,7 @@ bool AlarmCheckTask = 0;
 bool DriverVoltReadTask = 0;
 bool Driver1CurrtReadTask = 0;
 bool Driver2CurrtReadTask = 0;
+bool SendCanData          = 0;
 
 /**
  * TODO: Put here your function prototypes for private functions. Use
@@ -187,6 +188,7 @@ void task_1_ms(void)
     {
     case 100:
        TempCh1Read = 1;
+       SendCanData = 1;
        break;
     case 200:
        RhSample = 1;
@@ -316,7 +318,13 @@ void BoardTask(void)
       LedIndicationStatus();
   }
 
+  else if (SendCanData)
+  {
+      SendCanData = 0;
+      send_data_schedule();
+  }
+
   power_on_check();
-  send_data_schedule();
+  //send_data_schedule();
 
 }
