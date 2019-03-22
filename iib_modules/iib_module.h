@@ -18,7 +18,7 @@ typedef struct {
     void (*check_alarms) (void);
     void (*check_indication_leds) (void);
     void (*application_readings) (void);
-    void (*map_vars) (void);
+    void (*power_on_check) (void);
     void (*send_data) (void);
     void (*send_itlk_msg) (void);
 

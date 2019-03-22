@@ -17,7 +17,6 @@ void init_iib_module(iib_module_t *iib_module,
                      void (*check_alarms) (void),
                      void (*check_indication_leds) (void),
                      void (*application_readings) (void),
-                     void (*map_vars) (void),
                      void (*send_data) (void),
                      void (*send_itlk_msg) (void))
 {
@@ -28,7 +27,6 @@ void init_iib_module(iib_module_t *iib_module,
     iib_module->check_alarms            = check_alarms;
     iib_module->check_indication_leds   = check_indication_leds;
     iib_module->application_readings    = application_readings;
-    iib_module->map_vars                = map_vars;
     iib_module->send_data               = send_data;
     iib_module->send_itlk_msg           = send_itlk_msg;
 }
