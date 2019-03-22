@@ -20,8 +20,6 @@ typedef struct {
     void (*application_readings) (void);
     void (*power_on_check) (void);
     void (*send_data) (void);
-    void (*send_itlk_msg) (void);
-
 } iib_module_t;
 
 #endif /* IIB_MODULE_H_ */

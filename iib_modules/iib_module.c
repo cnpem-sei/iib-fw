@@ -17,8 +17,8 @@ void init_iib_module(iib_module_t *iib_module,
                      void (*check_alarms) (void),
                      void (*check_indication_leds) (void),
                      void (*application_readings) (void),
-                     void (*send_data) (void),
-                     void (*send_itlk_msg) (void))
+                     void (*power_on_check) (void),
+                     void (*send_data) (void))
 {
     iib_module->configure_module        = configure_module;
     iib_module->clear_interlocks        = clear_interlocks;
@@ -27,8 +27,8 @@ void init_iib_module(iib_module_t *iib_module,
     iib_module->check_alarms            = check_alarms;
     iib_module->check_indication_leds   = check_indication_leds;
     iib_module->application_readings    = application_readings;
+    iib_module->power_on_check          = power_on_check;
     iib_module->send_data               = send_data;
-    iib_module->send_itlk_msg           = send_itlk_msg;
 }
 
 
