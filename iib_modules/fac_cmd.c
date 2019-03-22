@@ -268,9 +268,16 @@ void fac_cmd_map_vars()
 
 void send_fac_cmd_data()
 {
-    uint8_t i;
+    //uint8_t i;
+    //
+    //for (i = 2; i < 6; i++) send_data_message(i);
+    static uint8_t i = 2;
 
-    for (i = 2; i < 6; i++) send_data_message(i);
+    send_data_message(i);
+
+    i++;
+
+    if (i > 5) i = 2;
 }
 
 static void get_itlks_id()

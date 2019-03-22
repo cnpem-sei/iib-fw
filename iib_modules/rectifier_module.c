@@ -494,8 +494,15 @@ void rectifier_map_vars()
 
 void send_rm_data()
 {
-    uint8_t i;
-    for (i = 2; i < 13; i++) send_data_message(i);
+    //uint8_t i;
+    //for (i = 2; i < 13; i++) send_data_message(i);
+    static uint8_t i = 2;
+
+    send_data_message(i);
+
+    i++;
+
+    if (i > 12) i = 2;
 }
 
 static void get_itlks_id()
