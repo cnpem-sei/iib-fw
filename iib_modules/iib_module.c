@@ -10,7 +10,6 @@
 iib_module_t g_iib_module;
 
 void init_iib_module(iib_module_t *iib_module,
-                     void (*configure_module) (void),
                      void (*clear_interlocks) (void),
                      void (*check_interlocks) (void),
                      void (*clear_alarms) (void),
@@ -20,7 +19,6 @@ void init_iib_module(iib_module_t *iib_module,
                      void (*power_on_check) (void),
                      void (*send_data) (void))
 {
-    iib_module->configure_module        = configure_module;
     iib_module->clear_interlocks        = clear_interlocks;
     iib_module->check_interlocks        = check_interlocks;
     iib_module->clear_alarms            = clear_alarms;

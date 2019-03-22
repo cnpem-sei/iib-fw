@@ -92,7 +92,8 @@ static uint32_t alarm_id = 0;
 
 static void get_itlks_id();
 static void get_alarms_id();
-static void fac_cmd_map_vars();
+static void map_vars();
+static void config_module();
 
 /**
  * TODO: Put here the implementation for your public functions.
@@ -100,54 +101,7 @@ static void fac_cmd_map_vars();
 
 void init_fac_cmd()
 {
-    //Setar ranges de entrada
-    VoltageCh1Init(330.0, 3);                 // Capacitors Voltage Configuration.
-    VoltageCh2Init(250.0, 3);                 // Output Voltage Configuration.
-
-    ConfigVoltCh1AsNtc(0);                 // Config Voltage Ch1 as a voltage input
-    ConfigVoltCh2AsNtc(0);                 // Config Voltage Ch2 as a voltage input
-
-    //Setar limites
-    VoltageCh1AlarmLevelSet(FAC_CMD_CAPBANK_OVERVOLTAGE_ALM_LIM); // Rectifier1 Voltage Alarm
-    VoltageCh1TripLevelSet(FAC_CMD_CAPBANK_OVERVOLTAGE_ITLK_LIM); // Rectifier1 Voltage Trip
-    VoltageCh2AlarmLevelSet(FAC_CMD_OUTPUT_OVERVOLTAGE_ALM_LIM); // Rectifier2 Voltage Alarm
-    VoltageCh2TripLevelSet(FAC_CMD_OUTPUT_OVERVOLTAGE_ITLK_LIM); // Rectifier2 Voltage Trip
-
-    // PT100 configuration limits
-    Pt100SetCh1AlarmLevel(FAC_CMD_HS_OVERTEMP_ALM_LIM); // HEATSINK TEMPERATURE ALARM LEVEL
-    Pt100SetCh1TripLevel(FAC_CMD_HS_OVERTEMP_ITLK_LIM); // HEATSINK TEMPERATURE TRIP LEVEL
-    Pt100SetCh2AlarmLevel(FAC_CMD_INDUC_OVERTEMP_ALM_LIM); // INDUCTOR TEMPERATURE ALARM LEVEL
-    Pt100SetCh2TripLevel(FAC_CMD_INDUC_OVERTEMP_ITLK_LIM); // INDUCTOR TEMPERATURE TRIP LEVEL
-
-    // PT100 channel enable
-    Pt100Ch1Enable();                     // HEATSINK TEMPERATURE CHANNEL ENABLE
-    Pt100Ch2Enable();                     // INDUCTOR TEMPERATURE CHANNEL ENABLE
-    Pt100Ch3Disable();
-    Pt100Ch4Disable();
-
-    Pt100SetCh1Delay(4);
-    Pt100SetCh2Delay(4);
-    Pt100SetCh3Delay(4);
-    Pt100SetCh4Delay(4);
-
-    fac_cmd.VcapBank.f               = 0.0;
-    fac_cmd.VcapBankAlarmSts         = 0;
-    fac_cmd.VcapBankItlkSts          = 0;
-
-    fac_cmd.Vout.f                   = 0.0;
-    fac_cmd.VoutAlarmSts             = 0;
-    fac_cmd.VoutItlkSts              = 0;
-
-    fac_cmd.TempHeatSink.f           = 0;
-    fac_cmd.TempHeatSinkAlarmSts     = 0;
-    fac_cmd.TempHeatSinkItlkSts      = 0;
-
-    fac_cmd.TempL.f                  = 0;
-    fac_cmd.TempLAlarmSts            = 0;
-    fac_cmd.TempLItlkSts             = 0;
-
-    fac_cmd.ExtItlkSts               = 0;
-    fac_cmd.ExtItlk2Sts              = 0;
+    config_module();
 }
 
 void clear_fac_cmd_interlocks()
@@ -245,7 +199,7 @@ void fac_cmd_application_readings()
 
     if(!fac_cmd.ExtItlk2Sts) fac_cmd.ExtItlk2Sts = Gpdi6Read();
 
-    fac_cmd_map_vars();
+    map_vars();
 
     get_alarms_id();
     get_itlks_id();
@@ -256,7 +210,7 @@ void fac_cmd_power_on_check()
     Led1TurnOn();
 }
 
-void fac_cmd_map_vars()
+static void map_vars()
 {
     g_controller_iib.iib_signals[0].u32     = fac_cmd_interlocks_indication;
     g_controller_iib.iib_signals[1].u32     = fac_cmd_alarms_indication;
@@ -301,5 +255,57 @@ static void get_alarms_id()
 void send_fac_cmd_itlk_msg()
 {
     send_data_message(0);
+}
+
+static void config_module()
+{
+    //Setar ranges de entrada
+    VoltageCh1Init(330.0, 3);                 // Capacitors Voltage Configuration.
+    VoltageCh2Init(250.0, 3);                 // Output Voltage Configuration.
+
+    ConfigVoltCh1AsNtc(0);                 // Config Voltage Ch1 as a voltage input
+    ConfigVoltCh2AsNtc(0);                 // Config Voltage Ch2 as a voltage input
+
+    //Setar limites
+    VoltageCh1AlarmLevelSet(FAC_CMD_CAPBANK_OVERVOLTAGE_ALM_LIM); // Rectifier1 Voltage Alarm
+    VoltageCh1TripLevelSet(FAC_CMD_CAPBANK_OVERVOLTAGE_ITLK_LIM); // Rectifier1 Voltage Trip
+    VoltageCh2AlarmLevelSet(FAC_CMD_OUTPUT_OVERVOLTAGE_ALM_LIM); // Rectifier2 Voltage Alarm
+    VoltageCh2TripLevelSet(FAC_CMD_OUTPUT_OVERVOLTAGE_ITLK_LIM); // Rectifier2 Voltage Trip
+
+    // PT100 configuration limits
+    Pt100SetCh1AlarmLevel(FAC_CMD_HS_OVERTEMP_ALM_LIM); // HEATSINK TEMPERATURE ALARM LEVEL
+    Pt100SetCh1TripLevel(FAC_CMD_HS_OVERTEMP_ITLK_LIM); // HEATSINK TEMPERATURE TRIP LEVEL
+    Pt100SetCh2AlarmLevel(FAC_CMD_INDUC_OVERTEMP_ALM_LIM); // INDUCTOR TEMPERATURE ALARM LEVEL
+    Pt100SetCh2TripLevel(FAC_CMD_INDUC_OVERTEMP_ITLK_LIM); // INDUCTOR TEMPERATURE TRIP LEVEL
+
+    // PT100 channel enable
+    Pt100Ch1Enable();                     // HEATSINK TEMPERATURE CHANNEL ENABLE
+    Pt100Ch2Enable();                     // INDUCTOR TEMPERATURE CHANNEL ENABLE
+    Pt100Ch3Disable();
+    Pt100Ch4Disable();
+
+    Pt100SetCh1Delay(4);
+    Pt100SetCh2Delay(4);
+    Pt100SetCh3Delay(4);
+    Pt100SetCh4Delay(4);
+
+    fac_cmd.VcapBank.f               = 0.0;
+    fac_cmd.VcapBankAlarmSts         = 0;
+    fac_cmd.VcapBankItlkSts          = 0;
+
+    fac_cmd.Vout.f                   = 0.0;
+    fac_cmd.VoutAlarmSts             = 0;
+    fac_cmd.VoutItlkSts              = 0;
+
+    fac_cmd.TempHeatSink.f           = 0;
+    fac_cmd.TempHeatSinkAlarmSts     = 0;
+    fac_cmd.TempHeatSinkItlkSts      = 0;
+
+    fac_cmd.TempL.f                  = 0;
+    fac_cmd.TempLAlarmSts            = 0;
+    fac_cmd.TempLItlkSts             = 0;
+
+    fac_cmd.ExtItlkSts               = 0;
+    fac_cmd.ExtItlk2Sts              = 0;
 }
 

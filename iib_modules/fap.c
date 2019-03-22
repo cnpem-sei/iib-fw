@@ -183,107 +183,12 @@ static uint32_t alarm_id;
 
 static void get_itlks_id();
 static void get_alarms_id();
-static void fap_map_vars();
+static void map_vars();
+static void config_module();
 
 void init_fap()
 {
-    //Set current range FAP 150 A
-    CurrentCh1Init(130.0, 0.130, 50.0, 3); // Corrente braço1: Sensor Hall
-    CurrentCh2Init(130.0, 0.130, 50.0, 3); // Corrente braço2: LEM LA 130-P
-
-    //Set protection limits FAP 150 A
-    //     These interlocks are bypassed due to the fact that their ADC's
-    //     will most probably saturate during operation at 300 A. These
-    //     measures are also performed by UDC, which guarantees these
-    //     protections
-    CurrentCh1AlarmLevelSet(FAP_OUTPUT_OVERCURRENT_1_ALM_LIM);  // Corrente braço1
-    CurrentCh1TripLevelSet(FAP_OUTPUT_OVERCURRENT_1_ITLK_LIM);  // Corrente braço1
-    CurrentCh2AlarmLevelSet(FAP_OUTPUT_OVERCURRENT_2_ALM_LIM);  // Corrente braço2
-    CurrentCh2TripLevelSet(FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM);  // Corrente braço2
-
-    // NTC contiguration type
-    //ConfigNtcType(SEMIX);
-
-    //Leitura de tensão isolada
-    LvCurrentCh1Init(450.0, 0.025, 120.0, 3); // Tensão de entrada
-    LvCurrentCh2Init(250.0, 0.025, 120.0, 3); // Tensão de saída
-
-    LvCurrentCh1AlarmLevelSet(FAP_INPUT_OVERVOLTAGE_ALM_LIM);   // Tensão de entrada Alarme
-    LvCurrentCh1TripLevelSet(FAP_INPUT_OVERVOLTAGE_ITLK_LIM);   // Tensão de entrada Interlock
-    LvCurrentCh2AlarmLevelSet(FAP_OUTPUT_OVERVOLTAGE_ALM_LIM);  // Tensão de saída Alarme
-    LvCurrentCh2TripLevelSet(FAP_OUTPUT_OVERVOLTAGE_ITLK_LIM);  // Tensão de saída Interlock
-
-    // PT100 configuration limits
-    Pt100SetCh1AlarmLevel(FAP_HS_OVERTEMP_ALM_LIM);     // Temperatura Dissipador
-    Pt100SetCh1TripLevel(FAP_HS_OVERTEMP_ITLK_LIM);     // Temperatura Dissipador
-    Pt100SetCh2AlarmLevel(FAP_INDUC_OVERTEMP_ALM_LIM);  // Temperatura L
-    Pt100SetCh2TripLevel(FAP_INDUC_OVERTEMP_ITLK_LIM);  // Temperatura L
-
-    // Delay 4 seconds
-    Pt100SetCh1Delay(4);
-    // Delay 4 seconds
-    Pt100SetCh2Delay(4);
-
-    // PT100 channel enable
-    Pt100Ch1Enable(); // Temperatura Dissipador
-    Pt100Ch2Enable(); // Temperatura L
-    Pt100Ch3Disable();
-    Pt100Ch4Disable();
-
-    // Rh configuration limits
-    RhAlarmLimitSet(FAP_RH_ALM_LIM);
-    RhTripLimitSet(FAP_RH_ITLK_LIM);
-
-    // Temp board configuration limits
-    TempBoardAlarmLimitSet(FAP_BOARD_TEMP_ALM_LIM);
-    TempBoardTripLimitSet(FAP_BOARD_TEMP_ITLK_LIM);
-
-    Driver1ErrEnable();
-    Driver2ErrEnable();
-
-    // Init Variables
-    fap.Vin.f                 = 0.0;
-    fap.VinAlarmSts           = 0;
-    fap.VinItlkSts            = 0;
-    fap.Vout.f                = 0.0;
-    fap.VoutAlarmSts          = 0;
-    fap.VoutItlkSts           = 0;
-    fap.IoutA1.f              = 0.0;
-    fap.IoutA1AlarmSts        = 0;
-    fap.IoutA1ItlkSts         = 0;
-    fap.IoutA2.f              = 0.0;
-    fap.IoutA2AlarmSts        = 0;
-    fap.IoutA2ItlkSts         = 0;
-    fap.TempIGBT1.f           = 0.0;
-    fap.TempIGBT1AlarmSts     = 0;
-    fap.TempIGBT1ItlkSts      = 0;
-    fap.TempIGBT1HwrItlk      = 0;
-    fap.TempIGBT1HwrItlkSts   = 0;
-    fap.TempIGBT2.f           = 0.0;
-    fap.TempIGBT2AlarmSts     = 0;
-    fap.TempIGBT2ItlkSts      = 0;
-    fap.TempIGBT2HwrItlk      = 0;
-    fap.TempIGBT2HwrItlkSts   = 0;
-    fap.DriveVoltage.f        = 0.0;
-    fap.Drive1Current.f       = 0.0;
-    fap.Drive2Current.f       = 0.0;
-    fap.Driver1Error          = 0;
-    fap.Driver1ErrorItlk      = 0;
-    fap.Driver2Error          = 0;
-    fap.Driver2ErrorItlk      = 0;
-    fap.TempL.f               = 0;
-    fap.TempLAlarmSts         = 0;
-    fap.TempLItlkSts          = 0;
-    fap.TempHeatSink.f        = 0;
-    fap.TempHeatSinkAlarmSts  = 0;
-    fap.TempHeatSinkItlkSts   = 0;
-    fap.Relay                 = 0;
-    fap.ExternalItlk          = 0;
-    fap.ExternalItlkSts       = 0;
-    fap.LeakageCurrent        = 0;
-    fap.LeakageCurrentSts     = 0;
-    fap.Rack                  = 0;
-    fap.RackSts               = 0;
+    config_module();
 }
 
 void clear_fap_interlocks()
@@ -468,7 +373,7 @@ void fap_application_readings()
 
     if(fap.ExternalItlkSts || fap.Driver2ErrorItlk || fap.Driver2ErrorItlk) InterlockSet(); // If no signal over the port, then set Interlock action
 
-    fap_map_vars();
+    map_vars();
     get_itlks_id();
     get_alarms_id();
 }
@@ -487,7 +392,7 @@ void fap_power_on_check()
 }
 
 
-void fap_map_vars()
+static void map_vars()
 {
     g_controller_iib.iib_signals[0].u32     = fap_interlocks_indication;
     g_controller_iib.iib_signals[1].u32     = fap_alarms_indication;
@@ -554,213 +459,103 @@ void send_fap_itlk_msg()
     send_data_message(0);
 }
 
-float fap_vout_read(void)
+static void config_module()
 {
-    return fap.Vout.f;
-}
+    //Set current range FAP 150 A
+    CurrentCh1Init(130.0, 0.130, 50.0, 3); // Corrente braço1: Sensor Hall
+    CurrentCh2Init(130.0, 0.130, 50.0, 3); // Corrente braço2: LEM LA 130-P
 
-unsigned char fap_vout_alarm_sts_read(void)
-{
-    return fap.VoutAlarmSts;
-}
+    //Set protection limits FAP 150 A
+    //     These interlocks are bypassed due to the fact that their ADC's
+    //     will most probably saturate during operation at 300 A. These
+    //     measures are also performed by UDC, which guarantees these
+    //     protections
+    CurrentCh1AlarmLevelSet(FAP_OUTPUT_OVERCURRENT_1_ALM_LIM);  // Corrente braço1
+    CurrentCh1TripLevelSet(FAP_OUTPUT_OVERCURRENT_1_ITLK_LIM);  // Corrente braço1
+    CurrentCh2AlarmLevelSet(FAP_OUTPUT_OVERCURRENT_2_ALM_LIM);  // Corrente braço2
+    CurrentCh2TripLevelSet(FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM);  // Corrente braço2
 
-unsigned char fap_vout_itlk_sts_read(void)
-{
-    return fap.VoutItlkSts;
-}
+    // NTC contiguration type
+    //ConfigNtcType(SEMIX);
 
-//**********************************************
-float fap_vin_read(void)
-{
-    return fap.Vin.f;
-}
+    //Leitura de tensão isolada
+    LvCurrentCh1Init(450.0, 0.025, 120.0, 3); // Tensão de entrada
+    LvCurrentCh2Init(250.0, 0.025, 120.0, 3); // Tensão de saída
 
-unsigned char fap_vin_alarm_sts_read(void)
-{
-    return fap.VinAlarmSts;
-}
+    LvCurrentCh1AlarmLevelSet(FAP_INPUT_OVERVOLTAGE_ALM_LIM);   // Tensão de entrada Alarme
+    LvCurrentCh1TripLevelSet(FAP_INPUT_OVERVOLTAGE_ITLK_LIM);   // Tensão de entrada Interlock
+    LvCurrentCh2AlarmLevelSet(FAP_OUTPUT_OVERVOLTAGE_ALM_LIM);  // Tensão de saída Alarme
+    LvCurrentCh2TripLevelSet(FAP_OUTPUT_OVERVOLTAGE_ITLK_LIM);  // Tensão de saída Interlock
 
-unsigned char fap_vin_itlk_sts_read(void)
-{
-    return fap.VinItlkSts;
-}
+    // PT100 configuration limits
+    Pt100SetCh1AlarmLevel(FAP_HS_OVERTEMP_ALM_LIM);     // Temperatura Dissipador
+    Pt100SetCh1TripLevel(FAP_HS_OVERTEMP_ITLK_LIM);     // Temperatura Dissipador
+    Pt100SetCh2AlarmLevel(FAP_INDUC_OVERTEMP_ALM_LIM);  // Temperatura L
+    Pt100SetCh2TripLevel(FAP_INDUC_OVERTEMP_ITLK_LIM);  // Temperatura L
 
-//**********************************************
-float fap_iout_a1_read(void)
-{
-    return fap.IoutA1.f;
-}
+    // Delay 4 seconds
+    Pt100SetCh1Delay(4);
+    // Delay 4 seconds
+    Pt100SetCh2Delay(4);
 
-unsigned char fap_iout_a1_alarm_sts_read(void)
-{
-    return fap.IoutA1AlarmSts;
-}
+    // PT100 channel enable
+    Pt100Ch1Enable(); // Temperatura Dissipador
+    Pt100Ch2Enable(); // Temperatura L
+    Pt100Ch3Disable();
+    Pt100Ch4Disable();
 
-unsigned char fap_iout_a1_itlk_sts_read(void)
-{
-    return fap.IoutA1ItlkSts;
-}
+    // Rh configuration limits
+    RhAlarmLimitSet(FAP_RH_ALM_LIM);
+    RhTripLimitSet(FAP_RH_ITLK_LIM);
 
-//**********************************************
-float fap_iout_a2_read(void)
-{
-    return fap.IoutA2.f;
-}
+    // Temp board configuration limits
+    TempBoardAlarmLimitSet(FAP_BOARD_TEMP_ALM_LIM);
+    TempBoardTripLimitSet(FAP_BOARD_TEMP_ITLK_LIM);
 
-unsigned char fap_iout_a2_alarm_sts_read(void)
-{
-    return fap.IoutA2AlarmSts;
-}
+    Driver1ErrEnable();
+    Driver2ErrEnable();
 
-unsigned char fap_iout_a2_itlk_sts_read(void)
-{
-    return fap.IoutA2ItlkSts;
-}
-
-//**********************************************
-unsigned char fap_temp_IGBT1_read(void)
-{
-    return fap.TempIGBT1.f;
-}
-
-unsigned char fap_temp_IGBT1_alarm_sts_read(void)
-{
-    return fap.TempIGBT1AlarmSts;
-}
-
-unsigned char fap_temp_IGBT1_itlk_sts_read(void)
-{
-    return fap.TempIGBT1ItlkSts;
-}
-
-unsigned char fap_temp_IGBT1_hwr_itlk_read(void)
-{
-    return fap.TempIGBT1HwrItlk;
-}
-
-unsigned char fap_temp_IGBT1_hwr_itlk_sts_read(void)
-{
-    return fap.TempIGBT1HwrItlkSts;
-}
-
-//**********************************************
-unsigned char fap_temp_IGBT2_read(void)
-{
-    return fap.TempIGBT2.f;
-}
-
-unsigned char fap_temp_IGBT2_alarm_sts_read(void)
-{
-    return fap.TempIGBT2AlarmSts;
-}
-
-unsigned char fap_temp_IGBT2_itlk_sts_read(void)
-{
-    return fap.TempIGBT2ItlkSts;
-}
-
-unsigned char fap_temp_IGBT2_hwr_itlk_read(void)
-{
-    return fap.TempIGBT2HwrItlk;
-}
-
-unsigned char fap_temp_IGBT2_hwr_itlk_sts_read(void)
-{
-    return fap.TempIGBT2HwrItlkSts;
-}
-
-//**********************************************
-unsigned char fap_temp_heatsink_read(void)
-{
-    return fap.TempHeatSink.f;
-}
-
-unsigned char fap_temp_heatsink_alarm_sts_read(void)
-{
-    return fap.TempHeatSinkAlarmSts;
-}
-
-unsigned char fap_temp_heatsink_itlk_sts_read(void)
-{
-    return fap.TempHeatSinkItlkSts;
-}
-
-//**********************************************
-unsigned char fap_tempL_read(void)
-{
-    return fap.TempL.f;
-}
-
-unsigned char fap_tempL_alarm_sts_read(void)
-{
-    return fap.TempLAlarmSts;
-}
-
-unsigned char fap_tempL_itlk_sts_read(void)
-{
-    return fap.TempLItlkSts;
-}
-
-//**********************************************
-unsigned char fap_relay_read(void)
-{
-    return fap.Relay;
-}
-
-//**********************************************
-unsigned char fap_driver1_error_read(void)
-{
-    return fap.Driver1Error;
-}
-
-unsigned char fap_driver1_error_itlk_read(void)
-{
-    return fap.Driver1ErrorItlk;
-}
-
-//**********************************************
-unsigned char fap_driver2_error_read(void)
-{
-    return fap.Driver2Error;
-}
-
-unsigned char fap_driver2_error_itlk_read(void)
-{
-    return fap.Driver2ErrorItlk;
-}
-
-//**********************************************
-unsigned char fap_external_itlk_read(void)
-{
-    return fap.ExternalItlk;
-}
-
-unsigned char fap_external_itlk_sts_read(void)
-{
-    return fap.ExternalItlkSts;
-}
-
-//**********************************************
-unsigned char fap_leakage_current_read(void)
-{
-    return fap.LeakageCurrent;
-
-}
-
-unsigned char fap_leakage_current_sts_read(void)
-{
-    return fap.LeakageCurrentSts;
-
-}
-
-//**********************************************
-unsigned char fapRackRead(void)
-{
-    return fap.Rack;
-
-}
-
-unsigned char fap_rack_sts_read(void)
-{
-    return fap.RackSts;
+    // Init Variables
+    fap.Vin.f                 = 0.0;
+    fap.VinAlarmSts           = 0;
+    fap.VinItlkSts            = 0;
+    fap.Vout.f                = 0.0;
+    fap.VoutAlarmSts          = 0;
+    fap.VoutItlkSts           = 0;
+    fap.IoutA1.f              = 0.0;
+    fap.IoutA1AlarmSts        = 0;
+    fap.IoutA1ItlkSts         = 0;
+    fap.IoutA2.f              = 0.0;
+    fap.IoutA2AlarmSts        = 0;
+    fap.IoutA2ItlkSts         = 0;
+    fap.TempIGBT1.f           = 0.0;
+    fap.TempIGBT1AlarmSts     = 0;
+    fap.TempIGBT1ItlkSts      = 0;
+    fap.TempIGBT1HwrItlk      = 0;
+    fap.TempIGBT1HwrItlkSts   = 0;
+    fap.TempIGBT2.f           = 0.0;
+    fap.TempIGBT2AlarmSts     = 0;
+    fap.TempIGBT2ItlkSts      = 0;
+    fap.TempIGBT2HwrItlk      = 0;
+    fap.TempIGBT2HwrItlkSts   = 0;
+    fap.DriveVoltage.f        = 0.0;
+    fap.Drive1Current.f       = 0.0;
+    fap.Drive2Current.f       = 0.0;
+    fap.Driver1Error          = 0;
+    fap.Driver1ErrorItlk      = 0;
+    fap.Driver2Error          = 0;
+    fap.Driver2ErrorItlk      = 0;
+    fap.TempL.f               = 0;
+    fap.TempLAlarmSts         = 0;
+    fap.TempLItlkSts          = 0;
+    fap.TempHeatSink.f        = 0;
+    fap.TempHeatSinkAlarmSts  = 0;
+    fap.TempHeatSinkItlkSts   = 0;
+    fap.Relay                 = 0;
+    fap.ExternalItlk          = 0;
+    fap.ExternalItlkSts       = 0;
+    fap.LeakageCurrent        = 0;
+    fap.LeakageCurrentSts     = 0;
+    fap.Rack                  = 0;
+    fap.RackSts               = 0;
 }

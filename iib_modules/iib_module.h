@@ -11,7 +11,6 @@
 #include<stdint.h>
 
 typedef struct {
-    void (*configure_module) (void);
     void (*clear_interlocks) (void);
     void (*check_interlocks) (void);
     void (*clear_alarms) (void);

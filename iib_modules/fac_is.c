@@ -107,7 +107,8 @@ static uint32_t alarm_id;
 
 static void get_itlks_id();
 static void get_alarms_id();
-static void fac_is_map_vars();
+static void map_vars();
+static void config_module();
 
 /**
  * TODO: Put here your function prototypes for private functions. Use
@@ -116,75 +117,7 @@ static void fac_is_map_vars();
 
 void init_fac_is()
 {
-    //Set Current Range
-    CurrentCh1Init(300.0, 0.150, 50.0, 10);    // INPUT CURRENT
-
-    //Set Protection Limits
-    CurrentCh1AlarmLevelSet(FAC_IS_INPUT_OVERCURRENT_ALM_LIM); // INPUT CURRENT ALARM LEVEL
-    CurrentCh1TripLevelSet(FAC_IS_INPUT_OVERCURRENT_ITLK_LIM); // INPUT CURRENT TRIP LEVEL
-
-    //LV20-P INPUTS
-    LvCurrentCh1Init(555.0, 0.025, 120.0, 10); // CONFIG CHANNEL FOR DC_LINK MEASURE
-
-    //LV20-P LIMITS
-    LvCurrentCh1AlarmLevelSet(FAC_IS_DCLINK_OVERVOLTAGE_ALM_LIM); // INPUT DC_LINK VOLTAGE ALARM LEVEL
-    LvCurrentCh1TripLevelSet(FAC_IS_DCLINK_OVERVOLTAGE_ITLK_LIM); // INPUT DC_LINK VOLTAGE TRIP LEVEL
-
-    // PT100 configuration limits
-    Pt100SetCh1AlarmLevel(FAC_IS_HS_OVERTEMP_ALM_LIM); // HEATSINK TEMPERATURE ALARM LEVEL
-    Pt100SetCh1TripLevel(FAC_IS_HS_OVERTEMP_ITLK_LIM); // HEATSINK TEMPERATURE TRIP LEVEL
-    Pt100SetCh2AlarmLevel(FAC_IS_INDUC_OVERTEMP_ALM_LIM); // INDUCTOR TEMPERATURE ALARM LEVEL
-    Pt100SetCh2TripLevel(FAC_IS_INPUT_OVERCURRENT_ITLK_LIM); // INDUCTOR TEMPERATURE TRIP LEVEL
-
-    // PT100 channel enable
-    Pt100Ch1Enable();                     // HEATSINK TEMPERATURE CHANNEL ENABLE
-    Pt100Ch2Enable();                     // INDUCTOR TEMPERATURE CHANNEL ENABLE
-    Pt100Ch3Disable();
-    Pt100Ch4Disable();
-
-    // Delay 4 seconds
-    Pt100SetCh1Delay(4);
-    // Delay 4 seconds
-    Pt100SetCh2Delay(4);
-    // Delay 4 seconds
-    Pt100SetCh3Delay(4);
-    // Delay 4 seconds
-    Pt100SetCh4Delay(4);
-
-    // Rh configuration limits
-    RhAlarmLimitSet(FAC_IS_RH_ALM_LIM);
-    RhTripLimitSet(FAC_IS_RH_ITLK_LIM);
-
-    // Temp board configuration limits
-    TempBoardAlarmLimitSet(FAC_IS_BOARD_TEMP_ALM_LIM);
-    TempBoardTripLimitSet(FAC_IS_BOARD_TEMP_ITLK_LIM);
-
-    // Disable all Driver Error Monitoring
-    Driver1ErrDisable();
-    Driver2ErrDisable();
-
-    // Init Variables
-    fac_is.Iin.f                      = 0.0;
-    fac_is.IinAlarmSts                = 0;
-    fac_is.IinItlkSts                 = 0;
-
-    fac_is.VdcLink.f                  = 0.0;
-    fac_is.VdcLinkAlarmSts            = 0;
-    fac_is.VdcLinkItlkSts             = 0;
-
-    fac_is.TempHeatsink.f             = 0.0;
-    fac_is.TempHeatsinkAlarmSts       = 0;
-    fac_is.TempHeatsinkItlkSts        = 0;
-
-    fac_is.TempL.f                    = 0.0;
-    fac_is.TempLAlarmSts              = 0;
-    fac_is.TempLItlkSts               = 0;
-
-    fac_is.Driver1Error               = 0;
-    fac_is.Driver1ErrorItlk           = 0;
-
-    fac_is.Driver2Error               = 0;
-    fac_is.Driver2ErrorItlk           = 0;
+    config_module();
 }
 
 void clear_fac_is_interlocks()
@@ -280,7 +213,7 @@ void fac_is_application_readings()
     fac_is.TempLAlarmSts = Pt100ReadCh2AlarmSts();
     if(!fac_is.TempLItlkSts) fac_is.TempLItlkSts                = Pt100ReadCh2TripSts();
 
-    fac_is_map_vars();
+    map_vars();
     get_itlks_id();
     get_alarms_id();
 }
@@ -290,7 +223,7 @@ void fac_is_power_on_check()
     Led1TurnOn();
 }
 
-void fac_is_map_vars()
+static void map_vars()
 {
     g_controller_iib.iib_signals[0].u32     = im_interlocks_indication;
     g_controller_iib.iib_signals[1].u32     = im_alarms_indication;
@@ -336,65 +269,75 @@ void send_fac_is_itlk_msg()
     send_data_message(0);
 }
 
-float fac_is_iin_read(void)
+static void config_module()
 {
-    return fac_is.Iin.f;
-}
+    //Set Current Range
+    CurrentCh1Init(300.0, 0.150, 50.0, 10);    // INPUT CURRENT
 
-unsigned char fac_is_iin_alarm_sts_read(void)
-{
-    return fac_is.IinAlarmSts;
-}
+    //Set Protection Limits
+    CurrentCh1AlarmLevelSet(FAC_IS_INPUT_OVERCURRENT_ALM_LIM); // INPUT CURRENT ALARM LEVEL
+    CurrentCh1TripLevelSet(FAC_IS_INPUT_OVERCURRENT_ITLK_LIM); // INPUT CURRENT TRIP LEVEL
 
-unsigned char fac_is_iin_itlk_sts_read(void)
-{
-    return fac_is.IinItlkSts;
-}
+    //LV20-P INPUTS
+    LvCurrentCh1Init(555.0, 0.025, 120.0, 10); // CONFIG CHANNEL FOR DC_LINK MEASURE
 
-//******************************************************************************
-float fac_is_vdclink_read(void)
-{
-    return fac_is.VdcLink.f;
-}
+    //LV20-P LIMITS
+    LvCurrentCh1AlarmLevelSet(FAC_IS_DCLINK_OVERVOLTAGE_ALM_LIM); // INPUT DC_LINK VOLTAGE ALARM LEVEL
+    LvCurrentCh1TripLevelSet(FAC_IS_DCLINK_OVERVOLTAGE_ITLK_LIM); // INPUT DC_LINK VOLTAGE TRIP LEVEL
 
-unsigned char fac_is_vdclink_alarm_sts_read(void)
-{
-    return fac_is.VdcLinkAlarmSts;
-}
+    // PT100 configuration limits
+    Pt100SetCh1AlarmLevel(FAC_IS_HS_OVERTEMP_ALM_LIM); // HEATSINK TEMPERATURE ALARM LEVEL
+    Pt100SetCh1TripLevel(FAC_IS_HS_OVERTEMP_ITLK_LIM); // HEATSINK TEMPERATURE TRIP LEVEL
+    Pt100SetCh2AlarmLevel(FAC_IS_INDUC_OVERTEMP_ALM_LIM); // INDUCTOR TEMPERATURE ALARM LEVEL
+    Pt100SetCh2TripLevel(FAC_IS_INPUT_OVERCURRENT_ITLK_LIM); // INDUCTOR TEMPERATURE TRIP LEVEL
 
-unsigned char fac_is_vdclink_itlk_sts_read(void)
-{
-    return fac_is.VdcLinkItlkSts;
-}
+    // PT100 channel enable
+    Pt100Ch1Enable();                     // HEATSINK TEMPERATURE CHANNEL ENABLE
+    Pt100Ch2Enable();                     // INDUCTOR TEMPERATURE CHANNEL ENABLE
+    Pt100Ch3Disable();
+    Pt100Ch4Disable();
 
-//******************************************************************************
-float fac_is_temp_heatsink_read(void)
-{
-    return fac_is.TempHeatsink.f;
-}
+    // Delay 4 seconds
+    Pt100SetCh1Delay(4);
+    // Delay 4 seconds
+    Pt100SetCh2Delay(4);
+    // Delay 4 seconds
+    Pt100SetCh3Delay(4);
+    // Delay 4 seconds
+    Pt100SetCh4Delay(4);
 
-unsigned char fac_is_temp_heatsink_alarm_sts_read(void)
-{
-    return fac_is.TempHeatsinkAlarmSts;
-}
+    // Rh configuration limits
+    RhAlarmLimitSet(FAC_IS_RH_ALM_LIM);
+    RhTripLimitSet(FAC_IS_RH_ITLK_LIM);
 
-unsigned char fac_is_temp_heatsink_itlk_sts_read(void)
-{
-    return fac_is.TempHeatsinkItlkSts;
-}
+    // Temp board configuration limits
+    TempBoardAlarmLimitSet(FAC_IS_BOARD_TEMP_ALM_LIM);
+    TempBoardTripLimitSet(FAC_IS_BOARD_TEMP_ITLK_LIM);
 
-//******************************************************************************
-float fac_is_tempL_read(void)
-{
-    return fac_is.TempL.f;
-}
+    // Disable all Driver Error Monitoring
+    Driver1ErrDisable();
+    Driver2ErrDisable();
 
-unsigned char fac_is_tempL_alarm_sts_read(void)
-{
-    return fac_is.TempLAlarmSts;
-}
+    // Init Variables
+    fac_is.Iin.f                      = 0.0;
+    fac_is.IinAlarmSts                = 0;
+    fac_is.IinItlkSts                 = 0;
 
-unsigned char fac_is_tempL_itlk_sts_read(void)
-{
-    return fac_is.TempLItlkSts;
+    fac_is.VdcLink.f                  = 0.0;
+    fac_is.VdcLinkAlarmSts            = 0;
+    fac_is.VdcLinkItlkSts             = 0;
+
+    fac_is.TempHeatsink.f             = 0.0;
+    fac_is.TempHeatsinkAlarmSts       = 0;
+    fac_is.TempHeatsinkItlkSts        = 0;
+
+    fac_is.TempL.f                    = 0.0;
+    fac_is.TempLAlarmSts              = 0;
+    fac_is.TempLItlkSts               = 0;
+
+    fac_is.Driver1Error               = 0;
+    fac_is.Driver1ErrorItlk           = 0;
+
+    fac_is.Driver2Error               = 0;
+    fac_is.Driver2ErrorItlk           = 0;
 }

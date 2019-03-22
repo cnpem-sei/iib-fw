@@ -141,7 +141,8 @@ static uint32_t alarm_id;
 
 static void get_itlks_id();
 static void get_alarms_id();
-static void fac_os_map_vars();
+static void map_vars();
+static void config_module();
 
 /**
  * TODO: Put here the implementation for your public functions.
@@ -149,78 +150,7 @@ static void fac_os_map_vars();
 
 void init_fac_os()
 {
-    /* Set current range */
-    CurrentCh1Init(300.0, 0.150, 50.0, 0); /* Input */
-    CurrentCh2Init(500.0, 0.100, 50.0, 0); /* Output */
-
-    /* Protection Limits */
-    CurrentCh1AlarmLevelSet(FAC_OS_INPUT_CURRENT_ALM_LIM);
-    CurrentCh1TripLevelSet(FAC_OS_INPUT_CURRENT_ITLK_LIM);
-    CurrentCh2AlarmLevelSet(FAC_OS_OUTPUT_CURRENT_ALM_LIM);
-    CurrentCh2TripLevelSet(FAC_OS_OUTPUT_CURRENT_ITLK_LIM);
-
-    /* Isolated Voltage */
-    LvCurrentCh1Init(330.0, 0.025, 120.0, 3); /* Input Voltage */
-
-    LvCurrentCh1AlarmLevelSet(FAC_OS_INPUT_VOLTAGE_ALM_LIM);
-    LvCurrentCh1TripLevelSet(FAC_OS_INPUT_VOLTAGE_ITLK_LIM);
-
-    /* Pt-100 Configuration Limits */
-    Pt100SetCh1AlarmLevel(FAC_OS_HS_TEMP_ALM_LIM);
-    Pt100SetCh1TripLevel(FAC_OS_HS_TEMP_ITLK_LIM);
-    Pt100SetCh2AlarmLevel(FAC_OS_INDUC_TEMP_ALM_LIM);
-    Pt100SetCh2TripLevel(FAC_OS_INDUC_TEMP_ITLK_LIM);
-
-    /* Pt-100 channel enable */
-    Pt100Ch1Enable();
-    Pt100Ch2Enable();
-
-    /* RH configuration limits */
-    TempBoardAlarmLimitSet(80);
-    TempBoardTripLimitSet(90);
-
-    /* Driver Error Enable */
-    Driver1ErrEnable();
-    Driver2ErrEnable();
-
-    /* Variables */
-    fac_os.Iin.f                 = 0;
-    fac_os.IinAlarmSts           = 0;
-    fac_os.IinItlkSts            = 0;
-
-    fac_os.Iout.f                = 0;
-    fac_os.IoutAlarmSts          = 0;
-    fac_os.IoutItlkSts           = 0;
-
-    fac_os.VdcLink.f             = 0;
-    fac_os.VdcLinkAlarmSts       = 0;
-    fac_os.VdcLinkItlkSts        = 0;
-
-    fac_os.TempIGBT1.f           = 0;
-    fac_os.TempIGBT1AlarmSts     = 0;
-    fac_os.TempIGBT1ItlkSts      = 0;
-    fac_os.TempIGBT1HwrItlk      = 0;
-    fac_os.TempIGBT1HwrItlkSts   = 0;
-
-    fac_os.TempIGBT2.f           = 0;
-    fac_os.TempIGBT2AlarmSts     = 0;
-    fac_os.TempIGBT2ItlkSts      = 0;
-    fac_os.TempIGBT2HwrItlk      = 0;
-    fac_os.TempIGBT2HwrItlkSts   = 0;
-
-    fac_os.TempL.f               = 0;
-    fac_os.TempLAlarmSts         = 0;
-    fac_os.TempLItlkSts          = 0;
-
-    fac_os.TempHeatSink.f        = 0;
-    fac_os.TempHeatSinkAlarmSts  = 0;
-    fac_os.TempHeatSinkItlkSts   = 0;
-
-    fac_os.Driver1Error          = 0;
-    fac_os.Driver1ErrorItlk      = 0;
-
-    fac_os.Driver2Error          = 0;
-    fac_os.Driver2ErrorItlk      = 0;
+    config_module();
 }
 
 void clear_fac_os_interlocks()
@@ -341,7 +271,7 @@ void fac_os_application_readings()
     fac_os.TempLAlarmSts = Pt100ReadCh2AlarmSts();
     if(!fac_os.TempLItlkSts)fac_os.TempLItlkSts = Pt100ReadCh2TripSts();
 
-    fac_os_map_vars();
+    map_vars();
     get_itlks_id();
     get_alarms_id();
 }
@@ -351,7 +281,7 @@ void fac_os_power_on_check()
     Led1TurnOn();
 }
 
-void fac_os_map_vars()
+static void map_vars()
 {
     g_controller_iib.iib_signals[0].u32 = fac_os_interlocks_indication;
     g_controller_iib.iib_signals[1].u32 = fac_os_alarms_indication;
@@ -410,49 +340,78 @@ void send_output_fac_os_itlk_msg()
     send_data_message(0);
 }
 
-float fac_os_iout_read(void)
+static void config_module()
 {
-    return fac_os.Iout.f;
-}
+    /* Set current range */
+    CurrentCh1Init(300.0, 0.150, 50.0, 0); /* Input */
+    CurrentCh2Init(500.0, 0.100, 50.0, 0); /* Output */
 
-unsigned char fac_os_iout_alarm_sts_read(void)
-{
-    return fac_os.IoutAlarmSts;
-}
+    /* Protection Limits */
+    CurrentCh1AlarmLevelSet(FAC_OS_INPUT_CURRENT_ALM_LIM);
+    CurrentCh1TripLevelSet(FAC_OS_INPUT_CURRENT_ITLK_LIM);
+    CurrentCh2AlarmLevelSet(FAC_OS_OUTPUT_CURRENT_ALM_LIM);
+    CurrentCh2TripLevelSet(FAC_OS_OUTPUT_CURRENT_ITLK_LIM);
 
-unsigned char fac_os_iout_itlk_sts_read(void)
-{
-    return fac_os.IoutItlkSts;
-}
+    /* Isolated Voltage */
+    LvCurrentCh1Init(330.0, 0.025, 120.0, 3); /* Input Voltage */
 
-//******************************************************************************
-float fac_os_temp_igbt1_read(void)
-{
-    return fac_os.TempIGBT1.f;
-}
+    LvCurrentCh1AlarmLevelSet(FAC_OS_INPUT_VOLTAGE_ALM_LIM);
+    LvCurrentCh1TripLevelSet(FAC_OS_INPUT_VOLTAGE_ITLK_LIM);
 
-unsigned char fac_os_temp_igbt1_alarm_sts_read(void)
-{
-    return fac_os.TempIGBT1AlarmSts;
-}
+    /* Pt-100 Configuration Limits */
+    Pt100SetCh1AlarmLevel(FAC_OS_HS_TEMP_ALM_LIM);
+    Pt100SetCh1TripLevel(FAC_OS_HS_TEMP_ITLK_LIM);
+    Pt100SetCh2AlarmLevel(FAC_OS_INDUC_TEMP_ALM_LIM);
+    Pt100SetCh2TripLevel(FAC_OS_INDUC_TEMP_ITLK_LIM);
 
-unsigned char fac_os_temp_igbt1_itlk_sts_read(void)
-{
-    return fac_os.TempIGBT1ItlkSts;
-}
+    /* Pt-100 channel enable */
+    Pt100Ch1Enable();
+    Pt100Ch2Enable();
 
-//******************************************************************************
-float fac_os_temp_igbt2_read(void)
-{
-    return fac_os.TempIGBT2.f;
-}
+    /* RH configuration limits */
+    TempBoardAlarmLimitSet(80);
+    TempBoardTripLimitSet(90);
 
-unsigned char fac_os_temp_igbt2_alarm_sts_read(void)
-{
-    return fac_os.TempIGBT2AlarmSts;
-}
+    /* Driver Error Enable */
+    Driver1ErrEnable();
+    Driver2ErrEnable();
 
-unsigned char fac_os_temp_igbt2_itlk_sts_read(void)
-{
-    return fac_os.TempIGBT2ItlkSts;
+    /* Variables */
+    fac_os.Iin.f                 = 0;
+    fac_os.IinAlarmSts           = 0;
+    fac_os.IinItlkSts            = 0;
+
+    fac_os.Iout.f                = 0;
+    fac_os.IoutAlarmSts          = 0;
+    fac_os.IoutItlkSts           = 0;
+
+    fac_os.VdcLink.f             = 0;
+    fac_os.VdcLinkAlarmSts       = 0;
+    fac_os.VdcLinkItlkSts        = 0;
+
+    fac_os.TempIGBT1.f           = 0;
+    fac_os.TempIGBT1AlarmSts     = 0;
+    fac_os.TempIGBT1ItlkSts      = 0;
+    fac_os.TempIGBT1HwrItlk      = 0;
+    fac_os.TempIGBT1HwrItlkSts   = 0;
+
+    fac_os.TempIGBT2.f           = 0;
+    fac_os.TempIGBT2AlarmSts     = 0;
+    fac_os.TempIGBT2ItlkSts      = 0;
+    fac_os.TempIGBT2HwrItlk      = 0;
+    fac_os.TempIGBT2HwrItlkSts   = 0;
+
+    fac_os.TempL.f               = 0;
+    fac_os.TempLAlarmSts         = 0;
+    fac_os.TempLItlkSts          = 0;
+
+    fac_os.TempHeatSink.f        = 0;
+    fac_os.TempHeatSinkAlarmSts  = 0;
+    fac_os.TempHeatSinkItlkSts   = 0;
+
+    fac_os.Driver1Error          = 0;
+    fac_os.Driver1ErrorItlk      = 0;
+
+    fac_os.Driver2Error          = 0;
+    fac_os.Driver2ErrorItlk      = 0;
 }

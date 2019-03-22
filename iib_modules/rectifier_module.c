@@ -173,139 +173,12 @@ static uint32_t alarm_id;
 
 static void get_itlks_id();
 static void get_alarms_id();
+static void map_vars();
+static void config_module();
 
 void init_rectifier_module()
 {
-    //Set current range
-    CurrentCh1Init(300.0, 0.150, 50.0, 3);  // Rectifier1 Output Current Sensor Configuration: Hall Sensor
-    CurrentCh2Init(300.0, 0.150, 50.0, 3);  // Rectifier2 Output Current Sensor Configuration: LEM LF 310-S
-    CurrentCh3Init(1.0, 0.0125, 300.0, 0);  // Leakage Current
-    CurrentCh4Init(125.0, 0.125, 50.0, 0);
-    //Set protection limits
-    CurrentCh1AlarmLevelSet(RM_OUTPUT_OVERCURRENT_RECT1_ALM_LIM); // Rectifier1 Output Current Alarm
-    CurrentCh1TripLevelSet(RM_OUTPUT_OVERCURRENT_RECT1_ITLK_LIM); // Rectifier1 Output Current Trip
-    CurrentCh2AlarmLevelSet(RM_OUTPUT_OVERCURRENT_RECT2_ALM_LIM); // Rectifier2 Output Current Alarm
-    CurrentCh2TripLevelSet(RM_OUTPUT_OVERCURRENT_RECT2_ITLK_LIM); // Rectifier2 Output Current Trip
-    CurrentCh3AlarmLevelSet(RM_LEAKAGE_OVERCURRENT_ALM_LIM); // Leakage Current Alarm Level
-    CurrentCh3TripLevelSet(RM_LEAKAGE_OVERCURRENT_ITLK_LIM); // Leakage Current Trip Level
-    CurrentCh4AlarmLevelSet(RM_AC_OVERCURRENT_ALM_LIM);
-    CurrentCh4TripLevelSet(RM_AC_OVERCURRENT_ITLK_LIM);
-
-    //Setar ranges de entrada
-    VoltageCh1Init(61.21, 3);              // Rectifier1 Output Voltage Configuration.
-    VoltageCh2Init(61.21, 3);              // Rectifier2 Output Voltage Configuration.
-    VoltageCh3Init(10.0, 3);               // NTC SW1
-    VoltageCh4Init(10.0, 3);               // NTC SW2
-
-    ConfigPolVoltCh2(1);                   // Change the voltage polarity of the channel 2 (rectifier 2 voltage)
-
-    ConfigVoltCh1AsNtc(0);                 // Config Voltage Ch2 as a voltage input
-    ConfigVoltCh2AsNtc(0);                 // Config Voltage Ch2 as a voltage input
-    ConfigVoltCh3AsNtc(1);                 // Config Voltage Ch3 as a NTC input
-    ConfigVoltCh4AsNtc(1);                 // Config Voltage Ch4 as a NTC input
-
-    //Setar limites
-    VoltageCh1AlarmLevelSet(RM_OUTPUT_OVERVOLTAGE_RECT1_ALM_LIM);  // Rectifier1 Voltage Alarm
-    VoltageCh1TripLevelSet(RM_OUTPUT_OVERVOLTAGE_RECT1_ITLK_LIM);  // Rectifier1 Voltage Trip
-    VoltageCh2AlarmLevelSet(RM_OUTPUT_OVERVOLTAGE_RECT2_ALM_LIM);  // Rectifier2 Voltage Alarm
-    VoltageCh2TripLevelSet(RM_OUTPUT_OVERVOLTAGE_RECT2_ITLK_LIM);  // Rectifier2 Voltage Trip
-    VoltageCh3AlarmLevelSet(RM_MODULE1_OVERTEMP_ALM_LIM);          // Rectifier1 NTC Temperature Alarm
-    VoltageCh3TripLevelSet(RM_MODULE1_OVERTEMP_ITLK_LIM);          // Rectifier1 NTC Temperature Trip
-    VoltageCh4AlarmLevelSet(RM_MODULE2_OVERTEMP_ALM_LIM);          // Rectifier2 NTC Temperature Alarm
-    VoltageCh4TripLevelSet(RM_MODULE2_OVERTEMP_ITLK_LIM);          // Rectifier2 NTC Temperature Tip
-
-    // PT100 configuration limits
-    Pt100SetCh1AlarmLevel(RM_HS_OVERTEMP_ALM_LIM); // Heat Sink Temperature Alarm
-    Pt100SetCh1TripLevel(RM_HS_OVERTEMP_ITLK_LIM); // Heat Sink Temperature Trip
-    Pt100SetCh2AlarmLevel(RM_INDUCTOR1_OVERTEMP_ALM_LIM); // L1 Temperature Alarm
-    Pt100SetCh2TripLevel(RM_INDUCTOR1_OVERTEMP_ITLK_LIM); // L1 Temperature Trip
-    Pt100SetCh3AlarmLevel(RM_INDUCTOR2_OVERTEMP_ALM_LIM); // L2 Temperature Alarm
-    Pt100SetCh3TripLevel(RM_INDUCTOR2_OVERTEMP_ITLK_LIM); // L2 Temperature Trip
-    Pt100SetCh4AlarmLevel(RM_WATER_OVERTEMP_ALM_LIM);     // Water Temperature Alarm
-    Pt100SetCh4TripLevel(RM_WATER_OVERTEMP_ITLK_LIM);     // Water Temperature Trip
-
-    // Delay 4 seconds
-    Pt100SetCh1Delay(4);
-    // Delay 4 seconds
-    Pt100SetCh2Delay(4);
-    // Delay 4 seconds
-    Pt100SetCh3Delay(4);
-    // Delay 4 seconds
-    Pt100SetCh4Delay(4);
-
-    // PT100 channel enable
-    Pt100Ch1Enable();            // Enable PT100 channel 1
-    Pt100Ch2Enable();            // Enable PT100 channel 2
-    Pt100Ch3Enable();            // Enable PT100 channel 3
-    Pt100Ch4Disable();           // Enable PT100 channel 4
-
-    // Rh configuration limits
-    RhAlarmLimitSet(RM_RH_ALM_LIM);
-    RhTripLimitSet(RM_RH_ITLK_LIM);
-
-    // Temp board configuration limits
-    TempBoardAlarmLimitSet(RM_BOARD_TEMP_ALM_LIM);
-    TempBoardTripLimitSet(RM_BOARD_TEMP_ITLK_LIM);
-
-    Driver1ErrDisable();         // Driver1 Error Signal Disable
-    Driver2ErrDisable();         // Driver1 Error Signal Disable
-
-    // Init variables
-    rectf_module.IoutRectf1.f             = 0;
-    rectf_module.IoutRectf1AlarmSts       = 0;
-    rectf_module.IoutRectf1ItlkSts        = 0;
-
-    rectf_module.IoutRectf2.f             = 0;
-    rectf_module.IoutRectf2AlarmSts       = 0;
-    rectf_module.IoutRectf2ItlkSts        = 0;
-
-    rectf_module.VoutRectf1.f             = 0;
-    rectf_module.VoutRectf1AlarmSts       = 0;
-    rectf_module.VoutRectf1ItlkSts        = 0;
-
-    rectf_module.VoutRectf2.f             = 0;
-    rectf_module.VoutRectf2AlarmSts       = 0;
-    rectf_module.VoutRectf2ItlkSts        = 0;
-
-    rectf_module.LeakageCurrent.f         = 0;
-    rectf_module.LeakageCurrentAlarmSts   = 0;
-    rectf_module.LeakageCurrentItlkSts    = 0;
-
-    rectf_module.TempHeatSink.f           = 0;
-    rectf_module.TempHeatSinkAlarmSts     = 0;
-    rectf_module.TempHeatSinkItlkSts      = 0;
-
-    rectf_module.TempWater.f              = 0;
-    rectf_module.TempWaterAlarmSts        = 0;
-    rectf_module.TempWaterItlkSts         = 0;
-
-    rectf_module.TempModule1.f            = 0;
-    rectf_module.TempModule1AlarmSts      = 0;
-    rectf_module.TempModule1ItlkSts       = 0;
-
-    rectf_module.TempModule2.f            = 0;
-    rectf_module.TempModule2AlarmSts      = 0;
-    rectf_module.TempModule2ItlkSts       = 0;
-
-    rectf_module.TempL1.f                 = 0;
-    rectf_module.TempL1AlarmSts           = 0;
-    rectf_module.TempL1ItlkSts            = 0;
-
-    rectf_module.TempL2.f                 = 0;
-    rectf_module.TempL2AlarmSts           = 0;
-    rectf_module.TempL2ItlkSts            = 0;
-
-    rectf_module.AcPhaseFault             = 0;
-    rectf_module.AcPhaseFaultSts          = 0;
-
-    rectf_module.AcOverCurrent            = 0;
-    rectf_module.AcOverCurrentSts         = 0;
-
-    rectf_module.AcTransformerOverTemp    = 0;
-    rectf_module.AcTransformerOverTempSts = 0;
-
-    rectf_module.WaterFluxInterlock       = 0;
-    rectf_module.WaterFluxInterlockSts    = 0;
+    config_module();
 }
 
 void clear_rectifier_interlocks()
@@ -470,12 +343,12 @@ void rectifier_application_readings()
 
     if(rectf_module.AcPhaseFault || rectf_module.AcOverCurrent || rectf_module.AcTransformerOverTemp || rectf_module.WaterFluxInterlock) InterlockSet();
 
-    rectifier_map_vars();
+    map_vars();
     get_itlks_id();
     get_alarms_id();
 }
 
-void rectifier_map_vars()
+static void map_vars()
 {
     g_controller_iib.iib_signals[0].u32     = rectf_module_interlocks_indication;
     g_controller_iib.iib_signals[1].u32     = rectf_module_alarms_indication;
@@ -542,4 +415,138 @@ static void get_alarms_id()
 void send_rectf_itlk_msg()
 {
     send_data_message(0);
+}
+
+static void config_module()
+{
+    //Set current range
+    CurrentCh1Init(300.0, 0.150, 50.0, 3);  // Rectifier1 Output Current Sensor Configuration: Hall Sensor
+    CurrentCh2Init(300.0, 0.150, 50.0, 3);  // Rectifier2 Output Current Sensor Configuration: LEM LF 310-S
+    CurrentCh3Init(1.0, 0.0125, 300.0, 0);  // Leakage Current
+    CurrentCh4Init(125.0, 0.125, 50.0, 0);
+    //Set protection limits
+    CurrentCh1AlarmLevelSet(RM_OUTPUT_OVERCURRENT_RECT1_ALM_LIM); // Rectifier1 Output Current Alarm
+    CurrentCh1TripLevelSet(RM_OUTPUT_OVERCURRENT_RECT1_ITLK_LIM); // Rectifier1 Output Current Trip
+    CurrentCh2AlarmLevelSet(RM_OUTPUT_OVERCURRENT_RECT2_ALM_LIM); // Rectifier2 Output Current Alarm
+    CurrentCh2TripLevelSet(RM_OUTPUT_OVERCURRENT_RECT2_ITLK_LIM); // Rectifier2 Output Current Trip
+    CurrentCh3AlarmLevelSet(RM_LEAKAGE_OVERCURRENT_ALM_LIM); // Leakage Current Alarm Level
+    CurrentCh3TripLevelSet(RM_LEAKAGE_OVERCURRENT_ITLK_LIM); // Leakage Current Trip Level
+    CurrentCh4AlarmLevelSet(RM_AC_OVERCURRENT_ALM_LIM);
+    CurrentCh4TripLevelSet(RM_AC_OVERCURRENT_ITLK_LIM);
+
+    //Setar ranges de entrada
+    VoltageCh1Init(61.21, 3);              // Rectifier1 Output Voltage Configuration.
+    VoltageCh2Init(61.21, 3);              // Rectifier2 Output Voltage Configuration.
+    VoltageCh3Init(10.0, 3);               // NTC SW1
+    VoltageCh4Init(10.0, 3);               // NTC SW2
+
+    ConfigPolVoltCh2(1);                   // Change the voltage polarity of the channel 2 (rectifier 2 voltage)
+
+    ConfigVoltCh1AsNtc(0);                 // Config Voltage Ch2 as a voltage input
+    ConfigVoltCh2AsNtc(0);                 // Config Voltage Ch2 as a voltage input
+    ConfigVoltCh3AsNtc(1);                 // Config Voltage Ch3 as a NTC input
+    ConfigVoltCh4AsNtc(1);                 // Config Voltage Ch4 as a NTC input
+
+    //Setar limites
+    VoltageCh1AlarmLevelSet(RM_OUTPUT_OVERVOLTAGE_RECT1_ALM_LIM);  // Rectifier1 Voltage Alarm
+    VoltageCh1TripLevelSet(RM_OUTPUT_OVERVOLTAGE_RECT1_ITLK_LIM);  // Rectifier1 Voltage Trip
+    VoltageCh2AlarmLevelSet(RM_OUTPUT_OVERVOLTAGE_RECT2_ALM_LIM);  // Rectifier2 Voltage Alarm
+    VoltageCh2TripLevelSet(RM_OUTPUT_OVERVOLTAGE_RECT2_ITLK_LIM);  // Rectifier2 Voltage Trip
+    VoltageCh3AlarmLevelSet(RM_MODULE1_OVERTEMP_ALM_LIM);          // Rectifier1 NTC Temperature Alarm
+    VoltageCh3TripLevelSet(RM_MODULE1_OVERTEMP_ITLK_LIM);          // Rectifier1 NTC Temperature Trip
+    VoltageCh4AlarmLevelSet(RM_MODULE2_OVERTEMP_ALM_LIM);          // Rectifier2 NTC Temperature Alarm
+    VoltageCh4TripLevelSet(RM_MODULE2_OVERTEMP_ITLK_LIM);          // Rectifier2 NTC Temperature Tip
+
+    // PT100 configuration limits
+    Pt100SetCh1AlarmLevel(RM_HS_OVERTEMP_ALM_LIM); // Heat Sink Temperature Alarm
+    Pt100SetCh1TripLevel(RM_HS_OVERTEMP_ITLK_LIM); // Heat Sink Temperature Trip
+    Pt100SetCh2AlarmLevel(RM_INDUCTOR1_OVERTEMP_ALM_LIM); // L1 Temperature Alarm
+    Pt100SetCh2TripLevel(RM_INDUCTOR1_OVERTEMP_ITLK_LIM); // L1 Temperature Trip
+    Pt100SetCh3AlarmLevel(RM_INDUCTOR2_OVERTEMP_ALM_LIM); // L2 Temperature Alarm
+    Pt100SetCh3TripLevel(RM_INDUCTOR2_OVERTEMP_ITLK_LIM); // L2 Temperature Trip
+    Pt100SetCh4AlarmLevel(RM_WATER_OVERTEMP_ALM_LIM);     // Water Temperature Alarm
+    Pt100SetCh4TripLevel(RM_WATER_OVERTEMP_ITLK_LIM);     // Water Temperature Trip
+
+    // Delay 4 seconds
+    Pt100SetCh1Delay(4);
+    // Delay 4 seconds
+    Pt100SetCh2Delay(4);
+    // Delay 4 seconds
+    Pt100SetCh3Delay(4);
+    // Delay 4 seconds
+    Pt100SetCh4Delay(4);
+
+    // PT100 channel enable
+    Pt100Ch1Enable();            // Enable PT100 channel 1
+    Pt100Ch2Enable();            // Enable PT100 channel 2
+    Pt100Ch3Enable();            // Enable PT100 channel 3
+    Pt100Ch4Disable();           // Enable PT100 channel 4
+
+    // Rh configuration limits
+    RhAlarmLimitSet(RM_RH_ALM_LIM);
+    RhTripLimitSet(RM_RH_ITLK_LIM);
+
+    // Temp board configuration limits
+    TempBoardAlarmLimitSet(RM_BOARD_TEMP_ALM_LIM);
+    TempBoardTripLimitSet(RM_BOARD_TEMP_ITLK_LIM);
+
+    Driver1ErrDisable();         // Driver1 Error Signal Disable
+    Driver2ErrDisable();         // Driver1 Error Signal Disable
+
+    // Init variables
+    rectf_module.IoutRectf1.f             = 0;
+    rectf_module.IoutRectf1AlarmSts       = 0;
+    rectf_module.IoutRectf1ItlkSts        = 0;
+
+    rectf_module.IoutRectf2.f             = 0;
+    rectf_module.IoutRectf2AlarmSts       = 0;
+    rectf_module.IoutRectf2ItlkSts        = 0;
+
+    rectf_module.VoutRectf1.f             = 0;
+    rectf_module.VoutRectf1AlarmSts       = 0;
+    rectf_module.VoutRectf1ItlkSts        = 0;
+
+    rectf_module.VoutRectf2.f             = 0;
+    rectf_module.VoutRectf2AlarmSts       = 0;
+    rectf_module.VoutRectf2ItlkSts        = 0;
+
+    rectf_module.LeakageCurrent.f         = 0;
+    rectf_module.LeakageCurrentAlarmSts   = 0;
+    rectf_module.LeakageCurrentItlkSts    = 0;
+
+    rectf_module.TempHeatSink.f           = 0;
+    rectf_module.TempHeatSinkAlarmSts     = 0;
+    rectf_module.TempHeatSinkItlkSts      = 0;
+
+    rectf_module.TempWater.f              = 0;
+    rectf_module.TempWaterAlarmSts        = 0;
+    rectf_module.TempWaterItlkSts         = 0;
+
+    rectf_module.TempModule1.f            = 0;
+    rectf_module.TempModule1AlarmSts      = 0;
+    rectf_module.TempModule1ItlkSts       = 0;
+
+    rectf_module.TempModule2.f            = 0;
+    rectf_module.TempModule2AlarmSts      = 0;
+    rectf_module.TempModule2ItlkSts       = 0;
+
+    rectf_module.TempL1.f                 = 0;
+    rectf_module.TempL1AlarmSts           = 0;
+    rectf_module.TempL1ItlkSts            = 0;
+
+    rectf_module.TempL2.f                 = 0;
+    rectf_module.TempL2AlarmSts           = 0;
+    rectf_module.TempL2ItlkSts            = 0;
+
+    rectf_module.AcPhaseFault             = 0;
+    rectf_module.AcPhaseFaultSts          = 0;
+
+    rectf_module.AcOverCurrent            = 0;
+    rectf_module.AcOverCurrentSts         = 0;
+
+    rectf_module.AcTransformerOverTemp    = 0;
+    rectf_module.AcTransformerOverTempSts = 0;
+
+    rectf_module.WaterFluxInterlock       = 0;
+    rectf_module.WaterFluxInterlockSts    = 0;
 }
