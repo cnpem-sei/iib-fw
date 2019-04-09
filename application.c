@@ -23,6 +23,7 @@ static unsigned char InterlockOld = 0;
 static unsigned char ItlkClrCmd = 0;
 static unsigned char InitApp = 0;
 static unsigned char Alarm = 0;
+static bool itlk_send_flag = false;
 
 void AppConfiguration(void)
 {
@@ -31,9 +32,9 @@ void AppConfiguration(void)
     // This parameter guide the firmware behavior
     // Each Model has a different variable list that need to be check
 
-    PowerModuleModel = FAP;
+    //PowerModuleModel = FAP;
     //PowerModuleModel = FAP_300A;
-    //PowerModuleModel = FAC_OS;
+    PowerModuleModel = FAC_OS;
     //PowerModuleModel = RECTIFIER_MODULE;
     //PowerModuleModel = FAC_IS;
     //PowerModuleModel = FAC_CMD_MODULE;
@@ -121,6 +122,8 @@ void InterlockClearCheck(void)
           
           ItlkClrCmd = 0;
           
+          itlk_send_flag = false;
+
           switch(PowerModuleModel)
           {
               case FAP:
@@ -314,34 +317,39 @@ void InterlockAppCheck(void)
 
        InterlockSet();
 
-       switch (PowerModuleModel)
-       {
-           case FAP:
-               send_fap_itlk_msg();
-               break;
+       if (!itlk_send_flag) {
 
-           case FAC_OS:
-               send_output_fac_os_itlk_msg();
-               break;
+           itlk_send_flag = true;
 
-           case RECTIFIER_MODULE:
-               send_rectf_itlk_msg();
-               break;
+           switch (PowerModuleModel)
+           {
+               case FAP:
+                   send_fap_itlk_msg();
+                   break;
 
-           case FAC_IS:
-               send_fac_is_itlk_msg();
-               break;
+               case FAC_OS:
+                   send_output_fac_os_itlk_msg();
+                   break;
 
-           case FAC_CMD_MODULE:
-               send_fac_cmd_itlk_msg();
-               break;
+               case RECTIFIER_MODULE:
+                   send_rectf_itlk_msg();
+                   break;
 
-           case FAP_300A:
-               send_fap_300A_itlk_msg();
-               break;
+               case FAC_IS:
+                   send_fac_is_itlk_msg();
+                   break;
 
-           default:
-               break;
+               case FAC_CMD_MODULE:
+                   send_fac_cmd_itlk_msg();
+                   break;
+
+               case FAP_300A:
+                   send_fap_300A_itlk_msg();
+                   break;
+
+               default:
+                   break;
+           }
        }
    }
 
