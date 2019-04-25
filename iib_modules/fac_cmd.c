@@ -206,13 +206,21 @@ void fac_cmd_application_readings()
     fac_cmd.TempLAlarmSts = Pt100ReadCh2AlarmSts();
     if (!fac_cmd.TempLItlkSts) fac_cmd.TempLItlkSts = Pt100ReadCh2TripSts();
 
-    fac_cmd.VcapBank.f = VoltageCh1Read();
-    fac_cmd.VcapBankAlarmSts = VoltageCh1AlarmStatusRead();
-    if (!fac_cmd.VcapBankItlkSts) fac_cmd.VcapBankItlkSts = VoltageCh1TripStatusRead();
+    //fac_cmd.VcapBank.f = VoltageCh1Read();
+    //fac_cmd.VcapBankAlarmSts = VoltageCh1AlarmStatusRead();
+    //if (!fac_cmd.VcapBankItlkSts) fac_cmd.VcapBankItlkSts = VoltageCh1TripStatusRead();
+    //
+    //fac_cmd.Vout.f = VoltageCh2Read();
+    //fac_cmd.VoutAlarmSts = VoltageCh2AlarmStatusRead();
+    //if (!fac_cmd.VoutItlkSts) fac_cmd.VoutItlkSts = VoltageCh2TripStatusRead();
 
-    fac_cmd.Vout.f = VoltageCh2Read();
-    fac_cmd.VoutAlarmSts = VoltageCh2AlarmStatusRead();
-    if (!fac_cmd.VoutItlkSts) fac_cmd.VoutItlkSts = VoltageCh2TripStatusRead();
+    fac_cmd.VcapBank.f = LvCurrentCh2Read();
+    fac_cmd.VcapBankAlarmSts = LvCurrentCh2AlarmStatusRead();
+    if (!fac_cmd.VcapBankItlkSts) fac_cmd.VcapBankItlkSts = LvCurrentCh2TripStatusRead();
+
+    fac_cmd.Vout.f = LvCurrentCh1Read();
+    fac_cmd.VoutAlarmSts = LvCurrentCh1AlarmStatusRead();
+    if (!fac_cmd.VoutItlkSts) fac_cmd.VoutItlkSts = LvCurrentCh1TripStatusRead();
 
     fac_cmd.GroundLeakage.f = LvCurrentCh1Read();
     fac_cmd.GroundLeakageAlarmSts = LvCurrentCh1AlarmStatusRead();
@@ -286,6 +294,9 @@ void send_fac_cmd_itlk_msg()
 
 static void config_module()
 {
+
+
+    /*
     //Setar ranges de entrada
     VoltageCh1Init(330.0, 3);                 // Capacitors Voltage Configuration.
     VoltageCh2Init(250.0, 3);                 // Output Voltage Configuration.
@@ -298,6 +309,19 @@ static void config_module()
     VoltageCh1TripLevelSet(FAC_CMD_CAPBANK_OVERVOLTAGE_ITLK_LIM); // Rectifier1 Voltage Trip
     VoltageCh2AlarmLevelSet(FAC_CMD_OUTPUT_OVERVOLTAGE_ALM_LIM); // Rectifier2 Voltage Alarm
     VoltageCh2TripLevelSet(FAC_CMD_OUTPUT_OVERVOLTAGE_ITLK_LIM); // Rectifier2 Voltage Trip
+    */
+
+    /* Isolated Voltage */
+    LvCurrentCh1Init(250.0, 0.025, 120.0, 3); /* Input Voltage */
+
+    LvCurrentCh1AlarmLevelSet(FAC_CMD_OUTPUT_OVERVOLTAGE_ALM_LIM);
+    LvCurrentCh1TripLevelSet(FAC_CMD_OUTPUT_OVERVOLTAGE_ITLK_LIM);
+
+    /* Isolated Voltage */
+    LvCurrentCh2Init(330.0, 0.025, 120.0, 3); /* Input Voltage */
+
+    LvCurrentCh2AlarmLevelSet(FAC_CMD_CAPBANK_OVERVOLTAGE_ALM_LIM);
+    LvCurrentCh2TripLevelSet(FAC_CMD_CAPBANK_OVERVOLTAGE_ITLK_LIM);
 
     // PT100 configuration limits
     Pt100SetCh1AlarmLevel(FAC_CMD_HS_OVERTEMP_ALM_LIM); // HEATSINK TEMPERATURE ALARM LEVEL
