@@ -30,11 +30,13 @@
 #define FAC_CMD_INDUC_OVERTEMP_ITLK         0x00000008
 #define FAC_CMD_EXTERNAL1_ITLK              0x00000010
 #define FAC_CMD_EXTERNAL2_ITLK              0x00000020
+#define FAC_CMD_GROUND_LKG_ITLK             0x00000040
 
 #define FAC_CMD_CAPBANK_OVERVOLTAGE_ALM     0x00000001
 #define FAC_CMD_OUTPUT_OVERVOLTAGE_ALM      0x00000002
 #define FAC_CMD_HS_OVERTEMP_ALM             0x00000004
 #define FAC_CMD_INDUC_OVERTEMP_ALM          0x00000008
+#define FAC_CMD_GROUND_LKG_ALM              0x00000010
 
 extern void init_fac_cmd(void);
 extern void clear_fac_cmd_interlocks(void);

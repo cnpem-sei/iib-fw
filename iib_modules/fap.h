@@ -41,6 +41,7 @@
 #define FAP_EXTERNAL_ITLK                   0x00004000
 #define FAP_LEAKAGE_CURRENT_ITLK            0x00008000
 #define FAP_RACK_ITLK                       0x00010000
+#define FAP_GROUND_LKG_ITLK                 0x00020000
 
 #define FAP_INPUT_OVERVOLTAGE_ALM           0x00000001
 #define FAP_OUTPUT_OVERVOLTAGE_ALM          0x00000002
@@ -51,8 +52,9 @@
 #define FAP_DRIVER_OVERVOLTAGE_ALM          0x00000040
 #define FAP_DRIVER1_OVERCURRENT_ALM         0x00000080
 #define FAP_DRIVER2_OVERCURRENT_ALM         0x00000100
-#define FAP_INDUC_OVERTEMP_ALM              0x00000800
-#define FAP_HS_OVERTEMP_ALM                 0x00001000
+#define FAP_INDUC_OVERTEMP_ALM              0x00000200
+#define FAP_HS_OVERTEMP_ALM                 0x00000400
+#define FAP_GROUND_LKG_ALM                  0x00000800
 
 /**
  * TODO: Put here your functions prototypes. Just what need 

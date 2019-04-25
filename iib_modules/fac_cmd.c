@@ -39,6 +39,8 @@
 #define FAC_CMD_CAPBANK_OVERVOLTAGE_ALM_LIM         250.0
 #define FAC_CMD_OUTPUT_OVERVOLTAGE_ITLK_LIM         210.0
 #define FAC_CMD_OUTPUT_OVERVOLTAGE_ALM_LIM          180.0
+#define FAC_CMD_GROUND_LEAKAGE_ITLK_LIM             50.0
+#define FAC_CMD_GROUND_LEAKAGE_ALM_LIM              45.0
 #define FAC_CMD_HS_OVERTEMP_ITLK_LIM                60.0
 #define FAC_CMD_HS_OVERTEMP_ALM_LIM                 55.0
 #define FAC_CMD_INDUC_OVERTEMP_ITLK_LIM             60.0
@@ -78,6 +80,15 @@ typedef struct
 
     bool VoutAlarmSts;
     bool VoutItlkSts;
+
+    union {
+        float       f;
+        uint8_t     u8[4];
+    } GroundLeakage;
+
+    bool GroundLeakageAlarmSts;
+    bool GroundLeakageItlkSts;
+
     bool ExtItlkSts;
     bool ExtItlk2Sts;
 
@@ -112,6 +123,7 @@ void clear_fac_cmd_interlocks()
     fac_cmd.TempLItlkSts            = 0;
     fac_cmd.ExtItlkSts              = 0;
     fac_cmd.ExtItlk2Sts             = 0;
+    fac_cmd.GroundLeakageItlkSts    = 0;
 
     itlk_id = 0;
 }
@@ -126,6 +138,7 @@ uint8_t check_fac_cmd_interlocks()
     test |= fac_cmd.VoutItlkSts;
     test |= fac_cmd.ExtItlkSts;
     test |= fac_cmd.ExtItlk2Sts;
+    test |= fac_cmd.GroundLeakageItlkSts;
 
     return test;
 }
@@ -136,6 +149,7 @@ void clear_fac_cmd_alarms()
     fac_cmd.VoutAlarmSts            = 0;
     fac_cmd.TempHeatSinkAlarmSts    = 0;
     fac_cmd.TempLAlarmSts           = 0;
+    fac_cmd.GroundLeakageAlarmSts   = 0;
 
     alarm_id = 0;
 }
@@ -148,6 +162,7 @@ uint8_t check_fac_cmd_alarms()
     test |= fac_cmd.TempLAlarmSts;
     test |= fac_cmd.VcapBankAlarmSts;
     test |= fac_cmd.VoutAlarmSts;
+    test |= fac_cmd.GroundLeakageAlarmSts;
 
     return 0;
 }
@@ -175,6 +190,10 @@ void check_fac_cmd_indication_leds()
 
     if (fac_cmd.ExtItlk2Sts) Led7TurnOff();
     else Led7TurnOn();
+
+    if (fac_cmd.GroundLeakageItlkSts) Led8TurnOff();
+    else if (fac_cmd.GroundLeakageAlarmSts) Led8Toggle();
+    else Led8TurnOn();
 }
 
 void fac_cmd_application_readings()
@@ -194,6 +213,10 @@ void fac_cmd_application_readings()
     fac_cmd.Vout.f = VoltageCh2Read();
     fac_cmd.VoutAlarmSts = VoltageCh2AlarmStatusRead();
     if (!fac_cmd.VoutItlkSts) fac_cmd.VoutItlkSts = VoltageCh2TripStatusRead();
+
+    fac_cmd.GroundLeakage.f = LvCurrentCh1Read();
+    fac_cmd.GroundLeakageAlarmSts = LvCurrentCh1AlarmStatusRead();
+    if (!fac_cmd.GroundLeakageItlkSts) fac_cmd.GroundLeakageItlkSts = LvCurrentCh1TripStatusRead();
 
     if(!fac_cmd.ExtItlkSts) fac_cmd.ExtItlkSts = Gpdi5Read();
 
@@ -218,6 +241,7 @@ static void map_vars()
     g_controller_iib.iib_signals[3].f       = fac_cmd.Vout.f;
     g_controller_iib.iib_signals[4].f       = fac_cmd.TempL.f;
     g_controller_iib.iib_signals[5].f       = fac_cmd.TempHeatSink.f;
+    g_controller_iib.iib_signals[6].f       = fac_cmd.GroundLeakage.f;
 }
 
 void send_fac_cmd_data()
@@ -231,7 +255,7 @@ void send_fac_cmd_data()
 
     i++;
 
-    if (i > 5) i = 2;
+    if (i > 6) i = 2;
 }
 
 static void get_itlks_id()
@@ -242,14 +266,17 @@ static void get_itlks_id()
     if (fac_cmd.TempLItlkSts)           itlk_id |= FAC_CMD_INDUC_OVERTEMP_ITLK;
     if (fac_cmd.ExtItlkSts)             itlk_id |= FAC_CMD_EXTERNAL1_ITLK;
     if (fac_cmd.ExtItlk2Sts)            itlk_id |= FAC_CMD_EXTERNAL2_ITLK;
+    if (fac_cmd.GroundLeakageItlkSts)   itlk_id |= FAC_CMD_GROUND_LKG_ITLK;
+
 }
 
 static void get_alarms_id()
 {
-    if (fac_cmd.VcapBankAlarmSts)     alarm_id |= FAC_CMD_CAPBANK_OVERVOLTAGE_ALM;
-    if (fac_cmd.VoutItlkSts)          alarm_id |= FAC_CMD_OUTPUT_OVERVOLTAGE_ALM;
-    if (fac_cmd.TempHeatSinkAlarmSts) alarm_id |= FAC_CMD_HS_OVERTEMP_ALM;
-    if (fac_cmd.TempLAlarmSts)        alarm_id |= FAC_CMD_INDUC_OVERTEMP_ALM;
+    if (fac_cmd.VcapBankAlarmSts)       alarm_id |= FAC_CMD_CAPBANK_OVERVOLTAGE_ALM;
+    if (fac_cmd.VoutItlkSts)            alarm_id |= FAC_CMD_OUTPUT_OVERVOLTAGE_ALM;
+    if (fac_cmd.TempHeatSinkAlarmSts)   alarm_id |= FAC_CMD_HS_OVERTEMP_ALM;
+    if (fac_cmd.TempLAlarmSts)          alarm_id |= FAC_CMD_INDUC_OVERTEMP_ALM;
+    if (fac_cmd.GroundLeakageAlarmSts)  alarm_id |= FAC_CMD_GROUND_LKG_ALM;
 }
 
 void send_fac_cmd_itlk_msg()
@@ -278,6 +305,12 @@ static void config_module()
     Pt100SetCh2AlarmLevel(FAC_CMD_INDUC_OVERTEMP_ALM_LIM); // INDUCTOR TEMPERATURE ALARM LEVEL
     Pt100SetCh2TripLevel(FAC_CMD_INDUC_OVERTEMP_ITLK_LIM); // INDUCTOR TEMPERATURE TRIP LEVEL
 
+    // LeakageVoltage
+
+    LvCurrentCh1Init(50.0, 0.025, 120.0, 3); // LeakageVoltage
+    LvCurrentCh1AlarmLevelSet(FAC_CMD_GROUND_LEAKAGE_ALM_LIM);   // Ground Leakage Alarme
+    LvCurrentCh1TripLevelSet(FAC_CMD_GROUND_LEAKAGE_ITLK_LIM);   // Ground Leakage Interlock
+
     // PT100 channel enable
     Pt100Ch1Enable();                     // HEATSINK TEMPERATURE CHANNEL ENABLE
     Pt100Ch2Enable();                     // INDUCTOR TEMPERATURE CHANNEL ENABLE
@@ -304,6 +337,10 @@ static void config_module()
     fac_cmd.TempL.f                  = 0;
     fac_cmd.TempLAlarmSts            = 0;
     fac_cmd.TempLItlkSts             = 0;
+
+    fac_cmd.GroundLeakage.f          = 0;
+    fac_cmd.GroundLeakageAlarmSts    = 0;
+    fac_cmd.GroundLeakageItlkSts     = 0;
 
     fac_cmd.ExtItlkSts               = 0;
     fac_cmd.ExtItlk2Sts              = 0;

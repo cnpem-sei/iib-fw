@@ -39,32 +39,34 @@
  * TODO: Put here your defines. Just what is local. If you don't
  * need to access it from other module, consider use a constant (const)
  */
-#define FAP_INPUT_OVERVOLTAGE_ALM_LIM                    55.0
-#define FAP_INPUT_OVERVOLTAGE_ITLK_LIM                   60.0
-#define FAP_OUTPUT_OVERVOLTAGE_ALM_LIM                   17.0
-#define FAP_OUTPUT_OVERVOLTAGE_ITLK_LIM                  20.0
-#define FAP_OUTPUT_OVERCURRENT_1_ALM_LIM                 151.0
-#define FAP_OUTPUT_OVERCURRENT_1_ITLK_LIM                152.0
-#define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM                 151.5
-#define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM                152.0
-#define FAP_IGBT1_OVERTEMP_ALM_LIM                       00.0    // Not in use
-#define FAP_IGBT1_OVERTEMP_ITLK_LIM                      00.0    // Not in use
-#define FAP_IGBT2_OVERTEMP_ALM_LIM                       00.0    // Not in use
-#define FAP_IGBT2_OVERTEMP_ITLK_LIM                      00.0    // Not in use
-#define FAP_DRIVER_OVERVOLTAGE_ALM_LIM                   00.0    // Not in use
-#define FAP_DRIVER_OVERVOLTAGE_ITLK_LIM                  00.0    // Not in use
-#define FAP_DRIVER1_OVERCURRENT_ALM_LIM                  00.0    // Not in use
-#define FAP_DRIVER1_OVERCURRENT_ITLK_LIM                 00.0    // Not in use
-#define FAP_DRIVER2_OVERCURRENT_ALM_LIM                  00.0    // Not in use
-#define FAP_DRIVER2_OVERCURRENT_ITLK_LIM                 00.0    // Not in use
-#define FAP_INDUC_OVERTEMP_ALM_LIM                       50.0
-#define FAP_INDUC_OVERTEMP_ITLK_LIM                      60.0
-#define FAP_HS_OVERTEMP_ALM_LIM                          80
-#define FAP_HS_OVERTEMP_ITLK_LIM                         60
-#define FAP_RH_ALM_LIM                                   80
-#define FAP_RH_ITLK_LIM                                  90
-#define FAP_BOARD_TEMP_ALM_LIM                           80
-#define FAP_BOARD_TEMP_ITLK_LIM                          90
+#define FAP_INPUT_OVERVOLTAGE_ALM_LIM       55.0
+#define FAP_INPUT_OVERVOLTAGE_ITLK_LIM      60.0
+#define FAP_OUTPUT_OVERVOLTAGE_ALM_LIM      17.0
+#define FAP_OUTPUT_OVERVOLTAGE_ITLK_LIM     20.0
+#define FAP_OUTPUT_OVERCURRENT_1_ALM_LIM    151.0
+#define FAP_OUTPUT_OVERCURRENT_1_ITLK_LIM   152.0
+#define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM    151.5
+#define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM   152.0
+#define FAP_GROUND_LEAKAGE_ITLK_LIM         50.0
+#define FAP_GROUND_LEAKAGE_ALM_LIM          45.0
+#define FAP_IGBT1_OVERTEMP_ALM_LIM          00.0    // Not in use
+#define FAP_IGBT1_OVERTEMP_ITLK_LIM         00.0    // Not in use
+#define FAP_IGBT2_OVERTEMP_ALM_LIM          00.0    // Not in use
+#define FAP_IGBT2_OVERTEMP_ITLK_LIM         00.0    // Not in use
+#define FAP_DRIVER_OVERVOLTAGE_ALM_LIM      00.0    // Not in use
+#define FAP_DRIVER_OVERVOLTAGE_ITLK_LIM     00.0    // Not in use
+#define FAP_DRIVER1_OVERCURRENT_ALM_LIM     00.0    // Not in use
+#define FAP_DRIVER1_OVERCURRENT_ITLK_LIM    00.0    // Not in use
+#define FAP_DRIVER2_OVERCURRENT_ALM_LIM     00.0    // Not in use
+#define FAP_DRIVER2_OVERCURRENT_ITLK_LIM    00.0    // Not in use
+#define FAP_INDUC_OVERTEMP_ALM_LIM          50.0
+#define FAP_INDUC_OVERTEMP_ITLK_LIM         60.0
+#define FAP_HS_OVERTEMP_ALM_LIM             80
+#define FAP_HS_OVERTEMP_ITLK_LIM            60
+#define FAP_RH_ALM_LIM                      80
+#define FAP_RH_ITLK_LIM                     90
+#define FAP_BOARD_TEMP_ALM_LIM              80
+#define FAP_BOARD_TEMP_ITLK_LIM             90
 
 typedef struct
 {
@@ -99,6 +101,14 @@ typedef struct
 
     bool IoutA2AlarmSts;
     bool IoutA2ItlkSts;
+
+    union {
+        float f;
+        uint8_t u8[4];
+    } GroundLeakage;
+
+    bool GroundLeakageItlkSts;
+    bool GroundLeakageAlarmSts;
 
     union {
         float   f;
@@ -196,21 +206,22 @@ void init_fap_300A()
 
 void clear_fap_300A_interlocks()
 {
-    fap_300A.VinItlkSts            = 0;
-    fap_300A.VoutItlkSts           = 0;
-    fap_300A.IoutA1ItlkSts         = 0;
-    fap_300A.IoutA2ItlkSts         = 0;
-    fap_300A.TempIGBT1ItlkSts      = 0;
-    fap_300A.TempIGBT1HwrItlkSts   = 0;
-    fap_300A.TempIGBT2ItlkSts      = 0;
-    fap_300A.TempIGBT2HwrItlkSts   = 0;
-    fap_300A.Driver1ErrorItlk      = 0;
-    fap_300A.Driver2ErrorItlk      = 0;
-    fap_300A.TempLItlkSts          = 0;
-    fap_300A.TempHeatSinkItlkSts   = 0;
-    fap_300A.ExternalItlkSts       = 0;
-    fap_300A.LeakageCurrentSts     = 0;
-    fap_300A.RackSts               = 0;
+    fap_300A.VinItlkSts             = 0;
+    fap_300A.VoutItlkSts            = 0;
+    fap_300A.IoutA1ItlkSts          = 0;
+    fap_300A.IoutA2ItlkSts          = 0;
+    fap_300A.TempIGBT1ItlkSts       = 0;
+    fap_300A.TempIGBT1HwrItlkSts    = 0;
+    fap_300A.TempIGBT2ItlkSts       = 0;
+    fap_300A.TempIGBT2HwrItlkSts    = 0;
+    fap_300A.Driver1ErrorItlk       = 0;
+    fap_300A.Driver2ErrorItlk       = 0;
+    fap_300A.TempLItlkSts           = 0;
+    fap_300A.TempHeatSinkItlkSts    = 0;
+    fap_300A.ExternalItlkSts        = 0;
+    fap_300A.LeakageCurrentSts      = 0;
+    fap_300A.RackSts                = 0;
+    fap_300A.GroundLeakageItlkSts   = 0;
 
     itlk_id = 0;
 }
@@ -234,27 +245,20 @@ uint8_t check_fap_300A_interlocks()
     test |= fap_300A.ExternalItlkSts;
     test |= fap_300A.LeakageCurrentSts;
     test |= fap_300A.RackSts;
+    test |= fap_300A.GroundLeakageItlkSts;
 
     return test;
 }
 
 void clear_fap_300A_alarms()
 {
-    fap_300A.VinItlkSts             = 0;
-    fap_300A.VoutItlkSts            = 0;
-    fap_300A.IoutA1ItlkSts          = 0;
-    fap_300A.IoutA2ItlkSts          = 0;
-    fap_300A.TempIGBT1ItlkSts       = 0;
-    fap_300A.TempIGBT1HwrItlkSts    = 0;
-    fap_300A.TempIGBT2ItlkSts       = 0;
-    fap_300A.TempIGBT2HwrItlkSts    = 0;
-    fap_300A.Driver1ErrorItlk       = 0;
-    fap_300A.Driver2ErrorItlk       = 0;
-    fap_300A.TempLItlkSts           = 0;
-    fap_300A.TempHeatSinkItlkSts    = 0;
-    fap_300A.ExternalItlkSts        = 0;
-    fap_300A.LeakageCurrentSts      = 0;
-    fap_300A.RackSts                = 0;
+    fap_300A.VinAlarmSts             = 0;
+    fap_300A.VoutAlarmSts            = 0;
+    fap_300A.IoutA1AlarmSts          = 0;
+    fap_300A.IoutA2AlarmSts          = 0;
+    fap_300A.TempLAlarmSts           = 0;
+    fap_300A.TempHeatSinkAlarmSts    = 0;
+    fap_300A.GroundLeakageAlarmSts  = 0;
 
     alarm_id = 0;
 }
@@ -271,6 +275,7 @@ uint8_t check_fap_300A_alarms()
     test |= fap_300A.TempIGBT2AlarmSts;
     test |= fap_300A.TempLAlarmSts;
     test |= fap_300A.TempHeatSinkAlarmSts;
+    test |= fap_300A.GroundLeakageAlarmSts;
 
     return test;
 }
@@ -306,8 +311,12 @@ void check_fap_300A_indication_leds()
     if(fap_300A.RackSts) Led8TurnOff();
     else Led8TurnOn();
 
-    if(fap_300A.Driver1ErrorItlk || fap_300A.Driver2ErrorItlk) Led9TurnOff();
-    else if(!InterlockRead()) Led9TurnOn();
+    //if(fap_300A.Driver1ErrorItlk || fap_300A.Driver2ErrorItlk) Led9TurnOff();
+    //else if(!InterlockRead()) Led9TurnOn();
+
+    if(fap_300A.GroundLeakageItlkSts) Led9TurnOff();
+    else if(fap_300A.GroundLeakageAlarmSts) Led9Toggle();
+    else Led9TurnOn();
 
     if(InterlockRead()) Led10TurnOff();
     else Led10TurnOn();
@@ -350,6 +359,10 @@ void fap_300A_application_readings()
     fap_300A.Vout.f = LvCurrentCh2Read();
     fap_300A.VoutAlarmSts = LvCurrentCh2AlarmStatusRead();
     if(!fap_300A.VoutItlkSts)fap_300A.VoutItlkSts                        = LvCurrentCh2TripStatusRead();
+
+    fap_300A.GroundLeakage.f = LvCurrentCh3Read();
+    fap_300A.GroundLeakageAlarmSts = LvCurrentCh3AlarmStatusRead();
+    if(!fap_300A.GroundLeakageItlkSts) fap_300A.GroundLeakageItlkSts     = LvCurrentCh3TripStatusRead();
 
     fap_300A.ExternalItlk = Gpdi1Read();
     if(!fap_300A.ExternalItlkSts) fap_300A.ExternalItlkSts               = Gpdi1Read();
@@ -402,6 +415,7 @@ static void map_vars()
     g_controller_iib.iib_signals[10].f      = fap_300A.Drive2Current.f;
     g_controller_iib.iib_signals[11].f      = fap_300A.TempL.f;
     g_controller_iib.iib_signals[12].f      = fap_300A.TempHeatSink.f;
+    g_controller_iib.iib_signals[13].f      = fap_300A.GroundLeakage.f;
 }
 
 void send_fap_300A_data()
@@ -414,37 +428,39 @@ void send_fap_300A_data()
 
     i++;
 
-    if (i > 12) i = 2;
+    if (i > 13) i = 2;
 }
 
 static void get_itlks_id()
 {
-    if (fap_300A.VinItlkSts)          itlk_id |= FAP_300A_INPUT_OVERVOLTAGE_ITLK;
-    if (fap_300A.VoutItlkSts)         itlk_id |= FAP_300A_OUTPUT_OVERVOLTAGE_ITLK;
-    if (fap_300A.IoutA1ItlkSts)       itlk_id |= FAP_300A_OUTPUT_OVERCURRENT_1_ITLK;
-    if (fap_300A.IoutA2ItlkSts)       itlk_id |= FAP_300A_OUTPUT_OVERCURRENT_2_ITLK;
-    if (fap_300A.TempIGBT1ItlkSts)    itlk_id |= FAP_300A_IGBT1_OVERTEMP_ITLK;
-    if (fap_300A.TempIGBT2ItlkSts)    itlk_id |= FAP_300A_IGBT2_OVERTEMP_ITLK;
-    if (fap_300A.Driver1ErrorItlk)    itlk_id |= FAP_300A_DRIVER1_ERROR_ITLK;
-    if (fap_300A.Driver2ErrorItlk)    itlk_id |= FAP_300A_DRIVER2_ERROR_ITLK;
-    if (fap_300A.TempLItlkSts)        itlk_id |= FAP_300A_INDUC_OVERTEMP_ITLK;
-    if (fap_300A.TempHeatSinkItlkSts) itlk_id |= FAP_300A_HS_OVERTEMP_ITLK;
-    if (fap_300A.Relay)               itlk_id |= FAP_300A_RELAY_ITLK;
-    if (fap_300A.ExternalItlkSts)     itlk_id |= FAP_300A_EXTERNAL_ITLK;
-    if (fap_300A.LeakageCurrentSts)   itlk_id |= FAP_300A_LEAKAGE_CURRENT_ITLK;
-    if (fap_300A.RackSts)             itlk_id |= FAP_300A_RACK_ITLK;
+    if (fap_300A.VinItlkSts)            itlk_id |= FAP_300A_INPUT_OVERVOLTAGE_ITLK;
+    if (fap_300A.VoutItlkSts)           itlk_id |= FAP_300A_OUTPUT_OVERVOLTAGE_ITLK;
+    if (fap_300A.IoutA1ItlkSts)         itlk_id |= FAP_300A_OUTPUT_OVERCURRENT_1_ITLK;
+    if (fap_300A.IoutA2ItlkSts)         itlk_id |= FAP_300A_OUTPUT_OVERCURRENT_2_ITLK;
+    if (fap_300A.TempIGBT1ItlkSts)      itlk_id |= FAP_300A_IGBT1_OVERTEMP_ITLK;
+    if (fap_300A.TempIGBT2ItlkSts)      itlk_id |= FAP_300A_IGBT2_OVERTEMP_ITLK;
+    if (fap_300A.Driver1ErrorItlk)      itlk_id |= FAP_300A_DRIVER1_ERROR_ITLK;
+    if (fap_300A.Driver2ErrorItlk)      itlk_id |= FAP_300A_DRIVER2_ERROR_ITLK;
+    if (fap_300A.TempLItlkSts)          itlk_id |= FAP_300A_INDUC_OVERTEMP_ITLK;
+    if (fap_300A.TempHeatSinkItlkSts)   itlk_id |= FAP_300A_HS_OVERTEMP_ITLK;
+    if (fap_300A.Relay)                 itlk_id |= FAP_300A_RELAY_ITLK;
+    if (fap_300A.ExternalItlkSts)       itlk_id |= FAP_300A_EXTERNAL_ITLK;
+    if (fap_300A.LeakageCurrentSts)     itlk_id |= FAP_300A_LEAKAGE_CURRENT_ITLK;
+    if (fap_300A.RackSts)               itlk_id |= FAP_300A_RACK_ITLK;
+    if (fap_300A.GroundLeakageItlkSts)  itlk_id |= FAP_300A_GROUND_LKG_ITLK;
 }
 
 static void get_alarms_id()
 {
-    if (fap_300A.VinAlarmSts)          alarm_id |= FAP_300A_INPUT_OVERVOLTAGE_ALM;
-    if (fap_300A.VoutAlarmSts)         alarm_id |= FAP_300A_OUTPUT_OVERVOLTAGE_ALM;
-    if (fap_300A.IoutA1AlarmSts)       alarm_id |= FAP_300A_OUTPUT_OVERCURRENT_1_ALM;
-    if (fap_300A.IoutA2AlarmSts)       alarm_id |= FAP_300A_OUTPUT_OVERCURRENT_2_ALM;
-    if (fap_300A.TempIGBT1AlarmSts)    alarm_id |= FAP_300A_IGBT1_OVERTEMP_ALM;
-    if (fap_300A.TempIGBT2AlarmSts)    alarm_id |= FAP_300A_IGBT2_OVERTEMP_ALM;
-    if (fap_300A.TempLAlarmSts)        alarm_id |= FAP_300A_INDUC_OVERTEMP_ALM;
-    if (fap_300A.TempHeatSinkAlarmSts) alarm_id |= FAP_300A_HS_OVERTEMP_ALM;
+    if (fap_300A.VinAlarmSts)           alarm_id |= FAP_300A_INPUT_OVERVOLTAGE_ALM;
+    if (fap_300A.VoutAlarmSts)          alarm_id |= FAP_300A_OUTPUT_OVERVOLTAGE_ALM;
+    if (fap_300A.IoutA1AlarmSts)        alarm_id |= FAP_300A_OUTPUT_OVERCURRENT_1_ALM;
+    if (fap_300A.IoutA2AlarmSts)        alarm_id |= FAP_300A_OUTPUT_OVERCURRENT_2_ALM;
+    if (fap_300A.TempIGBT1AlarmSts)     alarm_id |= FAP_300A_IGBT1_OVERTEMP_ALM;
+    if (fap_300A.TempIGBT2AlarmSts)     alarm_id |= FAP_300A_IGBT2_OVERTEMP_ALM;
+    if (fap_300A.TempLAlarmSts)         alarm_id |= FAP_300A_INDUC_OVERTEMP_ALM;
+    if (fap_300A.TempHeatSinkAlarmSts)  alarm_id |= FAP_300A_HS_OVERTEMP_ALM;
+    if (fap_300A.GroundLeakageAlarmSts) alarm_id |= FAP_300A_GROUND_LKG_ALM;
 }
 
 void send_fap_300A_itlk_msg()
@@ -476,10 +492,17 @@ static void config_module()
     LvCurrentCh1Init(450.0, 0.025, 120.0, 3); // Tensão de entrada
     LvCurrentCh2Init(250.0, 0.025, 120.0, 3); // Tensão de saída
 
+    // TODO: Check this values
+    LvCurrentCh3Init(50.0, 0.025, 120.0, 3); // Ground Leakage
+
     LvCurrentCh1AlarmLevelSet(FAP_INPUT_OVERVOLTAGE_ALM_LIM);   // Tensão de entrada Alarme
     LvCurrentCh1TripLevelSet(FAP_INPUT_OVERVOLTAGE_ITLK_LIM);   // Tensão de entrada Interlock
     LvCurrentCh2AlarmLevelSet(FAP_OUTPUT_OVERVOLTAGE_ALM_LIM);  // Tensão de saída Alarme
     LvCurrentCh2TripLevelSet(FAP_OUTPUT_OVERVOLTAGE_ITLK_LIM);  // Tensão de saída Interlock
+
+    // TODO: Check this
+    LvCurrentCh3AlarmLevelSet(FAP_GROUND_LEAKAGE_ALM_LIM);  // fuga para o terra alarme
+    LvCurrentCh3TripLevelSet(FAP_GROUND_LEAKAGE_ITLK_LIM);  // fuga para o terra interlock
 
     // PT100 configuration limits
     Pt100SetCh1AlarmLevel(FAP_HS_OVERTEMP_ALM_LIM);     // Temperatura Dissipador
@@ -510,46 +533,49 @@ static void config_module()
     Driver2ErrEnable();
 
     // Init Variables
-    fap_300A.Vin.f                 = 0.0;
-    fap_300A.VinAlarmSts           = 0;
-    fap_300A.VinItlkSts            = 0;
-    fap_300A.Vout.f                = 0.0;
-    fap_300A.VoutAlarmSts          = 0;
-    fap_300A.VoutItlkSts           = 0;
-    fap_300A.IoutA1.f              = 0.0;
-    fap_300A.IoutA1AlarmSts        = 0;
-    fap_300A.IoutA1ItlkSts         = 0;
-    fap_300A.IoutA2.f              = 0.0;
-    fap_300A.IoutA2AlarmSts        = 0;
-    fap_300A.IoutA2ItlkSts         = 0;
-    fap_300A.TempIGBT1.f           = 0.0;
-    fap_300A.TempIGBT1AlarmSts     = 0;
-    fap_300A.TempIGBT1ItlkSts      = 0;
-    fap_300A.TempIGBT1HwrItlk      = 0;
-    fap_300A.TempIGBT1HwrItlkSts   = 0;
-    fap_300A.TempIGBT2.f           = 0.0;
-    fap_300A.TempIGBT2AlarmSts     = 0;
-    fap_300A.TempIGBT2ItlkSts      = 0;
-    fap_300A.TempIGBT2HwrItlk      = 0;
-    fap_300A.TempIGBT2HwrItlkSts   = 0;
-    fap_300A.DriveVoltage.f        = 0.0;
-    fap_300A.Drive1Current.f       = 0.0;
-    fap_300A.Drive2Current.f       = 0.0;
-    fap_300A.Driver1Error          = 0;
-    fap_300A.Driver1ErrorItlk      = 0;
-    fap_300A.Driver2Error          = 0;
-    fap_300A.Driver2ErrorItlk      = 0;
-    fap_300A.TempL.f               = 0;
-    fap_300A.TempLAlarmSts         = 0;
-    fap_300A.TempLItlkSts          = 0;
-    fap_300A.TempHeatSink.f        = 0;
-    fap_300A.TempHeatSinkAlarmSts  = 0;
-    fap_300A.TempHeatSinkItlkSts   = 0;
-    fap_300A.Relay                 = 0;
-    fap_300A.ExternalItlk          = 0;
-    fap_300A.ExternalItlkSts       = 0;
-    fap_300A.LeakageCurrent        = 0;
-    fap_300A.LeakageCurrentSts     = 0;
-    fap_300A.Rack                  = 0;
-    fap_300A.RackSts               = 0;
+    fap_300A.Vin.f                  = 0.0;
+    fap_300A.VinAlarmSts            = 0;
+    fap_300A.VinItlkSts             = 0;
+    fap_300A.Vout.f                 = 0.0;
+    fap_300A.VoutAlarmSts           = 0;
+    fap_300A.VoutItlkSts            = 0;
+    fap_300A.IoutA1.f               = 0.0;
+    fap_300A.IoutA1AlarmSts         = 0;
+    fap_300A.IoutA1ItlkSts          = 0;
+    fap_300A.IoutA2.f               = 0.0;
+    fap_300A.IoutA2AlarmSts         = 0;
+    fap_300A.IoutA2ItlkSts          = 0;
+    fap_300A.TempIGBT1.f            = 0.0;
+    fap_300A.TempIGBT1AlarmSts      = 0;
+    fap_300A.TempIGBT1ItlkSts       = 0;
+    fap_300A.TempIGBT1HwrItlk       = 0;
+    fap_300A.TempIGBT1HwrItlkSts    = 0;
+    fap_300A.TempIGBT2.f            = 0.0;
+    fap_300A.TempIGBT2AlarmSts      = 0;
+    fap_300A.TempIGBT2ItlkSts       = 0;
+    fap_300A.TempIGBT2HwrItlk       = 0;
+    fap_300A.TempIGBT2HwrItlkSts    = 0;
+    fap_300A.DriveVoltage.f         = 0.0;
+    fap_300A.Drive1Current.f        = 0.0;
+    fap_300A.Drive2Current.f        = 0.0;
+    fap_300A.Driver1Error           = 0;
+    fap_300A.Driver1ErrorItlk       = 0;
+    fap_300A.Driver2Error           = 0;
+    fap_300A.Driver2ErrorItlk       = 0;
+    fap_300A.TempL.f                = 0;
+    fap_300A.TempLAlarmSts          = 0;
+    fap_300A.TempLItlkSts           = 0;
+    fap_300A.TempHeatSink.f         = 0;
+    fap_300A.TempHeatSinkAlarmSts   = 0;
+    fap_300A.TempHeatSinkItlkSts    = 0;
+    fap_300A.Relay                  = 0;
+    fap_300A.ExternalItlk           = 0;
+    fap_300A.ExternalItlkSts        = 0;
+    fap_300A.LeakageCurrent         = 0;
+    fap_300A.LeakageCurrentSts      = 0;
+    fap_300A.Rack                   = 0;
+    fap_300A.RackSts                = 0;
+    fap_300A.GroundLeakage.f        = 0;
+    fap_300A.GroundLeakageAlarmSts  = 0;
+    fap_300A.GroundLeakageItlkSts   = 0;
 }
