@@ -442,7 +442,7 @@ void LvCurrentCh1Init(float nFstCurr, float nSecCurr, float nBurden, unsigned ch
     LvCurrentCh1.Alarm_Delay_ms = delay_ms;
     LvCurrentCh1.Alarm_DelayCount = 0;
     LvCurrentCh1.Itlk_Delay_ms = delay_ms;
-    LvCurrentCh1.Itlk_DelayCount = 0;
+    LvCurrentCh1.Itlk_DelayCount = 30;
 }
 
 void LvCurrentCh2Init(float nFstCurr, float nSecCurr, float nBurden, unsigned char delay_ms)
