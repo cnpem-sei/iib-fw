@@ -34,10 +34,10 @@ void AppConfiguration(void)
 
     //PowerModuleModel = FAP;
     //PowerModuleModel = FAP_300A;
-    //PowerModuleModel = FAC_OS;
+    PowerModuleModel = FAC_OS;
     //PowerModuleModel = RECTIFIER_MODULE;
     //PowerModuleModel = FAC_IS;
-    PowerModuleModel = FAC_CMD_MODULE;
+    //PowerModuleModel = FAC_CMD_MODULE;
     
     switch(PowerModuleModel)
     {

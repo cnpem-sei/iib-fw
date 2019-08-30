@@ -42,14 +42,14 @@
 
 #define FAC_OS_INPUT_CURRENT_ALM_LIM        430.0
 #define FAC_OS_INPUT_CURRENT_ITLK_LIM       440.0
-#define FAC_OS_OUTPUT_CURRENT_ALM_LIM       555.0
-#define FAC_OS_OUTPUT_CURRENT_ITLK_LIM      560.0
-#define FAC_OS_INPUT_VOLTAGE_ALM_LIM        280.0
-#define FAC_OS_INPUT_VOLTAGE_ITLK_LIM       285.0
-#define FAC_OS_HS_TEMP_ALM_LIM              50
-#define FAC_OS_HS_TEMP_ITLK_LIM             60
-#define FAC_OS_INDUC_TEMP_ALM_LIM           55
-#define FAC_OS_INDUC_TEMP_ITLK_LIM          60
+#define FAC_OS_OUTPUT_CURRENT_ALM_LIM       570.0
+#define FAC_OS_OUTPUT_CURRENT_ITLK_LIM      590.0
+#define FAC_OS_INPUT_VOLTAGE_ALM_LIM        290.0
+#define FAC_OS_INPUT_VOLTAGE_ITLK_LIM       295.0
+#define FAC_OS_HS_TEMP_ALM_LIM              40
+#define FAC_OS_HS_TEMP_ITLK_LIM             45
+#define FAC_OS_INDUC_TEMP_ALM_LIM           40
+#define FAC_OS_INDUC_TEMP_ITLK_LIM          45
 #define FAC_OS_RH_TEMP_ALM_LIM              80
 #define FAC_OS_RH_TEMP_ITLK_LIM             90
 
