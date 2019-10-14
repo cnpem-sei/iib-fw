@@ -39,6 +39,8 @@
  * TODO: Put here your defines. Just what is local. If you don't
  * need to access it from other module, consider use a constant (const)
  */
+
+// Linhas de transporte
 #define FAP_INPUT_OVERVOLTAGE_ALM_LIM           50.0
 #define FAP_INPUT_OVERVOLTAGE_ITLK_LIM          55.0
 #define FAP_OUTPUT_OVERVOLTAGE_ALM_LIM          35.0
@@ -48,6 +50,7 @@
 #define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM        105.0
 #define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM       115.0
 
+// Potencia nominal
 //#define FAP_INPUT_OVERVOLTAGE_ALM_LIM         435.0
 //#define FAP_INPUT_OVERVOLTAGE_ITLK_LIM        440.0
 //#define FAP_OUTPUT_OVERVOLTAGE_ALM_LIM        230.0
@@ -56,6 +59,16 @@
 //#define FAP_OUTPUT_OVERCURRENT_1_ITLK_LIM     120.0
 //#define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM      115.0
 //#define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM     120.0
+
+// Fonte 750A
+//#define FAP_INPUT_OVERVOLTAGE_ALM_LIM                    55.0
+//#define FAP_INPUT_OVERVOLTAGE_ITLK_LIM                   60.0
+//#define FAP_OUTPUT_OVERVOLTAGE_ALM_LIM                   40.0
+//#define FAP_OUTPUT_OVERVOLTAGE_ITLK_LIM                  45.0
+//#define FAP_OUTPUT_OVERCURRENT_1_ALM_LIM                 100.0
+//#define FAP_OUTPUT_OVERCURRENT_1_ITLK_LIM                105.0
+//#define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM                 100.0
+//#define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM                105.0
 
 #define FAP_GROUND_LEAKAGE_ITLK_LIM             50.0
 #define FAP_GROUND_LEAKAGE_ALM_LIM              45.0
@@ -395,7 +408,7 @@ void fap_application_readings()
 
 void fap_power_on_check()
 {
-    if (Gpdi4Read()) {
+    if (fap.Relay) {
         Led1TurnOff();
         ReleItlkTurnOff();
     }
@@ -496,8 +509,8 @@ static void config_module()
     //ConfigNtcType(SEMIX);
 
     //Leitura de tensão isolada
-    LvCurrentCh1Init(450.0, 0.025, 120.0, 3); // Tensão de entrada
-    LvCurrentCh2Init(250.0, 0.025, 120.0, 3); // Tensão de saída
+    LvCurrentCh1Init(452.5, 0.025, 120.0, 100);
+    LvCurrentCh2Init(252.5, 0.025, 120.0, 100);
 
     // TODO: Check this values
     LvCurrentCh3Init(50.0, 0.025, 120.0, 3); // Ground Leakage

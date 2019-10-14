@@ -276,7 +276,8 @@ void handle_reset_message(void)
 
     id = reset_msg_data[0];
 
-    if (id == can_address) {
+    if (id == 1)
+	{
         AlarmClear();
         InterlockClear();
     }
