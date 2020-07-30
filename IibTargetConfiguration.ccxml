@@ -7,6 +7,11 @@
             <instance XML_version="1.2" href="drivers/tixds100v2cortexM.xml" id="drivers" xml="tixds100v2cortexM.xml" xmlpath="drivers"/>
             <platform XML_version="1.2" id="platform_0">
                 <instance XML_version="1.2" desc="Tiva TM4C129ENCPDT_0" href="devices/tm4c129encpdt.xml" id="Tiva TM4C129ENCPDT_0" xml="tm4c129encpdt.xml" xmlpath="devices"/>
+            <device HW_revision="1" XML_version="1.2" description="" id="Tiva TM4C129ENCPDT_0" partnum="TM4C129ENCPDT" simulation="no">
+                    <router HW_revision="1.0" XML_version="1.2" description="CS_DAP Router" id="CS_DAP_0" isa="CS_DAP">
+                        <property Type="filepathfield" Value="" id="GEL File"/>
+                    </router>
+                </device>
             </platform>
         </connection>
     </configuration>

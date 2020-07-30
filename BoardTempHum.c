@@ -1,7 +1,7 @@
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 // Sensor: Si7005-B-FM1
-
-
 #include <stdarg.h>
 #include <stdint.h>
 #include <stdbool.h>
@@ -12,22 +12,21 @@
 #include "driverlib/gpio.h"
 #include "driverlib/sysctl.h"
 #include "driverlib/pin_map.h"
-
 #include "BoardTempHum.h"
-//#include "peripheral_drivers/timer/timer.h"
+#include "peripheral_drivers/timer/timer.h"
 #include "peripheral_drivers/gpio/gpio_driver.h"
 #include "peripheral_drivers/i2c/i2c_driver.h"
-
 #include "board_drivers/hardware_def.h"
-#include "peripheral_drivers/gpio/gpio_driver.h"
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 #define SlaveAddress 0x40
 #define RegisterAddress0 0x00
 #define RegisterAddress1 0x01
 #define RegisterAddress2 0x02
 #define RegisterAddress3 0x03
-#define RegisterAddress11 0x11
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 #define a0 (-4.7844)
 #define a1  0.4008
@@ -35,28 +34,22 @@
 #define q0  0.1973
 #define q1  0.00237
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-static float RelativeHumidity = 0.0;
-static float Temperature = 0.0;
+rh_tempboard_t TemperatureBoard;
+rh_tempboard_t RelativeHumidity;
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 static unsigned char Start1 = 0x01;
 static unsigned char Start2 = 0x11;
 
-static unsigned char TempAlarm = 0;
-static unsigned char TempTrip = 0;
-static unsigned char TempAlarmLevel = 60;
-static unsigned char TempTripLevel = 70;
-
-static unsigned char RhAlarm = 0;
-static unsigned char RhTrip = 0;
-static unsigned char RhAlarmLevel = 80;
-static unsigned char RhTripLevel = 90;
-
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 //******************************************************************************
 // /* Read the temperature */
 //******************************************************************************
-
-void BoardTemperatureStartConersion(void)
+void BoardTemperatureStartConversion(void)
 {
 
   toggle_pin(TP_1_BASE, TP_1_PIN);
@@ -67,7 +60,9 @@ void BoardTemperatureStartConersion(void)
 
 }
 
-void BoardTemperatureStartRead(void)
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void BoardTemperatureRead(void)
 {
     uint8_t Status=1;
     uint8_t TemperatureH;
@@ -81,7 +76,7 @@ void BoardTemperatureStartRead(void)
     while(Status==1)
     {
 
-         Status = I2C5Receive(SlaveAddress, RegisterAddress0);
+        Status = I2C5Receive(SlaveAddress, RegisterAddress0);
 
     }
 
@@ -101,17 +96,37 @@ void BoardTemperatureStartRead(void)
     Tempb += TemperatureL;
     Tempc = Tempb>>2;
 
-    Temperature = (Tempc/32) - 50;
+    TemperatureBoard.Value = (Tempc/32) - 50;
 
-    if(Temperature > TempAlarmLevel) TempAlarm = 1;
-    if(Temperature > TempTripLevel) TempTrip = 1;
+    if(TemperatureBoard.Value > TemperatureBoard.AlarmLimit)
+    {
+        if(TemperatureBoard.Alarm_DelayCount < TemperatureBoard.Alarm_Delay_ms) TemperatureBoard.Alarm_DelayCount++;
+        else
+        {
+           TemperatureBoard.Alarm_DelayCount = 0;
+           TemperatureBoard.Alarm = 1;
+        }
+    }
+    else TemperatureBoard.Alarm_DelayCount = 0;
+
+    if(TemperatureBoard.Value > TemperatureBoard.TripLimit)
+    {
+        if(TemperatureBoard.Itlk_DelayCount < TemperatureBoard.Itlk_Delay_ms) TemperatureBoard.Itlk_DelayCount++;
+        else
+        {
+           TemperatureBoard.Itlk_DelayCount = 0;
+           TemperatureBoard.Trip = 1;
+        }
+    }
+    else TemperatureBoard.Itlk_DelayCount = 0;
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 //******************************************************************************
 // /* Read humidity. The 'compensate' variable contains the current temperature used to calculate the temperature compensation.*/
 //******************************************************************************
-
-void RelativeHumidityStartConersion(void)
+void RelativeHumidityStartConversion(void)
 {
 
   toggle_pin(TP_2_BASE, TP_2_PIN);
@@ -138,7 +153,7 @@ void RelativeHumidityRead(void)
     while(Status==1)
     {
 
-         Status = I2C5Receive(SlaveAddress, RegisterAddress0);
+        Status = I2C5Receive(SlaveAddress, RegisterAddress0);
 
     }
 
@@ -163,98 +178,215 @@ void RelativeHumidityRead(void)
     curve = (rawHumidity/16.0)-24.0 ;
 
     linearHumidity = curve - ( (curve * curve) * a2 + curve * a1 + a0);
-    linearHumidity = linearHumidity + ( Temperature - 30.0 ) * ( linearHumidity * q1 + q0 );
+    linearHumidity = linearHumidity + ( TemperatureBoard.Value - 30.0 ) * ( linearHumidity * q1 + q0 );
 
-    RelativeHumidity = linearHumidity;
+    RelativeHumidity.Value = linearHumidity;
 
-    if(RelativeHumidity > RhAlarmLevel) RhAlarm = 1;
-    if(RelativeHumidity > RhTripLevel) RhTrip = 1;
+    if(RelativeHumidity.Value > RelativeHumidity.AlarmLimit)
+    {
+        if(RelativeHumidity.Alarm_DelayCount < RelativeHumidity.Alarm_Delay_ms) RelativeHumidity.Alarm_DelayCount++;
+        else
+        {
+           RelativeHumidity.Alarm_DelayCount = 0;
+           RelativeHumidity.Alarm = 1;
+        }
+    }
+    else RelativeHumidity.Alarm_DelayCount = 0;
+
+    if(RelativeHumidity.Value > RelativeHumidity.TripLimit)
+    {
+        if(RelativeHumidity.Itlk_DelayCount < RelativeHumidity.Itlk_Delay_ms) RelativeHumidity.Itlk_DelayCount++;
+        else
+        {
+           RelativeHumidity.Itlk_DelayCount = 0;
+           RelativeHumidity.Trip = 1;
+        }
+    }
+    else RelativeHumidity.Itlk_DelayCount = 0;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 //******************************************************************************
 // Init Si7005-B SENSOR
 //******************************************************************************
-
-void RhTempSenseInit(void)
+void RhBoardTempSenseInit(void)
 {
 
     set_gpio_as_output(TP_1_BASE, TP_1_PIN);
     set_gpio_as_output(TP_2_BASE, TP_2_PIN);
 
-
-
-   // performs I2C initialization
+    // performs I2C initialization
     InitI2C5();
 
    // configura CS como output
    set_gpio_as_output(GPIO_PORTB_BASE, GPIO_PIN_2);
    clear_pin(GPIO_PORTB_BASE, GPIO_PIN_2);
-   
-   delay_ms(100);
+
+   delay_ms(10);
+
+   TemperatureBoard.Enable = 0;
+   TemperatureBoard.Value = 0;
+   TemperatureBoard.AlarmLimit = 90;
+   TemperatureBoard.TripLimit = 100;
+   TemperatureBoard.Alarm = 0;
+   TemperatureBoard.Trip = 0;
+   TemperatureBoard.Alarm_Delay_ms = 0; // milisecond
+   TemperatureBoard.Alarm_DelayCount = 0;
+   TemperatureBoard.Itlk_Delay_ms = 0; // milisecond
+   TemperatureBoard.Itlk_DelayCount = 0;
+
+   RelativeHumidity.Enable = 0;
+   RelativeHumidity.Value = 0;
+   RelativeHumidity.AlarmLimit = 90;
+   RelativeHumidity.TripLimit = 100;
+   RelativeHumidity.Alarm = 0;
+   RelativeHumidity.Trip = 0;
+   RelativeHumidity.Alarm_Delay_ms = 0; // milisecond
+   RelativeHumidity.Alarm_DelayCount = 0;
+   RelativeHumidity.Itlk_Delay_ms = 0; // milisecond
+   RelativeHumidity.Itlk_DelayCount = 0;
+
 }
 
-unsigned char RhRead(void)
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void BoardTempEnable(void)
 {
-   return RelativeHumidity;
+    TemperatureBoard.Enable = 1;
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void BoardTempDisable(void)
+{
+    TemperatureBoard.Enable = 0;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void RhEnable(void)
+{
+    RelativeHumidity.Enable = 1;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void RhDisable(void)
+{
+    RelativeHumidity.Enable = 0;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char BoardTempRead(void)
 {
-   return Temperature;
+    if(TemperatureBoard.Enable)return TemperatureBoard.Value;
+    else return 0;
 }
 
-void TempBoardAlarmLimitSet(unsigned char TempLimit)
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+unsigned char RhRead(void)
 {
-   if(TempLimit > 100) TempLimit = 100;
-   TempAlarmLevel = TempLimit;
+    if(RelativeHumidity.Enable)return RelativeHumidity.Value;
+    else return 0;
 }
 
-void TempBoardTripLimitSet(unsigned char TempLimit)
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void BoardTempAlarmLevelSet(unsigned char nValue)
 {
-   if(TempLimit > 100) TempLimit = 100;
-   TempTripLevel = TempLimit;
+    TemperatureBoard.AlarmLimit = nValue;
 }
 
-unsigned char TempAlarmStatusRead(void)
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void BoardTempTripLevelSet(unsigned char nValue)
 {
-   return TempAlarm;
+    TemperatureBoard.TripLimit = nValue;
 }
 
-unsigned char TempTripStatusRead(void)
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void BoardTempDelay(unsigned char Delay_Set)
 {
-   return TempTrip;
+    TemperatureBoard.Alarm_Delay_ms = Delay_Set;
+    TemperatureBoard.Itlk_Delay_ms = Delay_Set;
+
 }
 
-void RhAlarmLimitSet(unsigned char RhLimit)
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+unsigned char BoardTempAlarmStatusRead(void)
 {
-   if(RhLimit > 100) RhLimit = 100;
-   RhAlarmLevel = RhLimit;
+   if(TemperatureBoard.Enable)return TemperatureBoard.Alarm;
+   else return 0;
 }
 
-void RhTripLimitSet(unsigned char RhLimit)
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+unsigned char BoardTempTripStatusRead(void)
 {
-   if(RhLimit > 100) RhLimit = 100;
-   RhTripLevel = RhLimit;
+   if(TemperatureBoard.Enable)return TemperatureBoard.Trip;
+   else return 0;
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void RhAlarmLevelSet(unsigned char nValue)
+{
+    RelativeHumidity.AlarmLimit = nValue;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void RhTripLevelSet(unsigned char nValue)
+{
+    RelativeHumidity.TripLimit = nValue;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void RhDelay(unsigned char Delay_Set)
+{
+    RelativeHumidity.Alarm_Delay_ms = Delay_Set;
+    RelativeHumidity.Itlk_Delay_ms = Delay_Set;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char RhAlarmStatusRead(void)
 {
-   return RhAlarm;
+   if(RelativeHumidity.Enable)return RelativeHumidity.Alarm;
+   else return 0;
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char RhTripStatusRead(void)
 {
-   return RhTrip;
+   if(RelativeHumidity.Enable)return RelativeHumidity.Trip;
+   else return 0;
 }
 
-void RhTempClearAlarmTrip(void)
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void RhBoardTempClearAlarmTrip(void)
 {
-   
-   TempAlarm = 0;
-   TempTrip = 0;
-   
-   RhAlarm = 0;
-   RhTrip =  0;
+    TemperatureBoard.Alarm = 0;
+    TemperatureBoard.Trip = 0;
+
+    RelativeHumidity.Alarm = 0;
+    RelativeHumidity.Trip = 0;
    
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+

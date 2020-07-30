@@ -20,6 +20,8 @@
  */
 
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 /**
  * TODO: Put here your includes
  */
@@ -32,30 +34,26 @@
 #include "input.h"
 #include "BoardTempHum.h"
 #include "pt100.h"
-//#include "memory.h"
+#include "ntc_isolated_i2c.h"
 #include "application.h"
-//#include "can_bus.h"
-//#include "driver_board.h"
 
 /**
  * TODO: Put here your defines. Just what is local. If you don't
  * need to access it from other module, consider use a constant (const)
  */
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
  * TODO: Put here your constants and variables. Always use static for 
  * private members.
  */
-unsigned char count = 0;
 
 unsigned int Second = 0;
 unsigned char uSecond = 0;
-unsigned char uSecondOld = 255;
-unsigned char CanFast = 0;
-unsigned int CanSlow = 0;
 unsigned int _8Hz = 0;
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 bool TempCh1Read = 0;
 bool TempCh2Read = 0;
@@ -65,30 +63,17 @@ bool RhSample = 0;
 bool RhSampleRead = 0;
 bool BoardTempSample = 0;
 bool BoardTempSampleRead = 0;
-bool SendCanMessSlow = 0;
-bool SendCanMessFast = 0;
 bool ErrorCheck = 0;
 bool LedUpdate = 0;
-bool PrintDiagnose = 0;
 bool AlarmCheckTask = 0;
 bool DriverVoltReadTask = 0;
 bool Driver1CurrtReadTask = 0;
 bool Driver2CurrtReadTask = 0;
 bool SendCanData          = 0;
+bool NtcSample = 0;
+bool NtcSampleRead = 0;
 
-/**
- * TODO: Put here your function prototypes for private functions. Use
- * static in declaration.
- */
-
-
-/**
- * TODO: Put here the implementation for your public functions.
- */
-
-/**
- * TODO: Put here the implementation for your private functions.
- */
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 void ErrorCheckHandle(void)
 {
@@ -110,6 +95,8 @@ void ErrorCheckHandle(void)
     if(Pt100ReadCh4RtdSts()) Pt100Ch4Reset();
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 void task_100_us(void)
 {
 
@@ -121,49 +108,53 @@ void task_100_us(void)
 
     if(uSecond == 0)
     {
-        VoltageCh1Sample();
-        VoltageCh2Sample();
+        if(VoltageCh1.Enable) VoltageCh1Sample();
+
+        if(VoltageCh2.Enable) VoltageCh2Sample();
     }
     else if(uSecond == 1)
     {
-        VoltageCh3Sample();
+        if(VoltageCh3.Enable) VoltageCh3Sample();
     }
     else if(uSecond == 2)
     {
-        VoltageCh4Sample();
+        if(VoltageCh4.Enable) VoltageCh4Sample();
     }
     else if(uSecond == 3)
     {
-        CurrentCh1Sample();
+        if(CurrentCh1.Enable) CurrentCh1Sample();
     }
     else if(uSecond == 4)
     {
-        CurrentCh2Sample();
+        if(CurrentCh2.Enable) CurrentCh2Sample();
     }
     else if(uSecond == 5)
     {
-        CurrentCh3Sample();
+        if(CurrentCh3.Enable) CurrentCh3Sample();
     }
     else if(uSecond == 6)
     {
-        CurrentCh4Sample();
+        if(CurrentCh4.Enable) CurrentCh4Sample();
     }
     else if(uSecond == 7)
     {
-        LvCurrentCh1Sample();
+        if(LvCurrentCh1.Enable) LvCurrentCh1Sample();
     }
 
     else if(uSecond == 8)
     {
-        LvCurrentCh2Sample();
+        if(LvCurrentCh2.Enable) LvCurrentCh2Sample();
     }
     else if(uSecond == 9)
     {
-        LvCurrentCh3Sample();
+        if(LvCurrentCh3.Enable) LvCurrentCh3Sample();
+
         InterlockAppCheck();
     }
 
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 void task_1_ms(void)
 {
@@ -187,8 +178,8 @@ void task_1_ms(void)
     switch(Second)
     {
     case 20:
-        SendCanData = 1;
-        break;
+       SendCanData = 1;
+       break;
     case 100:
        TempCh1Read = 1;
        break;
@@ -196,8 +187,8 @@ void task_1_ms(void)
        RhSample = 1;
        break;
     case 250:
-        RhSampleRead = 1;
-        break;
+       RhSampleRead = 1;
+       break;
     case 350:
        TempCh2Read = 1;
        break;
@@ -205,7 +196,8 @@ void task_1_ms(void)
        BoardTempSample = 1;
        break;
     case 500:
-        BoardTempSampleRead = 1;
+       BoardTempSampleRead = 1;
+       break;
     case 600:
        TempCh3Read = 1;
        break;
@@ -213,22 +205,28 @@ void task_1_ms(void)
        TempCh4Read = 1;
        break;
     case 740:
-        DriverVoltReadTask = 1;
-        break;
+       DriverVoltReadTask = 1;
+       break;
     case 780:
-        Driver1CurrtReadTask = 1;
-        break;
+       Driver1CurrtReadTask = 1;
+       break;
     case 820:
-        Driver2CurrtReadTask = 1;
-        break;
+       Driver2CurrtReadTask = 1;
+       break;
     case 850:
-       ErrorCheck = 1;
+       NtcSample = 1;
+       break;
+    case 900:
+       NtcSampleRead = 1;
        break;
     case 950:
-
+       ErrorCheck = 1;
+       break;
+    case 990:
+       AlarmCheckTask = 1;
        break;
     case 1000:
-       //ClearDiagnosticCount();
+
        break;
     default:
 
@@ -238,6 +236,8 @@ void task_1_ms(void)
 
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 void BoardTask(void)
 {
 
@@ -245,88 +245,117 @@ void BoardTask(void)
 
   if(TempCh1Read)
   {
-      Pt100Ch1Sample();
+      if(Pt100Ch1.Enable) Pt100Ch1Sample();
+
       TempCh1Read = 0;
   }
   else if(TempCh2Read)
   {
-      Pt100Ch2Sample();
+      if(Pt100Ch2.Enable) Pt100Ch2Sample();
+
       TempCh2Read = 0;
   }
   else if(TempCh3Read)
   {
-      Pt100Ch3Sample();
+      if(Pt100Ch3.Enable) Pt100Ch3Sample();
+
       TempCh3Read = 0;
   }
   else if(TempCh4Read)
   {
-      Pt100Ch4Sample();
+      if(Pt100Ch4.Enable) Pt100Ch4Sample();
+
       TempCh4Read = 0;
   }
   else if(RhSample)
   {
-      //RelativeHumidityStartConersion();
+      if(RelativeHumidity.Enable) RelativeHumidityStartConversion();
+
       RhSample = 0;
   }
   else if(RhSampleRead)
   {
-      //RelativeHumidityRead();
+      if(RelativeHumidity.Enable) RelativeHumidityRead();
+
       RhSampleRead = 0;
   }
   else if(BoardTempSample)
   {
-      //BoardTemperatureStartConersion();
+      if(TemperatureBoard.Enable) BoardTemperatureStartConversion();
+
       BoardTempSample = 0;
   }
   else if(BoardTempSampleRead)
   {
-      //BoardTemperatureStartRead();
+      if(TemperatureBoard.Enable) BoardTemperatureRead();
+
       BoardTempSampleRead = 0;
   }
+  else if(NtcSample)
+  {
+      if(TempNtcIgbt1.Enable || TempNtcIgbt2.Enable) NtcStartConversion();
 
+      NtcSample = 0;
+  }
+  else if(NtcSampleRead)
+  {
+      if(TempNtcIgbt1.Enable || TempNtcIgbt2.Enable) NtcRead();
+
+      NtcSampleRead = 0;
+  }
   else if(DriverVoltReadTask)
   {
-      DriverVoltageSample();
+      if(DriverVolt.Enable) DriverVoltageSample();
+
       DriverVoltReadTask = 0;
   }
 
   else if(Driver1CurrtReadTask)
   {
-      Driver1CurrentSample();
+      if(Driver1Curr.Enable) Driver1CurrentSample();
+
       Driver1CurrtReadTask = 0;
   }
 
   else if(Driver2CurrtReadTask)
   {
-      Driver2CurrentSample();
+      if(Driver2Curr.Enable) Driver2CurrentSample();
+
       Driver2CurrtReadTask = 0;
   }
 
   else if(ErrorCheck)
   {
       ErrorCheckHandle();
+
       ErrorCheck = 0;
   }
 
   else if(AlarmCheckTask)
   {
       AlarmAppCheck();
-      AlarmCheckTask = 1;
+
+      AlarmCheckTask = 0;
   }
 
   else if(LedUpdate)
   {
-      LedUpdate = 0;
       LedIndicationStatus();
+
+      LedUpdate = 0;
   }
 
   else if (SendCanData)
   {
-      SendCanData = 0;
       send_data_schedule();
+
+      SendCanData = 0;
   }
 
   power_on_check();
-  //send_data_schedule();
 
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
