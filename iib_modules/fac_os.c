@@ -69,6 +69,9 @@
 #define FAC_OS_DRIVER2_OVERCURRENT_ALM_LIM          2.0
 #define FAC_OS_DRIVER2_OVERCURRENT_ITLK_LIM         2.4
 
+#define FAC_OS_GROUND_LEAKAGE_ALM_LIM               45.0
+#define FAC_OS_GROUND_LEAKAGE_ITLK_LIM              50.0
+
 #define FAC_OS_INDUC_OVERTEMP_ALM_LIM               40
 #define FAC_OS_INDUC_OVERTEMP_ITLK_LIM              45
 
@@ -184,6 +187,14 @@ typedef struct
     union {
         float       f;
         uint8_t     u8[4];
+    } GroundLeakage;
+
+    bool GroundLeakageAlarmSts;
+    bool GroundLeakageItlkSts;
+
+    union {
+        float       f;
+        uint8_t     u8[4];
     } BoardTemperature;
 
     bool BoardTemperatureAlarmSts;
@@ -243,6 +254,7 @@ void clear_fac_os_interlocks()
     fac_os.Driver1ErrorBotItlkSts   = 0;
     fac_os.Driver2ErrorTopItlkSts   = 0;
     fac_os.Driver2ErrorBotItlkSts   = 0;
+    fac_os.GroundLeakageItlkSts     = 0;
     fac_os.TempLItlkSts             = 0;
     fac_os.TempHeatSinkItlkSts      = 0;
     fac_os.DriveVoltageItlkSts      = 0;
@@ -272,6 +284,7 @@ uint8_t check_fac_os_interlocks()
     test |= fac_os.Driver1ErrorBotItlkSts;
     test |= fac_os.Driver2ErrorTopItlkSts;
     test |= fac_os.Driver2ErrorBotItlkSts;
+    test |= fac_os.GroundLeakageItlkSts;
     test |= fac_os.TempLItlkSts;
     test |= fac_os.TempHeatSinkItlkSts;
     test |= fac_os.DriveVoltageItlkSts;
@@ -292,6 +305,7 @@ void clear_fac_os_alarms()
     fac_os.IoutAlarmSts              = 0;
     fac_os.TempIGBT1AlarmSts         = 0;
     fac_os.TempIGBT2AlarmSts         = 0;
+    fac_os.GroundLeakageAlarmSts     = 0;
     fac_os.TempLAlarmSts             = 0;
     fac_os.TempHeatSinkAlarmSts      = 0;
     fac_os.DriveVoltageAlarmSts      = 0;
@@ -315,6 +329,7 @@ uint8_t check_fac_os_alarms()
     test |= fac_os.IoutAlarmSts;
     test |= fac_os.TempIGBT1AlarmSts;
     test |= fac_os.TempIGBT2AlarmSts;
+    test |= fac_os.GroundLeakageAlarmSts;
     test |= fac_os.TempLAlarmSts;
     test |= fac_os.TempHeatSinkAlarmSts;
     test |= fac_os.DriveVoltageAlarmSts;
@@ -357,16 +372,16 @@ void check_fac_os_indication_leds()
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-    // Heatsink Over temperature
-    if(fac_os.TempHeatSinkItlkSts) Led6TurnOff();
-    else if(fac_os.TempHeatSinkAlarmSts) Led6Toggle();
+    // Heatsink and Inductor Over temperature
+    if(fac_os.TempHeatSinkItlkSts || fac_os.TempLItlkSts) Led6TurnOff();
+    else if(fac_os.TempHeatSinkAlarmSts || fac_os.TempLAlarmSts) Led6Toggle();
     else Led6TurnOn();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-    // Inductor Over temperature
-    if(fac_os.TempLItlkSts) Led7TurnOff();
-    else if(fac_os.TempLAlarmSts) Led7Toggle();
+    //Fuga para o Terra
+    if(fac_os.GroundLeakageItlkSts) Led7TurnOff();
+    else if(fac_os.GroundLeakageAlarmSts) Led7Toggle();
     else Led7TurnOn();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -476,6 +491,13 @@ void fac_os_application_readings()
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
+    //Medida de Fuga para o Terra
+    fac_os.GroundLeakage.f = LvCurrentCh3Read();
+    fac_os.GroundLeakageAlarmSts = LvCurrentCh3AlarmStatusRead();
+    if(!fac_os.GroundLeakageItlkSts)fac_os.GroundLeakageItlkSts = LvCurrentCh3TripStatusRead();
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
     fac_os.Iin.f = CurrentCh1Read();
     fac_os.IinAlarmSts = CurrentCh1AlarmStatusRead();
     if(!fac_os.IinItlkSts)fac_os.IinItlkSts = CurrentCh1TripStatusRead();
@@ -551,10 +573,11 @@ static void map_vars()
     g_controller_iib.iib_signals[5].f       = fac_os.DriveVoltage.f;
     g_controller_iib.iib_signals[6].f       = fac_os.Drive1Current.f;
     g_controller_iib.iib_signals[7].f       = fac_os.Drive2Current.f;
-    g_controller_iib.iib_signals[8].f       = fac_os.TempL.f;
-    g_controller_iib.iib_signals[9].f       = fac_os.TempHeatSink.f;
-    g_controller_iib.iib_signals[10].f      = fac_os.BoardTemperature.f;
-    g_controller_iib.iib_signals[11].f      = fac_os.RelativeHumidity.f;
+    g_controller_iib.iib_signals[8].f       = fac_os.GroundLeakage.f;
+    g_controller_iib.iib_signals[9].f       = fac_os.TempL.f;
+    g_controller_iib.iib_signals[10].f      = fac_os.TempHeatSink.f;
+    g_controller_iib.iib_signals[11].f      = fac_os.BoardTemperature.f;
+    g_controller_iib.iib_signals[12].f      = fac_os.RelativeHumidity.f;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -567,7 +590,7 @@ void send_fac_os_data()
 
     i++;
 
-    if (i > 11) i = 0;
+    if (i > 12) i = 0;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -590,6 +613,7 @@ static void get_itlks_id()
     if (fac_os.Driver2ErrorBotItlkSts)      itlk_id |= FAC_OS_DRIVER2_ERROR_BOT_ITLK;
     if (fac_os.TempLItlkSts)                itlk_id |= FAC_OS_INDUC_OVERTEMP_ITLK;
     if (fac_os.TempHeatSinkItlkSts)         itlk_id |= FAC_OS_HS_OVERTEMP_ITLK;
+    if (fac_os.GroundLeakageItlkSts)        itlk_id |= FAC_OS_GROUND_LKG_ITLK;
     if (fac_os.BoardTemperatureItlkSts)     itlk_id |= FAC_OS_BOARD_IIB_OVERTEMP_ITLK;
     if (fac_os.RelativeHumidityItlkSts)     itlk_id |= FAC_OS_BOARD_IIB_OVERHUMIDITY_ITLK;
 }
@@ -615,6 +639,7 @@ static void get_alarms_id()
     if (fac_os.Drive2CurrentAlarmSts)       alarm_id |= FAC_OS_DRIVER2_OVERCURRENT_ALM;
     if (fac_os.TempLAlarmSts)               alarm_id |= FAC_OS_INDUC_OVERTEMP_ALM;
     if (fac_os.TempHeatSinkAlarmSts)        alarm_id |= FAC_OS_HS_OVERTEMP_ALM;
+    if (fac_os.GroundLeakageAlarmSts)       alarm_id |= FAC_OS_GROUND_LKG_ALM;
     if (fac_os.BoardTemperatureAlarmSts)    alarm_id |= FAC_OS_BOARD_IIB_OVERTEMP_ALM;
     if (fac_os.RelativeHumidityAlarmSts)    alarm_id |= FAC_OS_BOARD_IIB_OVERHUMIDITY_ALM;
 }
@@ -642,14 +667,17 @@ static void config_module()
 
     /* Isolated Voltage */
     LvCurrentCh1Init(330.0, 0.025, 120.0, 3); /* Input Voltage */
+    LvCurrentCh3Init(50.0, 0.025, 120.0, 3);  /* GND Leakage */
 
     LvCurrentCh1Enable();  //LvCurrentCh1 enable
     LvCurrentCh2Disable(); //LvCurrentCh2 disable
-    LvCurrentCh3Disable(); //LvCurrentCh3 disable
+    LvCurrentCh3Enable();  //LvCurrentCh3 enable
 
     /* Protection Limits */
     LvCurrentCh1AlarmLevelSet(FAC_OS_INPUT_OVERVOLTAGE_ALM_LIM);
     LvCurrentCh1TripLevelSet(FAC_OS_INPUT_OVERVOLTAGE_ITLK_LIM);
+    LvCurrentCh3AlarmLevelSet(FAC_OS_GROUND_LEAKAGE_ALM_LIM);
+    LvCurrentCh3TripLevelSet(FAC_OS_GROUND_LEAKAGE_ITLK_LIM);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -830,6 +858,9 @@ static void config_module()
     fac_os.Driver2ErrorTopItlkSts       = 0;
     fac_os.Driver2ErrorBot              = 0;
     fac_os.Driver2ErrorBotItlkSts       = 0;
+    fac_os.GroundLeakage.f              = 0.0;
+    fac_os.GroundLeakageAlarmSts        = 0;
+    fac_os.GroundLeakageItlkSts         = 0;
     fac_os.TempL.f                      = 0.0;
     fac_os.TempLAlarmSts                = 0;
     fac_os.TempLItlkSts                 = 0;
