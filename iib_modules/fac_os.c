@@ -45,174 +45,9 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-#define FAC_OS_INPUT_OVERVOLTAGE_ALM_LIM            290.0
-#define FAC_OS_INPUT_OVERVOLTAGE_ITLK_LIM           295.0
-
-#define FAC_OS_INPUT_OVERCURRENT_ALM_LIM            430.0
-#define FAC_OS_INPUT_OVERCURRENT_ITLK_LIM           440.0
-
-#define FAC_OS_OUTPUT_OVERCURRENT_ALM_LIM           570.0
-#define FAC_OS_OUTPUT_OVERCURRENT_ITLK_LIM          590.0
-
-#define FAC_OS_IGBT1_OVERTEMP_ALM_LIM               60
-#define FAC_OS_IGBT1_OVERTEMP_ITLK_LIM              80
-
-#define FAC_OS_IGBT2_OVERTEMP_ALM_LIM               60
-#define FAC_OS_IGBT2_OVERTEMP_ITLK_LIM              80
-
-#define FAC_OS_DRIVER_OVERVOLTAGE_ALM_LIM           16.0
-#define FAC_OS_DRIVER_OVERVOLTAGE_ITLK_LIM          17.0
-
-#define FAC_OS_DRIVER1_OVERCURRENT_ALM_LIM          2.0
-#define FAC_OS_DRIVER1_OVERCURRENT_ITLK_LIM         2.4
-
-#define FAC_OS_DRIVER2_OVERCURRENT_ALM_LIM          2.0
-#define FAC_OS_DRIVER2_OVERCURRENT_ITLK_LIM         2.4
-
-#define FAC_OS_GROUND_LEAKAGE_ALM_LIM               45.0
-#define FAC_OS_GROUND_LEAKAGE_ITLK_LIM              50.0
-
-#define FAC_OS_INDUC_OVERTEMP_ALM_LIM               40
-#define FAC_OS_INDUC_OVERTEMP_ITLK_LIM              45
-
-#define FAC_OS_HS_OVERTEMP_ALM_LIM                  40
-#define FAC_OS_HS_OVERTEMP_ITLK_LIM                 45
-
-#define FAC_OS_RH_OVERHUMIDITY_ALM_LIM              50
-#define FAC_OS_RH_OVERHUMIDITY_ITLK_LIM             90
-
-#define FAC_OS_BOARD_OVERTEMP_ALM_LIM               50
-#define FAC_OS_BOARD_OVERTEMP_ITLK_LIM              60
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-typedef struct
-{
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } Iin;
-
-    bool IinAlarmSts;
-    bool IinItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } Iout;
-
-    bool IoutAlarmSts;
-    bool IoutItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } VdcLink;
-
-    bool VdcLinkAlarmSts;
-    bool VdcLinkItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } TempIGBT1;
-
-    bool TempIGBT1AlarmSts;
-    bool TempIGBT1ItlkSts;
-    bool TempIGBT1HwrItlk;
-    bool TempIGBT1HwrItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } TempIGBT2;
-
-    bool TempIGBT2AlarmSts;
-    bool TempIGBT2ItlkSts;
-    bool TempIGBT2HwrItlk;
-    bool TempIGBT2HwrItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } DriveVoltage;
-
-    bool DriveVoltageAlarmSts;
-    bool DriveVoltageItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } Drive1Current;
-
-    bool Drive1CurrentAlarmSts;
-    bool Drive1CurrentItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } Drive2Current;
-
-    bool Drive2CurrentAlarmSts;
-    bool Drive2CurrentItlkSts;
-
-    bool Driver1ErrorTop;
-    bool Driver1ErrorTopItlkSts;
-
-    bool Driver1ErrorBot;
-    bool Driver1ErrorBotItlkSts;
-
-    bool Driver2ErrorTop;
-    bool Driver2ErrorTopItlkSts;
-
-    bool Driver2ErrorBot;
-    bool Driver2ErrorBotItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } TempL;
-
-    bool TempLAlarmSts;
-    bool TempLItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } TempHeatSink;
-
-    bool TempHeatSinkAlarmSts;
-    bool TempHeatSinkItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } GroundLeakage;
-
-    bool GroundLeakageAlarmSts;
-    bool GroundLeakageItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } BoardTemperature;
-
-    bool BoardTemperatureAlarmSts;
-    bool BoardTemperatureItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } RelativeHumidity;
-
-    bool RelativeHumidityAlarmSts;
-    bool RelativeHumidityItlkSts;
-
-} fac_os_t;
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
 fac_os_t fac_os;
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 static uint32_t fac_os_interlocks_indication;
 static uint32_t fac_os_alarms_indication;
@@ -224,20 +59,6 @@ static uint32_t ResetAlarmsRegister = 0;
 
 static uint32_t itlk_id;
 static uint32_t alarm_id;
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-static void get_itlks_id();
-static void get_alarms_id();
-static void map_vars();
-static void config_module();
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void init_fac_os()
-{
-    config_module();
-}
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -540,22 +361,44 @@ void fac_os_application_readings()
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-    map_vars();
-    get_itlks_id();
-    get_alarms_id();
-}
+    if (fac_os.VdcLinkItlkSts)              itlk_id |= FAC_OS_INPUT_OVERVOLTAGE_ITLK;
+    if (fac_os.IinItlkSts)                  itlk_id |= FAC_OS_INPUT_OVERCURRENT_ITLK;
+    if (fac_os.IoutItlkSts)                 itlk_id |= FAC_OS_OUTPUT_OVERCURRENT_ITLK;
+    if (fac_os.TempIGBT1ItlkSts)            itlk_id |= FAC_OS_IGBT1_OVERTEMP_ITLK;
+    if (fac_os.TempIGBT1HwrItlkSts)         itlk_id |= FAC_OS_IGBT1_HWR_OVERTEMP_ITLK;
+    if (fac_os.TempIGBT2ItlkSts)            itlk_id |= FAC_OS_IGBT2_OVERTEMP_ITLK;
+    if (fac_os.TempIGBT2HwrItlkSts)         itlk_id |= FAC_OS_IGBT2_HWR_OVERTEMP_ITLK;
+    if (fac_os.DriveVoltageItlkSts)         itlk_id |= FAC_OS_DRIVER_OVERVOLTAGE_ITLK;
+    if (fac_os.Drive1CurrentItlkSts)        itlk_id |= FAC_OS_DRIVER1_OVERCURRENT_ITLK;
+    if (fac_os.Drive2CurrentItlkSts)        itlk_id |= FAC_OS_DRIVER2_OVERCURRENT_ITLK;
+    if (fac_os.Driver1ErrorTopItlkSts)      itlk_id |= FAC_OS_DRIVER1_ERROR_TOP_ITLK;
+    if (fac_os.Driver1ErrorBotItlkSts)      itlk_id |= FAC_OS_DRIVER1_ERROR_BOT_ITLK;
+    if (fac_os.Driver2ErrorTopItlkSts)      itlk_id |= FAC_OS_DRIVER2_ERROR_TOP_ITLK;
+    if (fac_os.Driver2ErrorBotItlkSts)      itlk_id |= FAC_OS_DRIVER2_ERROR_BOT_ITLK;
+    if (fac_os.TempLItlkSts)                itlk_id |= FAC_OS_INDUC_OVERTEMP_ITLK;
+    if (fac_os.TempHeatSinkItlkSts)         itlk_id |= FAC_OS_HS_OVERTEMP_ITLK;
+    if (fac_os.GroundLeakageItlkSts)        itlk_id |= FAC_OS_GROUND_LKG_ITLK;
+    if (fac_os.BoardTemperatureItlkSts)     itlk_id |= FAC_OS_BOARD_IIB_OVERTEMP_ITLK;
+    if (fac_os.RelativeHumidityItlkSts)     itlk_id |= FAC_OS_BOARD_IIB_OVERHUMIDITY_ITLK;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void fac_os_power_on_check()
-{
-    Led1TurnOn();
-}
+    if (fac_os.VdcLinkAlarmSts)             alarm_id |= FAC_OS_INPUT_OVERVOLTAGE_ALM;
+    if (fac_os.IinAlarmSts)                 alarm_id |= FAC_OS_INPUT_OVERCURRENT_ALM;
+    if (fac_os.IoutAlarmSts)                alarm_id |= FAC_OS_OUTPUT_OVERCURRENT_ALM;
+    if (fac_os.TempIGBT1AlarmSts)           alarm_id |= FAC_OS_IGBT1_OVERTEMP_ALM;
+    if (fac_os.TempIGBT2AlarmSts)           alarm_id |= FAC_OS_IGBT2_OVERTEMP_ALM;
+    if (fac_os.DriveVoltageAlarmSts)        alarm_id |= FAC_OS_DRIVER_OVERVOLTAGE_ALM;
+    if (fac_os.Drive1CurrentAlarmSts)       alarm_id |= FAC_OS_DRIVER1_OVERCURRENT_ALM;
+    if (fac_os.Drive2CurrentAlarmSts)       alarm_id |= FAC_OS_DRIVER2_OVERCURRENT_ALM;
+    if (fac_os.TempLAlarmSts)               alarm_id |= FAC_OS_INDUC_OVERTEMP_ALM;
+    if (fac_os.TempHeatSinkAlarmSts)        alarm_id |= FAC_OS_HS_OVERTEMP_ALM;
+    if (fac_os.GroundLeakageAlarmSts)       alarm_id |= FAC_OS_GROUND_LKG_ALM;
+    if (fac_os.BoardTemperatureAlarmSts)    alarm_id |= FAC_OS_BOARD_IIB_OVERTEMP_ALM;
+    if (fac_os.RelativeHumidityAlarmSts)    alarm_id |= FAC_OS_BOARD_IIB_OVERHUMIDITY_ALM;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-static void map_vars()
-{
     fac_os_interlocks_indication = itlk_id;
     fac_os_alarms_indication = alarm_id;
 
@@ -578,84 +421,19 @@ static void map_vars()
     g_controller_iib.iib_signals[10].f      = fac_os.TempHeatSink.f;
     g_controller_iib.iib_signals[11].f      = fac_os.BoardTemperature.f;
     g_controller_iib.iib_signals[12].f      = fac_os.RelativeHumidity.f;
+
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void send_fac_os_data()
+void config_module_fac_os(void)
 {
-    static uint8_t i = 0;
 
-    send_data_message(i);
+#ifdef FAC_OS
 
-    i++;
-
-    if (i > 12) i = 0;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-static void get_itlks_id()
-{
-    if (fac_os.VdcLinkItlkSts)              itlk_id |= FAC_OS_INPUT_OVERVOLTAGE_ITLK;
-    if (fac_os.IinItlkSts)                  itlk_id |= FAC_OS_INPUT_OVERCURRENT_ITLK;
-    if (fac_os.IoutItlkSts)                 itlk_id |= FAC_OS_OUTPUT_OVERCURRENT_ITLK;
-    if (fac_os.TempIGBT1ItlkSts)            itlk_id |= FAC_OS_IGBT1_OVERTEMP_ITLK;
-    if (fac_os.TempIGBT1HwrItlkSts)         itlk_id |= FAC_OS_IGBT1_HWR_OVERTEMP_ITLK;
-    if (fac_os.TempIGBT2ItlkSts)            itlk_id |= FAC_OS_IGBT2_OVERTEMP_ITLK;
-    if (fac_os.TempIGBT2HwrItlkSts)         itlk_id |= FAC_OS_IGBT2_HWR_OVERTEMP_ITLK;
-    if (fac_os.DriveVoltageItlkSts)         itlk_id |= FAC_OS_DRIVER_OVERVOLTAGE_ITLK;
-    if (fac_os.Drive1CurrentItlkSts)        itlk_id |= FAC_OS_DRIVER1_OVERCURRENT_ITLK;
-    if (fac_os.Drive2CurrentItlkSts)        itlk_id |= FAC_OS_DRIVER2_OVERCURRENT_ITLK;
-    if (fac_os.Driver1ErrorTopItlkSts)      itlk_id |= FAC_OS_DRIVER1_ERROR_TOP_ITLK;
-    if (fac_os.Driver1ErrorBotItlkSts)      itlk_id |= FAC_OS_DRIVER1_ERROR_BOT_ITLK;
-    if (fac_os.Driver2ErrorTopItlkSts)      itlk_id |= FAC_OS_DRIVER2_ERROR_TOP_ITLK;
-    if (fac_os.Driver2ErrorBotItlkSts)      itlk_id |= FAC_OS_DRIVER2_ERROR_BOT_ITLK;
-    if (fac_os.TempLItlkSts)                itlk_id |= FAC_OS_INDUC_OVERTEMP_ITLK;
-    if (fac_os.TempHeatSinkItlkSts)         itlk_id |= FAC_OS_HS_OVERTEMP_ITLK;
-    if (fac_os.GroundLeakageItlkSts)        itlk_id |= FAC_OS_GROUND_LKG_ITLK;
-    if (fac_os.BoardTemperatureItlkSts)     itlk_id |= FAC_OS_BOARD_IIB_OVERTEMP_ITLK;
-    if (fac_os.RelativeHumidityItlkSts)     itlk_id |= FAC_OS_BOARD_IIB_OVERHUMIDITY_ITLK;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void send_output_fac_os_itlk_msg()
-{
-    send_itlk_message(0);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-static void get_alarms_id()
-{
-    if (fac_os.VdcLinkAlarmSts)             alarm_id |= FAC_OS_INPUT_OVERVOLTAGE_ALM;
-    if (fac_os.IinAlarmSts)                 alarm_id |= FAC_OS_INPUT_OVERCURRENT_ALM;
-    if (fac_os.IoutAlarmSts)                alarm_id |= FAC_OS_OUTPUT_OVERCURRENT_ALM;
-    if (fac_os.TempIGBT1AlarmSts)           alarm_id |= FAC_OS_IGBT1_OVERTEMP_ALM;
-    if (fac_os.TempIGBT2AlarmSts)           alarm_id |= FAC_OS_IGBT2_OVERTEMP_ALM;
-    if (fac_os.DriveVoltageAlarmSts)        alarm_id |= FAC_OS_DRIVER_OVERVOLTAGE_ALM;
-    if (fac_os.Drive1CurrentAlarmSts)       alarm_id |= FAC_OS_DRIVER1_OVERCURRENT_ALM;
-    if (fac_os.Drive2CurrentAlarmSts)       alarm_id |= FAC_OS_DRIVER2_OVERCURRENT_ALM;
-    if (fac_os.TempLAlarmSts)               alarm_id |= FAC_OS_INDUC_OVERTEMP_ALM;
-    if (fac_os.TempHeatSinkAlarmSts)        alarm_id |= FAC_OS_HS_OVERTEMP_ALM;
-    if (fac_os.GroundLeakageAlarmSts)       alarm_id |= FAC_OS_GROUND_LKG_ALM;
-    if (fac_os.BoardTemperatureAlarmSts)    alarm_id |= FAC_OS_BOARD_IIB_OVERTEMP_ALM;
-    if (fac_os.RelativeHumidityAlarmSts)    alarm_id |= FAC_OS_BOARD_IIB_OVERHUMIDITY_ALM;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-static void config_module()
-{
     /* Set current range */
-    CurrentCh1Init(300.0, 0.150, 50.0, 0); /* Input */
-    CurrentCh2Init(500.0, 0.100, 50.0, 0); /* Output */
-
-    CurrentCh1Enable();  //CurrentCh1 enable
-    CurrentCh2Enable();  //CurrentCh2 enable
-    CurrentCh3Disable(); //CurrentCh3 disable
-    CurrentCh4Disable(); //CurrentCh4 disable
+    CurrentCh1Init(Hall_Primary_Current_Iin, Hall_Secondary_Current_Iin, Hall_Burden_Resistor, Hall_Delay); /* Input */
+    CurrentCh2Init(Hall_Primary_Current_Iout, Hall_Secondary_Current_Iout, Hall_Burden_Resistor, Hall_Delay); /* Output */
 
     /* Protection Limits */
     CurrentCh1AlarmLevelSet(FAC_OS_INPUT_OVERCURRENT_ALM_LIM);
@@ -666,12 +444,8 @@ static void config_module()
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     /* Isolated Voltage */
-    LvCurrentCh1Init(330.0, 0.025, 120.0, 3); /* Input Voltage */
-    LvCurrentCh3Init(50.0, 0.025, 120.0, 3);  /* GND Leakage */
-
-    LvCurrentCh1Enable();  //LvCurrentCh1 enable
-    LvCurrentCh2Disable(); //LvCurrentCh2 disable
-    LvCurrentCh3Enable();  //LvCurrentCh3 enable
+    LvCurrentCh1Init(LV_Primary_Voltage_Vin, LV_Secondary_Current_Vin, LV_Burden_Resistor, Delay_Voltage_Vin); /* Input Voltage */
+    LvCurrentCh3Init(LV_Primary_Voltage_GND_Leakage, LV_Secondary_Current_Vin, LV_Burden_Resistor, Delay_GND_Leakage);  /* GND Leakage */
 
     /* Protection Limits */
     LvCurrentCh1AlarmLevelSet(FAC_OS_INPUT_OVERVOLTAGE_ALM_LIM);
@@ -683,14 +457,8 @@ static void config_module()
 
     //PT100 configuration
     //Delay 2 seconds
-    Pt100SetCh1Delay(2);
-    Pt100SetCh2Delay(2);
-
-    /* Pt-100 channel enable */
-    Pt100Ch1Enable();
-    Pt100Ch2Enable();
-    Pt100Ch3Disable();
-    Pt100Ch4Disable();
+    Pt100SetCh1Delay(Delay_PT100CH1);
+    Pt100SetCh2Delay(Delay_PT100CH2);
 
     /* Pt-100 Configuration Limits */
     Pt100SetCh1AlarmLevel(FAC_OS_HS_OVERTEMP_ALM_LIM);
@@ -701,9 +469,7 @@ static void config_module()
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Temperature igbt1 configuration
-    TempIgbt1Delay(3); //Inserir valor de delay
-
-    TempIgbt1Disable(); //TempIgbt1 disable
+    TempIgbt1Delay(Delay_IGBT1); //Inserir valor de delay
 
     //Temp Igbt1 configuration limits
     TempIgbt1AlarmLevelSet(FAC_OS_IGBT1_OVERTEMP_ALM_LIM);
@@ -712,9 +478,7 @@ static void config_module()
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Temperature igbt2 configuration
-    TempIgbt2Delay(3); //Inserir valor de delay
-
-    TempIgbt2Disable(); //TempIgbt2 disable
+    TempIgbt2Delay(Delay_IGBT2); //Inserir valor de delay
 
     //Temp Igbt2 configuration limits
     TempIgbt2AlarmLevelSet(FAC_OS_IGBT2_OVERTEMP_ALM_LIM);
@@ -723,9 +487,7 @@ static void config_module()
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Temperature Board configuration
-    BoardTempDelay(3); //Inserir valor de delay
-
-    BoardTempEnable(); //BoardTemp enable
+    BoardTempDelay(Delay_BoardTemp); //Inserir valor de delay
 
     //Temp board configuration limits
     BoardTempAlarmLevelSet(FAC_OS_BOARD_OVERTEMP_ALM_LIM);
@@ -734,9 +496,7 @@ static void config_module()
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Humidity Board configuration
-    RhDelay(3); //Inserir valor de delay
-
-    RhEnable(); //Rh enable
+    RhDelay(Delay_BoardRh); //Inserir valor de delay
 
     //Rh configuration limits
     RhAlarmLevelSet(FAC_OS_RH_OVERHUMIDITY_ALM_LIM);
@@ -744,24 +504,10 @@ static void config_module()
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-    //Driver1 error configuration
-    Driver1TopErrorDisable(); //Desabilitado driver error 1 Top
-    Driver1BotErrorDisable(); //Desabilitado driver error 1 Bot
-    Driver1OverTempDisable(); //Desabilitado Temperatura por Hardware do modulo 1
-
-    //Driver2 error configuration
-    Driver2TopErrorDisable(); //Desabilitado driver error 2 Top
-    Driver2BotErrorDisable(); //Desabilitado driver error 2 Bot
-    Driver2OverTempDisable(); //Desabilitado Temperatura por Hardware do modulo 2
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
     //Driver Voltage configuration
     DriverVoltageInit();
 
-    DriverVoltageDelay(3); //Inserir valor de delay
-
-    DriverVoltageDisable(); //DriverVoltage disable
+    DriverVoltageDelay(Delay_DriverVoltage); //Inserir valor de delay
 
     //Limite de alarme e interlock da tensao dos drivers
     DriverVoltageAlarmLevelSet(FAC_OS_DRIVER_OVERVOLTAGE_ALM_LIM);
@@ -772,10 +518,7 @@ static void config_module()
     //Driver Current configuration
     DriverCurrentInit();
 
-    DriverCurrentDelay(3); //Inserir valor de delay
-
-    Driver1CurrentDisable(); //Driver1Current disable
-    Driver2CurrentDisable(); //Driver2Current disable
+    DriverCurrentDelay(Delay_DriverCurrent); //Inserir valor de delay
 
     //Limite de alarme e interlock da corrente do driver 1
     Driver1CurrentAlarmLevelSet(FAC_OS_DRIVER1_OVERCURRENT_ALM_LIM);
@@ -785,39 +528,7 @@ static void config_module()
     Driver2CurrentAlarmLevelSet(FAC_OS_DRIVER2_OVERCURRENT_ALM_LIM);
     Driver2CurrentTripLevelSet(FAC_OS_DRIVER2_OVERCURRENT_ITLK_LIM);
 
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-    //Voltage configuration
-    VoltageCh1Disable(); //VoltageCh1 disable
-    VoltageCh2Disable(); //VoltageCh2 disable
-    VoltageCh3Disable(); //VoltageCh3 disable
-    VoltageCh4Disable(); //VoltageCh4 disable
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-    //Gpdi configuration
-    Gpdi1Disable();  //Gpdi1 disable
-    Gpdi2Disable();  //Gpdi2 disable
-    Gpdi3Disable();  //Gpdi3 disable
-    Gpdi4Disable();  //Gpdi4 disable
-    Gpdi5Disable();  //Gpdi5 disable
-    Gpdi6Disable();  //Gpdi6 disable
-    Gpdi7Disable();  //Gpdi7 disable
-    Gpdi8Disable();  //Gpdi8 disable
-    Gpdi9Disable();  //Gpdi9 disable
-    Gpdi10Disable(); //Gpdi10 disable
-    Gpdi11Disable(); //Gpdi11 disable
-    Gpdi12Disable(); //Gpdi12 disable
-
-    //Gpdo configuration
-    Gpdo1Enable();   //Gpdo1 enable
-    Gpdo2Enable();   //Gpdo2 enable
-    Gpdo3Disable();  //Gpdo3 disable
-    Gpdo4Disable();  //Gpdo4 disable
-
-    //ReleAux and ReleExtItlk configuration
-    ReleAuxEnable(); //ReleAux enable
-    ReleExtItlkEnable(); //ReleExtItlk enable
+#endif
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

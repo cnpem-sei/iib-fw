@@ -11,6 +11,13 @@
 #include "driverlib/sysctl.h"
 #include "adc_internal.h"
 
+#include <iib_modules/fap.h>
+#include <iib_modules/fac_os.h>
+#include <iib_modules/fac_is.h>
+#include <iib_modules/fac_cmd.h>
+
+#include "application.h"
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 static int Adc_Value = 0;
@@ -100,23 +107,6 @@ void AdcsInit(void)
     ADCIntClear(ADC0_BASE, 0);
     ADCIntClear(ADC1_BASE, 0);
 
-    VoltageCh1.Enable = 0;
-    VoltageCh2.Enable = 0;
-    VoltageCh3.Enable = 0;
-    VoltageCh4.Enable = 0;
-    
-    CurrentCh1.Enable = 0;
-    CurrentCh2.Enable = 0;
-    CurrentCh3.Enable = 0;
-    CurrentCh4.Enable = 0;
-    
-    LvCurrentCh1.Enable = 0;
-    LvCurrentCh2.Enable = 0;
-    LvCurrentCh3.Enable = 0;
-
-    DriverVolt.Enable = 0;
-    Driver1Curr.Enable = 0;
-    Driver2Curr.Enable = 0;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -155,7 +145,6 @@ void sample_adc(void)
 void VoltageCh1Init(float nValue, unsigned int Delay)
 {
     VoltageCh1.Ch = 1;
-    VoltageCh1.Enable = 0;
     VoltageCh1.Gain = (nValue/2048.0);
     VoltageCh1.Value = 0.0;
     VoltageCh1.Offset = 0x0800; //OffsetRead(OFFSET_VOLT_CH1);
@@ -175,7 +164,6 @@ void VoltageCh1Init(float nValue, unsigned int Delay)
 void VoltageCh2Init(float nValue, unsigned int Delay)
 {
     VoltageCh2.Ch = 2;
-    VoltageCh2.Enable = 0;
     VoltageCh2.Gain = (nValue/2048.0);
     VoltageCh2.Value = 0.0;
     VoltageCh2.Offset = 0x0800; //OffsetRead(OFFSET_VOLT_CH2);
@@ -195,7 +183,6 @@ void VoltageCh2Init(float nValue, unsigned int Delay)
 void VoltageCh3Init(float nValue, unsigned int Delay)
 {
     VoltageCh3.Ch = 3;
-    VoltageCh3.Enable = 0;
     VoltageCh3.Gain = (nValue/2048.0);
     VoltageCh3.Value = 0.0;
     VoltageCh3.Offset = 0x0800; //OffsetRead(OFFSET_VOLT_CH3);
@@ -215,7 +202,6 @@ void VoltageCh3Init(float nValue, unsigned int Delay)
 void VoltageCh4Init(float nValue, unsigned int Delay)
 {
     VoltageCh4.Ch = 4;
-    VoltageCh4.Enable = 0;
     VoltageCh4.Gain = (nValue/2048.0);
     VoltageCh4.Value = 0.0;
     VoltageCh4.Offset = 0x0800; //OffsetRead(OFFSET_VOLT_CH4);
@@ -248,7 +234,6 @@ float CurrentRange(float nFstCurr, float nSecCurr, float nBurden, float MaxVoltI
 void CurrentCh1Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int delay_ms)
 {
     CurrentCh1.Ch = 1;
-    CurrentCh1.Enable = 0;
     CurrentCh1.Gain = (CurrentRange(nFstCurr, nSecCurr, nBurden, 7.5)/2048.0);
     CurrentCh1.Value = 0.0;
     CurrentCh1.Offset = 0x0800; //OffsetRead(OFFSET_HALL_CH1);
@@ -268,7 +253,6 @@ void CurrentCh1Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int 
 void CurrentCh2Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int delay_ms)
 {
     CurrentCh2.Ch = 2;
-    CurrentCh2.Enable = 0;
     CurrentCh2.Gain = (CurrentRange(nFstCurr, nSecCurr, nBurden, 7.5)/2048.0);
     CurrentCh2.Value = 0.0;
     CurrentCh2.Offset = 0x0800; //OffsetRead(OFFSET_HALL_CH2);
@@ -288,7 +272,6 @@ void CurrentCh2Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int 
 void CurrentCh3Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int delay_ms)
 {
     CurrentCh3.Ch = 3;
-    CurrentCh3.Enable = 0;
     CurrentCh3.Gain = (CurrentRange(nFstCurr, nSecCurr, nBurden, 7.5)/2048.0);
     CurrentCh3.Value = 0.0;
     CurrentCh3.Offset = 0x0800; //OffsetRead(OFFSET_HALL_CH3);
@@ -308,7 +291,6 @@ void CurrentCh3Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int 
 void CurrentCh4Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int delay_ms)
 {
     CurrentCh4.Ch = 4;
-    CurrentCh4.Enable = 0;
     CurrentCh4.Gain = (CurrentRange(nFstCurr, nSecCurr, nBurden, 7.5)/2048.0);
     CurrentCh4.Value = 0.0;
     CurrentCh4.Offset = 0x0800; //OffsetRead(OFFSET_HALL_CH4);
@@ -328,7 +310,6 @@ void CurrentCh4Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int 
 void LvCurrentCh1Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int delay_ms)
 {
     LvCurrentCh1.Ch = 1;
-    LvCurrentCh1.Enable = 0;
     LvCurrentCh1.Gain = (CurrentRange(nFstCurr, nSecCurr, nBurden, 3.0)/2048.0);
     LvCurrentCh1.Value = 0.0;
     LvCurrentCh1.Offset = 0x0800; //OffsetRead(OFFSET_HALL_CH1);
@@ -348,7 +329,6 @@ void LvCurrentCh1Init(float nFstCurr, float nSecCurr, float nBurden, unsigned in
 void LvCurrentCh2Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int delay_ms)
 {
     LvCurrentCh2.Ch = 2;
-    LvCurrentCh2.Enable = 0;
     LvCurrentCh2.Gain = (CurrentRange(nFstCurr, nSecCurr, nBurden, 3.0)/2048.0);
     LvCurrentCh2.Value = 0.0;
     LvCurrentCh2.Offset = 0x0800; //OffsetRead(OFFSET_HALL_CH2);
@@ -368,7 +348,6 @@ void LvCurrentCh2Init(float nFstCurr, float nSecCurr, float nBurden, unsigned in
 void LvCurrentCh3Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int delay_ms)
 {
     LvCurrentCh3.Ch = 3;
-    LvCurrentCh3.Enable = 0;
     LvCurrentCh3.Gain = (CurrentRange(nFstCurr, nSecCurr, nBurden, 3.0)/2048.0);
     LvCurrentCh3.Value = 0.0;
     LvCurrentCh3.Offset = 0x0800; //OffsetRead(OFFSET_HALL_CH3);
@@ -388,7 +367,6 @@ void LvCurrentCh3Init(float nFstCurr, float nSecCurr, float nBurden, unsigned in
 void DriverVoltageInit(void)
 {
     DriverVolt.Ch = 1;
-    DriverVolt.Enable = 0;
     DriverVolt.Gain = 0.00439453125; // 18V/4096
     DriverVolt.Value = 0.0;
     DriverVolt.Offset = 0x0000;
@@ -408,7 +386,6 @@ void DriverVoltageInit(void)
 void DriverCurrentInit(void)
 {
     Driver1Curr.Ch = 1;
-    Driver1Curr.Enable = 0;
     Driver1Curr.Gain = 0.003662109375; // 7,5A/2048
     Driver1Curr.Value = 0.0;
     Driver1Curr.Offset = 0x0800; //OffsetRead(OFFSET_DRIVE_CURRENT1);
@@ -423,7 +400,6 @@ void DriverCurrentInit(void)
     Driver1Curr.Itlk_DelayCount = 0;
 
     Driver2Curr.Ch = 1;
-    Driver2Curr.Enable = 0;
     Driver2Curr.Gain = 0.003662109375; // 7,5A/2048
     Driver2Curr.Value = 0.0;
     Driver2Curr.Offset = 0x0800; //OffsetRead(OFFSET_DRIVE_CURRENT2);
@@ -973,310 +949,212 @@ void ConfigPolLvCurrCh3(unsigned char sts)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void VoltageCh1Enable(void)
-{
-    VoltageCh1.Enable = 1;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void VoltageCh1Disable(void)
-{
-    VoltageCh1.Enable = 0;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void VoltageCh2Enable(void)
-{
-    VoltageCh2.Enable = 1;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void VoltageCh2Disable(void)
-{
-    VoltageCh2.Enable = 0;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void VoltageCh3Enable(void)
-{
-    VoltageCh3.Enable = 1;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void VoltageCh3Disable(void)
-{
-    VoltageCh3.Enable = 0;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void VoltageCh4Enable(void)
-{
-    VoltageCh4.Enable = 1;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void VoltageCh4Disable(void)
-{
-    VoltageCh4.Enable = 0;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void CurrentCh1Enable(void)
-{
-    CurrentCh1.Enable = 1;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void CurrentCh1Disable(void)
-{
-    CurrentCh1.Enable = 0;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void CurrentCh2Enable(void)
-{
-    CurrentCh2.Enable = 1;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void CurrentCh2Disable(void)
-{
-    CurrentCh2.Enable = 0;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void CurrentCh3Enable(void)
-{
-    CurrentCh3.Enable = 1;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void CurrentCh3Disable(void)
-{
-    CurrentCh3.Enable = 0;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void CurrentCh4Enable(void)
-{
-    CurrentCh4.Enable = 1;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void CurrentCh4Disable(void)
-{
-    CurrentCh4.Enable = 0;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void LvCurrentCh1Enable(void)
-{
-    LvCurrentCh1.Enable = 1;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void LvCurrentCh1Disable(void)
-{
-    LvCurrentCh1.Enable = 0;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void LvCurrentCh2Enable(void)
-{
-    LvCurrentCh2.Enable = 1;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void LvCurrentCh2Disable(void)
-{
-    LvCurrentCh2.Enable = 0;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void LvCurrentCh3Enable(void)
-{
-    LvCurrentCh3.Enable = 1;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void LvCurrentCh3Disable(void)
-{
-    LvCurrentCh3.Enable = 0;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void DriverVoltageEnable(void)
-{
-    DriverVolt.Enable = 1;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void DriverVoltageDisable(void)
-{
-    DriverVolt.Enable = 0;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void Driver1CurrentEnable(void)
-{
-    Driver1Curr.Enable = 1;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void Driver1CurrentDisable(void)
-{
-    Driver1Curr.Enable = 0;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void Driver2CurrentEnable(void)
-{
-    Driver2Curr.Enable = 1;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void Driver2CurrentDisable(void)
-{
-    Driver2Curr.Enable = 0;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
 float VoltageCh1Read(void)
 {
-    if(VoltageCh1.Enable)return VoltageCh1.Value;
-    else return 0;
+#if (VoltageCh1Enable == 1)
+
+    return VoltageCh1.Value;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 float VoltageCh2Read(void)
 {
-    if(VoltageCh2.Enable)return VoltageCh2.Value;
-    else return 0;
+#if (VoltageCh2Enable == 1)
+
+    return VoltageCh2.Value;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 float VoltageCh3Read(void)
 {
-    if(VoltageCh3.Enable)return VoltageCh3.Value;
-    else return 0;
+#if (VoltageCh3Enable == 1)
+
+    return VoltageCh3.Value;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 float VoltageCh4Read(void)
 {
-    if(VoltageCh4.Enable)return VoltageCh4.Value;
-    else return 0;
+#if (VoltageCh4Enable == 1)
+
+    return VoltageCh4.Value;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 float CurrentCh1Read(void)
 {
-    if(CurrentCh1.Enable)return CurrentCh1.Value;
-    else return 0;
+#if (CurrentCh1Enable == 1)
+
+    return CurrentCh1.Value;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 float CurrentCh2Read(void)
 {
-    if(CurrentCh2.Enable)return CurrentCh2.Value;
-    else return 0;
+#if (CurrentCh2Enable == 1)
+
+    return CurrentCh2.Value;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 float CurrentCh3Read(void)
 {
-    if(CurrentCh3.Enable)return CurrentCh3.Value;
-    else return 0;
+#if (CurrentCh3Enable == 1)
+
+    return CurrentCh3.Value;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 float CurrentCh4Read(void)
 {
-    if(CurrentCh4.Enable)return CurrentCh4.Value;
-    else return 0;
+#if (CurrentCh4Enable == 1)
+
+    return CurrentCh4.Value;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 float LvCurrentCh1Read(void)
 {
-    if(LvCurrentCh1.Enable)return LvCurrentCh1.Value;
-    else return 0;
+#if (LvCurrentCh1Enable == 1)
+
+    return LvCurrentCh1.Value;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 float LvCurrentCh2Read(void)
 {
-    if(LvCurrentCh2.Enable)return LvCurrentCh2.Value;
-    else return 0;
+#if (LvCurrentCh2Enable == 1)
+
+    return LvCurrentCh2.Value;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 float LvCurrentCh3Read(void)
 {
-    if(LvCurrentCh3.Enable)return LvCurrentCh3.Value;
-    else return 0;
+#if (LvCurrentCh3Enable == 1)
+
+    return LvCurrentCh3.Value;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 float DriverVoltageRead(void)
 {
-   if(DriverVolt.Enable)return (DriverVolt.Value);
-   else return 0;
+#if (DriverVoltageEnable == 1)
+
+    return DriverVolt.Value;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 float Driver1CurrentRead(void)
 {
-   if(Driver1Curr.Enable)return (Driver1Curr.Value);
-   else return 0;
+#if (Driver1CurrentEnable == 1)
+
+    return Driver1Curr.Value;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 float Driver2CurrentRead(void)
 {
-   if(Driver2Curr.Enable)return (Driver2Curr.Value);
-   else return 0;
+#if (Driver2CurrentEnable == 1)
+
+    return Driver2Curr.Value;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -1500,224 +1378,420 @@ void DriverCurrentDelay(unsigned int Delay_Set)
 
 unsigned char VoltageCh1AlarmStatusRead(void)
 {
-    if(VoltageCh1.Enable)return VoltageCh1.Alarm;
-    else return 0;
+#if (VoltageCh1Enable == 1)
+
+    return VoltageCh1.Alarm;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char VoltageCh1TripStatusRead(void)
 {
-    if(VoltageCh1.Enable)return VoltageCh1.Trip;
-    else return 0;
+#if (VoltageCh1Enable == 1)
+
+    return VoltageCh1.Trip;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char VoltageCh2AlarmStatusRead(void)
 {
-    if(VoltageCh2.Enable)return VoltageCh2.Alarm;
-    else return 0;
+#if (VoltageCh2Enable == 1)
+
+    return VoltageCh2.Alarm;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char VoltageCh2TripStatusRead(void)
 {
-    if(VoltageCh2.Enable)return VoltageCh2.Trip;
-    else return 0;
+#if (VoltageCh2Enable == 1)
+
+    return VoltageCh2.Trip;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char VoltageCh3AlarmStatusRead(void)
 {
-    if(VoltageCh3.Enable)return VoltageCh3.Alarm;
-    else return 0;
+#if (VoltageCh3Enable == 1)
+
+    return VoltageCh3.Alarm;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char VoltageCh3TripStatusRead(void)
 {
-    if(VoltageCh3.Enable)return VoltageCh3.Trip;
-    else return 0;
+#if (VoltageCh3Enable == 1)
+
+    return VoltageCh3.Trip;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char VoltageCh4AlarmStatusRead(void)
 {
-    if(VoltageCh4.Enable)return VoltageCh4.Alarm;
-    else return 0;
+#if (VoltageCh4Enable == 1)
+
+    return VoltageCh4.Alarm;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char VoltageCh4TripStatusRead(void)
 {
-    if(VoltageCh4.Enable)return VoltageCh4.Trip;
-    else return 0;
+#if (VoltageCh4Enable == 1)
+
+    return VoltageCh4.Trip;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char CurrentCh1AlarmStatusRead(void)
 {
-    if(CurrentCh1.Enable)return CurrentCh1.Alarm;
-    else return 0;
+#if (CurrentCh1Enable == 1)
+
+    return CurrentCh1.Alarm;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char CurrentCh1TripStatusRead(void)
 {
-    if(CurrentCh1.Enable)return CurrentCh1.Trip;
-    else return 0;
+#if (CurrentCh1Enable == 1)
+
+    return CurrentCh1.Trip;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char CurrentCh2AlarmStatusRead(void)
 {
-    if(CurrentCh2.Enable)return CurrentCh2.Alarm;
-    else return 0;
+#if (CurrentCh2Enable == 1)
+
+    return CurrentCh2.Alarm;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char CurrentCh2TripStatusRead(void)
 {
-    if(CurrentCh2.Enable)return CurrentCh2.Trip;
-    else return 0;
+#if (CurrentCh2Enable == 1)
+
+    return CurrentCh2.Trip;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char CurrentCh3AlarmStatusRead(void)
 {
-    if(CurrentCh3.Enable)return CurrentCh3.Alarm;
-    else return 0;
+#if (CurrentCh3Enable == 1)
+
+    return CurrentCh3.Alarm;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char CurrentCh3TripStatusRead(void)
 {
-    if(CurrentCh3.Enable)return CurrentCh3.Trip;
-    else return 0;
+#if (CurrentCh3Enable == 1)
+
+    return CurrentCh3.Trip;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char CurrentCh4AlarmStatusRead(void)
 {
-    if(CurrentCh4.Enable)return CurrentCh4.Alarm;
-    else return 0;
+#if (CurrentCh4Enable == 1)
+
+    return CurrentCh4.Alarm;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char CurrentCh4TripStatusRead(void)
 {
-    if(CurrentCh4.Enable)return CurrentCh4.Trip;
-    else return 0;
+#if (CurrentCh4Enable == 1)
+
+    return CurrentCh4.Trip;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char LvCurrentCh1AlarmStatusRead(void)
 {
-    if(LvCurrentCh1.Enable)return LvCurrentCh1.Alarm;
-    else return 0;
+#if (LvCurrentCh1Enable == 1)
+
+    return LvCurrentCh1.Alarm;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char LvCurrentCh1TripStatusRead(void)
 {
-    if(LvCurrentCh1.Enable)return LvCurrentCh1.Trip;
-    else return 0;
+#if (LvCurrentCh1Enable == 1)
+
+    return LvCurrentCh1.Trip;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char LvCurrentCh2AlarmStatusRead(void)
 {
-    if(LvCurrentCh2.Enable)return LvCurrentCh2.Alarm;
-    else return 0;
+#if (LvCurrentCh2Enable == 1)
+
+    return LvCurrentCh2.Alarm;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char LvCurrentCh2TripStatusRead(void)
 {
-    if(LvCurrentCh2.Enable)return LvCurrentCh2.Trip;
-    else return 0;
+#if (LvCurrentCh2Enable == 1)
+
+    return LvCurrentCh2.Trip;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char LvCurrentCh3AlarmStatusRead(void)
 {
-    if(LvCurrentCh3.Enable)return LvCurrentCh3.Alarm;
-    else return 0;
+#if (LvCurrentCh3Enable == 1)
+
+    return LvCurrentCh3.Alarm;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char LvCurrentCh3TripStatusRead(void)
 {
-    if(LvCurrentCh3.Enable)return LvCurrentCh3.Trip;
-    else return 0;
+#if (LvCurrentCh3Enable == 1)
+
+    return LvCurrentCh3.Trip;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char DriverVoltageAlarmStatusRead(void)
 {
-    if(DriverVolt.Enable)return DriverVolt.Alarm;
-    else return 0;
+#if (DriverVoltageEnable == 1)
+
+    return DriverVolt.Alarm;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char DriverVolatgeTripStatusRead(void)
 {
-    if(DriverVolt.Enable)return DriverVolt.Trip;
-    else return 0;
+#if (DriverVoltageEnable == 1)
+
+    return DriverVolt.Trip;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char Driver1CurrentAlarmStatusRead(void)
 {
-    if(Driver1Curr.Enable)return Driver1Curr.Alarm;
-    else return 0;
+#if (Driver1CurrentEnable == 1)
+
+    return Driver1Curr.Alarm;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char Driver1CurrentTripStatusRead(void)
 {
-    if(Driver1Curr.Enable)return Driver1Curr.Trip;
-    else return 0;
+#if (Driver1CurrentEnable == 1)
+
+    return Driver1Curr.Trip;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char Driver2CurrentAlarmStatusRead(void)
 {
-    if(Driver2Curr.Enable)return Driver2Curr.Alarm;
-    else return 0;
+#if (Driver2CurrentEnable == 1)
+
+    return Driver2Curr.Alarm;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char Driver2CurrentTripStatusRead(void)
 {
-    if(Driver2Curr.Enable)return Driver2Curr.Trip;
-    else return 0;
+#if (Driver2CurrentEnable == 1)
+
+    return Driver2Curr.Trip;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

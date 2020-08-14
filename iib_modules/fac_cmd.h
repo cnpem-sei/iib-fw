@@ -26,7 +26,107 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
+#include <stdbool.h>
 #include <stdint.h>
+#include "application.h"
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+typedef struct
+{
+    union {
+        float       f;
+        uint8_t     u8[4];
+    } VcapBank;
+
+    bool VcapBankAlarmSts;
+    bool VcapBankItlkSts;
+
+    union {
+        float       f;
+        uint8_t     u8[4];
+    } Vout;
+
+    bool VoutAlarmSts;
+    bool VoutItlkSts;
+
+    union {
+        float       f;
+        uint8_t     u8[4];
+    } AuxIdbVoltage;
+
+    bool AuxIdbVoltageAlarmSts;
+    bool AuxIdbVoltageItlkSts;
+
+    union {
+        float       f;
+        uint8_t     u8[4];
+    } AuxCurrent;
+
+    bool AuxCurrentAlarmSts;
+    bool AuxCurrentItlkSts;
+
+    union {
+        float       f;
+        uint8_t     u8[4];
+    } IdbCurrent;
+
+    bool IdbCurrentAlarmSts;
+    bool IdbCurrentItlkSts;
+
+    union {
+        float       f;
+        uint8_t     u8[4];
+    } TempL;
+
+    bool TempLAlarmSts;
+    bool TempLItlkSts;
+
+    union {
+        float       f;
+        uint8_t     u8[4];
+    } TempHeatSink;
+
+    bool TempHeatSinkAlarmSts;
+    bool TempHeatSinkItlkSts;
+
+    bool MainOverCurrentItlk;
+    bool MainOverCurrentItlkSts;
+
+    bool EmergencyButtonItlk;
+    bool EmergencyButtonItlkSts;
+
+    bool MainUnderVoltageItlk;
+    bool MainUnderVoltageItlkSts;
+
+    bool MainOverVoltageItlk;
+    bool MainOverVoltageItlkSts;
+
+    union {
+        float       f;
+        uint8_t     u8[4];
+    } GroundLeakage;
+
+    bool GroundLeakageAlarmSts;
+    bool GroundLeakageItlkSts;
+
+    union {
+        float       f;
+        uint8_t     u8[4];
+    } BoardTemperature;
+
+    bool BoardTemperatureAlarmSts;
+    bool BoardTemperatureItlkSts;
+
+    union {
+        float       f;
+        uint8_t     u8[4];
+    } RelativeHumidity;
+
+    bool RelativeHumidityAlarmSts;
+    bool RelativeHumidityItlkSts;
+
+} fac_cmd_t;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -60,16 +160,419 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-extern void init_fac_cmd(void);
 extern void clear_fac_cmd_interlocks(void);
 extern uint8_t check_fac_cmd_interlocks(void);
 extern void clear_fac_cmd_alarms(void);
 extern uint8_t check_fac_cmd_alarms(void);
 extern void check_fac_cmd_indication_leds(void);
 extern void fac_cmd_application_readings(void);
-extern void send_fac_cmd_itlk_msg(void);
-extern void fac_cmd_power_on_check(void);
-extern void send_fac_cmd_data(void);
+extern void config_module_fac_cmd(void);
+
+extern fac_cmd_t fac_cmd;
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Set Power Module Alarms And Interlocks
+
+//Rack PA-RaPSC01 / PA-RaPSC02
+
+//BO-FAM:PS-QF
+
+#ifdef BO_FAM_PS_QF__CMD
+
+#define FAC_CMD
+
+#define ON                                                  1
+#define OFF                                                 0
+
+#define FAC_CMD_CAPBANK_OVERVOLTAGE_ALM_LIM                 330.0
+#define FAC_CMD_CAPBANK_OVERVOLTAGE_ITLK_LIM                350.0
+
+#define FAC_CMD_OUTPUT_OVERVOLTAGE_ALM_LIM                  260.0
+#define FAC_CMD_OUTPUT_OVERVOLTAGE_ITLK_LIM                 270.0
+
+#define FAC_CMD_AUX_AND_IDB_SUPPLY_OVERVOLTAGE_ALM_LIM      16.0
+#define FAC_CMD_AUX_AND_IDB_SUPPLY_OVERVOLTAGE_ITLK_LIM     17.0
+
+#define FAC_CMD_AUX_SUPPLY_OVERCURRENT_ALM_LIM              2.0
+#define FAC_CMD_AUX_SUPPLY_OVERCURRENT_ITLK_LIM             2.4
+
+#define FAC_CMD_IDB_SUPPLY_OVERCURRENT_ALM_LIM              2.0
+#define FAC_CMD_IDB_SUPPLY_OVERCURRENT_ITLK_LIM             2.4
+
+#define FAC_CMD_GROUND_LEAKAGE_ALM_LIM                      1.3
+#define FAC_CMD_GROUND_LEAKAGE_ITLK_LIM                     1.5
+
+#define FAC_CMD_INDUC_OVERTEMP_ALM_LIM                      50
+#define FAC_CMD_INDUC_OVERTEMP_ITLK_LIM                     60
+
+#define FAC_CMD_HS_OVERTEMP_ALM_LIM                         50
+#define FAC_CMD_HS_OVERTEMP_ITLK_LIM                        60
+
+#define FAC_CMD_RH_OVERHUMIDITY_ALM_LIM                     50
+#define FAC_CMD_RH_OVERHUMIDITY_ITLK_LIM                    90
+
+#define FAC_CMD_BOARD_OVERTEMP_ALM_LIM                      50
+#define FAC_CMD_BOARD_OVERTEMP_ITLK_LIM                     60
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Set current range
+
+//Sensor Hall
+
+//CurrentCh1Init and CurrentCh2Init and CurrentCh3Init and CurrentCh4Init
+
+#define Hall_Primary_Current                                000.0
+
+#define Hall_Secondary_Current                              0.000
+
+#define Hall_Burden_Resistor                                00.0
+
+//Debouncing delay_ms
+#define Hall_Delay                                          0
+
+#define CurrentCh1Enable                                    OFF
+#define CurrentCh2Enable                                    OFF
+#define CurrentCh3Enable                                    OFF
+#define CurrentCh4Enable                                    OFF
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Set LV 20P range
+
+//LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
+
+#define LV_Primary_Voltage_Cap_Bank                         600.0
+
+#define LV_Primary_Voltage_Vout                             300.0
+
+#define LV_Primary_Voltage_GND_Leakage                      4.86
+
+#define LV_Secondary_Current_Vin                            0.025
+
+#define LV_Burden_Resistor                                  120.0
+
+//Debouncing delay_ms
+#define Delay_Voltage_Cap_Bank                              3
+
+//Debouncing delay_ms
+#define Delay_Vout                                          3
+
+//Debouncing delay_ms
+#define Delay_GND_Leakage                                   3
+
+#define LvCurrentCh1Enable                                  ON
+#define LvCurrentCh2Enable                                  ON
+#define LvCurrentCh3Enable                                  ON
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//PT100 CH1 and CH2 configuration
+//Debouncing Delay seconds
+
+#define Delay_PT100CH1                                      4
+#define Delay_PT100CH2                                      4
+
+#define Pt100Ch1Enable                                      ON
+#define Pt100Ch2Enable                                      ON
+#define Pt100Ch3Enable                                      OFF
+#define Pt100Ch4Enable                                      OFF
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Temperature igbt1 and igbt2 configuration
+//Debouncing delay_ms
+
+#define Delay_IGBT1                                         0
+#define Delay_IGBT2                                         0
+
+#define TempIgbt1Enable                                     OFF
+#define TempIgbt2Enable                                     OFF
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Temperature Board and Humidity Board configuration
+//Debouncing delay_ms
+
+#define Delay_BoardTemp                                     3
+#define Delay_BoardRh                                       3
+
+#define BoardTempEnable                                     ON
+#define RhEnable                                            ON
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Driver Voltage and Driver Current configuration
+//Debouncing delay_ms
+
+#define Delay_DriverVoltage                                 3
+#define Delay_DriverCurrent                                 3
+
+#define DriverVoltageEnable                                 ON  //Voltage Aux and Idb enable
+#define Driver1CurrentEnable                                ON  //Current Aux enable
+#define Driver2CurrentEnable                                ON  //Current Idb enable
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Driver1 error configuration
+
+#define Driver1TopErrorEnable                               OFF
+#define Driver1BotErrorEnable                               OFF
+#define Driver1OverTempEnable                               OFF
+
+//Driver2 error configuration
+
+#define Driver2TopErrorEnable                               OFF
+#define Driver2BotErrorEnable                               OFF
+#define Driver2OverTempEnable                               OFF
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Voltage configuration
+
+#define VoltageCh1Enable                                    OFF
+#define VoltageCh2Enable                                    OFF
+#define VoltageCh3Enable                                    OFF
+#define VoltageCh4Enable                                    OFF
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Gpdi configuration
+
+#define Gpdi1Enable                                         OFF
+#define Gpdi2Enable                                         OFF
+#define Gpdi3Enable                                         OFF
+#define Gpdi4Enable                                         OFF
+#define Gpdi5Enable                                         ON  // Main Over Current
+#define Gpdi6Enable                                         ON  // Emergency Button
+#define Gpdi7Enable                                         OFF // Main Under Voltage
+#define Gpdi8Enable                                         OFF // Main Over Voltage
+#define Gpdi9Enable                                         OFF
+#define Gpdi10Enable                                        OFF
+#define Gpdi11Enable                                        OFF
+#define Gpdi12Enable                                        OFF
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Gpdo configuration
+
+#define Gpdo1Enable                                         OFF
+#define Gpdo2Enable                                         OFF
+#define Gpdo3Enable                                         OFF
+#define Gpdo4Enable                                         OFF
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//ReleAux and ReleExtItlk configuration
+
+#define ReleAuxEnable                                       ON
+#define ReleExtItlkEnable                                   ON
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+#endif /* BO_FAM_PS_QF__CMD */
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Set Power Module Alarms And Interlocks
+
+//FAC Giga de Testes CMD
+
+#ifdef FAC_GIGA_TESTE__CMD
+
+#define FAC_CMD
+
+#define ON                                                  1
+#define OFF                                                 0
+
+#define FAC_CMD_CAPBANK_OVERVOLTAGE_ALM_LIM                 270.0
+#define FAC_CMD_CAPBANK_OVERVOLTAGE_ITLK_LIM                290.0
+
+#define FAC_CMD_OUTPUT_OVERVOLTAGE_ALM_LIM                  220.0
+#define FAC_CMD_OUTPUT_OVERVOLTAGE_ITLK_LIM                 240.0
+
+#define FAC_CMD_AUX_AND_IDB_SUPPLY_OVERVOLTAGE_ALM_LIM      16.0
+#define FAC_CMD_AUX_AND_IDB_SUPPLY_OVERVOLTAGE_ITLK_LIM     17.0
+
+#define FAC_CMD_AUX_SUPPLY_OVERCURRENT_ALM_LIM              2.0
+#define FAC_CMD_AUX_SUPPLY_OVERCURRENT_ITLK_LIM             2.4
+
+#define FAC_CMD_IDB_SUPPLY_OVERCURRENT_ALM_LIM              2.0
+#define FAC_CMD_IDB_SUPPLY_OVERCURRENT_ITLK_LIM             2.4
+
+#define FAC_CMD_GROUND_LEAKAGE_ALM_LIM                      45.0
+#define FAC_CMD_GROUND_LEAKAGE_ITLK_LIM                     50.0
+
+#define FAC_CMD_INDUC_OVERTEMP_ALM_LIM                      55
+#define FAC_CMD_INDUC_OVERTEMP_ITLK_LIM                     60
+
+#define FAC_CMD_HS_OVERTEMP_ALM_LIM                         55
+#define FAC_CMD_HS_OVERTEMP_ITLK_LIM                        60
+
+#define FAC_CMD_RH_OVERHUMIDITY_ALM_LIM                     50
+#define FAC_CMD_RH_OVERHUMIDITY_ITLK_LIM                    90
+
+#define FAC_CMD_BOARD_OVERTEMP_ALM_LIM                      50
+#define FAC_CMD_BOARD_OVERTEMP_ITLK_LIM                     60
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Set current range
+
+//Sensor Hall
+
+//CurrentCh1Init and CurrentCh2Init and CurrentCh3Init and CurrentCh4Init
+
+#define Hall_Primary_Current                                000.0
+
+#define Hall_Secondary_Current                              0.000
+
+#define Hall_Burden_Resistor                                00.0
+
+//Debouncing delay_ms
+#define Hall_Delay                                          0
+
+#define CurrentCh1Enable                                    OFF
+#define CurrentCh2Enable                                    OFF
+#define CurrentCh3Enable                                    OFF
+#define CurrentCh4Enable                                    OFF
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Set LV 20P range
+
+//LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
+
+#define LV_Primary_Voltage_Cap_Bank                         600.0
+
+#define LV_Primary_Voltage_Vout                             300.0
+
+#define LV_Primary_Voltage_GND_Leakage                      50.0
+
+#define LV_Secondary_Current_Vin                            0.025
+
+#define LV_Burden_Resistor                                  120.0
+
+//Debouncing delay_ms
+#define Delay_Voltage_Cap_Bank                              3
+
+//Debouncing delay_ms
+#define Delay_Vout                                          3
+
+//Debouncing delay_ms
+#define Delay_GND_Leakage                                   3
+
+#define LvCurrentCh1Enable                                  ON
+#define LvCurrentCh2Enable                                  ON
+#define LvCurrentCh3Enable                                  ON
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//PT100 CH1 and CH2 configuration
+//Debouncing Delay seconds
+
+#define Delay_PT100CH1                                      4
+#define Delay_PT100CH2                                      4
+
+#define Pt100Ch1Enable                                      ON
+#define Pt100Ch2Enable                                      ON
+#define Pt100Ch3Enable                                      OFF
+#define Pt100Ch4Enable                                      OFF
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Temperature igbt1 and igbt2 configuration
+//Debouncing delay_ms
+
+#define Delay_IGBT1                                         0
+#define Delay_IGBT2                                         0
+
+#define TempIgbt1Enable                                     OFF
+#define TempIgbt2Enable                                     OFF
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Temperature Board and Humidity Board configuration
+//Debouncing delay_ms
+
+#define Delay_BoardTemp                                     3
+#define Delay_BoardRh                                       3
+
+#define BoardTempEnable                                     ON
+#define RhEnable                                            ON
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Driver Voltage and Driver Current configuration
+//Debouncing delay_ms
+
+#define Delay_DriverVoltage                                 3
+#define Delay_DriverCurrent                                 3
+
+#define DriverVoltageEnable                                 ON  //Voltage Aux and Idb enable
+#define Driver1CurrentEnable                                ON  //Current Aux enable
+#define Driver2CurrentEnable                                ON  //Current Idb enable
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Driver1 error configuration
+
+#define Driver1TopErrorEnable                               OFF
+#define Driver1BotErrorEnable                               OFF
+#define Driver1OverTempEnable                               OFF
+
+//Driver2 error configuration
+
+#define Driver2TopErrorEnable                               OFF
+#define Driver2BotErrorEnable                               OFF
+#define Driver2OverTempEnable                               OFF
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Voltage configuration
+
+#define VoltageCh1Enable                                    OFF
+#define VoltageCh2Enable                                    OFF
+#define VoltageCh3Enable                                    OFF
+#define VoltageCh4Enable                                    OFF
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Gpdi configuration
+
+#define Gpdi1Enable                                         OFF
+#define Gpdi2Enable                                         OFF
+#define Gpdi3Enable                                         OFF
+#define Gpdi4Enable                                         OFF
+#define Gpdi5Enable                                         ON  // Main Over Current
+#define Gpdi6Enable                                         ON  // Emergency Button
+#define Gpdi7Enable                                         ON  // Main Under Voltage
+#define Gpdi8Enable                                         ON  // Main Over Voltage
+#define Gpdi9Enable                                         OFF
+#define Gpdi10Enable                                        OFF
+#define Gpdi11Enable                                        OFF
+#define Gpdi12Enable                                        OFF
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Gpdo configuration
+
+#define Gpdo1Enable                                         OFF
+#define Gpdo2Enable                                         OFF
+#define Gpdo3Enable                                         OFF
+#define Gpdo4Enable                                         OFF
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//ReleAux and ReleExtItlk configuration
+
+#define ReleAuxEnable                                       ON
+#define ReleExtItlkEnable                                   ON
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+#endif /* FAC_GIGA_TESTE__CMD */
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

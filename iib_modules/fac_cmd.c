@@ -45,137 +45,9 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-#define FAC_CMD_CAPBANK_OVERVOLTAGE_ALM_LIM                 270.0
-#define FAC_CMD_CAPBANK_OVERVOLTAGE_ITLK_LIM                290.0
-
-#define FAC_CMD_OUTPUT_OVERVOLTAGE_ALM_LIM                  220.0
-#define FAC_CMD_OUTPUT_OVERVOLTAGE_ITLK_LIM                 240.0
-
-#define FAC_CMD_AUX_AND_IDB_SUPPLY_OVERVOLTAGE_ALM_LIM      16.0
-#define FAC_CMD_AUX_AND_IDB_SUPPLY_OVERVOLTAGE_ITLK_LIM     17.0
-
-#define FAC_CMD_AUX_SUPPLY_OVERCURRENT_ALM_LIM              2.0
-#define FAC_CMD_AUX_SUPPLY_OVERCURRENT_ITLK_LIM             2.4
-
-#define FAC_CMD_IDB_SUPPLY_OVERCURRENT_ALM_LIM              2.0
-#define FAC_CMD_IDB_SUPPLY_OVERCURRENT_ITLK_LIM             2.4
-
-#define FAC_CMD_GROUND_LEAKAGE_ALM_LIM                      45.0
-#define FAC_CMD_GROUND_LEAKAGE_ITLK_LIM                     50.0
-
-#define FAC_CMD_INDUC_OVERTEMP_ALM_LIM                      55
-#define FAC_CMD_INDUC_OVERTEMP_ITLK_LIM                     60
-
-#define FAC_CMD_HS_OVERTEMP_ALM_LIM                         55
-#define FAC_CMD_HS_OVERTEMP_ITLK_LIM                        60
-
-#define FAC_CMD_RH_OVERHUMIDITY_ALM_LIM                     50
-#define FAC_CMD_RH_OVERHUMIDITY_ITLK_LIM                    90
-
-#define FAC_CMD_BOARD_OVERTEMP_ALM_LIM                      50
-#define FAC_CMD_BOARD_OVERTEMP_ITLK_LIM                     60
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-typedef struct
-{
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } VcapBank;
-
-    bool VcapBankAlarmSts;
-    bool VcapBankItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } Vout;
-
-    bool VoutAlarmSts;
-    bool VoutItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } AuxIdbVoltage;
-
-    bool AuxIdbVoltageAlarmSts;
-    bool AuxIdbVoltageItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } AuxCurrent;
-
-    bool AuxCurrentAlarmSts;
-    bool AuxCurrentItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } IdbCurrent;
-
-    bool IdbCurrentAlarmSts;
-    bool IdbCurrentItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } TempL;
-
-    bool TempLAlarmSts;
-    bool TempLItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } TempHeatSink;
-
-    bool TempHeatSinkAlarmSts;
-    bool TempHeatSinkItlkSts;
-
-    bool MainOverCurrentItlk;
-    bool MainOverCurrentItlkSts;
-
-    bool EmergencyButtonItlk;
-    bool EmergencyButtonItlkSts;
-
-    bool MainUnderVoltageItlk;
-    bool MainUnderVoltageItlkSts;
-
-    bool MainOverVoltageItlk;
-    bool MainOverVoltageItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } GroundLeakage;
-
-    bool GroundLeakageAlarmSts;
-    bool GroundLeakageItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } BoardTemperature;
-
-    bool BoardTemperatureAlarmSts;
-    bool BoardTemperatureItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } RelativeHumidity;
-
-    bool RelativeHumidityAlarmSts;
-    bool RelativeHumidityItlkSts;
-
-} fac_cmd_t;
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
 fac_cmd_t fac_cmd;
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 static uint32_t fac_cmd_interlocks_indication;
 static uint32_t fac_cmd_alarms_indication;
@@ -187,20 +59,6 @@ static uint32_t ResetAlarmsRegister = 0;
 
 static uint32_t itlk_id;
 static uint32_t alarm_id;
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-static void get_itlks_id();
-static void get_alarms_id();
-static void map_vars();
-static void config_module();
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void init_fac_cmd()
-{
-    config_module();
-}
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -455,22 +313,36 @@ void fac_cmd_application_readings()
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-    map_vars();
-    get_itlks_id();
-    get_alarms_id();
-}
+    if (fac_cmd.VcapBankItlkSts)             itlk_id |= FAC_CMD_CAPBANK_OVERVOLTAGE_ITLK;
+    if (fac_cmd.VoutItlkSts)                 itlk_id |= FAC_CMD_OUTPUT_OVERVOLTAGE_ITLK;
+    if (fac_cmd.AuxIdbVoltageItlkSts)        itlk_id |= FAC_CMD_AUX_AND_IDB_SUPPLY_OVERVOLTAGE_ITLK;
+    if (fac_cmd.AuxCurrentItlkSts)           itlk_id |= FAC_CMD_AUX_SUPPLY_OVERCURRENT_ITLK;
+    if (fac_cmd.IdbCurrentItlkSts)           itlk_id |= FAC_CMD_IDB_SUPPLY_OVERCURRENT_ITLK;
+    if (fac_cmd.TempLItlkSts)                itlk_id |= FAC_CMD_INDUC_OVERTEMP_ITLK;
+    if (fac_cmd.TempHeatSinkItlkSts)         itlk_id |= FAC_CMD_HS_OVERTEMP_ITLK;
+    if (fac_cmd.MainOverCurrentItlkSts)      itlk_id |= FAC_CMD_MAIN_OVER_CURRENT_ITLK;
+    if (fac_cmd.EmergencyButtonItlkSts)      itlk_id |= FAC_CMD_EMERGENCY_BUTTON_ITLK;
+    if (fac_cmd.MainUnderVoltageItlkSts)     itlk_id |= FAC_CMD_MAIN_UNDER_VOLTAGE_ITLK;
+    if (fac_cmd.MainOverVoltageItlkSts)      itlk_id |= FAC_CMD_MAIN_OVER_VOLTAGE_ITLK;
+    if (fac_cmd.GroundLeakageItlkSts)        itlk_id |= FAC_CMD_GROUND_LKG_ITLK;
+    if (fac_cmd.BoardTemperatureItlkSts)     itlk_id |= FAC_CMD_BOARD_IIB_OVERTEMP_ITLK;
+    if (fac_cmd.RelativeHumidityItlkSts)     itlk_id |= FAC_CMD_BOARD_IIB_OVERHUMIDITY_ITLK;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void fac_cmd_power_on_check()
-{
-    Led1TurnOn();
-}
+    if (fac_cmd.VcapBankAlarmSts)            alarm_id |= FAC_CMD_CAPBANK_OVERVOLTAGE_ALM;
+    if (fac_cmd.VoutItlkSts)                 alarm_id |= FAC_CMD_OUTPUT_OVERVOLTAGE_ALM;
+    if (fac_cmd.AuxIdbVoltageAlarmSts)       alarm_id |= FAC_CMD_AUX_AND_IDB_SUPPLY_OVERVOLTAGE_ALM;
+    if (fac_cmd.AuxCurrentAlarmSts)          alarm_id |= FAC_CMD_AUX_SUPPLY_OVERCURRENT_ALM;
+    if (fac_cmd.IdbCurrentAlarmSts)          alarm_id |= FAC_CMD_IDB_SUPPLY_OVERCURRENT_ALM;
+    if (fac_cmd.TempLAlarmSts)               alarm_id |= FAC_CMD_INDUC_OVERTEMP_ALM;
+    if (fac_cmd.TempHeatSinkAlarmSts)        alarm_id |= FAC_CMD_HS_OVERTEMP_ALM;
+    if (fac_cmd.GroundLeakageAlarmSts)       alarm_id |= FAC_CMD_GROUND_LKG_ALM;
+    if (fac_cmd.BoardTemperatureAlarmSts)    alarm_id |= FAC_CMD_BOARD_IIB_OVERTEMP_ALM;
+    if (fac_cmd.RelativeHumidityAlarmSts)    alarm_id |= FAC_CMD_BOARD_IIB_OVERHUMIDITY_ALM;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-static void map_vars()
-{
     fac_cmd_interlocks_indication = itlk_id;
     fac_cmd_alarms_indication = alarm_id;
 
@@ -490,76 +362,20 @@ static void map_vars()
     g_controller_iib.iib_signals[7].f       = fac_cmd.TempHeatSink.f;
     g_controller_iib.iib_signals[8].f       = fac_cmd.BoardTemperature.f;
     g_controller_iib.iib_signals[9].f       = fac_cmd.RelativeHumidity.f;
+
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void send_fac_cmd_data()
+void config_module_fac_cmd(void)
 {
-    static uint8_t i = 0;
 
-    send_data_message(i);
+#ifdef FAC_CMD
 
-    i++;
-
-    if (i > 9) i = 0;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-static void get_itlks_id()
-{
-    if (fac_cmd.VcapBankItlkSts)             itlk_id |= FAC_CMD_CAPBANK_OVERVOLTAGE_ITLK;
-    if (fac_cmd.VoutItlkSts)                 itlk_id |= FAC_CMD_OUTPUT_OVERVOLTAGE_ITLK;
-    if (fac_cmd.AuxIdbVoltageItlkSts)        itlk_id |= FAC_CMD_AUX_AND_IDB_SUPPLY_OVERVOLTAGE_ITLK;
-    if (fac_cmd.AuxCurrentItlkSts)           itlk_id |= FAC_CMD_AUX_SUPPLY_OVERCURRENT_ITLK;
-    if (fac_cmd.IdbCurrentItlkSts)           itlk_id |= FAC_CMD_IDB_SUPPLY_OVERCURRENT_ITLK;
-    if (fac_cmd.TempLItlkSts)                itlk_id |= FAC_CMD_INDUC_OVERTEMP_ITLK;
-    if (fac_cmd.TempHeatSinkItlkSts)         itlk_id |= FAC_CMD_HS_OVERTEMP_ITLK;
-    if (fac_cmd.MainOverCurrentItlkSts)      itlk_id |= FAC_CMD_MAIN_OVER_CURRENT_ITLK;
-    if (fac_cmd.EmergencyButtonItlkSts)      itlk_id |= FAC_CMD_EMERGENCY_BUTTON_ITLK;
-    if (fac_cmd.MainUnderVoltageItlkSts)     itlk_id |= FAC_CMD_MAIN_UNDER_VOLTAGE_ITLK;
-    if (fac_cmd.MainOverVoltageItlkSts)      itlk_id |= FAC_CMD_MAIN_OVER_VOLTAGE_ITLK;
-    if (fac_cmd.GroundLeakageItlkSts)        itlk_id |= FAC_CMD_GROUND_LKG_ITLK;
-    if (fac_cmd.BoardTemperatureItlkSts)     itlk_id |= FAC_CMD_BOARD_IIB_OVERTEMP_ITLK;
-    if (fac_cmd.RelativeHumidityItlkSts)     itlk_id |= FAC_CMD_BOARD_IIB_OVERHUMIDITY_ITLK;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void send_fac_cmd_itlk_msg()
-{
-    send_itlk_message(0);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-static void get_alarms_id()
-{
-    if (fac_cmd.VcapBankAlarmSts)            alarm_id |= FAC_CMD_CAPBANK_OVERVOLTAGE_ALM;
-    if (fac_cmd.VoutItlkSts)                 alarm_id |= FAC_CMD_OUTPUT_OVERVOLTAGE_ALM;
-    if (fac_cmd.AuxIdbVoltageAlarmSts)       alarm_id |= FAC_CMD_AUX_AND_IDB_SUPPLY_OVERVOLTAGE_ALM;
-    if (fac_cmd.AuxCurrentAlarmSts)          alarm_id |= FAC_CMD_AUX_SUPPLY_OVERCURRENT_ALM;
-    if (fac_cmd.IdbCurrentAlarmSts)          alarm_id |= FAC_CMD_IDB_SUPPLY_OVERCURRENT_ALM;
-    if (fac_cmd.TempLAlarmSts)               alarm_id |= FAC_CMD_INDUC_OVERTEMP_ALM;
-    if (fac_cmd.TempHeatSinkAlarmSts)        alarm_id |= FAC_CMD_HS_OVERTEMP_ALM;
-    if (fac_cmd.GroundLeakageAlarmSts)       alarm_id |= FAC_CMD_GROUND_LKG_ALM;
-    if (fac_cmd.BoardTemperatureAlarmSts)    alarm_id |= FAC_CMD_BOARD_IIB_OVERTEMP_ALM;
-    if (fac_cmd.RelativeHumidityAlarmSts)    alarm_id |= FAC_CMD_BOARD_IIB_OVERHUMIDITY_ALM;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-static void config_module()
-{
     /* Isolated Voltage */
-    LvCurrentCh1Init(300.0, 0.025, 120.0, 3); /* Output Voltage */
-    LvCurrentCh2Init(600.0, 0.025, 120.0, 3); /* Voltage Capacitor Bank */
-    LvCurrentCh3Init(50.0, 0.025, 120.0, 3);  /* GND Leakage */
-
-    LvCurrentCh1Enable();  //LvCurrentCh1 enable
-    LvCurrentCh2Enable();  //LvCurrentCh2 enable
-    LvCurrentCh3Enable();  //LvCurrentCh3 enable
+    LvCurrentCh1Init(LV_Primary_Voltage_Vout, LV_Secondary_Current_Vin, LV_Burden_Resistor, Delay_Vout); /* Output Voltage */
+    LvCurrentCh2Init(LV_Primary_Voltage_Cap_Bank, LV_Secondary_Current_Vin, LV_Burden_Resistor, Delay_Voltage_Cap_Bank); /* Voltage Capacitor Bank */
+    LvCurrentCh3Init(LV_Primary_Voltage_GND_Leakage, LV_Secondary_Current_Vin, LV_Burden_Resistor, Delay_GND_Leakage); /* GND Leakage */
 
     /* Protection Limits */
     LvCurrentCh1AlarmLevelSet(FAC_CMD_OUTPUT_OVERVOLTAGE_ALM_LIM);
@@ -573,14 +389,8 @@ static void config_module()
 
     //PT100 configuration
     //Delay 4 seconds
-    Pt100SetCh1Delay(4);
-    Pt100SetCh2Delay(4);
-
-    /* Pt-100 channel enable */
-    Pt100Ch1Enable();
-    Pt100Ch2Enable();
-    Pt100Ch3Disable();
-    Pt100Ch4Disable();
+    Pt100SetCh1Delay(Delay_PT100CH1);
+    Pt100SetCh2Delay(Delay_PT100CH2);
 
     /* Pt-100 Configuration Limits */
     Pt100SetCh1AlarmLevel(FAC_CMD_INDUC_OVERTEMP_ALM_LIM);
@@ -590,16 +400,8 @@ static void config_module()
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-    //Temperature igbt1 and igbt2 configuration
-    TempIgbt1Disable(); //TempIgbt1 disable
-    TempIgbt2Disable(); //TempIgbt2 disable
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
     //Temperature Board configuration
-    BoardTempDelay(3); //Inserir valor de delay
-
-    BoardTempEnable(); //BoardTemp enable
+    BoardTempDelay(Delay_BoardTemp); //Inserir valor de delay
 
     //Temp board configuration limits
     BoardTempAlarmLevelSet(FAC_CMD_BOARD_OVERTEMP_ALM_LIM);
@@ -608,9 +410,7 @@ static void config_module()
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Humidity Board configuration
-    RhDelay(3); //Inserir valor de delay
-
-    RhEnable(); //Rh enable
+    RhDelay(Delay_BoardRh); //Inserir valor de delay
 
     //Rh configuration limits
     RhAlarmLevelSet(FAC_CMD_RH_OVERHUMIDITY_ALM_LIM);
@@ -618,24 +418,10 @@ static void config_module()
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-    //Driver1 error configuration
-    Driver1TopErrorDisable(); //Desabilitado driver error 1 Top
-    Driver1BotErrorDisable(); //Desabilitado driver error 1 Bot
-    Driver1OverTempDisable(); //Desabilitado Temperatura por Hardware do modulo 1
-
-    //Driver2 error configuration
-    Driver2TopErrorDisable(); //Desabilitado driver error 2 Top
-    Driver2BotErrorDisable(); //Desabilitado driver error 2 Bot
-    Driver2OverTempDisable(); //Desabilitado Temperatura por Hardware do modulo 2
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
     //Configuration Aux and Idb voltage
     DriverVoltageInit();
 
-    DriverVoltageDelay(3); //Inserir valor de delay
-
-    DriverVoltageEnable(); //Voltage Aux and Idb enable
+    DriverVoltageDelay(Delay_DriverVoltage); //Inserir valor de delay
 
     //Limite de alarme e interlock da tensao
     DriverVoltageAlarmLevelSet(FAC_CMD_AUX_AND_IDB_SUPPLY_OVERVOLTAGE_ALM_LIM);
@@ -646,10 +432,7 @@ static void config_module()
     //Configuration Aux and Idb current
     DriverCurrentInit();
 
-    DriverCurrentDelay(3); //Inserir valor de delay
-
-    Driver1CurrentEnable(); //Current Aux enable
-    Driver2CurrentEnable(); //Current Idb enable
+    DriverCurrentDelay(Delay_DriverCurrent); //Inserir valor de delay
 
     //Limite de alarme e interlock Aux
     Driver1CurrentAlarmLevelSet(FAC_CMD_AUX_SUPPLY_OVERCURRENT_ALM_LIM);
@@ -659,39 +442,7 @@ static void config_module()
     Driver2CurrentAlarmLevelSet(FAC_CMD_IDB_SUPPLY_OVERCURRENT_ALM_LIM);
     Driver2CurrentTripLevelSet(FAC_CMD_IDB_SUPPLY_OVERCURRENT_ITLK_LIM);
 
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-    //Voltage configuration
-    VoltageCh1Disable(); //VoltageCh1 disable
-    VoltageCh2Disable(); //VoltageCh2 disable
-    VoltageCh3Disable(); //VoltageCh3 disable
-    VoltageCh4Disable(); //VoltageCh4 disable
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-    //Gpdi configuration
-    Gpdi1Disable();  //Gpdi1 disable
-    Gpdi2Disable();  //Gpdi2 disable
-    Gpdi3Disable();  //Gpdi3 disable
-    Gpdi4Disable();  //Gpdi4 disable
-    Gpdi5Enable();   //Gpdi5 enable Main Over Current
-    Gpdi6Enable();   //Gpdi6 enable Emergency Button
-    Gpdi7Enable();   //Gpdi7 enable Main Under Voltage
-    Gpdi8Enable();   //Gpdi8 enable Main Over Voltage
-    Gpdi9Disable();  //Gpdi9 disable
-    Gpdi10Disable(); //Gpdi10 disable
-    Gpdi11Disable(); //Gpdi11 disable
-    Gpdi12Disable(); //Gpdi12 disable
-
-    //Gpdo configuration
-    Gpdo1Disable();  //Gpdo1 disable
-    Gpdo2Disable();  //Gpdo2 disable
-    Gpdo3Disable();  //Gpdo3 disable
-    Gpdo4Disable();  //Gpdo4 disable
-
-    //ReleAux and ReleExtItlk configuration
-    ReleAuxEnable(); //ReleAux enable
-    ReleExtItlkEnable(); //ReleExtItlk enable
+#endif
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

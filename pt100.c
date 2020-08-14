@@ -22,6 +22,13 @@
 #include "pt100.h"
 #include "leds.h"
 
+#include <iib_modules/fap.h>
+#include <iib_modules/fac_os.h>
+#include <iib_modules/fac_is.h>
+#include <iib_modules/fac_cmd.h>
+
+#include "application.h"
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // This lib reports a PT100 Temperature value from 0 to 255°C with a resolution of 1°C
@@ -290,7 +297,6 @@ void Pt100Init(void)
     spi_init();
 
     Pt100Ch1.Ch                 = 1;
-    Pt100Ch1.Enable             = 0;
     Pt100Ch1.Calibration        = 0;
     Pt100Ch1.Temperature        = 0;
     Pt100Ch1.AlarmLimit         = 100;
@@ -306,7 +312,6 @@ void Pt100Init(void)
     Pt100InitChannel(&Pt100Ch1);
 
     Pt100Ch2.Ch                 = 2;
-    Pt100Ch2.Enable             = 0;
     Pt100Ch2.Calibration        = 0;
     Pt100Ch2.Temperature        = 0;
     Pt100Ch2.AlarmLimit         = 100;
@@ -322,7 +327,6 @@ void Pt100Init(void)
     Pt100InitChannel(&Pt100Ch2);
 
     Pt100Ch3.Ch                 = 3;
-    Pt100Ch3.Enable             = 0;
     Pt100Ch3.Calibration        = 0;
     Pt100Ch3.Temperature        = 0;
     Pt100Ch3.AlarmLimit         = 100;
@@ -338,7 +342,6 @@ void Pt100Init(void)
     Pt100InitChannel(&Pt100Ch3);
 
     Pt100Ch4.Ch                 = 4;
-    Pt100Ch4.Enable             = 0;
     Pt100Ch4.Calibration        = 0;
     Pt100Ch4.Temperature        = 0;
     Pt100Ch4.AlarmLimit         = 100;
@@ -395,75 +398,18 @@ void Pt100Ch4Sample(void)
 // Application Functions
 //******************************************************************************
 
-// PT100 Channel 1 Enable
-void Pt100Ch1Enable(void)
-{
-    Pt100Ch1.Enable = 1;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-// PT100 Channel 1 Disable
-void Pt100Ch1Disable(void)
-{
-    Pt100Ch1.Enable = 0;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-// PT100 Channel 2 Enable
-void Pt100Ch2Enable(void)
-{
-    Pt100Ch2.Enable = 1;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-// PT100 Channel 2 Disable
-void Pt100Ch2Disable(void)
-{
-    Pt100Ch2.Enable = 0;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-// PT100 Channel 3 Enable
-void Pt100Ch3Enable(void)
-{
-    Pt100Ch3.Enable = 1;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-// PT100 Channel 3 Disable
-void Pt100Ch3Disable(void)
-{
-    Pt100Ch3.Enable = 0;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-// PT100 Channel 4 Enable
-void Pt100Ch4Enable(void)
-{
-    Pt100Ch4.Enable = 1;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-// PT100 Channel 4 Disable
-void Pt100Ch4Disable(void)
-{
-    Pt100Ch4.Enable = 0;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
 // Read Channel 1 Temperature value
 unsigned char Pt100ReadCh1(void)
 {
-    if(Pt100Ch1.Enable)return Pt100Ch1.Temperature;
-    else return 0;
+#if (Pt100Ch1Enable == 1)
+
+    return Pt100Ch1.Temperature;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -471,8 +417,15 @@ unsigned char Pt100ReadCh1(void)
 // Read Channel 2 Temperature value
 unsigned char Pt100ReadCh2(void)
 {
-    if(Pt100Ch2.Enable)return Pt100Ch2.Temperature;
-    else return 0;
+#if (Pt100Ch2Enable == 1)
+
+    return Pt100Ch2.Temperature;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -480,8 +433,15 @@ unsigned char Pt100ReadCh2(void)
 // Read Channel 3 Temperature value
 unsigned char Pt100ReadCh3(void)
 {
-    if(Pt100Ch3.Enable)return Pt100Ch3.Temperature;
-    else return 0;
+#if (Pt100Ch3Enable == 1)
+
+    return Pt100Ch3.Temperature;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -489,8 +449,15 @@ unsigned char Pt100ReadCh3(void)
 // Read Channel 4 Temperature value
 unsigned char Pt100ReadCh4(void)
 {
-    if(Pt100Ch4.Enable)return Pt100Ch4.Temperature;
-    else return 0;
+#if (Pt100Ch4Enable == 1)
+
+    return Pt100Ch4.Temperature;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -680,64 +647,120 @@ void Pt100ClearAlarmTrip(void)
 
 unsigned char Pt100ReadCh1AlarmSts(void)
 {
-    if(Pt100Ch1.Enable)return Pt100Ch1.Alarm;
-    else return 0;
+#if (Pt100Ch1Enable == 1)
+
+    return Pt100Ch1.Alarm;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char Pt100ReadCh1TripSts(void)
 {
-    if(Pt100Ch1.Enable)return Pt100Ch1.Trip;
-    else return 0;
+#if (Pt100Ch1Enable == 1)
+
+    return Pt100Ch1.Trip;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char Pt100ReadCh2AlarmSts(void)
 {
-    if(Pt100Ch2.Enable)return Pt100Ch2.Alarm;
-    else return 0;
+#if (Pt100Ch2Enable == 1)
+
+    return Pt100Ch2.Alarm;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char Pt100ReadCh2TripSts(void)
 {
-    if(Pt100Ch2.Enable)return Pt100Ch2.Trip;
-    else return 0;
+#if (Pt100Ch2Enable == 1)
+
+    return Pt100Ch2.Trip;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char Pt100ReadCh3AlarmSts(void)
 {
-    if(Pt100Ch3.Enable)return Pt100Ch3.Alarm;
-    else return 0;
+#if (Pt100Ch3Enable == 1)
+
+    return Pt100Ch3.Alarm;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char Pt100ReadCh3TripSts(void)
 {
-    if(Pt100Ch3.Enable)return Pt100Ch3.Trip;
-    else return 0;
+#if (Pt100Ch3Enable == 1)
+
+    return Pt100Ch3.Trip;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char Pt100ReadCh4AlarmSts(void)
 {
-    if(Pt100Ch4.Enable)return Pt100Ch4.Alarm;
-    else return 0;
+#if (Pt100Ch4Enable == 1)
+
+    return Pt100Ch4.Alarm;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char Pt100ReadCh4TripSts(void)
 {
-    if(Pt100Ch4.Enable)return Pt100Ch4.Trip;
-    else return 0;
+#if (Pt100Ch4Enable == 1)
+
+    return Pt100Ch4.Trip;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -745,17 +768,30 @@ unsigned char Pt100ReadCh4TripSts(void)
 // Read Channel 1 Error flag
 unsigned char Pt100ReadCh1Error(void)
 {
-    if(Pt100Ch1.Enable)return Pt100Ch1.Error;
-    else return 0;
-}
+#if (Pt100Ch1Enable == 1)
 
+    return Pt100Ch1.Error;
+
+#else
+
+    return 0;
+
+#endif
+}
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // Read Channel 2 Error flag
 unsigned char Pt100ReadCh2Error(void)
 {
-    if(Pt100Ch2.Enable)return Pt100Ch2.Error;
-    else return 0;
+#if (Pt100Ch2Enable == 1)
+
+    return Pt100Ch2.Error;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -763,8 +799,15 @@ unsigned char Pt100ReadCh2Error(void)
 // Read Channel 3 Error flag
 unsigned char Pt100ReadCh3Error(void)
 {
-    if(Pt100Ch3.Enable)return Pt100Ch3.Error;
-    else return 0;
+#if (Pt100Ch3Enable == 1)
+
+    return Pt100Ch3.Error;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -772,8 +815,15 @@ unsigned char Pt100ReadCh3Error(void)
 // Read Channel 4 Error flag
 unsigned char Pt100ReadCh4Error(void)
 {
-    if(Pt100Ch4.Enable)return Pt100Ch4.Error;
-    else return 0;
+#if (Pt100Ch4Enable == 1)
+
+    return Pt100Ch4.Error;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -781,8 +831,15 @@ unsigned char Pt100ReadCh4Error(void)
 // Read Channel 1 Can Not Communicate flag
 unsigned char Pt100ReadCh1CNC(void)
 {
-    if(Pt100Ch1.Enable)return Pt100Ch1.CanNotCommunicate;
-    else return 0;
+#if (Pt100Ch1Enable == 1)
+
+    return Pt100Ch1.CanNotCommunicate;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -790,8 +847,15 @@ unsigned char Pt100ReadCh1CNC(void)
 // Read Channel 2 Can Not Communicate flag
 unsigned char Pt100ReadCh2CNC(void)
 {
-    if(Pt100Ch2.Enable)return Pt100Ch2.CanNotCommunicate;
-    else return 0;
+#if (Pt100Ch2Enable == 1)
+
+    return Pt100Ch2.CanNotCommunicate;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -799,8 +863,15 @@ unsigned char Pt100ReadCh2CNC(void)
 // Read Channel 3 Can Not Communicate flag
 unsigned char Pt100ReadCh3CNC(void)
 {
-    if(Pt100Ch3.Enable)return Pt100Ch3.CanNotCommunicate;
-    else return 0;
+#if (Pt100Ch3Enable == 1)
+
+    return Pt100Ch3.CanNotCommunicate;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -808,8 +879,15 @@ unsigned char Pt100ReadCh3CNC(void)
 // Read Channel 4 Can Not Communicate flag
 unsigned char Pt100ReadCh4CNC(void)
 {
-    if(Pt100Ch4.Enable)return Pt100Ch4.CanNotCommunicate;
-    else return 0;
+#if (Pt100Ch4Enable == 1)
+
+    return Pt100Ch4.CanNotCommunicate;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -817,8 +895,15 @@ unsigned char Pt100ReadCh4CNC(void)
 // Read Channel 1 RTD Out Of Range flag
 unsigned char Pt100ReadCh1RtdSts(void)
 {
-    if(Pt100Ch1.Enable)return Pt100Ch1.RtdOutOfRange;
-    else return 0;
+#if (Pt100Ch1Enable == 1)
+
+    return Pt100Ch1.RtdOutOfRange;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -826,8 +911,15 @@ unsigned char Pt100ReadCh1RtdSts(void)
 // Read Channel 2 RTD Out Of Range flag
 unsigned char Pt100ReadCh2RtdSts(void)
 {
-    if(Pt100Ch2.Enable)return Pt100Ch2.RtdOutOfRange;
-    else return 0;
+#if (Pt100Ch2Enable == 1)
+
+    return Pt100Ch2.RtdOutOfRange;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -835,8 +927,15 @@ unsigned char Pt100ReadCh2RtdSts(void)
 // Read Channel 3 RTD Out Of Range flag
 unsigned char Pt100ReadCh3RtdSts(void)
 {
-    if(Pt100Ch3.Enable)return Pt100Ch3.RtdOutOfRange;
-    else return 0;
+#if (Pt100Ch3Enable == 1)
+
+    return Pt100Ch3.RtdOutOfRange;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -844,8 +943,15 @@ unsigned char Pt100ReadCh3RtdSts(void)
 // Read Channel 4 RTD Out Of Range flag
 unsigned char Pt100ReadCh4RtdSts(void)
 {
-    if(Pt100Ch4.Enable)return Pt100Ch4.RtdOutOfRange;
-    else return 0;
+#if (Pt100Ch4Enable == 1)
+
+    return Pt100Ch4.RtdOutOfRange;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

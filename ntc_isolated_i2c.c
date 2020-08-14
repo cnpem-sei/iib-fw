@@ -35,9 +35,13 @@
 #include <iib_modules/fac_is.h>
 #include <iib_modules/fac_cmd.h>
 
+#include "application.h"
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 #define SeriesResistance       10000.00 //Resistor de 10K Ohms
+
+#define Vin                    3.3 //Tensão de entrada do divisor resistivo igbts
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -64,7 +68,7 @@ float GetTemperatureIgbt1(float VoutADS1014)
     double Thermistortemperature;
     float Temperature;
 
-    NtcResistance = (((SeriesResistance * VinIgbt1) / VoutADS1014) - SeriesResistance); /* calculate the resistance */
+    NtcResistance = (((SeriesResistance * Vin) / VoutADS1014) - SeriesResistance); /* calculate the resistance */
 
     Thermistortemperature = log(NtcResistance); /* calculate natural log of resistance */
 
@@ -86,7 +90,7 @@ float GetTemperatureIgbt2(float VoutADS1014)
     double Thermistortemperature;
     float Temperature;
 
-    NtcResistance = (((SeriesResistance * VinIgbt2) / VoutADS1014) - SeriesResistance); /* calculate the resistance */
+    NtcResistance = (((SeriesResistance * Vin) / VoutADS1014) - SeriesResistance); /* calculate the resistance */
 
     Thermistortemperature = log(NtcResistance); /* calculate natural log of resistance */
 
@@ -327,7 +331,6 @@ void NtcInit(void)
   // Initialise ADC object igbt2.
   ADS1x1x_init(&ntc_igbt2,ADS1014,ADS1x1x_I2C_ADDRESS_ADDR_TO_VCC,MUX_SINGLE_0,PGA_6144);
 
-  TempNtcIgbt1.Enable = 0;
   TempNtcIgbt1.Value = 0;
   TempNtcIgbt1.AlarmLimit = 50;
   TempNtcIgbt1.TripLimit = 60;
@@ -338,7 +341,6 @@ void NtcInit(void)
   TempNtcIgbt1.Itlk_Delay_ms = 0; // milisecond
   TempNtcIgbt1.Itlk_DelayCount = 0;
 
-  TempNtcIgbt2.Enable = 0;
   TempNtcIgbt2.Value = 0;
   TempNtcIgbt2.AlarmLimit = 50;
   TempNtcIgbt2.TripLimit = 60;
@@ -437,41 +439,20 @@ void NtcRead(void)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void TempIgbt1Enable(void)
-{
-    TempNtcIgbt1.Enable = 1;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void TempIgbt1Disable(void)
-{
-    TempNtcIgbt1.Enable = 0;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void TempIgbt2Enable(void)
-{
-    TempNtcIgbt2.Enable = 1;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void TempIgbt2Disable(void)
-{
-    TempNtcIgbt2.Enable = 0;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
 //******************************************************************************
 // Read the ADS1014 with NTC 5K Igbt1 and return value
 //******************************************************************************
 unsigned char TempIgbt1Read(void)
 {
-    if(TempNtcIgbt1.Enable)return TempNtcIgbt1.Value;
-    else return 0;
+#if (TempIgbt1Enable == 1)
+
+    return TempNtcIgbt1.Value;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -481,8 +462,15 @@ unsigned char TempIgbt1Read(void)
 //******************************************************************************
 unsigned char TempIgbt2Read(void)
 {
-    if(TempNtcIgbt2.Enable)return TempNtcIgbt2.Value;
-    else return 0;
+#if (TempIgbt2Enable == 1)
+
+    return TempNtcIgbt2.Value;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -512,16 +500,30 @@ void TempIgbt1Delay(unsigned int Delay_Set)
 
 unsigned char TempIgbt1AlarmStatusRead(void)
 {
-   if(TempNtcIgbt1.Enable)return TempNtcIgbt1.Alarm;
-   else return 0;
+#if (TempIgbt1Enable == 1)
+
+    return TempNtcIgbt1.Alarm;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char TempIgbt1TripStatusRead(void)
 {
-   if(TempNtcIgbt1.Enable)return TempNtcIgbt1.Trip;
-   else return 0;
+#if (TempIgbt1Enable == 1)
+
+    return TempNtcIgbt1.Trip;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -551,16 +553,30 @@ void TempIgbt2Delay(unsigned int Delay_Set)
 
 unsigned char TempIgbt2AlarmStatusRead(void)
 {
-   if(TempNtcIgbt2.Enable)return TempNtcIgbt2.Alarm;
-   else return 0;
+#if (TempIgbt2Enable == 1)
+
+    return TempNtcIgbt2.Alarm;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char TempIgbt2TripStatusRead(void)
 {
-   if(TempNtcIgbt2.Enable)return TempNtcIgbt2.Trip;
-   else return 0;
+#if (TempIgbt2Enable == 1)
+
+    return TempNtcIgbt2.Trip;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

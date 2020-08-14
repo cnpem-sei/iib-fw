@@ -9,7 +9,6 @@
 typedef struct
 {
     unsigned char Ch;
-    unsigned char Enable;
     unsigned char Calibration;
     unsigned char Temperature;
     unsigned char AlarmLimit;
@@ -49,20 +48,6 @@ extern unsigned char Pt100ReadCh1(void);
 extern unsigned char Pt100ReadCh2(void);
 extern unsigned char Pt100ReadCh3(void);
 extern unsigned char Pt100ReadCh4(void);
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-extern void Pt100Ch1Enable(void);
-extern void Pt100Ch2Enable(void);
-extern void Pt100Ch3Enable(void);
-extern void Pt100Ch4Enable(void);
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-extern void Pt100Ch1Disable(void);
-extern void Pt100Ch2Disable(void);
-extern void Pt100Ch3Disable(void);
-extern void Pt100Ch4Disable(void);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

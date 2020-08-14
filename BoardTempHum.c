@@ -18,6 +18,13 @@
 #include "peripheral_drivers/i2c/i2c_driver.h"
 #include "board_drivers/hardware_def.h"
 
+#include <iib_modules/fap.h>
+#include <iib_modules/fac_os.h>
+#include <iib_modules/fac_is.h>
+#include <iib_modules/fac_cmd.h>
+
+#include "application.h"
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 #define SlaveAddress 0x40
@@ -225,7 +232,6 @@ void RhBoardTempSenseInit(void)
 
    delay_ms(10);
 
-   TemperatureBoard.Enable = 0;
    TemperatureBoard.Value = 0;
    TemperatureBoard.AlarmLimit = 90;
    TemperatureBoard.TripLimit = 100;
@@ -236,7 +242,6 @@ void RhBoardTempSenseInit(void)
    TemperatureBoard.Itlk_Delay_ms = 0; // milisecond
    TemperatureBoard.Itlk_DelayCount = 0;
 
-   RelativeHumidity.Enable = 0;
    RelativeHumidity.Value = 0;
    RelativeHumidity.AlarmLimit = 90;
    RelativeHumidity.TripLimit = 100;
@@ -251,46 +256,32 @@ void RhBoardTempSenseInit(void)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void BoardTempEnable(void)
-{
-    TemperatureBoard.Enable = 1;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void BoardTempDisable(void)
-{
-    TemperatureBoard.Enable = 0;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void RhEnable(void)
-{
-    RelativeHumidity.Enable = 1;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void RhDisable(void)
-{
-    RelativeHumidity.Enable = 0;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
 unsigned char BoardTempRead(void)
 {
-    if(TemperatureBoard.Enable)return TemperatureBoard.Value;
-    else return 0;
+#if (BoardTempEnable == 1)
+
+    return TemperatureBoard.Value;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char RhRead(void)
 {
-    if(RelativeHumidity.Enable)return RelativeHumidity.Value;
-    else return 0;
+#if (RhEnable == 1)
+
+    return RelativeHumidity.Value;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -320,16 +311,30 @@ void BoardTempDelay(unsigned int Delay_Set)
 
 unsigned char BoardTempAlarmStatusRead(void)
 {
-   if(TemperatureBoard.Enable)return TemperatureBoard.Alarm;
-   else return 0;
+#if (BoardTempEnable == 1)
+
+    return TemperatureBoard.Alarm;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char BoardTempTripStatusRead(void)
 {
-   if(TemperatureBoard.Enable)return TemperatureBoard.Trip;
-   else return 0;
+#if (BoardTempEnable == 1)
+
+    return TemperatureBoard.Trip;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -358,16 +363,30 @@ void RhDelay(unsigned int Delay_Set)
 
 unsigned char RhAlarmStatusRead(void)
 {
-   if(RelativeHumidity.Enable)return RelativeHumidity.Alarm;
-   else return 0;
+#if (RhEnable == 1)
+
+    return RelativeHumidity.Alarm;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char RhTripStatusRead(void)
 {
-   if(RelativeHumidity.Enable)return RelativeHumidity.Trip;
-   else return 0;
+#if (RhEnable == 1)
+
+    return RelativeHumidity.Trip;
+
+#else
+
+    return 0;
+
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

@@ -23,6 +23,13 @@
 #include "leds.h"
 #include "PWMSoftware.h"
 
+#include <iib_modules/fap.h>
+#include <iib_modules/fac_os.h>
+#include <iib_modules/fac_is.h>
+#include <iib_modules/fac_cmd.h>
+
+#include "application.h"
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // PWM1.Period = System Clock Frequency (Hz) / PWM Frequency (Hz)

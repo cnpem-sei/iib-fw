@@ -41,10 +41,10 @@
 #include "iib_data.h"
 #include "PWMSoftware.h"
 
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-#define ON  ~0
-#define OFF 0
+#include <iib_modules/fap.h>
+#include <iib_modules/fac_os.h>
+#include <iib_modules/fac_is.h>
+#include <iib_modules/fac_cmd.h>
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -194,10 +194,18 @@ int main(void)
     Pt100Init();
 
     //Rh & Board Temp sensors initialization
+#if ((RhEnable && BoardTempEnable) == 1)
+
     RhBoardTempSenseInit();
 
+#endif
+
     //ADS1014 with NTC 5K Igbt1 and Igbt2 initialization
+#if ((TempIgbt1Enable || TempIgbt2Enable) == 1)
+
     NtcInit();
+
+#endif
 
     //Led test
     LedPong();

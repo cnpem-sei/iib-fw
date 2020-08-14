@@ -45,141 +45,9 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-typedef struct
-{
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } Vin;
-
-    bool VinAlarmSts;
-    bool VinItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } Vout;
-
-    bool VoutAlarmSts;
-    bool VoutItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } IoutA1;
-
-    bool IoutA1AlarmSts;
-    bool IoutA1ItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } IoutA2;
-
-    bool IoutA2AlarmSts;
-    bool IoutA2ItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } GroundLeakage;
-
-    bool GroundLeakageItlkSts;
-    bool GroundLeakageAlarmSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } TempIGBT1;
-
-    bool TempIGBT1AlarmSts;
-    bool TempIGBT1ItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } TempIGBT2;
-
-    bool TempIGBT2AlarmSts;
-    bool TempIGBT2ItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } DriveVoltage;
-
-    bool DriveVoltageAlarmSts;
-    bool DriveVoltageItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } Drive1Current;
-
-    bool Drive1CurrentAlarmSts;
-    bool Drive1CurrentItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } Drive2Current;
-
-    bool Drive2CurrentAlarmSts;
-    bool Drive2CurrentItlkSts;
-
-    bool Driver1Error;
-    bool Driver1ErrorItlkSts;
-    bool Driver2Error;
-    bool Driver2ErrorItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } TempL;
-
-    bool TempLAlarmSts;
-    bool TempLItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } TempHeatSink;
-
-    bool TempHeatSinkAlarmSts;
-    bool TempHeatSinkItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } BoardTemperature;
-
-    bool BoardTemperatureAlarmSts;
-    bool BoardTemperatureItlkSts;
-
-    union {
-        float       f;
-        uint8_t     u8[4];
-    } RelativeHumidity;
-
-    bool RelativeHumidityAlarmSts;
-    bool RelativeHumidityItlkSts;
-
-    bool Relay;
-    bool ExternalItlk;
-    bool ExternalItlkSts;
-    bool Rack;
-    bool RackItlkSts;
-
-    bool ReleAuxItlkSts;
-    bool ReleExtItlkSts;
-    bool RelayOpenItlkSts;
-    bool RelayContactStickingItlkSts;
-
-} fap_t;
+fap_t fap;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-
-fap_t fap;
 
 static uint32_t fap_interlocks_indication;
 static uint32_t fap_alarms_indication;
@@ -197,20 +65,6 @@ static uint32_t FiltroUP1 = 1024;
 
 static uint8_t flag2 = 0;
 static uint32_t FiltroUP2 = 1024;
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-static void get_itlks_id();
-static void get_alarms_id();
-static void map_vars();
-static void config_module();
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void init_fap()
-{
-    config_module();
-}
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -493,20 +347,90 @@ void fap_application_readings()
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
+#ifdef GIGA
+
     //Interlock externo
     fap.ExternalItlk = Gpdi5Read();//Variavel usada para debug
     if(!fap.ExternalItlkSts)fap.ExternalItlkSts = Gpdi5Read();
 
+#endif
+
+/*******************************************************************************************/
+
+#ifdef SIRIUS_SALA_FONTES
+
+    //Interlock externo
+    fap.ExternalItlk = Gpdi5Read();//Variavel usada para debug
+    if(!fap.ExternalItlkSts)fap.ExternalItlkSts = Gpdi5Read();
+
+#endif
+
+/*******************************************************************************************/
+
+#ifdef SIRIUS_LT
+
+    //Interlock externo
+    fap.ExternalItlk = Gpdi1Read();//Variavel usada para debug
+    if(!fap.ExternalItlkSts)fap.ExternalItlkSts = Gpdi1Read();
+
+#endif
+
 /////////////////////////////////////////////////////////////////////////////////////////////
+
+#ifdef GIGA
 
     //Interlock do Rack
     fap.Rack = Gpdi6Read();//Variavel usada para debug
-    if(!fap.RackItlkSts)fap.RackItlkSts = Gpdi6Read(); //obs: Alterar para Gpdi7Read se usar nas fontes instaladas no SIRIUS.
+    if(!fap.RackItlkSts)fap.RackItlkSts = Gpdi6Read();
+
+#endif
+
+/*******************************************************************************************/
+
+#ifdef SIRIUS_SALA_FONTES
+
+    //Interlock do Rack
+    fap.Rack = Gpdi7Read();//Variavel usada para debug
+    if(!fap.RackItlkSts)fap.RackItlkSts = Gpdi7Read();
+
+#endif
+
+/*******************************************************************************************/
+
+#ifdef SIRIUS_LT
+
+    //Interlock do Rack
+    fap.Rack = Gpdi3Read();//Variavel usada para debug
+    if(!fap.RackItlkSts)fap.RackItlkSts = Gpdi3Read();
+
+#endif
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
+#ifdef GIGA
+
     //Status do Contato do Rele
-    fap.Relay = Gpdi7Read(); //obs: Alterar para Gpdi8Read se usar nas fontes instaladas no SIRIUS.
+    fap.Relay = Gpdi7Read();
+
+#endif
+
+/*******************************************************************************************/
+
+#ifdef SIRIUS_SALA_FONTES
+
+    //Status do Contato do Rele
+    fap.Relay = Gpdi8Read();
+
+#endif
+
+/*******************************************************************************************/
+
+#ifdef SIRIUS_LT
+
+    //Status do Contato do Rele
+    fap.Relay = Gpdi4Read();
+
+#endif
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -573,30 +497,46 @@ void fap_application_readings()
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-    map_vars();
-    get_itlks_id();
-    get_alarms_id();
-}
+    if (fap.VinItlkSts)                     itlk_id |= FAP_INPUT_OVERVOLTAGE_ITLK;
+    if (fap.VoutItlkSts)                    itlk_id |= FAP_OUTPUT_OVERVOLTAGE_ITLK;
+    if (fap.IoutA1ItlkSts)                  itlk_id |= FAP_OUTPUT_OVERCURRENT_1_ITLK;
+    if (fap.IoutA2ItlkSts)                  itlk_id |= FAP_OUTPUT_OVERCURRENT_2_ITLK;
+    if (fap.TempIGBT1ItlkSts)               itlk_id |= FAP_IGBT1_OVERTEMP_ITLK;
+    if (fap.TempIGBT2ItlkSts)               itlk_id |= FAP_IGBT2_OVERTEMP_ITLK;
+    if (fap.DriveVoltageItlkSts)            itlk_id |= FAP_DRIVER_OVERVOLTAGE_ITLK;
+    if (fap.Drive1CurrentItlkSts)           itlk_id |= FAP_DRIVER1_OVERCURRENT_ITLK;
+    if (fap.Drive2CurrentItlkSts)           itlk_id |= FAP_DRIVER2_OVERCURRENT_ITLK;
+    if (fap.Driver1ErrorItlkSts)            itlk_id |= FAP_DRIVER1_ERROR_ITLK;
+    if (fap.Driver2ErrorItlkSts)            itlk_id |= FAP_DRIVER2_ERROR_ITLK;
+    if (fap.TempLItlkSts)                   itlk_id |= FAP_INDUC_OVERTEMP_ITLK;
+    if (fap.TempHeatSinkItlkSts)            itlk_id |= FAP_HS_OVERTEMP_ITLK;
+    if (fap.RelayOpenItlkSts)               itlk_id |= FAP_RELAY_ITLK;
+    if (fap.RelayContactStickingItlkSts)    itlk_id |= FAP_RELAY_CONTACT_STICKING_ITLK;
+    if (fap.ExternalItlkSts)                itlk_id |= FAP_EXTERNAL_ITLK;
+    if (fap.RackItlkSts)                    itlk_id |= FAP_RACK_ITLK;
+    if (fap.GroundLeakageItlkSts)           itlk_id |= FAP_GROUND_LKG_ITLK;
+    if (fap.BoardTemperatureItlkSts)        itlk_id |= FAP_BOARD_IIB_OVERTEMP_ITLK;
+    if (fap.RelativeHumidityItlkSts)        itlk_id |= FAP_BOARD_IIB_OVERHUMIDITY_ITLK;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void fap_power_on_check()
-{
-    if(fap.Relay) {
-        Led1TurnOff();
-        ReleExtItlkTurnOff();
-    }
-    else {
-        Led1TurnOn();
-        ReleExtItlkTurnOn();
-    }
-
-}
+    if (fap.VinAlarmSts)                    alarm_id |= FAP_INPUT_OVERVOLTAGE_ALM;
+    if (fap.VoutAlarmSts)                   alarm_id |= FAP_OUTPUT_OVERVOLTAGE_ALM;
+    if (fap.IoutA1AlarmSts)                 alarm_id |= FAP_OUTPUT_OVERCURRENT_1_ALM;
+    if (fap.IoutA2AlarmSts)                 alarm_id |= FAP_OUTPUT_OVERCURRENT_2_ALM;
+    if (fap.TempIGBT1AlarmSts)              alarm_id |= FAP_IGBT1_OVERTEMP_ALM;
+    if (fap.TempIGBT2AlarmSts)              alarm_id |= FAP_IGBT2_OVERTEMP_ALM;
+    if (fap.TempLAlarmSts)                  alarm_id |= FAP_INDUC_OVERTEMP_ALM;
+    if (fap.TempHeatSinkAlarmSts)           alarm_id |= FAP_HS_OVERTEMP_ALM;
+    if (fap.GroundLeakageAlarmSts)          alarm_id |= FAP_GROUND_LKG_ALM;
+    if (fap.DriveVoltageAlarmSts)           alarm_id |= FAP_DRIVER_OVERVOLTAGE_ALM;
+    if (fap.Drive1CurrentAlarmSts)          alarm_id |= FAP_DRIVER1_OVERCURRENT_ALM;
+    if (fap.Drive2CurrentAlarmSts)          alarm_id |= FAP_DRIVER2_OVERCURRENT_ALM;
+    if (fap.BoardTemperatureAlarmSts)       alarm_id |= FAP_BOARD_IIB_OVERTEMP_ALM;
+    if (fap.RelativeHumidityAlarmSts)       alarm_id |= FAP_BOARD_IIB_OVERHUMIDITY_ALM;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-static void map_vars()
-{
     fap_interlocks_indication = itlk_id;
     fap_alarms_indication = alarm_id;
 
@@ -620,87 +560,19 @@ static void map_vars()
     g_controller_iib.iib_signals[11].f      = fap.GroundLeakage.f;
     g_controller_iib.iib_signals[12].f      = fap.BoardTemperature.f;
     g_controller_iib.iib_signals[13].f      = fap.RelativeHumidity.f;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void send_fap_data()
-{
-    static uint8_t i = 0;
-
-    send_data_message(i);
-
-    i++;
-
-    if (i > 13) i = 0;
 
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-static void get_itlks_id()
+void config_module_fap(void)
 {
-    if (fap.VinItlkSts)                     itlk_id |= FAP_INPUT_OVERVOLTAGE_ITLK;
-    if (fap.VoutItlkSts)                    itlk_id |= FAP_OUTPUT_OVERVOLTAGE_ITLK;
-    if (fap.IoutA1ItlkSts)                  itlk_id |= FAP_OUTPUT_OVERCURRENT_1_ITLK;
-    if (fap.IoutA2ItlkSts)                  itlk_id |= FAP_OUTPUT_OVERCURRENT_2_ITLK;
-    if (fap.TempIGBT1ItlkSts)               itlk_id |= FAP_IGBT1_OVERTEMP_ITLK;
-    if (fap.TempIGBT2ItlkSts)               itlk_id |= FAP_IGBT2_OVERTEMP_ITLK;
-    if (fap.DriveVoltageItlkSts)            itlk_id |= FAP_DRIVER_OVERVOLTAGE_ITLK;
-    if (fap.Drive1CurrentItlkSts)           itlk_id |= FAP_DRIVER1_OVERCURRENT_ITLK;
-    if (fap.Drive2CurrentItlkSts)           itlk_id |= FAP_DRIVER2_OVERCURRENT_ITLK;
-    if (fap.Driver1ErrorItlkSts)            itlk_id |= FAP_DRIVER1_ERROR_ITLK;
-    if (fap.Driver2ErrorItlkSts)            itlk_id |= FAP_DRIVER2_ERROR_ITLK;
-    if (fap.TempLItlkSts)                   itlk_id |= FAP_INDUC_OVERTEMP_ITLK;
-    if (fap.TempHeatSinkItlkSts)            itlk_id |= FAP_HS_OVERTEMP_ITLK;
-    if (fap.RelayOpenItlkSts)               itlk_id |= FAP_RELAY_ITLK;
-    if (fap.RelayContactStickingItlkSts)    itlk_id |= FAP_RELAY_CONTACT_STICKING_ITLK;
-    if (fap.ExternalItlkSts)                itlk_id |= FAP_EXTERNAL_ITLK;
-    if (fap.RackItlkSts)                    itlk_id |= FAP_RACK_ITLK;
-    if (fap.GroundLeakageItlkSts)           itlk_id |= FAP_GROUND_LKG_ITLK;
-    if (fap.BoardTemperatureItlkSts)        itlk_id |= FAP_BOARD_IIB_OVERTEMP_ITLK;
-    if (fap.RelativeHumidityItlkSts)        itlk_id |= FAP_BOARD_IIB_OVERHUMIDITY_ITLK;
-}
 
-/////////////////////////////////////////////////////////////////////////////////////////////
+#ifdef FAP
 
-void send_fap_itlk_msg()
-{
-    send_itlk_message(0);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-static void get_alarms_id()
-{
-    if (fap.VinAlarmSts)               alarm_id |= FAP_INPUT_OVERVOLTAGE_ALM;
-    if (fap.VoutAlarmSts)              alarm_id |= FAP_OUTPUT_OVERVOLTAGE_ALM;
-    if (fap.IoutA1AlarmSts)            alarm_id |= FAP_OUTPUT_OVERCURRENT_1_ALM;
-    if (fap.IoutA2AlarmSts)            alarm_id |= FAP_OUTPUT_OVERCURRENT_2_ALM;
-    if (fap.TempIGBT1AlarmSts)         alarm_id |= FAP_IGBT1_OVERTEMP_ALM;
-    if (fap.TempIGBT2AlarmSts)         alarm_id |= FAP_IGBT2_OVERTEMP_ALM;
-    if (fap.TempLAlarmSts)             alarm_id |= FAP_INDUC_OVERTEMP_ALM;
-    if (fap.TempHeatSinkAlarmSts)      alarm_id |= FAP_HS_OVERTEMP_ALM;
-    if (fap.GroundLeakageAlarmSts)     alarm_id |= FAP_GROUND_LKG_ALM;
-    if (fap.DriveVoltageAlarmSts)      alarm_id |= FAP_DRIVER_OVERVOLTAGE_ALM;
-    if (fap.Drive1CurrentAlarmSts)     alarm_id |= FAP_DRIVER1_OVERCURRENT_ALM;
-    if (fap.Drive2CurrentAlarmSts)     alarm_id |= FAP_DRIVER2_OVERCURRENT_ALM;
-    if (fap.BoardTemperatureAlarmSts)  alarm_id |= FAP_BOARD_IIB_OVERTEMP_ALM;
-    if (fap.RelativeHumidityAlarmSts)  alarm_id |= FAP_BOARD_IIB_OVERHUMIDITY_ALM;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-static void config_module()
-{
     //Set current range FAP 130 A
     CurrentCh1Init(LA_Primary_Current, LA_Secondary_Current, LA_Burden_Resistor, LA_Delay); //Corrente braço1: Sensor Hall
     CurrentCh2Init(LA_Primary_Current, LA_Secondary_Current, LA_Burden_Resistor, LA_Delay); //Corrente braço2: LEM LA 130-P
-
-    CurrentCh1Enable();  //CurrentCh1 enable
-    CurrentCh2Enable();  //CurrentCh2 enable
-    CurrentCh3Disable(); //CurrentCh3 disable
-    CurrentCh4Disable(); //CurrentCh4 disable
 
     //Set protection limits FAP 130 A
     CurrentCh1AlarmLevelSet(FAP_OUTPUT_OVERCURRENT_1_ALM_LIM);  //Corrente braço1
@@ -714,10 +586,6 @@ static void config_module()
     LvCurrentCh1Init(LV_Primary_Voltage_Vin, LV_Secondary_Current_Vin, LV_Burden_Resistor, Delay_Vin); // Vin
     LvCurrentCh2Init(LV_Primary_Voltage_Vout, LV_Secondary_Current_Vin, LV_Burden_Resistor, Delay_Vout); // Vout
     LvCurrentCh3Init(LV_Primary_Voltage_GND_Leakage, LV_Secondary_Current_Vin, LV_Burden_Resistor, Delay_GND_Leakage); // Ground Leakage
-
-    LvCurrentCh1Enable(); //LvCurrentCh1 enable
-    LvCurrentCh2Enable(); //LvCurrentCh2 enable
-    LvCurrentCh3Enable(); //LvCurrentCh3 enable
 
     LvCurrentCh1AlarmLevelSet(FAP_INPUT_OVERVOLTAGE_ALM_LIM);  //Tensão de entrada Alarme
     LvCurrentCh1TripLevelSet(FAP_INPUT_OVERVOLTAGE_ITLK_LIM);  //Tensão de entrada Interlock
@@ -733,12 +601,6 @@ static void config_module()
     Pt100SetCh1Delay(Delay_PT100CH1);
     Pt100SetCh2Delay(Delay_PT100CH2);
 
-    //PT100 channel enable
-    Pt100Ch1Enable(); //Temperatura Dissipador
-    Pt100Ch2Enable(); //Temperatura L
-    Pt100Ch3Disable();
-    Pt100Ch4Disable();
-
     //PT100 configuration limits
     Pt100SetCh1AlarmLevel(FAP_HS_OVERTEMP_ALM_LIM);     //Temperatura Dissipador
     Pt100SetCh1TripLevel(FAP_HS_OVERTEMP_ITLK_LIM);     //Temperatura Dissipador
@@ -750,8 +612,6 @@ static void config_module()
     //Temperature igbt1 configuration
     TempIgbt1Delay(Delay_IGBT1); //Inserir valor de delay
 
-    TempIgbt1Enable(); //TempIgbt1 enable
-
     //Temp Igbt1 configuration limits
     TempIgbt1AlarmLevelSet(FAP_IGBT1_OVERTEMP_ALM_LIM);
     TempIgbt1TripLevelSet(FAP_IGBT1_OVERTEMP_ITLK_LIM);
@@ -760,8 +620,6 @@ static void config_module()
 
     //Temperature igbt2 configuration
     TempIgbt2Delay(Delay_IGBT2); //Inserir valor de delay
-
-    TempIgbt2Enable(); //TempIgbt2 enable
 
     //Temp Igbt2 configuration limits
     TempIgbt2AlarmLevelSet(FAP_IGBT2_OVERTEMP_ALM_LIM);
@@ -772,8 +630,6 @@ static void config_module()
     //Temperature Board configuration
     BoardTempDelay(Delay_BoardTemp); //Inserir valor de delay
 
-    BoardTempEnable(); //BoardTemp enable
-
     //Temp board configuration limits
     BoardTempAlarmLevelSet(FAP_BOARD_OVERTEMP_ALM_LIM);
     BoardTempTripLevelSet(FAP_BOARD_OVERTEMP_ITLK_LIM);
@@ -783,23 +639,9 @@ static void config_module()
     //Humidity Board configuration
     RhDelay(Delay_BoardRh); //Inserir valor de delay
 
-    RhEnable(); //Rh enable
-
     //Rh configuration limits
     RhAlarmLevelSet(FAP_RH_OVERHUMIDITY_ALM_LIM);
     RhTripLevelSet(FAP_RH_OVERHUMIDITY_ITLK_LIM);
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-    //Driver1 error configuration
-    Driver1TopErrorEnable(); //Habilitado driver error 1 Top
-    Driver1BotErrorDisable(); //Desabilitado driver error 1 Bot
-    Driver1OverTempDisable(); //Desabilitado Temperatura por Hardware do modulo 1
-
-    //Driver2 error configuration
-    Driver2TopErrorEnable(); //Habilitado driver error 2 Top
-    Driver2BotErrorDisable(); //Desabilitado driver error 2 Bot
-    Driver2OverTempDisable(); //Desabilitado Temperatura por Hardware do modulo 2
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -807,8 +649,6 @@ static void config_module()
     DriverVoltageInit();
 
     DriverVoltageDelay(Delay_DriverVoltage); //Inserir valor de delay
-
-    DriverVoltageEnable(); //DriverVoltage enable
 
     //Limite de alarme e interlock da tensao dos drivers
     DriverVoltageAlarmLevelSet(FAP_DRIVER_OVERVOLTAGE_ALM_LIM);
@@ -821,9 +661,6 @@ static void config_module()
 
     DriverCurrentDelay(Delay_DriverCurrent); //Inserir valor de delay
 
-    Driver1CurrentEnable(); //Driver1Current enable
-    Driver2CurrentEnable(); //Driver2Current enable
-
     //Limite de alarme e interlock da corrente do driver 1
     Driver1CurrentAlarmLevelSet(FAP_DRIVER1_OVERCURRENT_ALM_LIM);
     Driver1CurrentTripLevelSet(FAP_DRIVER1_OVERCURRENT_ITLK_LIM);
@@ -832,39 +669,7 @@ static void config_module()
     Driver2CurrentAlarmLevelSet(FAP_DRIVER2_OVERCURRENT_ALM_LIM);
     Driver2CurrentTripLevelSet(FAP_DRIVER2_OVERCURRENT_ITLK_LIM);
 
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-    //Voltage configuration
-    VoltageCh1Disable(); //VoltageCh1 disable
-    VoltageCh2Disable(); //VoltageCh2 disable
-    VoltageCh3Disable(); //VoltageCh3 disable
-    VoltageCh4Disable(); //VoltageCh4 disable
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-    //Gpdi configuration
-    Gpdi1Disable();  //Gpdi1 disable
-    Gpdi2Disable();  //Gpdi2 disable
-    Gpdi3Disable();  //Gpdi3 disable
-    Gpdi4Disable();  //Gpdi4 disable
-    Gpdi5Enable();   //Gpdi5 enable ExternalITLK
-    Gpdi6Enable();   //Gpdi6 enable RackITLK     //obs: Não Usado, Alterar para disable se usar nas fontes instaladas no SIRIUS.
-    Gpdi7Enable();   //Gpdi7 enable RelayStatus  //obs: RackITLK, Alterar para enable nas fontes instaladas no SIRIUS.
-    Gpdi8Disable();  //Gpdi8 disable             //obs: RelayStatus, Alterar para enable se usar nas fontes instaladas no SIRIUS.
-    Gpdi9Disable();  //Gpdi9 disable
-    Gpdi10Disable(); //Gpdi10 disable
-    Gpdi11Disable(); //Gpdi11 disable
-    Gpdi12Disable(); //Gpdi12 disable
-
-    //Gpdo configuration
-    Gpdo1Disable();  //Gpdo1 disable
-    Gpdo2Disable();  //Gpdo2 disable
-    Gpdo3Disable();  //Gpdo3 disable
-    Gpdo4Disable();  //Gpdo4 disable
-
-    //ReleAux and ReleExtItlk configuration
-    ReleAuxEnable(); //ReleAux enable
-    ReleExtItlkEnable(); //ReleExtItlk enable
+#endif
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

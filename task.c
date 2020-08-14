@@ -37,6 +37,11 @@
 #include "ntc_isolated_i2c.h"
 #include "application.h"
 
+#include <iib_modules/fap.h>
+#include <iib_modules/fac_os.h>
+#include <iib_modules/fac_is.h>
+#include <iib_modules/fac_cmd.h>
+
 /**
  * TODO: Put here your defines. Just what is local. If you don't
  * need to access it from other module, consider use a constant (const)
@@ -108,46 +113,118 @@ void task_100_us(void)
 
     if(uSecond == 0)
     {
-        if(VoltageCh1.Enable) VoltageCh1Sample();
 
-        if(VoltageCh2.Enable) VoltageCh2Sample();
+#if (VoltageCh1Enable == 1)
+
+        VoltageCh1Sample();
+
+#endif
+
+#if (VoltageCh2Enable == 1)
+
+        VoltageCh2Sample();
+
+#endif
+
     }
+
     else if(uSecond == 1)
     {
-        if(VoltageCh3.Enable) VoltageCh3Sample();
+
+#if (VoltageCh3Enable == 1)
+
+        VoltageCh3Sample();
+
+#endif
+
     }
+
     else if(uSecond == 2)
     {
-        if(VoltageCh4.Enable) VoltageCh4Sample();
+
+#if (VoltageCh4Enable == 1)
+
+        VoltageCh4Sample();
+
+#endif
+
     }
+
     else if(uSecond == 3)
     {
-        if(CurrentCh1.Enable) CurrentCh1Sample();
+
+#if (CurrentCh1Enable == 1)
+
+        CurrentCh1Sample();
+
+#endif
+
     }
+
     else if(uSecond == 4)
     {
-        if(CurrentCh2.Enable) CurrentCh2Sample();
+
+#if (CurrentCh2Enable == 1)
+
+        CurrentCh2Sample();
+
+#endif
+
     }
+
     else if(uSecond == 5)
     {
-        if(CurrentCh3.Enable) CurrentCh3Sample();
+
+#if (CurrentCh3Enable == 1)
+
+        CurrentCh3Sample();
+
+#endif
+
     }
+
     else if(uSecond == 6)
     {
-        if(CurrentCh4.Enable) CurrentCh4Sample();
+
+#if (CurrentCh4Enable == 1)
+
+        CurrentCh4Sample();
+
+#endif
+
     }
+
     else if(uSecond == 7)
     {
-        if(LvCurrentCh1.Enable) LvCurrentCh1Sample();
+
+#if (LvCurrentCh1Enable == 1)
+
+        LvCurrentCh1Sample();
+
+#endif
+
     }
 
     else if(uSecond == 8)
     {
-        if(LvCurrentCh2.Enable) LvCurrentCh2Sample();
+
+#if (LvCurrentCh2Enable == 1)
+
+        LvCurrentCh2Sample();
+
+#endif
+
     }
+
     else if(uSecond == 9)
     {
-        if(LvCurrentCh3.Enable) LvCurrentCh3Sample();
+
+#if (LvCurrentCh3Enable == 1)
+
+        LvCurrentCh3Sample();
+
+#endif
+
     }
 
 }
@@ -243,81 +320,156 @@ void BoardTask(void)
 
   if(TempCh1Read)
   {
-      if(Pt100Ch1.Enable) Pt100Ch1Sample();
+
+#if (Pt100Ch1Enable == 1)
+
+      Pt100Ch1Sample();
+
+#endif
 
       TempCh1Read = 0;
   }
+
   else if(TempCh2Read)
   {
-      if(Pt100Ch2.Enable) Pt100Ch2Sample();
+
+#if (Pt100Ch2Enable == 1)
+
+      Pt100Ch2Sample();
+
+#endif
 
       TempCh2Read = 0;
   }
+
   else if(TempCh3Read)
   {
-      if(Pt100Ch3.Enable) Pt100Ch3Sample();
+
+#if (Pt100Ch3Enable == 1)
+
+      Pt100Ch3Sample();
+
+#endif
 
       TempCh3Read = 0;
   }
+
   else if(TempCh4Read)
   {
-      if(Pt100Ch4.Enable) Pt100Ch4Sample();
+
+#if (Pt100Ch4Enable == 1)
+
+      Pt100Ch4Sample();
+
+#endif
 
       TempCh4Read = 0;
   }
+
   else if(RhSample)
   {
-      if(RelativeHumidity.Enable) RelativeHumidityStartConversion();
+
+#if (RhEnable == 1)
+
+      RelativeHumidityStartConversion();
+
+#endif
 
       RhSample = 0;
   }
+
   else if(RhSampleRead)
   {
-      if(RelativeHumidity.Enable) RelativeHumidityRead();
+
+#if (RhEnable == 1)
+
+      RelativeHumidityRead();
+
+#endif
 
       RhSampleRead = 0;
   }
+
   else if(BoardTempSample)
   {
-      if(TemperatureBoard.Enable) BoardTemperatureStartConversion();
+
+#if (BoardTempEnable == 1)
+
+      BoardTemperatureStartConversion();
+
+#endif
 
       BoardTempSample = 0;
   }
+
   else if(BoardTempSampleRead)
   {
-      if(TemperatureBoard.Enable) BoardTemperatureRead();
+
+#if (BoardTempEnable == 1)
+
+      BoardTemperatureRead();
+
+#endif
 
       BoardTempSampleRead = 0;
   }
+
   else if(NtcSample)
   {
-      if(TempNtcIgbt1.Enable || TempNtcIgbt2.Enable) NtcStartConversion();
+
+#if ((TempIgbt1Enable || TempIgbt2Enable) == 1)
+
+      NtcStartConversion();
+
+#endif
 
       NtcSample = 0;
   }
+
   else if(NtcSampleRead)
   {
-      if(TempNtcIgbt1.Enable || TempNtcIgbt2.Enable) NtcRead();
+
+#if ((TempIgbt1Enable || TempIgbt2Enable) == 1)
+
+      NtcRead();
+
+#endif
 
       NtcSampleRead = 0;
   }
+
   else if(DriverVoltReadTask)
   {
-      if(DriverVolt.Enable) DriverVoltageSample();
+
+#if (DriverVoltageEnable == 1)
+
+      DriverVoltageSample();
+
+#endif
 
       DriverVoltReadTask = 0;
   }
 
   else if(Driver1CurrtReadTask)
   {
-      if(Driver1Curr.Enable) Driver1CurrentSample();
+
+#if (Driver1CurrentEnable == 1)
+
+      Driver1CurrentSample();
+
+#endif
 
       Driver1CurrtReadTask = 0;
   }
 
   else if(Driver2CurrtReadTask)
   {
-      if(Driver2Curr.Enable) Driver2CurrentSample();
+
+#if (Driver2CurrentEnable == 1)
+
+      Driver2CurrentSample();
+
+#endif
 
       Driver2CurrtReadTask = 0;
   }
