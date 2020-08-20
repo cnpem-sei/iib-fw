@@ -490,7 +490,7 @@ extern fac_os_t fac_os;
 #define Hall_Burden_Resistor                                50.0
 
 //Debouncing delay_ms
-#define Hall_Delay                                          0
+#define Hall_Delay                                          2
 
 #define CurrentCh1Enable                                    ON
 #define CurrentCh2Enable                                    ON

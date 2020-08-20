@@ -2007,7 +2007,7 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 45
 #define FAP_HS_OVERTEMP_ITLK_LIM                50
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             60
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             70
 #define FAP_RH_OVERHUMIDITY_ITLK_LIM            90
 
 #define FAP_BOARD_OVERTEMP_ALM_LIM              50
