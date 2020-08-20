@@ -265,8 +265,8 @@ void fac_is_application_readings()
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     fac_is.VdcLink.f = LvCurrentCh1Read();
-    fac_is.VdcLinkAlarmSts = CurrentCh1AlarmStatusRead();
-    if(!fac_is.VdcLinkItlkSts)fac_is.VdcLinkItlkSts = CurrentCh1TripStatusRead();
+    fac_is.VdcLinkAlarmSts = LvCurrentCh1AlarmStatusRead();
+    if(!fac_is.VdcLinkItlkSts)fac_is.VdcLinkItlkSts = LvCurrentCh1TripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
