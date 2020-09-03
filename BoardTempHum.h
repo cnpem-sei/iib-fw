@@ -1,31 +1,77 @@
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 #ifndef __BOARDTEMPHUM_H__
 #define __BOARDTEMPHUM_H__
 
-void RhTempSenseInit(void);
-unsigned char RhRead(void);
-unsigned char BoardTempRead(void);
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-extern void BoardTemperatureStartConersion(void);
-extern void BoardTemperatureStartRead(void);
-extern void RelativeHumidityStartConersion(void);
+typedef struct
+{
+    float Value;
+    float AlarmLimit;
+    float TripLimit;
+    unsigned char Alarm;
+    unsigned char Trip;
+    unsigned int  Alarm_Delay_ms; // milisecond
+    unsigned int  Alarm_DelayCount;
+    unsigned int  Itlk_Delay_ms; // milisecond
+    unsigned int  Itlk_DelayCount;
+}rh_tempboard_t;
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+extern rh_tempboard_t TemperatureBoard;
+extern rh_tempboard_t RelativeHumidity;
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+extern void RhBoardTempSenseInit(void);
+extern float RhRead(void);
+extern float BoardTempRead(void);
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+extern void BoardTemperatureStartConversion(void);
+extern void BoardTemperatureRead(void);
+extern void RelativeHumidityStartConversion(void);
 extern void RelativeHumidityRead(void);
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-extern void TempBoardAlarmLimitSet(unsigned char TempLimit);
-extern void TempBoardTripLimitSet(unsigned char TempLimit);
+extern void BoardTempAlarmLevelSet(float nValue);
+extern void BoardTempTripLevelSet(float nValue);
 
-extern unsigned char TempAlarmStatusRead(void);
-extern unsigned char TempTripStatusRead(void);
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-extern void RhAlarmLimitSet(unsigned char RhLimit);
-extern void RhTripLimitSet(unsigned char RhLimit);
+extern void BoardTempDelay(unsigned int Delay_Set);
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+extern unsigned char BoardTempAlarmStatusRead(void);
+extern unsigned char BoardTempTripStatusRead(void);
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+extern void RhAlarmLevelSet(float nValue);
+extern void RhTripLevelSet(float nValue);
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+extern void RhDelay(unsigned int Delay_Set);
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 extern unsigned char RhAlarmStatusRead(void);
 extern unsigned char RhTripStatusRead(void);
 
-extern void RhTempClearAlarmTrip(void);
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+extern void RhBoardTempClearAlarmTrip(void);
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 #endif
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+

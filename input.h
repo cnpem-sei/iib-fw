@@ -1,12 +1,14 @@
 
-
-
-
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 #ifndef __INPUT_H__
 #define __INPUT_H__
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 void InputInit(void);
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 extern unsigned char Gpdi1Read(void);
 extern unsigned char Gpdi2Read(void);
@@ -21,18 +23,24 @@ extern unsigned char Gpdi10Read(void);
 extern unsigned char Gpdi11Read(void);
 extern unsigned char Gpdi12Read(void);
 
-extern void Driver1ErrEnable(void);
-extern void Driver1ErrDisable(void);
-extern void Driver2ErrEnable(void);
-extern void Driver2ErrDisable(void);
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-extern unsigned char Driver1TopErrRead(void);
-extern unsigned char Driver1BotErrRead(void);
+extern unsigned char Driver1TopErrorRead(void);
+extern unsigned char Driver1BotErrorRead(void);
 extern unsigned char Driver1OverTempRead(void);
-extern unsigned char Driver2TopErrRead(void);
-extern unsigned char Driver2BotErrRead(void);
+extern unsigned char Driver2TopErrorRead(void);
+extern unsigned char Driver2BotErrorRead(void);
 extern unsigned char Driver2OverTempRead(void);
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 extern unsigned char BoardAddressRead(void);
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 #endif
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
+

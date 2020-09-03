@@ -1,15 +1,24 @@
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 #include <stdint.h>
 #include <stdbool.h>
 #include "inc/hw_memmap.h"
 #include "driverlib/debug.h"
 #include "driverlib/gpio.h"
 #include "driverlib/sysctl.h"
-
 #include "output.h"
 #include "board_drivers/hardware_def.h"
 #include "peripheral_drivers/gpio/gpio_driver.h"
 
+#include <iib_modules/fap.h>
+#include <iib_modules/fac_os.h>
+#include <iib_modules/fac_is.h>
+#include <iib_modules/fac_cmd.h>
+
+#include "application.h"
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 void OutputInit(void)
 {
@@ -44,93 +53,228 @@ void OutputInit(void)
 
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 void Gpdo1TurnOn(void)
 {
+#if (Gpdo1Enable == 1)
+
     set_pin(GPDO_1_BASE, GPDO_1_PIN);
+
+#endif
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 void Gpdo1TurnOff(void)
 {
+#if (Gpdo1Enable == 1)
+
     clear_pin(GPDO_1_BASE, GPDO_1_PIN);
+
+#endif
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char Gpdo1Sts(void)
 {
+#if (Gpdo1Enable == 1)
+
     return read_pin(GPDO_1_BASE, GPDO_1_PIN);
+
+#else
+
+    return 0;
+
+#endif
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 void Gpdo2TurnOn(void)
 {
+#if (Gpdo2Enable == 1)
+
     set_pin(GPDO_2_BASE, GPDO_2_PIN);
+
+#endif
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 void Gpdo2TurnOff(void)
 {
+#if (Gpdo2Enable == 1)
+
     clear_pin(GPDO_2_BASE, GPDO_2_PIN);
+
+#endif
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char Gpdo2Sts(void)
 {
+#if (Gpdo2Enable == 1)
+
     return read_pin(GPDO_2_BASE, GPDO_2_PIN);
+
+#else
+
+    return 0;
+
+#endif
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 void Gpdo3TurnOn(void)
 {
+#if (Gpdo3Enable == 1)
+
     set_pin(GPDO_3_BASE, GPDO_3_PIN);
+
+#endif
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 void Gpdo3TurnOff(void)
 {
+#if (Gpdo3Enable == 1)
+
     clear_pin(GPDO_3_BASE, GPDO_3_PIN);
+
+#endif
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char Gpdo3Sts(void)
 {
+#if (Gpdo3Enable == 1)
+
     return read_pin(GPDO_3_BASE, GPDO_3_PIN);
+
+#else
+
+    return 0;
+
+#endif
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 void Gpdo4TurnOn(void)
 {
+#if (Gpdo4Enable == 1)
+
     set_pin(GPDO_4_BASE, GPDO_4_PIN);
+
+#endif
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 void Gpdo4TurnOff(void)
 {
+#if (Gpdo4Enable == 1)
+
     clear_pin(GPDO_4_BASE, GPDO_4_PIN);
+
+#endif
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char Gpdo4Sts(void)
 {
+#if (Gpdo4Enable == 1)
+
     return read_pin(GPDO_4_BASE, GPDO_4_PIN);
+
+#else
+
+    return 0;
+
+#endif
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 void ReleAuxTurnOn(void)
 {
+#if (ReleAuxEnable == 1)
+
     set_pin(RELAY_1_BASE, RELAY_1_PIN);
+
+#endif
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 void ReleAuxTurnOff(void)
 {
+#if (ReleAuxEnable == 1)
+
     clear_pin(RELAY_1_BASE, RELAY_1_PIN);
+
+#endif
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char ReleAuxSts(void)
 {
+#if (ReleAuxEnable == 1)
+
     return read_pin(RELAY_1_BASE, RELAY_1_PIN);
+
+#else
+
+    return 0;
+
+#endif
 }
 
-void ReleItlkTurnOn(void)
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void ReleExtItlkTurnOn(void)
 {
+#if (ReleExtItlkEnable == 1)
+
     set_pin(RELAY_2_BASE, RELAY_2_PIN);
+
+#endif
 }
 
-void ReleItlkTurnOff(void)
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void ReleExtItlkTurnOff(void)
 {
+#if (ReleExtItlkEnable == 1)
+
     clear_pin(RELAY_2_BASE, RELAY_2_PIN);
+
+#endif
 }
 
-unsigned char ReleItlkSts(void)
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+unsigned char ReleExtItlkSts(void)
 {
+#if (ReleExtItlkEnable == 1)
+
     return read_pin(RELAY_2_BASE, RELAY_2_PIN);
+
+#else
+
+    return 0;
+
+#endif
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 

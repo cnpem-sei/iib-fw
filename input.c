@@ -1,4 +1,5 @@
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -6,17 +7,22 @@
 #include "driverlib/debug.h"
 #include "driverlib/gpio.h"
 #include "driverlib/sysctl.h"
-
 #include "input.h"
 #include "board_drivers/hardware_def.h"
-//#include "app_drivers/relay/relay.h"
 #include "peripheral_drivers/gpio/gpio_driver.h"
 
+#include <iib_modules/fap.h>
+#include <iib_modules/fac_os.h>
+#include <iib_modules/fac_is.h>
+#include <iib_modules/fac_cmd.h>
+
+#include "application.h"
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 static unsigned char BoardAddress = 0;
 
-static unsigned char ErrorDriver1Config = 0;
-static unsigned char ErrorDriver2Config = 0;
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char BoardAddressRead(void)
 {
@@ -33,6 +39,8 @@ unsigned char BoardAddressRead(void)
 
      return BoardAddress;
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 void InputInit(void)
 {
@@ -68,122 +76,276 @@ void InputInit(void)
 
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 unsigned char Gpdi1Read(void)
 {
+#if (Gpdi1Enable == 1)
+
     return read_pin(GPDI_1_BASE, GPDI_1_PIN);
+
+#else
+
+    return 0;
+
+#endif
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char Gpdi2Read(void)
 {
+#if (Gpdi2Enable == 1)
+
     return read_pin(GPDI_2_BASE, GPDI_2_PIN);
+
+#else
+
+    return 0;
+
+#endif
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char Gpdi3Read(void)
 {
+#if (Gpdi3Enable == 1)
+
     return read_pin(GPDI_3_BASE, GPDI_3_PIN);
+
+#else
+
+    return 0;
+
+#endif
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char Gpdi4Read(void)
 {
+#if (Gpdi4Enable == 1)
+
     return read_pin(GPDI_4_BASE, GPDI_4_PIN);
+
+#else
+
+    return 0;
+
+#endif
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char Gpdi5Read(void)
 {
+#if (Gpdi5Enable == 1)
+
     return read_pin(GPDI_5_BASE, GPDI_5_PIN);
+
+#else
+
+    return 0;
+
+#endif
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char Gpdi6Read(void)
 {
+#if (Gpdi6Enable == 1)
+
     return read_pin(GPDI_6_BASE, GPDI_6_PIN);
+
+#else
+
+    return 0;
+
+#endif
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char Gpdi7Read(void)
 {
+#if (Gpdi7Enable == 1)
+
     return read_pin(GPDI_7_BASE, GPDI_7_PIN);
+
+#else
+
+    return 0;
+
+#endif
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char Gpdi8Read(void)
 {
+#if (Gpdi8Enable == 1)
+
     return read_pin(GPDI_8_BASE, GPDI_8_PIN);
+
+#else
+
+    return 0;
+
+#endif
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 unsigned char Gpdi9Read(void)
 {
+#if (Gpdi9Enable == 1)
+
     return read_pin(GPDI_9_BASE, GPDI_9_PIN);
+
+#else
+
+    return 0;
+
+#endif
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char Gpdi10Read(void)
 {
+#if (Gpdi10Enable == 1)
+
     return read_pin(GPDI_10_BASE, GPDI_10_PIN);
+
+#else
+
+    return 0;
+
+#endif
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char Gpdi11Read(void)
 {
+#if (Gpdi11Enable == 1)
+
     return read_pin(GPDI_11_BASE, GPDI_11_PIN);
+
+#else
+
+    return 0;
+
+#endif
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char Gpdi12Read(void)
 {
+#if (Gpdi12Enable == 1)
+
     return read_pin(GPDI_12_BASE, GPDI_12_PIN);
+
+#else
+
+    return 0;
+
+#endif
 }
 
-//******************************************************************************
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-void Driver1ErrEnable(void)
+unsigned char Driver1TopErrorRead(void)
 {
-    ErrorDriver1Config = 1;
+#if (Driver1TopErrorEnable == 1)
+
+    return read_pin(ERROR_DRIVER_1_TOP_BASE, ERROR_DRIVER_1_TOP_PIN);
+
+#else
+
+    return 0;
+
+#endif
 }
 
-void Driver1ErrDisable(void)
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+unsigned char Driver1BotErrorRead(void)
 {
-    ErrorDriver1Config = 0;
+#if (Driver1BotErrorEnable == 1)
+
+    return read_pin(ERROR_DRIVER_1_BOT_BASE, ERROR_DRIVER_1_BOT_PIN);
+
+#else
+
+    return 0;
+
+#endif
 }
 
-void Driver2ErrEnable(void)
-{
-    ErrorDriver2Config = 1;
-}
-
-void Driver2ErrDisable(void)
-{
-    ErrorDriver2Config = 0;
-}
-
-
-unsigned char Driver1TopErrRead(void)
-{
-    if(ErrorDriver1Config) return read_pin(ERROR_DRIVER_1_TOP_BASE, ERROR_DRIVER_1_TOP_PIN);
-    else return 0;
-}
-
-unsigned char Driver1BotErrRead(void)
-{
-    if(ErrorDriver1Config) return read_pin(ERROR_DRIVER_1_BOT_BASE, ERROR_DRIVER_1_BOT_PIN);
-    else return 0;
-}
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char Driver1OverTempRead(void)
 {
-    if(ErrorDriver1Config) return !read_pin(MODULE_1_OVER_TEMP_BASE, MODULE_1_OVER_TEMP_PIN);
-    else return 0;
+#if (Driver1OverTempEnable == 1)
+
+    return !read_pin(MODULE_1_OVER_TEMP_BASE, MODULE_1_OVER_TEMP_PIN);
+
+#else
+
+    return 0;
+
+#endif
 }
 
-unsigned char Driver2TopErrRead(void)
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+unsigned char Driver2TopErrorRead(void)
 {
-    if(ErrorDriver2Config)return read_pin(ERROR_DRIVER_2_TOP_BASE, ERROR_DRIVER_2_TOP_PIN);
-    else return 0;
+#if (Driver2TopErrorEnable == 1)
+
+    return read_pin(ERROR_DRIVER_2_TOP_BASE, ERROR_DRIVER_2_TOP_PIN);
+
+#else
+
+    return 0;
+
+#endif
 }
 
-unsigned char Driver2BotErrRead(void)
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+unsigned char Driver2BotErrorRead(void)
 {
-    if(ErrorDriver2Config)return read_pin(ERROR_DRIVER_2_BOT_BASE, ERROR_DRIVER_2_BOT_PIN);
-    else return 0;
+#if (Driver2BotErrorEnable == 1)
+
+    return read_pin(ERROR_DRIVER_2_BOT_BASE, ERROR_DRIVER_2_BOT_PIN);
+
+#else
+
+    return 0;
+
+#endif
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned char Driver2OverTempRead(void)
 {
-    if(ErrorDriver2Config) return !read_pin(MODULE_2_OVER_TEMP_BASE, MODULE_2_OVER_TEMP_PIN);
-    else return 0;
+#if (Driver2OverTempEnable == 1)
+
+    return !read_pin(MODULE_2_OVER_TEMP_BASE, MODULE_2_OVER_TEMP_PIN);
+
+#else
+
+    return 0;
+
+#endif
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
 

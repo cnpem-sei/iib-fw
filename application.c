@@ -1,85 +1,69 @@
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 #include "application.h"
 #include "adc_internal.h"
 #include "BoardTempHum.h"
+#include "ntc_isolated_i2c.h"
 #include "pt100.h"
 #include "output.h"
 #include "leds.h"
 #include "can_bus.h"
 #include "input.h"
-#include "can_bus.h"
-#include "stdbool.h"
-#include "stdint.h"
+#include <stdbool.h>
+#include <stdint.h>
 #include "fac_cmd.h"
 #include "fac_is.h"
 #include "fac_os.h"
 #include "fap.h"
-#include "fap_300A.h"
-#include "rectifier_module.h"
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-static unsigned char PowerModuleModel = 0;
 static unsigned char Interlock = 0;
 static unsigned char InterlockOld = 0;
 static unsigned char ItlkClrCmd = 0;
 static unsigned char InitApp = 0;
-static unsigned char Alarm = 0;
+unsigned char Alarm = 0;
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 void AppConfiguration(void)
 {
 
-    // Set Power Module Model
-    // This parameter guide the firmware behavior
-    // Each Model has a different variable list that need to be check
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-    //PowerModuleModel = FAP;
-    //PowerModuleModel = FAP_300A;
-    //PowerModuleModel = FAC_OS;
-    //PowerModuleModel = RECTIFIER_MODULE;
-    PowerModuleModel = FAC_IS;
-    //PowerModuleModel = FAC_CMD_MODULE;
-    
-    switch(PowerModuleModel)
-    {
-        case FAP:
+#ifdef FAP
 
-            init_fap();
+    config_module_fap();
 
-            break;
+#endif
 
-        case FAC_OS:
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-            init_fac_os();
+#ifdef FAC_OS
 
-            break;
-         
-        case RECTIFIER_MODULE:
+    config_module_fac_os();
 
-            init_rectifier_module();
+#endif
 
-            break;
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-        case FAC_IS:
+#ifdef FAC_IS
 
-            init_fac_is();
+    config_module_fac_is();
 
-            break;
+#endif
 
-        case FAC_CMD_MODULE:
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-            init_fac_cmd();
+#ifdef FAC_CMD
 
-            break;
+    config_module_fac_cmd();
 
-        case FAP_300A:
+#endif
 
-            init_fap_300A();
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-            break;
-
-        default:
-            break;
-
-    }
     // End of configuration
     // Turn on Led1 (board started)
     Led1TurnOff();
@@ -92,533 +76,490 @@ void AppConfiguration(void)
     Led8TurnOn();
     Led9TurnOn();
     Led10TurnOn();
+
 }
 
-// Set Interlock clear command
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 void InterlockClear(void)
 {
     ItlkClrCmd = 1;
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 void InterlockSet(void)
 {
     Interlock = 1;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 void InterlockClearCheck(void)
 {
-      //if(ItlkClrCmd && Interlock)
-      if(ItlkClrCmd)
-      {
-          Interlock = 0;
-          InterlockOld = 0;
+    if(ItlkClrCmd)
+    {
+        Interlock = 0;
 
-          InitApp = 0;
+        InterlockOld = 0;
 
-          AdcClearAlarmTrip();
-          Pt100ClearAlarmTrip();
-          RhTempClearAlarmTrip();
-          
-          ItlkClrCmd = 0;
-          
-          switch(PowerModuleModel)
-          {
-              case FAP:
+        InitApp = 0;
 
-                  clear_fap_interlocks();
-                  clear_fap_alarms();
+        AdcClearAlarmTrip();
+        Pt100ClearAlarmTrip();
+        RhBoardTempClearAlarmTrip();
+        TempIgbt1TempIgbt2ClearAlarmTrip();
 
-                  break;
+        ItlkClrCmd = 0;
 
-              case FAC_OS:
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-                  clear_fac_os_interlocks();
-                  clear_fac_os_alarms();
+#ifdef FAP
 
-                  break;
+        clear_fap_interlocks();
+        clear_fap_alarms();
 
-              case RECTIFIER_MODULE:
+#endif
 
-                  clear_rectifier_interlocks();
-                  clear_rectifier_alarms();
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-                  break;
-               
-              case FAC_IS:
+#ifdef FAC_OS
 
-                  clear_fac_is_interlocks();
-                  clear_fac_is_alarms();
+        clear_fac_os_interlocks();
+        clear_fac_os_alarms();
 
-                  break;
+#endif
 
-              case FAC_CMD_MODULE:
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-                  clear_fac_cmd_interlocks();
-                  clear_fac_cmd_alarms();
+#ifdef FAC_IS
 
-                  break;
+        clear_fac_is_interlocks();
+        clear_fac_is_alarms();
 
-              case FAP_300A:
+#endif
 
-                  clear_fap_300A_interlocks();
-                  clear_fap_300A_alarms();
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-                  break;
+#ifdef FAC_CMD
 
-              default:
-                  break;
-          }
-      }
+        clear_fac_cmd_interlocks();
+        clear_fac_cmd_alarms();
+
+#endif
+
+    }
+
 }
 
-unsigned char InterlockRead(void)
-{
-      return Interlock;
-}
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 void AppInterlock(void)
 {
-      
-      // caso haja algum Interlock, o rele auxiliar deve ser desligado e as operações cabiveis de Interlock devem ser executadas
-      
-      // Analisar se todos os interlocks foram apagados para poder liberar o rele auxiliar
-      // caso não haja mais Interlock, fechar o rele auxiliar
-      
-      switch(PowerModuleModel)
-      {
-       case FAP:
+    // caso haja algum Interlock, o rele auxiliar deve ser desligado e as operações cabiveis de Interlock devem ser executadas
+    // Analisar se todos os interlocks foram apagados para poder liberar o rele auxiliar
+    // caso não haja mais Interlock, fechar o rele auxiliar
 
-            ReleAuxTurnOff();
-            ReleItlkTurnOff();
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-            break;
+#ifdef FAP
 
-       case FAC_OS:
+    ReleAuxTurnOff();
+    ReleExtItlkTurnOff();
 
-            ReleAuxTurnOff();
-            ReleItlkTurnOff();
-            Gpdo1TurnOff();
-            Gpdo2TurnOff();
+#endif
 
-            break;
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-       case RECTIFIER_MODULE:
+#ifdef FAC_OS
 
-            ReleAuxTurnOff();
-            ReleItlkTurnOff();
+    ReleAuxTurnOff();
+    ReleExtItlkTurnOff();
+    Gpdo1TurnOff();
+    Gpdo2TurnOff();
 
-            break;
+#endif
 
-       case FAC_IS:
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-            ReleAuxTurnOff();
-            ReleItlkTurnOff();
+#ifdef FAC_IS
 
-            break;
+    ReleAuxTurnOff();
+    ReleExtItlkTurnOff();
 
-       case FAC_CMD_MODULE:
+#endif
 
-           ReleAuxTurnOff();
-           ReleItlkTurnOff();
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-           break;
+#ifdef FAC_CMD
 
-       case FAP_300A:
+    ReleAuxTurnOff();
+    ReleExtItlkTurnOff();
 
-           ReleAuxTurnOff();
-           ReleItlkTurnOff();
+#endif
 
-           break;
-
-       default:
-           break;
-
-      }
-      
 }
 
-
-void AlarmSet(void)
-{
-      Alarm = 1;
-}
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 void AlarmClear(void)
 {
-      Alarm = 0;
+    Alarm = 0;
 }
 
-unsigned char AlarmRead(void)
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void AlarmSet(void)
 {
-      return Alarm;
+    Alarm = 1;
 }
 
-void AppAlarm(void)
-{
-
-}
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 void InterlockAppCheck(void)
 {
-   unsigned char test = 0;
+    unsigned char test = 0;
 
-   switch(PowerModuleModel)
-   {
-       case FAP:
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-           test = check_fap_interlocks();
+#ifdef FAP
 
-           break;
-       
-       case FAC_OS:
+    test = check_fap_interlocks();
 
-           test = check_fac_os_interlocks();
+#endif
 
-           break;
-       
-       case RECTIFIER_MODULE:
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-           test = check_rectifier_interlocks();
+#ifdef FAC_OS
 
-           break;
-       
-       case FAC_IS:
+    test = check_fac_os_interlocks();
 
-           test = check_fac_is_interlocks();
+#endif
 
-           break;
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-       case FAC_CMD_MODULE:
+#ifdef FAC_IS
 
-           test = check_fac_cmd_interlocks();
+    test = check_fac_is_interlocks();
 
-           break;
+#endif
 
-       case FAP_300A:
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-           test = check_fap_300A_interlocks();
+#ifdef FAC_CMD
 
-           break;
+    test = check_fac_cmd_interlocks();
 
-       default:
-           break;
-   }
+#endif
 
-   test |= RhTripStatusRead();
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-   test |= DriverVolatgeTripStatusRead();
-   test |= Driver1CurrentTripStatusRead();
-   test |= Driver2CurrentTripStatusRead();
+    if(test)
+    {
+        InterlockSet();
 
-   if(test) {
-
-       InterlockSet();
-
-       switch (PowerModuleModel)
-       {
-           case FAP:
-               send_fap_itlk_msg();
-               break;
-
-           case FAC_OS:
-               send_output_fac_os_itlk_msg();
-               break;
-
-           case RECTIFIER_MODULE:
-               send_rectf_itlk_msg();
-               break;
-
-           case FAC_IS:
-               send_fac_is_itlk_msg();
-               break;
-
-           case FAC_CMD_MODULE:
-               send_fac_cmd_itlk_msg();
-               break;
-
-           case FAP_300A:
-               send_fap_300A_itlk_msg();
-               break;
-
-           default:
-               break;
-       }
-   }
-
+        send_itlk_message(0);
+    }
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 void AlarmAppCheck(void)
 {
-   unsigned char test = 0;
-   
-   switch(PowerModuleModel)
-   {
-       case FAP:
+    unsigned char test = 0;
 
-           test = check_fap_alarms();
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-           break;
+#ifdef FAP
 
-       case FAC_OS:
+    test = check_fap_alarms();
 
-           test = check_fac_os_alarms();
+#endif
 
-           break;
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-       case RECTIFIER_MODULE:
+#ifdef FAC_OS
 
-           test = check_rectifier_alarms();
+    test = check_fac_os_alarms();
 
-           break;
+#endif
 
-       case FAC_IS:
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-           test = check_fac_is_alarms();
+#ifdef FAC_IS
 
-           break;
+    test = check_fac_is_alarms();
 
-       case FAC_CMD_MODULE:
+#endif
 
-           test = check_fac_cmd_alarms();
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-           break;
+#ifdef FAC_CMD
 
-       case FAP_300A:
+    test = check_fac_cmd_alarms();
 
-           test = check_fap_300A_alarms();
+#endif
 
-           break;
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-       default:
-           break;
-   }
+    if(test)
+    {
+        AlarmSet();
 
-   test |= RhAlarmStatusRead();
-
-
-   if(test) {
-       AlarmSet();
-       send_data_message(1);
-   }
+        send_alarm_message(0);
+    }
 }
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 void LedIndicationStatus(void)
 {
-    switch(PowerModuleModel)
-    {
-        case FAP:
 
-           check_fap_indication_leds();
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-           break;
+#ifdef FAP
 
-        case FAC_OS:
+    check_fap_indication_leds();
 
-           check_fac_os_indication_leds();
+#endif
 
-           break;
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-        case RECTIFIER_MODULE:
+#ifdef FAC_OS
 
-            check_rectifier_indication_leds();
-            
-            break;
+    check_fac_os_indication_leds();
 
-        case FAC_IS:
+#endif
 
-            check_fac_is_indication_leds();
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-            break;
+#ifdef FAC_IS
 
-        case FAC_CMD_MODULE:
+    check_fac_is_indication_leds();
 
-            check_fac_cmd_indication_leds();
+#endif
 
-            break;
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-        case FAP_300A:
+#ifdef FAC_CMD
 
-            check_fap_300A_indication_leds();
+    check_fac_cmd_indication_leds();
 
-            break;
+#endif
 
-        default:
-            break;
-      }
-      
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 void Application(void)
 {
 
-    switch(PowerModuleModel)
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+#ifdef FAP
+
+    fap_application_readings();
+
+#endif
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+#ifdef FAC_OS
+
+    fac_os_application_readings();
+
+#endif
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+#ifdef FAC_IS
+
+    fac_is_application_readings();
+
+#endif
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+#ifdef FAC_CMD
+
+    fac_cmd_application_readings();
+
+#endif
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Interlock Test
+    if(Interlock == 1 && InterlockOld == 0)
     {
-        case FAP:
+        InterlockOld = 1;
+        AppInterlock();
+    }
 
-            fap_application_readings();
+    // Actions that needs to be taken during the Application initialization
+    if(InitApp == 0 && Interlock == 0)
+    {
+        InitApp = 1;
 
-            break;
-       
-        case FAC_OS:
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-            fac_os_application_readings();
+#ifdef FAP
 
-            break;
-            
-        case RECTIFIER_MODULE:
-            
-            rectifier_application_readings();
-            
-            break;
-            
-       case FAC_IS:
+        ReleAuxTurnOn();
+        ReleExtItlkTurnOff();
 
-           fac_is_application_readings();
+#endif
 
-           break;
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-       case FAC_CMD_MODULE:
+#ifdef FAC_OS
 
-           fac_cmd_application_readings();
+        ReleAuxTurnOn();
+        ReleExtItlkTurnOn();
+        Gpdo1TurnOn();
+        Gpdo2TurnOn();
 
-           break;
+#endif
 
-       case FAP_300A:
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-           fap_300A_application_readings();
+#ifdef FAC_IS
 
-           break;
+        ReleAuxTurnOn();
+        ReleExtItlkTurnOn();
 
-       default:
-           break;
-      }
+#endif
 
-      // Interlock Test
-      if(Interlock == 1 && InterlockOld == 0)
-      {
-            InterlockOld = 1;
-            AppInterlock();
-      }
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-      // Actions that needs to be taken during the Application initialization
-      if(InitApp == 0 && Interlock == 0)
-      {
-            InitApp = 1;
+#ifdef FAC_CMD
 
-            switch(PowerModuleModel)
-            {
-             case FAP:
-                  ReleAuxTurnOn();
-                  ReleItlkTurnOff();
-                  break;
+        ReleAuxTurnOn();
+        ReleExtItlkTurnOn();
 
-             case FAC_OS:
-                  ReleAuxTurnOn();
-                  ReleItlkTurnOn();
+#endif
 
-                  Gpdo1TurnOn();
-                  Gpdo2TurnOn();
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-                  break;
+    }
 
-             case RECTIFIER_MODULE:
-                  ReleAuxTurnOn();
-                  ReleItlkTurnOn();
-                  break;
-
-             case FAC_IS:
-                  ReleAuxTurnOn();
-                  ReleItlkTurnOn();
-                  break;
-
-             case FAC_CMD_MODULE:
-                 ReleAuxTurnOn();
-                 ReleItlkTurnOn();
-                 break;
-
-             case FAP_300A:
-                 ReleAuxTurnOn();
-                 ReleItlkTurnOff();
-                 break;
-
-             default:
-                 break;
-            }
-      }
-
-      InterlockClearCheck();
+    InterlockClearCheck();
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 void send_data_schedule()
 {
-    switch(AppType())
-    {
-        case FAP:
-            send_fap_data();
-            break;
 
-        case FAC_OS:
-            send_fac_os_data();
-            break;
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-        case RECTIFIER_MODULE:
-            send_rm_data();
-            break;
+#ifdef FAP
 
-        case FAC_IS:
-            send_fac_is_data();
-            break;
+    static uint8_t i = 0;
 
-        case FAC_CMD_MODULE:
-            send_fac_cmd_data();
-            break;
+    send_data_message(i);
 
-        case FAP_300A:
-            send_fap_300A_data();
-            break;
+    i++;
 
-        default:
-            break;
-    }
+    if (i > 13) i = 0;
+
+#endif
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+#ifdef FAC_OS
+
+    static uint8_t i = 0;
+
+    send_data_message(i);
+
+    i++;
+
+    if (i > 12) i = 0;
+
+#endif
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+#ifdef FAC_IS
+
+    static uint8_t i = 0;
+
+    send_data_message(i);
+
+    i++;
+
+    if (i > 8) i = 0;
+
+#endif
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+#ifdef FAC_CMD
+
+    static uint8_t i = 0;
+
+    send_data_message(i);
+
+    i++;
+
+    if (i > 9) i = 0;
+
+#endif
+
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 void power_on_check()
 {
-    switch(AppType())
-    {
-        case FAP:
-            fap_power_on_check();
-            break;
 
-        case FAC_OS:
-            fac_os_power_on_check();
-            break;
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-        case RECTIFIER_MODULE:
-            break;
+#ifdef FAP
 
-        case FAC_IS:
-            fac_is_power_on_check();
-            break;
+    if(fap.Relay) {
 
-        case FAC_CMD_MODULE:
-            fac_cmd_power_on_check();
-            break;
-
-        case FAP_300A:
-            fap_300A_power_on_check();
-            break;
-
-        default:
-            break;
+        Led1TurnOff();
+        ReleExtItlkTurnOff();
     }
+
+    else {
+
+        Led1TurnOn();
+        ReleExtItlkTurnOn();
+    }
+
+#endif
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+#ifdef FAC_OS
+
+    Led1TurnOn();
+
+#endif
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+#ifdef FAC_IS
+
+    Led1TurnOn();
+
+#endif
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+#ifdef FAC_CMD
+
+    Led1TurnOn();
+
+#endif
+
 }
 
-// Application type
-//******************************************************************************
-unsigned char AppType(void)
-{
-    return PowerModuleModel;
-}
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
