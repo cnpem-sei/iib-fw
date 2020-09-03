@@ -250,42 +250,42 @@ void check_fap_indication_leds()
 void fap_application_readings()
 {
     //PT100 CH1 Dissipador
-    fap.TempHeatSink.f = (float) Pt100ReadCh1();
-    fap.TempHeatSinkAlarmSts = Pt100ReadCh1AlarmSts();
-    if(!fap.TempHeatSinkItlkSts)fap.TempHeatSinkItlkSts = Pt100ReadCh1TripSts();
+    fap.TempHeatSink.f = Pt100Ch1Read();
+    fap.TempHeatSinkAlarmSts = Pt100Ch1AlarmStatusRead();
+    if(!fap.TempHeatSinkItlkSts)fap.TempHeatSinkItlkSts = Pt100Ch1TripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //PT100 CH2 Indutor
-    fap.TempL.f = (float) Pt100ReadCh2();
-    fap.TempLAlarmSts = Pt100ReadCh2AlarmSts();
-    if(!fap.TempLItlkSts)fap.TempLItlkSts = Pt100ReadCh2TripSts();
+    fap.TempL.f = Pt100Ch2Read();
+    fap.TempLAlarmSts = Pt100Ch2AlarmStatusRead();
+    if(!fap.TempLItlkSts)fap.TempLItlkSts = Pt100Ch2TripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Temperatura IGBT1
-    fap.TempIGBT1.f = (float) TempIgbt1Read();
+    fap.TempIGBT1.f = TempIgbt1Read();
     fap.TempIGBT1AlarmSts = TempIgbt1AlarmStatusRead();
     if(!fap.TempIGBT1ItlkSts)fap.TempIGBT1ItlkSts = TempIgbt1TripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Temperatura IGBT2
-    fap.TempIGBT2.f = (float) TempIgbt2Read();
+    fap.TempIGBT2.f = TempIgbt2Read();
     fap.TempIGBT2AlarmSts = TempIgbt2AlarmStatusRead();
     if(!fap.TempIGBT2ItlkSts)fap.TempIGBT2ItlkSts = TempIgbt2TripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Temperatura PCB IIB
-    fap.BoardTemperature.f = (float) BoardTempRead();
+    fap.BoardTemperature.f = BoardTempRead();
     fap.BoardTemperatureAlarmSts = BoardTempAlarmStatusRead();
     if(!fap.BoardTemperatureItlkSts)fap.BoardTemperatureItlkSts = BoardTempTripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Umidade Relativa
-    fap.RelativeHumidity.f = (float) RhRead();
+    fap.RelativeHumidity.f = RhRead();
     fap.RelativeHumidityAlarmSts = RhAlarmStatusRead();
     if(!fap.RelativeHumidityItlkSts)fap.RelativeHumidityItlkSts = RhTripStatusRead();
 
@@ -598,14 +598,14 @@ void config_module_fap(void)
 
     //PT100 configuration
     //Debouncing Delay seconds
-    Pt100SetCh1Delay(Delay_PT100CH1);
-    Pt100SetCh2Delay(Delay_PT100CH2);
+    Pt100Ch1Delay(Delay_PT100CH1);
+    Pt100Ch2Delay(Delay_PT100CH2);
 
     //PT100 configuration limits
-    Pt100SetCh1AlarmLevel(FAP_HS_OVERTEMP_ALM_LIM);     //Temperatura Dissipador
-    Pt100SetCh1TripLevel(FAP_HS_OVERTEMP_ITLK_LIM);     //Temperatura Dissipador
-    Pt100SetCh2AlarmLevel(FAP_INDUC_OVERTEMP_ALM_LIM);  //Temperatura L
-    Pt100SetCh2TripLevel(FAP_INDUC_OVERTEMP_ITLK_LIM);  //Temperatura L
+    Pt100Ch1AlarmLevelSet(FAP_HS_OVERTEMP_ALM_LIM);     //Temperatura Dissipador
+    Pt100Ch1TripLevelSet(FAP_HS_OVERTEMP_ITLK_LIM);     //Temperatura Dissipador
+    Pt100Ch2AlarmLevelSet(FAP_INDUC_OVERTEMP_ALM_LIM);  //Temperatura L
+    Pt100Ch2TripLevelSet(FAP_INDUC_OVERTEMP_ITLK_LIM);  //Temperatura L
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

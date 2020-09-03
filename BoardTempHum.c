@@ -71,16 +71,16 @@ void BoardTemperatureStartConversion(void)
 
 void BoardTemperatureRead(void)
 {
-    uint8_t Status=1;
-    uint8_t TemperatureH;
-    uint8_t TemperatureL;
-    uint16_t Tempa;
-    uint16_t Tempb;
-    uint16_t Tempc;
+    unsigned char Status = 1;
+    unsigned char TemperatureH;
+    unsigned char TemperatureL;
+    unsigned int Tempa;
+    unsigned int Tempb;
+    unsigned int Tempc;
 
     toggle_pin(TP_1_BASE, TP_1_PIN);
 
-    while(Status==1)
+    while(Status == 1)
     {
 
         Status = I2C5Receive(SlaveAddress, RegisterAddress0);
@@ -103,7 +103,7 @@ void BoardTemperatureRead(void)
     Tempb += TemperatureL;
     Tempc = Tempb>>2;
 
-    TemperatureBoard.Value = (Tempc/32) - 50;
+    TemperatureBoard.Value = (Tempc/32.0) - 50.0;
 
     if(TemperatureBoard.Value > TemperatureBoard.AlarmLimit)
     {
@@ -146,7 +146,7 @@ void RelativeHumidityStartConversion(void)
 
 void RelativeHumidityRead(void)
 {
-    unsigned char Status=1;
+    unsigned char Status = 1;
     unsigned char RelativeHumidityH;
     unsigned char RelativeHumidityL;
     unsigned int RelHuma;
@@ -157,7 +157,7 @@ void RelativeHumidityRead(void)
     float rawHumidity;
     float linearHumidity;
 
-    while(Status==1)
+    while(Status == 1)
     {
 
         Status = I2C5Receive(SlaveAddress, RegisterAddress0);
@@ -182,7 +182,7 @@ void RelativeHumidityRead(void)
 
     rawHumidity = RelHumc;
 
-    curve = (rawHumidity/16.0)-24.0 ;
+    curve = (rawHumidity/16.0)-24.0;
 
     linearHumidity = curve - ( (curve * curve) * a2 + curve * a1 + a0);
     linearHumidity = linearHumidity + ( TemperatureBoard.Value - 30.0 ) * ( linearHumidity * q1 + q0 );
@@ -232,9 +232,9 @@ void RhBoardTempSenseInit(void)
 
    delay_ms(10);
 
-   TemperatureBoard.Value = 0;
-   TemperatureBoard.AlarmLimit = 90;
-   TemperatureBoard.TripLimit = 100;
+   TemperatureBoard.Value = 0.0;
+   TemperatureBoard.AlarmLimit = 90.0;
+   TemperatureBoard.TripLimit = 100.0;
    TemperatureBoard.Alarm = 0;
    TemperatureBoard.Trip = 0;
    TemperatureBoard.Alarm_Delay_ms = 0; // milisecond
@@ -242,9 +242,9 @@ void RhBoardTempSenseInit(void)
    TemperatureBoard.Itlk_Delay_ms = 0; // milisecond
    TemperatureBoard.Itlk_DelayCount = 0;
 
-   RelativeHumidity.Value = 0;
-   RelativeHumidity.AlarmLimit = 90;
-   RelativeHumidity.TripLimit = 100;
+   RelativeHumidity.Value = 0.0;
+   RelativeHumidity.AlarmLimit = 90.0;
+   RelativeHumidity.TripLimit = 100.0;
    RelativeHumidity.Alarm = 0;
    RelativeHumidity.Trip = 0;
    RelativeHumidity.Alarm_Delay_ms = 0; // milisecond
@@ -256,7 +256,7 @@ void RhBoardTempSenseInit(void)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-unsigned char BoardTempRead(void)
+float BoardTempRead(void)
 {
 #if (BoardTempEnable == 1)
 
@@ -271,7 +271,7 @@ unsigned char BoardTempRead(void)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-unsigned char RhRead(void)
+float RhRead(void)
 {
 #if (RhEnable == 1)
 
@@ -286,14 +286,14 @@ unsigned char RhRead(void)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void BoardTempAlarmLevelSet(unsigned char nValue)
+void BoardTempAlarmLevelSet(float nValue)
 {
     TemperatureBoard.AlarmLimit = nValue;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void BoardTempTripLevelSet(unsigned char nValue)
+void BoardTempTripLevelSet(float nValue)
 {
     TemperatureBoard.TripLimit = nValue;
 }
@@ -339,14 +339,14 @@ unsigned char BoardTempTripStatusRead(void)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void RhAlarmLevelSet(unsigned char nValue)
+void RhAlarmLevelSet(float nValue)
 {
     RelativeHumidity.AlarmLimit = nValue;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void RhTripLevelSet(unsigned char nValue)
+void RhTripLevelSet(float nValue)
 {
     RelativeHumidity.TripLimit = nValue;
 }

@@ -10,9 +10,9 @@ typedef struct
 {
     unsigned char Ch;
     unsigned char Calibration;
-    unsigned char Temperature;
-    unsigned char AlarmLimit;
-    unsigned char TripLimit;
+    float Temperature;
+    float AlarmLimit;
+    float TripLimit;
     unsigned char CanNotCommunicate;
     unsigned char Error;
     unsigned char RtdOutOfRange;
@@ -44,92 +44,69 @@ extern void Pt100Ch4Sample(void);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-extern unsigned char Pt100ReadCh1(void);
-extern unsigned char Pt100ReadCh2(void);
-extern unsigned char Pt100ReadCh3(void);
-extern unsigned char Pt100ReadCh4(void);
+extern float Pt100Ch1Read(void);
+extern float Pt100Ch2Read(void);
+extern float Pt100Ch3Read(void);
+extern float Pt100Ch4Read(void);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-extern unsigned char Pt100ReadCh1Error(void);
-extern unsigned char Pt100ReadCh2Error(void);
-extern unsigned char Pt100ReadCh3Error(void);
-extern unsigned char Pt100ReadCh4Error(void);
+extern unsigned char Pt100Ch1ErrorRead(void);
+extern unsigned char Pt100Ch2ErrorRead(void);
+extern unsigned char Pt100Ch3ErrorRead(void);
+extern unsigned char Pt100Ch4ErrorRead(void);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-extern void Pt100SetCh1AlarmLevel(unsigned char alarm);
-extern unsigned char Pt100ReadCh1AlarmLevel(void);
-extern void Pt100SetCh1TripLevel(unsigned char trip);
-extern unsigned char Pt100ReadCh1TripLevel(void);
+extern void Pt100Ch1AlarmLevelSet(float alarm);
+extern void Pt100Ch1TripLevelSet(float trip);
+extern void Pt100Ch2AlarmLevelSet(float alarm);
+extern void Pt100Ch2TripLevelSet(float trip);
+extern void Pt100Ch3AlarmLevelSet(float alarm);
+extern void Pt100Ch3TripLevelSet(float trip);
+extern void Pt100Ch4AlarmLevelSet(float alarm);
+extern void Pt100Ch4TripLevelSet(float trip);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-extern void Pt100SetCh2AlarmLevel(unsigned char alarm);
-extern unsigned char Pt100ReadCh2AlarmLevel(void);
-extern void Pt100SetCh2TripLevel(unsigned char trip);
-extern unsigned char Pt100ReadCh2TripLevel(void);
+extern unsigned char Pt100Ch1AlarmStatusRead(void);
+extern unsigned char Pt100Ch1TripStatusRead(void);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-extern void Pt100SetCh3AlarmLevel(unsigned char alarm);
-extern unsigned char Pt100ReadCh3AlarmLevel(void);
+extern unsigned char Pt100Ch2AlarmStatusRead(void);
+extern unsigned char Pt100Ch2TripStatusRead(void);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-extern void Pt100SetCh3TripLevel(unsigned char trip);
-extern unsigned char Pt100ReadCh3TripLevel(void);
+extern unsigned char Pt100Ch3AlarmStatusRead(void);
+extern unsigned char Pt100Ch3TripStatusRead(void);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-extern void Pt100SetCh4AlarmLevel(unsigned char alarm);
-extern unsigned char Pt100ReadCh4AlarmLevel(void);
+extern unsigned char Pt100Ch4AlarmStatusRead(void);
+extern unsigned char Pt100Ch4TripStatusRead(void);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-extern void Pt100SetCh4TripLevel(unsigned char trip);
-extern unsigned char Pt100ReadCh4TripLevel(void);
+extern void Pt100Ch1Delay(unsigned int Delay_Set);
+extern void Pt100Ch2Delay(unsigned int Delay_Set);
+extern void Pt100Ch3Delay(unsigned int Delay_Set);
+extern void Pt100Ch4Delay(unsigned int Delay_Set);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-extern unsigned char Pt100ReadCh1AlarmSts(void);
-extern unsigned char Pt100ReadCh1TripSts(void);
+extern unsigned char Pt100Ch1CNCRead(void);
+extern unsigned char Pt100Ch2CNCRead(void);
+extern unsigned char Pt100Ch3CNCRead(void);
+extern unsigned char Pt100Ch4CNCRead(void);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-extern unsigned char Pt100ReadCh2AlarmSts(void);
-extern unsigned char Pt100ReadCh2TripSts(void);
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-extern unsigned char Pt100ReadCh3AlarmSts(void);
-extern unsigned char Pt100ReadCh3TripSts(void);
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-extern unsigned char Pt100ReadCh4AlarmSts(void);
-extern unsigned char Pt100ReadCh4TripSts(void);
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-extern void Pt100SetCh1Delay(unsigned int Delay_Set);
-extern void Pt100SetCh2Delay(unsigned int Delay_Set);
-extern void Pt100SetCh3Delay(unsigned int Delay_Set);
-extern void Pt100SetCh4Delay(unsigned int Delay_Set);
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-extern unsigned char Pt100ReadCh1CNC(void);
-extern unsigned char Pt100ReadCh2CNC(void);
-extern unsigned char Pt100ReadCh3CNC(void);
-extern unsigned char Pt100ReadCh4CNC(void);
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-extern unsigned char Pt100ReadCh1RtdSts(void);
-extern unsigned char Pt100ReadCh2RtdSts(void);
-extern unsigned char Pt100ReadCh3RtdSts(void);
-extern unsigned char Pt100ReadCh4RtdSts(void);
+extern unsigned char Pt100Ch1RtdStatusRead(void);
+extern unsigned char Pt100Ch2RtdStatusRead(void);
+extern unsigned char Pt100Ch3RtdStatusRead(void);
+extern unsigned char Pt100Ch4RtdStatusRead(void);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

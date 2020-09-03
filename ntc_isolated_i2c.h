@@ -25,9 +25,9 @@ extern "C" {
 
 typedef struct
 {
-    unsigned char Value;
-    unsigned char AlarmLimit;
-    unsigned char TripLimit;
+    float Value;
+    float AlarmLimit;
+    float TripLimit;
     unsigned char Alarm;
     unsigned char Trip;
     unsigned int  Alarm_Delay_ms; // milisecond
@@ -43,11 +43,11 @@ extern ntc_t TempNtcIgbt2;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void NtcInit(void);
-unsigned char TempIgbt1Read(void);
-unsigned char TempIgbt2Read(void);
-float GetTemperatureIgbt1(float VoutADS1014);
-float GetTemperatureIgbt2(float VoutADS1014);
+extern void NtcInit(void);
+extern float TempIgbt1Read(void);
+extern float TempIgbt2Read(void);
+extern float GetTemperatureIgbt1(float VoutADS1014);
+extern float GetTemperatureIgbt2(float VoutADS1014);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -56,8 +56,8 @@ extern void NtcRead(void);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-extern void TempIgbt1AlarmLevelSet(unsigned char nValue);
-extern void TempIgbt1TripLevelSet(unsigned char nValue);
+extern void TempIgbt1AlarmLevelSet(float nValue);
+extern void TempIgbt1TripLevelSet(float nValue);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -70,8 +70,8 @@ extern unsigned char TempIgbt1TripStatusRead(void);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-extern void TempIgbt2AlarmLevelSet(unsigned char nValue);
-extern void TempIgbt2TripLevelSet(unsigned char nValue);
+extern void TempIgbt2AlarmLevelSet(float nValue);
+extern void TempIgbt2TripLevelSet(float nValue);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

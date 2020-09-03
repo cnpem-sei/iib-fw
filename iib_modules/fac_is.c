@@ -210,21 +210,21 @@ void check_fac_is_indication_leds()
 void fac_is_application_readings()
 {
     //PT100 CH1 Dissipador
-    fac_is.TempHeatSink.f = (float) Pt100ReadCh1();
-    fac_is.TempHeatSinkAlarmSts = Pt100ReadCh1AlarmSts();
-    if(!fac_is.TempHeatSinkItlkSts)fac_is.TempHeatSinkItlkSts = Pt100ReadCh1TripSts();
+    fac_is.TempHeatSink.f = Pt100Ch1Read();
+    fac_is.TempHeatSinkAlarmSts = Pt100Ch1AlarmStatusRead();
+    if(!fac_is.TempHeatSinkItlkSts)fac_is.TempHeatSinkItlkSts = Pt100Ch1TripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //PT100 CH2 Indutor
-    fac_is.TempL.f = (float) Pt100ReadCh2();
-    fac_is.TempLAlarmSts = Pt100ReadCh2AlarmSts();
-    if(!fac_is.TempLItlkSts)fac_is.TempLItlkSts = Pt100ReadCh2TripSts();
+    fac_is.TempL.f = Pt100Ch2Read();
+    fac_is.TempLAlarmSts = Pt100Ch2AlarmStatusRead();
+    if(!fac_is.TempLItlkSts)fac_is.TempLItlkSts = Pt100Ch2TripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Temperatura IGBT1
-    fac_is.TempIGBT1.f = (float) TempIgbt1Read();
+    fac_is.TempIGBT1.f = TempIgbt1Read();
     fac_is.TempIGBT1AlarmSts = TempIgbt1AlarmStatusRead();
     if(!fac_is.TempIGBT1ItlkSts)fac_is.TempIGBT1ItlkSts = TempIgbt1TripStatusRead();
 
@@ -237,14 +237,14 @@ void fac_is_application_readings()
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Temperatura PCB IIB
-    fac_is.BoardTemperature.f = (float) BoardTempRead();
+    fac_is.BoardTemperature.f = BoardTempRead();
     fac_is.BoardTemperatureAlarmSts = BoardTempAlarmStatusRead();
     if(!fac_is.BoardTemperatureItlkSts)fac_is.BoardTemperatureItlkSts = BoardTempTripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Umidade Relativa
-    fac_is.RelativeHumidity.f = (float) RhRead();
+    fac_is.RelativeHumidity.f = RhRead();
     fac_is.RelativeHumidityAlarmSts = RhAlarmStatusRead();
     if(!fac_is.RelativeHumidityItlkSts)fac_is.RelativeHumidityItlkSts = RhTripStatusRead();
 
@@ -368,14 +368,14 @@ void config_module_fac_is(void)
 
     //PT100 configuration
     //Delay 2 seconds
-    Pt100SetCh1Delay(Delay_PT100CH1);
-    Pt100SetCh2Delay(Delay_PT100CH2);
+    Pt100Ch1Delay(Delay_PT100CH1);
+    Pt100Ch2Delay(Delay_PT100CH2);
 
     /* Pt-100 Configuration Limits */
-    Pt100SetCh1AlarmLevel(FAC_IS_HS_OVERTEMP_ALM_LIM);
-    Pt100SetCh1TripLevel(FAC_IS_HS_OVERTEMP_ITLK_LIM);
-    Pt100SetCh2AlarmLevel(FAC_IS_INDUC_OVERTEMP_ALM_LIM);
-    Pt100SetCh2TripLevel(FAC_IS_INDUC_OVERTEMP_ITLK_LIM);
+    Pt100Ch1AlarmLevelSet(FAC_IS_HS_OVERTEMP_ALM_LIM);
+    Pt100Ch1TripLevelSet(FAC_IS_HS_OVERTEMP_ITLK_LIM);
+    Pt100Ch2AlarmLevelSet(FAC_IS_INDUC_OVERTEMP_ALM_LIM);
+    Pt100Ch2TripLevelSet(FAC_IS_INDUC_OVERTEMP_ITLK_LIM);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

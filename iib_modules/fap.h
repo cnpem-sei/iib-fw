@@ -246,11 +246,11 @@ extern fap_t fap;
 #define FAP_GROUND_LEAKAGE_ALM_LIM              45.0
 #define FAP_GROUND_LEAKAGE_ITLK_LIM             50.0
 
-#define FAP_IGBT1_OVERTEMP_ALM_LIM              60
-#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80
+#define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
 
-#define FAP_IGBT2_OVERTEMP_ALM_LIM              60
-#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80
+#define FAP_IGBT2_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80.0
 
 #define FAP_DRIVER_OVERVOLTAGE_ALM_LIM          16.0
 #define FAP_DRIVER_OVERVOLTAGE_ITLK_LIM         17.0
@@ -261,17 +261,17 @@ extern fap_t fap;
 #define FAP_DRIVER2_OVERCURRENT_ALM_LIM         2.0
 #define FAP_DRIVER2_OVERCURRENT_ITLK_LIM        2.4
 
-#define FAP_INDUC_OVERTEMP_ALM_LIM              40
-#define FAP_INDUC_OVERTEMP_ITLK_LIM             50
+#define FAP_INDUC_OVERTEMP_ALM_LIM              40.0
+#define FAP_INDUC_OVERTEMP_ITLK_LIM             50.0
 
-#define FAP_HS_OVERTEMP_ALM_LIM                 40
-#define FAP_HS_OVERTEMP_ITLK_LIM                50
+#define FAP_HS_OVERTEMP_ALM_LIM                 40.0
+#define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             60
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -463,11 +463,11 @@ extern fap_t fap;
 #define FAP_GROUND_LEAKAGE_ALM_LIM              45.0
 #define FAP_GROUND_LEAKAGE_ITLK_LIM             50.0
 
-#define FAP_IGBT1_OVERTEMP_ALM_LIM              60
-#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80
+#define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
 
-#define FAP_IGBT2_OVERTEMP_ALM_LIM              60
-#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80
+#define FAP_IGBT2_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80.0
 
 #define FAP_DRIVER_OVERVOLTAGE_ALM_LIM          16.0
 #define FAP_DRIVER_OVERVOLTAGE_ITLK_LIM         17.0
@@ -478,17 +478,17 @@ extern fap_t fap;
 #define FAP_DRIVER2_OVERCURRENT_ALM_LIM         2.0
 #define FAP_DRIVER2_OVERCURRENT_ITLK_LIM        2.4
 
-#define FAP_INDUC_OVERTEMP_ALM_LIM              40
-#define FAP_INDUC_OVERTEMP_ITLK_LIM             50
+#define FAP_INDUC_OVERTEMP_ALM_LIM              40.0
+#define FAP_INDUC_OVERTEMP_ITLK_LIM             50.0
 
-#define FAP_HS_OVERTEMP_ALM_LIM                 40
-#define FAP_HS_OVERTEMP_ITLK_LIM                50
+#define FAP_HS_OVERTEMP_ALM_LIM                 40.0
+#define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             60
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -680,11 +680,11 @@ extern fap_t fap;
 #define FAP_GROUND_LEAKAGE_ALM_LIM              45.0
 #define FAP_GROUND_LEAKAGE_ITLK_LIM             50.0
 
-#define FAP_IGBT1_OVERTEMP_ALM_LIM              60
-#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80
+#define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
 
-#define FAP_IGBT2_OVERTEMP_ALM_LIM              60
-#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80
+#define FAP_IGBT2_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80.0
 
 #define FAP_DRIVER_OVERVOLTAGE_ALM_LIM          16.0
 #define FAP_DRIVER_OVERVOLTAGE_ITLK_LIM         17.0
@@ -695,17 +695,17 @@ extern fap_t fap;
 #define FAP_DRIVER2_OVERCURRENT_ALM_LIM         2.0
 #define FAP_DRIVER2_OVERCURRENT_ITLK_LIM        2.4
 
-#define FAP_INDUC_OVERTEMP_ALM_LIM              40
-#define FAP_INDUC_OVERTEMP_ITLK_LIM             50
+#define FAP_INDUC_OVERTEMP_ALM_LIM              40.0
+#define FAP_INDUC_OVERTEMP_ITLK_LIM             50.0
 
-#define FAP_HS_OVERTEMP_ALM_LIM                 40
-#define FAP_HS_OVERTEMP_ITLK_LIM                50
+#define FAP_HS_OVERTEMP_ALM_LIM                 40.0
+#define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             60
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -897,11 +897,11 @@ extern fap_t fap;
 #define FAP_GROUND_LEAKAGE_ALM_LIM              45.0
 #define FAP_GROUND_LEAKAGE_ITLK_LIM             50.0
 
-#define FAP_IGBT1_OVERTEMP_ALM_LIM              60
-#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80
+#define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
 
-#define FAP_IGBT2_OVERTEMP_ALM_LIM              60
-#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80
+#define FAP_IGBT2_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80.0
 
 #define FAP_DRIVER_OVERVOLTAGE_ALM_LIM          16.0
 #define FAP_DRIVER_OVERVOLTAGE_ITLK_LIM         17.0
@@ -912,17 +912,17 @@ extern fap_t fap;
 #define FAP_DRIVER2_OVERCURRENT_ALM_LIM         2.0
 #define FAP_DRIVER2_OVERCURRENT_ITLK_LIM        2.4
 
-#define FAP_INDUC_OVERTEMP_ALM_LIM              40
-#define FAP_INDUC_OVERTEMP_ITLK_LIM             50
+#define FAP_INDUC_OVERTEMP_ALM_LIM              40.0
+#define FAP_INDUC_OVERTEMP_ITLK_LIM             50.0
 
-#define FAP_HS_OVERTEMP_ALM_LIM                 40
-#define FAP_HS_OVERTEMP_ITLK_LIM                50
+#define FAP_HS_OVERTEMP_ALM_LIM                 40.0
+#define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             60
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1114,11 +1114,11 @@ extern fap_t fap;
 #define FAP_GROUND_LEAKAGE_ALM_LIM              45.0
 #define FAP_GROUND_LEAKAGE_ITLK_LIM             50.0
 
-#define FAP_IGBT1_OVERTEMP_ALM_LIM              60
-#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80
+#define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
 
-#define FAP_IGBT2_OVERTEMP_ALM_LIM              60
-#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80
+#define FAP_IGBT2_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80.0
 
 #define FAP_DRIVER_OVERVOLTAGE_ALM_LIM          16.0
 #define FAP_DRIVER_OVERVOLTAGE_ITLK_LIM         17.0
@@ -1129,17 +1129,17 @@ extern fap_t fap;
 #define FAP_DRIVER2_OVERCURRENT_ALM_LIM         2.0
 #define FAP_DRIVER2_OVERCURRENT_ITLK_LIM        2.4
 
-#define FAP_INDUC_OVERTEMP_ALM_LIM              40
-#define FAP_INDUC_OVERTEMP_ITLK_LIM             50
+#define FAP_INDUC_OVERTEMP_ALM_LIM              40.0
+#define FAP_INDUC_OVERTEMP_ITLK_LIM             50.0
 
-#define FAP_HS_OVERTEMP_ALM_LIM                 40
-#define FAP_HS_OVERTEMP_ITLK_LIM                50
+#define FAP_HS_OVERTEMP_ALM_LIM                 40.0
+#define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             60
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1331,11 +1331,11 @@ extern fap_t fap;
 #define FAP_GROUND_LEAKAGE_ALM_LIM              45.0
 #define FAP_GROUND_LEAKAGE_ITLK_LIM             50.0
 
-#define FAP_IGBT1_OVERTEMP_ALM_LIM              60
-#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80
+#define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
 
-#define FAP_IGBT2_OVERTEMP_ALM_LIM              60
-#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80
+#define FAP_IGBT2_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80.0
 
 #define FAP_DRIVER_OVERVOLTAGE_ALM_LIM          16.0
 #define FAP_DRIVER_OVERVOLTAGE_ITLK_LIM         17.0
@@ -1346,17 +1346,17 @@ extern fap_t fap;
 #define FAP_DRIVER2_OVERCURRENT_ALM_LIM         2.0
 #define FAP_DRIVER2_OVERCURRENT_ITLK_LIM        2.4
 
-#define FAP_INDUC_OVERTEMP_ALM_LIM              65
-#define FAP_INDUC_OVERTEMP_ITLK_LIM             70
+#define FAP_INDUC_OVERTEMP_ALM_LIM              65.0
+#define FAP_INDUC_OVERTEMP_ITLK_LIM             70.0
 
-#define FAP_HS_OVERTEMP_ALM_LIM                 45
-#define FAP_HS_OVERTEMP_ITLK_LIM                50
+#define FAP_HS_OVERTEMP_ALM_LIM                 45.0
+#define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             60
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1550,11 +1550,11 @@ extern fap_t fap;
 #define FAP_GROUND_LEAKAGE_ALM_LIM              45.0
 #define FAP_GROUND_LEAKAGE_ITLK_LIM             50.0
 
-#define FAP_IGBT1_OVERTEMP_ALM_LIM              60
-#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80
+#define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
 
-#define FAP_IGBT2_OVERTEMP_ALM_LIM              60
-#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80
+#define FAP_IGBT2_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80.0
 
 #define FAP_DRIVER_OVERVOLTAGE_ALM_LIM          16.0
 #define FAP_DRIVER_OVERVOLTAGE_ITLK_LIM         17.0
@@ -1565,17 +1565,17 @@ extern fap_t fap;
 #define FAP_DRIVER2_OVERCURRENT_ALM_LIM         2.0
 #define FAP_DRIVER2_OVERCURRENT_ITLK_LIM        2.4
 
-#define FAP_INDUC_OVERTEMP_ALM_LIM              40
-#define FAP_INDUC_OVERTEMP_ITLK_LIM             50
+#define FAP_INDUC_OVERTEMP_ALM_LIM              40.0
+#define FAP_INDUC_OVERTEMP_ITLK_LIM             50.0
 
-#define FAP_HS_OVERTEMP_ALM_LIM                 40
-#define FAP_HS_OVERTEMP_ITLK_LIM                50
+#define FAP_HS_OVERTEMP_ALM_LIM                 40.0
+#define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             60
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1769,11 +1769,11 @@ extern fap_t fap;
 #define FAP_GROUND_LEAKAGE_ALM_LIM              45.0
 #define FAP_GROUND_LEAKAGE_ITLK_LIM             50.0
 
-#define FAP_IGBT1_OVERTEMP_ALM_LIM              60
-#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80
+#define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
 
-#define FAP_IGBT2_OVERTEMP_ALM_LIM              60
-#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80
+#define FAP_IGBT2_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80.0
 
 #define FAP_DRIVER_OVERVOLTAGE_ALM_LIM          16.0
 #define FAP_DRIVER_OVERVOLTAGE_ITLK_LIM         17.0
@@ -1784,17 +1784,17 @@ extern fap_t fap;
 #define FAP_DRIVER2_OVERCURRENT_ALM_LIM         2.0
 #define FAP_DRIVER2_OVERCURRENT_ITLK_LIM        2.4
 
-#define FAP_INDUC_OVERTEMP_ALM_LIM              40
-#define FAP_INDUC_OVERTEMP_ITLK_LIM             50
+#define FAP_INDUC_OVERTEMP_ALM_LIM              40.0
+#define FAP_INDUC_OVERTEMP_ITLK_LIM             50.0
 
-#define FAP_HS_OVERTEMP_ALM_LIM                 40
-#define FAP_HS_OVERTEMP_ITLK_LIM                50
+#define FAP_HS_OVERTEMP_ALM_LIM                 40.0
+#define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             60
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1986,11 +1986,11 @@ extern fap_t fap;
 #define FAP_GROUND_LEAKAGE_ALM_LIM              45.0
 #define FAP_GROUND_LEAKAGE_ITLK_LIM             50.0
 
-#define FAP_IGBT1_OVERTEMP_ALM_LIM              60
-#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80
+#define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
 
-#define FAP_IGBT2_OVERTEMP_ALM_LIM              60
-#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80
+#define FAP_IGBT2_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80.0
 
 #define FAP_DRIVER_OVERVOLTAGE_ALM_LIM          16.0
 #define FAP_DRIVER_OVERVOLTAGE_ITLK_LIM         17.0
@@ -2001,17 +2001,17 @@ extern fap_t fap;
 #define FAP_DRIVER2_OVERCURRENT_ALM_LIM         2.0
 #define FAP_DRIVER2_OVERCURRENT_ITLK_LIM        2.4
 
-#define FAP_INDUC_OVERTEMP_ALM_LIM              65
-#define FAP_INDUC_OVERTEMP_ITLK_LIM             70
+#define FAP_INDUC_OVERTEMP_ALM_LIM              65.0
+#define FAP_INDUC_OVERTEMP_ITLK_LIM             70.0
 
-#define FAP_HS_OVERTEMP_ALM_LIM                 45
-#define FAP_HS_OVERTEMP_ITLK_LIM                50
+#define FAP_HS_OVERTEMP_ALM_LIM                 45.0
+#define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             70
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             70.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2205,11 +2205,11 @@ extern fap_t fap;
 #define FAP_GROUND_LEAKAGE_ALM_LIM              45.0
 #define FAP_GROUND_LEAKAGE_ITLK_LIM             50.0
 
-#define FAP_IGBT1_OVERTEMP_ALM_LIM              60
-#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80
+#define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
 
-#define FAP_IGBT2_OVERTEMP_ALM_LIM              60
-#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80
+#define FAP_IGBT2_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80.0
 
 #define FAP_DRIVER_OVERVOLTAGE_ALM_LIM          16.0
 #define FAP_DRIVER_OVERVOLTAGE_ITLK_LIM         17.0
@@ -2220,17 +2220,17 @@ extern fap_t fap;
 #define FAP_DRIVER2_OVERCURRENT_ALM_LIM         2.0
 #define FAP_DRIVER2_OVERCURRENT_ITLK_LIM        2.4
 
-#define FAP_INDUC_OVERTEMP_ALM_LIM              40
-#define FAP_INDUC_OVERTEMP_ITLK_LIM             50
+#define FAP_INDUC_OVERTEMP_ALM_LIM              40.0
+#define FAP_INDUC_OVERTEMP_ITLK_LIM             50.0
 
-#define FAP_HS_OVERTEMP_ALM_LIM                 40
-#define FAP_HS_OVERTEMP_ITLK_LIM                50
+#define FAP_HS_OVERTEMP_ALM_LIM                 40.0
+#define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             60
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2424,11 +2424,11 @@ extern fap_t fap;
 #define FAP_GROUND_LEAKAGE_ALM_LIM              45.0
 #define FAP_GROUND_LEAKAGE_ITLK_LIM             50.0
 
-#define FAP_IGBT1_OVERTEMP_ALM_LIM              60
-#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80
+#define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
 
-#define FAP_IGBT2_OVERTEMP_ALM_LIM              60
-#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80
+#define FAP_IGBT2_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80.0
 
 #define FAP_DRIVER_OVERVOLTAGE_ALM_LIM          16.0
 #define FAP_DRIVER_OVERVOLTAGE_ITLK_LIM         17.0
@@ -2439,17 +2439,17 @@ extern fap_t fap;
 #define FAP_DRIVER2_OVERCURRENT_ALM_LIM         2.0
 #define FAP_DRIVER2_OVERCURRENT_ITLK_LIM        2.4
 
-#define FAP_INDUC_OVERTEMP_ALM_LIM              50
-#define FAP_INDUC_OVERTEMP_ITLK_LIM             60
+#define FAP_INDUC_OVERTEMP_ALM_LIM              50.0
+#define FAP_INDUC_OVERTEMP_ITLK_LIM             60.0
 
-#define FAP_HS_OVERTEMP_ALM_LIM                 60
-#define FAP_HS_OVERTEMP_ITLK_LIM                70
+#define FAP_HS_OVERTEMP_ALM_LIM                 60.0
+#define FAP_HS_OVERTEMP_ITLK_LIM                70.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             60
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2641,11 +2641,11 @@ extern fap_t fap;
 #define FAP_GROUND_LEAKAGE_ALM_LIM              45.0
 #define FAP_GROUND_LEAKAGE_ITLK_LIM             50.0
 
-#define FAP_IGBT1_OVERTEMP_ALM_LIM              60
-#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80
+#define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
 
-#define FAP_IGBT2_OVERTEMP_ALM_LIM              60
-#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80
+#define FAP_IGBT2_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80.0
 
 #define FAP_DRIVER_OVERVOLTAGE_ALM_LIM          16.0
 #define FAP_DRIVER_OVERVOLTAGE_ITLK_LIM         17.0
@@ -2656,17 +2656,17 @@ extern fap_t fap;
 #define FAP_DRIVER2_OVERCURRENT_ALM_LIM         2.0
 #define FAP_DRIVER2_OVERCURRENT_ITLK_LIM        2.4
 
-#define FAP_INDUC_OVERTEMP_ALM_LIM              40
-#define FAP_INDUC_OVERTEMP_ITLK_LIM             50
+#define FAP_INDUC_OVERTEMP_ALM_LIM              40.0
+#define FAP_INDUC_OVERTEMP_ITLK_LIM             50.0
 
-#define FAP_HS_OVERTEMP_ALM_LIM                 40
-#define FAP_HS_OVERTEMP_ITLK_LIM                50
+#define FAP_HS_OVERTEMP_ALM_LIM                 40.0
+#define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             60
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2856,11 +2856,11 @@ extern fap_t fap;
 #define FAP_GROUND_LEAKAGE_ALM_LIM              40.0
 #define FAP_GROUND_LEAKAGE_ITLK_LIM             45.0
 
-#define FAP_IGBT1_OVERTEMP_ALM_LIM              60
-#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80
+#define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
 
-#define FAP_IGBT2_OVERTEMP_ALM_LIM              60
-#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80
+#define FAP_IGBT2_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80.0
 
 #define FAP_DRIVER_OVERVOLTAGE_ALM_LIM          16.0
 #define FAP_DRIVER_OVERVOLTAGE_ITLK_LIM         17.0
@@ -2871,17 +2871,17 @@ extern fap_t fap;
 #define FAP_DRIVER2_OVERCURRENT_ALM_LIM         2.0
 #define FAP_DRIVER2_OVERCURRENT_ITLK_LIM        2.4
 
-#define FAP_INDUC_OVERTEMP_ALM_LIM              70
-#define FAP_INDUC_OVERTEMP_ITLK_LIM             80
+#define FAP_INDUC_OVERTEMP_ALM_LIM              70.0
+#define FAP_INDUC_OVERTEMP_ITLK_LIM             80.0
 
-#define FAP_HS_OVERTEMP_ALM_LIM                 50
-#define FAP_HS_OVERTEMP_ITLK_LIM                60
+#define FAP_HS_OVERTEMP_ALM_LIM                 50.0
+#define FAP_HS_OVERTEMP_ITLK_LIM                60.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             60
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3071,11 +3071,11 @@ extern fap_t fap;
 #define FAP_GROUND_LEAKAGE_ALM_LIM              40.0
 #define FAP_GROUND_LEAKAGE_ITLK_LIM             45.0
 
-#define FAP_IGBT1_OVERTEMP_ALM_LIM              60
-#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80
+#define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
 
-#define FAP_IGBT2_OVERTEMP_ALM_LIM              60
-#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80
+#define FAP_IGBT2_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80.0
 
 #define FAP_DRIVER_OVERVOLTAGE_ALM_LIM          16.0
 #define FAP_DRIVER_OVERVOLTAGE_ITLK_LIM         17.0
@@ -3086,17 +3086,17 @@ extern fap_t fap;
 #define FAP_DRIVER2_OVERCURRENT_ALM_LIM         2.0
 #define FAP_DRIVER2_OVERCURRENT_ITLK_LIM        2.4
 
-#define FAP_INDUC_OVERTEMP_ALM_LIM              70
-#define FAP_INDUC_OVERTEMP_ITLK_LIM             80
+#define FAP_INDUC_OVERTEMP_ALM_LIM              70.0
+#define FAP_INDUC_OVERTEMP_ITLK_LIM             80.0
 
-#define FAP_HS_OVERTEMP_ALM_LIM                 50
-#define FAP_HS_OVERTEMP_ITLK_LIM                60
+#define FAP_HS_OVERTEMP_ALM_LIM                 50.0
+#define FAP_HS_OVERTEMP_ITLK_LIM                60.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             60
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

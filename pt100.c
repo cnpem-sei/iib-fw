@@ -236,7 +236,7 @@ void Pt100ReadChannel(pt100_t *pt100)
         get_Temp(pt100);
         pt100->Error = Fault_Error;
 
-        if(pt100->Temperature >= pt100->AlarmLimit)
+        if(pt100->Temperature > pt100->AlarmLimit)
         {
            if(pt100->Alarm_DelayCount < pt100->Alarm_Delay_s) pt100->Alarm_DelayCount++;
            else
@@ -248,7 +248,7 @@ void Pt100ReadChannel(pt100_t *pt100)
 
         else pt100->Alarm_DelayCount = 0;
 
-        if(pt100->Temperature >= pt100->TripLimit)
+        if(pt100->Temperature > pt100->TripLimit)
         {
            if(pt100->Itlk_DelayCount < pt100->Itlk_Delay_s) pt100->Itlk_DelayCount++;
            else
@@ -262,7 +262,7 @@ void Pt100ReadChannel(pt100_t *pt100)
     else
     {
         //Save the error
-        pt100->Temperature = 0;
+        pt100->Temperature = 0.0;
         pt100->Error = Fault_Error;
     }
 }
@@ -298,9 +298,9 @@ void Pt100Init(void)
 
     Pt100Ch1.Ch                 = 1;
     Pt100Ch1.Calibration        = 0;
-    Pt100Ch1.Temperature        = 0;
-    Pt100Ch1.AlarmLimit         = 100;
-    Pt100Ch1.TripLimit          = 110;
+    Pt100Ch1.Temperature        = 0.0;
+    Pt100Ch1.AlarmLimit         = 100.0;
+    Pt100Ch1.TripLimit          = 110.0;
     Pt100Ch1.Error              = 0;
     Pt100Ch1.RtdOutOfRange      = 0;
     Pt100Ch1.Alarm              = 0;
@@ -313,9 +313,9 @@ void Pt100Init(void)
 
     Pt100Ch2.Ch                 = 2;
     Pt100Ch2.Calibration        = 0;
-    Pt100Ch2.Temperature        = 0;
-    Pt100Ch2.AlarmLimit         = 100;
-    Pt100Ch2.TripLimit          = 110;
+    Pt100Ch2.Temperature        = 0.0;
+    Pt100Ch2.AlarmLimit         = 100.0;
+    Pt100Ch2.TripLimit          = 110.0;
     Pt100Ch2.Error              = 0;
     Pt100Ch2.RtdOutOfRange      = 0;
     Pt100Ch2.Alarm              = 0;
@@ -328,9 +328,9 @@ void Pt100Init(void)
 
     Pt100Ch3.Ch                 = 3;
     Pt100Ch3.Calibration        = 0;
-    Pt100Ch3.Temperature        = 0;
-    Pt100Ch3.AlarmLimit         = 100;
-    Pt100Ch3.TripLimit          = 110;
+    Pt100Ch3.Temperature        = 0.0;
+    Pt100Ch3.AlarmLimit         = 100.0;
+    Pt100Ch3.TripLimit          = 110.0;
     Pt100Ch3.Error              = 0;
     Pt100Ch3.RtdOutOfRange      = 0;
     Pt100Ch3.Alarm              = 0;
@@ -343,9 +343,9 @@ void Pt100Init(void)
 
     Pt100Ch4.Ch                 = 4;
     Pt100Ch4.Calibration        = 0;
-    Pt100Ch4.Temperature        = 0;
-    Pt100Ch4.AlarmLimit         = 100;
-    Pt100Ch4.TripLimit          = 110;
+    Pt100Ch4.Temperature        = 0.0;
+    Pt100Ch4.AlarmLimit         = 100.0;
+    Pt100Ch4.TripLimit          = 110.0;
     Pt100Ch4.Error              = 0;
     Pt100Ch4.RtdOutOfRange      = 0;
     Pt100Ch4.Alarm              = 0;
@@ -399,7 +399,7 @@ void Pt100Ch4Sample(void)
 //******************************************************************************
 
 // Read Channel 1 Temperature value
-unsigned char Pt100ReadCh1(void)
+float Pt100Ch1Read(void)
 {
 #if (Pt100Ch1Enable == 1)
 
@@ -415,7 +415,7 @@ unsigned char Pt100ReadCh1(void)
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // Read Channel 2 Temperature value
-unsigned char Pt100ReadCh2(void)
+float Pt100Ch2Read(void)
 {
 #if (Pt100Ch2Enable == 1)
 
@@ -431,7 +431,7 @@ unsigned char Pt100ReadCh2(void)
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // Read Channel 3 Temperature value
-unsigned char Pt100ReadCh3(void)
+float Pt100Ch3Read(void)
 {
 #if (Pt100Ch3Enable == 1)
 
@@ -447,7 +447,7 @@ unsigned char Pt100ReadCh3(void)
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // Read Channel 4 Temperature value
-unsigned char Pt100ReadCh4(void)
+float Pt100Ch4Read(void)
 {
 #if (Pt100Ch4Enable == 1)
 
@@ -463,39 +463,23 @@ unsigned char Pt100ReadCh4(void)
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // Set Channel 1 Temperature Alarme Level
-void Pt100SetCh1AlarmLevel(unsigned char alarm)
+void Pt100Ch1AlarmLevelSet(float alarm)
 {
     Pt100Ch1.AlarmLimit = alarm;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-// Read Channel 1 Temperature Alarme Level
-unsigned char Pt100ReadCh1AlarmLevel(void)
-{
-    return Pt100Ch1.AlarmLimit;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
 // Set Channel 1 Temperature Trip Level
-void Pt100SetCh1TripLevel(unsigned char trip)
+void Pt100Ch1TripLevelSet(float trip)
 {
     Pt100Ch1.TripLimit = trip;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-// Read Channel 1 Temperature Trip Level
-unsigned char Pt100ReadCh1TripLevel(void)
-{
-    return Pt100Ch1.TripLimit;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
 // Set Channel 1 Interlock and Alarm Delay
-void Pt100SetCh1Delay(unsigned int Delay_Set)
+void Pt100Ch1Delay(unsigned int Delay_Set)
 {
     Pt100Ch1.Alarm_Delay_s = Delay_Set;
     Pt100Ch1.Itlk_Delay_s = Delay_Set;
@@ -504,39 +488,23 @@ void Pt100SetCh1Delay(unsigned int Delay_Set)
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // Set Channel 2 Temperature Alarme Level
-void Pt100SetCh2AlarmLevel(unsigned char alarm)
+void Pt100Ch2AlarmLevelSet(float alarm)
 {
     Pt100Ch2.AlarmLimit = alarm;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-// Read Channel 2 Temperature Alarme Level
-unsigned char Pt100ReadCh2AlarmLevel(void)
-{
-    return Pt100Ch2.AlarmLimit;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
 // Set Channel 2 Temperature Trip Level
-void Pt100SetCh2TripLevel(unsigned char trip)
+void Pt100Ch2TripLevelSet(float trip)
 {
     Pt100Ch2.TripLimit = trip;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-// Read Channel 2 Temperature Trip Level
-unsigned char Pt100ReadCh2TripLevel(void)
-{
-    return Pt100Ch2.TripLimit;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
 // Set Channel 2 Interlock and Alarm Delay
-void Pt100SetCh2Delay(unsigned int Delay_Set)
+void Pt100Ch2Delay(unsigned int Delay_Set)
 {
     Pt100Ch2.Alarm_Delay_s = Delay_Set;
     Pt100Ch2.Itlk_Delay_s = Delay_Set;
@@ -545,39 +513,23 @@ void Pt100SetCh2Delay(unsigned int Delay_Set)
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // Set Channel 3 Temperature Alarme Level
-void Pt100SetCh3AlarmLevel(unsigned char alarm)
+void Pt100Ch3AlarmLevelSet(float alarm)
 {
     Pt100Ch3.AlarmLimit = alarm;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-// Read Channel 3 Temperature Alarme Level
-unsigned char Pt100ReadCh3AlarmLevel(void)
-{
-    return Pt100Ch3.AlarmLimit;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
 // Set Channel 3 Temperature Trip Level
-void Pt100SetCh3TripLevel(unsigned char trip)
+void Pt100Ch3TripLevelSet(float trip)
 {
     Pt100Ch3.TripLimit = trip;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-// Read Channel 3 Temperature Trip Level
-unsigned char Pt100ReadCh3TripLevel(void)
-{
-    return Pt100Ch3.TripLimit;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
 // Set Channel 3 Interlock and Alarm Delay
-void Pt100SetCh3Delay(unsigned int Delay_Set)
+void Pt100Ch3Delay(unsigned int Delay_Set)
 {
     Pt100Ch3.Alarm_Delay_s = Delay_Set;
     Pt100Ch3.Itlk_Delay_s = Delay_Set;
@@ -586,39 +538,23 @@ void Pt100SetCh3Delay(unsigned int Delay_Set)
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // Set Channel 4 Temperature Alarme Level
-void Pt100SetCh4AlarmLevel(unsigned char alarm)
+void Pt100Ch4AlarmLevelSet(float alarm)
 {
     Pt100Ch4.AlarmLimit = alarm;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-// Read Channel 4 Temperature Alarme Level
-unsigned char Pt100ReadCh4AlarmLevel(void)
-{
-    return Pt100Ch4.AlarmLimit;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
 // Set Channel 4 Temperature Trip Level
-void Pt100SetCh4TripLevel(unsigned char trip)
+void Pt100Ch4TripLevelSet(float trip)
 {
     Pt100Ch4.TripLimit = trip;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-// Read Channel 4 Temperature Trip Level
-unsigned char Pt100ReadCh4TripLevel(void)
-{
-    return Pt100Ch4.TripLimit;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
 // Set Channel 4 Interlock and Alarm Delay
-void Pt100SetCh4Delay(unsigned int Delay_Set)
+void Pt100Ch4Delay(unsigned int Delay_Set)
 {
     Pt100Ch4.Alarm_Delay_s = Delay_Set;
     Pt100Ch4.Itlk_Delay_s = Delay_Set;
@@ -645,7 +581,7 @@ void Pt100ClearAlarmTrip(void)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-unsigned char Pt100ReadCh1AlarmSts(void)
+unsigned char Pt100Ch1AlarmStatusRead(void)
 {
 #if (Pt100Ch1Enable == 1)
 
@@ -660,7 +596,7 @@ unsigned char Pt100ReadCh1AlarmSts(void)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-unsigned char Pt100ReadCh1TripSts(void)
+unsigned char Pt100Ch1TripStatusRead(void)
 {
 #if (Pt100Ch1Enable == 1)
 
@@ -675,7 +611,7 @@ unsigned char Pt100ReadCh1TripSts(void)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-unsigned char Pt100ReadCh2AlarmSts(void)
+unsigned char Pt100Ch2AlarmStatusRead(void)
 {
 #if (Pt100Ch2Enable == 1)
 
@@ -690,7 +626,7 @@ unsigned char Pt100ReadCh2AlarmSts(void)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-unsigned char Pt100ReadCh2TripSts(void)
+unsigned char Pt100Ch2TripStatusRead(void)
 {
 #if (Pt100Ch2Enable == 1)
 
@@ -705,7 +641,7 @@ unsigned char Pt100ReadCh2TripSts(void)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-unsigned char Pt100ReadCh3AlarmSts(void)
+unsigned char Pt100Ch3AlarmStatusRead(void)
 {
 #if (Pt100Ch3Enable == 1)
 
@@ -720,7 +656,7 @@ unsigned char Pt100ReadCh3AlarmSts(void)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-unsigned char Pt100ReadCh3TripSts(void)
+unsigned char Pt100Ch3TripStatusRead(void)
 {
 #if (Pt100Ch3Enable == 1)
 
@@ -735,7 +671,7 @@ unsigned char Pt100ReadCh3TripSts(void)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-unsigned char Pt100ReadCh4AlarmSts(void)
+unsigned char Pt100Ch4AlarmStatusRead(void)
 {
 #if (Pt100Ch4Enable == 1)
 
@@ -750,7 +686,7 @@ unsigned char Pt100ReadCh4AlarmSts(void)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-unsigned char Pt100ReadCh4TripSts(void)
+unsigned char Pt100Ch4TripStatusRead(void)
 {
 #if (Pt100Ch4Enable == 1)
 
@@ -766,7 +702,7 @@ unsigned char Pt100ReadCh4TripSts(void)
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // Read Channel 1 Error flag
-unsigned char Pt100ReadCh1Error(void)
+unsigned char Pt100Ch1ErrorRead(void)
 {
 #if (Pt100Ch1Enable == 1)
 
@@ -781,7 +717,7 @@ unsigned char Pt100ReadCh1Error(void)
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // Read Channel 2 Error flag
-unsigned char Pt100ReadCh2Error(void)
+unsigned char Pt100Ch2ErrorRead(void)
 {
 #if (Pt100Ch2Enable == 1)
 
@@ -797,7 +733,7 @@ unsigned char Pt100ReadCh2Error(void)
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // Read Channel 3 Error flag
-unsigned char Pt100ReadCh3Error(void)
+unsigned char Pt100Ch3ErrorRead(void)
 {
 #if (Pt100Ch3Enable == 1)
 
@@ -813,7 +749,7 @@ unsigned char Pt100ReadCh3Error(void)
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // Read Channel 4 Error flag
-unsigned char Pt100ReadCh4Error(void)
+unsigned char Pt100Ch4ErrorRead(void)
 {
 #if (Pt100Ch4Enable == 1)
 
@@ -829,7 +765,7 @@ unsigned char Pt100ReadCh4Error(void)
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // Read Channel 1 Can Not Communicate flag
-unsigned char Pt100ReadCh1CNC(void)
+unsigned char Pt100Ch1CNCRead(void)
 {
 #if (Pt100Ch1Enable == 1)
 
@@ -845,7 +781,7 @@ unsigned char Pt100ReadCh1CNC(void)
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // Read Channel 2 Can Not Communicate flag
-unsigned char Pt100ReadCh2CNC(void)
+unsigned char Pt100Ch2CNCRead(void)
 {
 #if (Pt100Ch2Enable == 1)
 
@@ -861,7 +797,7 @@ unsigned char Pt100ReadCh2CNC(void)
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // Read Channel 3 Can Not Communicate flag
-unsigned char Pt100ReadCh3CNC(void)
+unsigned char Pt100Ch3CNCRead(void)
 {
 #if (Pt100Ch3Enable == 1)
 
@@ -877,7 +813,7 @@ unsigned char Pt100ReadCh3CNC(void)
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // Read Channel 4 Can Not Communicate flag
-unsigned char Pt100ReadCh4CNC(void)
+unsigned char Pt100Ch4CNCRead(void)
 {
 #if (Pt100Ch4Enable == 1)
 
@@ -893,7 +829,7 @@ unsigned char Pt100ReadCh4CNC(void)
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // Read Channel 1 RTD Out Of Range flag
-unsigned char Pt100ReadCh1RtdSts(void)
+unsigned char Pt100Ch1RtdStatusRead(void)
 {
 #if (Pt100Ch1Enable == 1)
 
@@ -909,7 +845,7 @@ unsigned char Pt100ReadCh1RtdSts(void)
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // Read Channel 2 RTD Out Of Range flag
-unsigned char Pt100ReadCh2RtdSts(void)
+unsigned char Pt100Ch2RtdStatusRead(void)
 {
 #if (Pt100Ch2Enable == 1)
 
@@ -925,7 +861,7 @@ unsigned char Pt100ReadCh2RtdSts(void)
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // Read Channel 3 RTD Out Of Range flag
-unsigned char Pt100ReadCh3RtdSts(void)
+unsigned char Pt100Ch3RtdStatusRead(void)
 {
 #if (Pt100Ch3Enable == 1)
 
@@ -941,7 +877,7 @@ unsigned char Pt100ReadCh3RtdSts(void)
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // Read Channel 4 RTD Out Of Range flag
-unsigned char Pt100ReadCh4RtdSts(void)
+unsigned char Pt100Ch4RtdStatusRead(void)
 {
 #if (Pt100Ch4Enable == 1)
 

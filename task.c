@@ -42,17 +42,7 @@
 #include <iib_modules/fac_is.h>
 #include <iib_modules/fac_cmd.h>
 
-/**
- * TODO: Put here your defines. Just what is local. If you don't
- * need to access it from other module, consider use a constant (const)
- */
-
 /////////////////////////////////////////////////////////////////////////////////////////////
-
-/**
- * TODO: Put here your constants and variables. Always use static for 
- * private members.
- */
 
 unsigned int Second = 0;
 unsigned char uSecond = 0;
@@ -82,10 +72,10 @@ bool NtcSampleRead           = 0;
 
 void ErrorCheckHandle(void)
 {
-    if(Pt100ReadCh1Error()) Pt100Ch1Clear();
-    if(Pt100ReadCh2Error()) Pt100Ch2Clear();
-    if(Pt100ReadCh3Error()) Pt100Ch3Clear();
-    if(Pt100ReadCh4Error()) Pt100Ch4Clear();
+    if(Pt100Ch1ErrorRead()) Pt100Ch1Clear();
+    if(Pt100Ch2ErrorRead()) Pt100Ch2Clear();
+    if(Pt100Ch3ErrorRead()) Pt100Ch3Clear();
+    if(Pt100Ch4ErrorRead()) Pt100Ch4Clear();
 
     //Check CanNotCommunicate
     //Indicate channel problem, need a PT100 initialization or a chip verification
@@ -94,10 +84,10 @@ void ErrorCheckHandle(void)
 
     //Check RTD Out Of Range
     //send a command to indication layer to signalize the user
-    if(Pt100ReadCh1RtdSts()) Pt100Ch1Reset();
-    if(Pt100ReadCh2RtdSts()) Pt100Ch2Reset();
-    if(Pt100ReadCh3RtdSts()) Pt100Ch3Reset();
-    if(Pt100ReadCh4RtdSts()) Pt100Ch4Reset();
+    if(Pt100Ch1RtdStatusRead()) Pt100Ch1Reset();
+    if(Pt100Ch2RtdStatusRead()) Pt100Ch2Reset();
+    if(Pt100Ch3RtdStatusRead()) Pt100Ch3Reset();
+    if(Pt100Ch4RtdStatusRead()) Pt100Ch4Reset();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

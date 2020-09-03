@@ -331,9 +331,9 @@ void NtcInit(void)
   // Initialise ADC object igbt2.
   ADS1x1x_init(&ntc_igbt2,ADS1014,ADS1x1x_I2C_ADDRESS_ADDR_TO_VCC,MUX_SINGLE_0,PGA_6144);
 
-  TempNtcIgbt1.Value = 0;
-  TempNtcIgbt1.AlarmLimit = 50;
-  TempNtcIgbt1.TripLimit = 60;
+  TempNtcIgbt1.Value = 0.0;
+  TempNtcIgbt1.AlarmLimit = 50.0;
+  TempNtcIgbt1.TripLimit = 60.0;
   TempNtcIgbt1.Alarm = 0;
   TempNtcIgbt1.Trip = 0;
   TempNtcIgbt1.Alarm_Delay_ms = 0; // milisecond
@@ -341,9 +341,9 @@ void NtcInit(void)
   TempNtcIgbt1.Itlk_Delay_ms = 0; // milisecond
   TempNtcIgbt1.Itlk_DelayCount = 0;
 
-  TempNtcIgbt2.Value = 0;
-  TempNtcIgbt2.AlarmLimit = 50;
-  TempNtcIgbt2.TripLimit = 60;
+  TempNtcIgbt2.Value = 0.0;
+  TempNtcIgbt2.AlarmLimit = 50.0;
+  TempNtcIgbt2.TripLimit = 60.0;
   TempNtcIgbt2.Alarm = 0;
   TempNtcIgbt2.Trip = 0;
   TempNtcIgbt2.Alarm_Delay_ms = 0; // milisecond
@@ -442,7 +442,7 @@ void NtcRead(void)
 //******************************************************************************
 // Read the ADS1014 with NTC 5K Igbt1 and return value
 //******************************************************************************
-unsigned char TempIgbt1Read(void)
+float TempIgbt1Read(void)
 {
 #if (TempIgbt1Enable == 1)
 
@@ -460,7 +460,7 @@ unsigned char TempIgbt1Read(void)
 //******************************************************************************
 // Read the ADS1014 with NTC 5K Igbt2 and return value
 //******************************************************************************
-unsigned char TempIgbt2Read(void)
+float TempIgbt2Read(void)
 {
 #if (TempIgbt2Enable == 1)
 
@@ -475,14 +475,14 @@ unsigned char TempIgbt2Read(void)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void TempIgbt1AlarmLevelSet(unsigned char nValue)
+void TempIgbt1AlarmLevelSet(float nValue)
 {
     TempNtcIgbt1.AlarmLimit = nValue;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void TempIgbt1TripLevelSet(unsigned char nValue)
+void TempIgbt1TripLevelSet(float nValue)
 {
     TempNtcIgbt1.TripLimit = nValue;
 }
@@ -528,14 +528,14 @@ unsigned char TempIgbt1TripStatusRead(void)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void TempIgbt2AlarmLevelSet(unsigned char nValue)
+void TempIgbt2AlarmLevelSet(float nValue)
 {
     TempNtcIgbt2.AlarmLimit = nValue;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void TempIgbt2TripLevelSet(unsigned char nValue)
+void TempIgbt2TripLevelSet(float nValue)
 {
     TempNtcIgbt2.TripLimit = nValue;
 }

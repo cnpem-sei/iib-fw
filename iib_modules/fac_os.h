@@ -230,11 +230,11 @@ extern fac_os_t fac_os;
 #define FAC_OS_OUTPUT_OVERCURRENT_ALM_LIM                   130.0
 #define FAC_OS_OUTPUT_OVERCURRENT_ITLK_LIM                  140.0
 
-#define FAC_OS_IGBT1_OVERTEMP_ALM_LIM                       60
-#define FAC_OS_IGBT1_OVERTEMP_ITLK_LIM                      80
+#define FAC_OS_IGBT1_OVERTEMP_ALM_LIM                       60.0
+#define FAC_OS_IGBT1_OVERTEMP_ITLK_LIM                      80.0
 
-#define FAC_OS_IGBT2_OVERTEMP_ALM_LIM                       60
-#define FAC_OS_IGBT2_OVERTEMP_ITLK_LIM                      80
+#define FAC_OS_IGBT2_OVERTEMP_ALM_LIM                       60.0
+#define FAC_OS_IGBT2_OVERTEMP_ITLK_LIM                      80.0
 
 #define FAC_OS_DRIVER_OVERVOLTAGE_ALM_LIM                   16.0
 #define FAC_OS_DRIVER_OVERVOLTAGE_ITLK_LIM                  17.0
@@ -248,17 +248,17 @@ extern fac_os_t fac_os;
 #define FAC_OS_GROUND_LEAKAGE_ALM_LIM                       1.3
 #define FAC_OS_GROUND_LEAKAGE_ITLK_LIM                      1.5
 
-#define FAC_OS_INDUC_OVERTEMP_ALM_LIM                       50
-#define FAC_OS_INDUC_OVERTEMP_ITLK_LIM                      60
+#define FAC_OS_INDUC_OVERTEMP_ALM_LIM                       50.0
+#define FAC_OS_INDUC_OVERTEMP_ITLK_LIM                      60.0
 
-#define FAC_OS_HS_OVERTEMP_ALM_LIM                          50
-#define FAC_OS_HS_OVERTEMP_ITLK_LIM                         60
+#define FAC_OS_HS_OVERTEMP_ALM_LIM                          50.0
+#define FAC_OS_HS_OVERTEMP_ITLK_LIM                         60.0
 
-#define FAC_OS_RH_OVERHUMIDITY_ALM_LIM                      50
-#define FAC_OS_RH_OVERHUMIDITY_ITLK_LIM                     90
+#define FAC_OS_RH_OVERHUMIDITY_ALM_LIM                      50.0
+#define FAC_OS_RH_OVERHUMIDITY_ITLK_LIM                     90.0
 
-#define FAC_OS_BOARD_OVERTEMP_ALM_LIM                       50
-#define FAC_OS_BOARD_OVERTEMP_ITLK_LIM                      60
+#define FAC_OS_BOARD_OVERTEMP_ALM_LIM                       50.0
+#define FAC_OS_BOARD_OVERTEMP_ITLK_LIM                      60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -441,11 +441,11 @@ extern fac_os_t fac_os;
 #define FAC_OS_OUTPUT_OVERCURRENT_ALM_LIM                   40.0
 #define FAC_OS_OUTPUT_OVERCURRENT_ITLK_LIM                  50.0
 
-#define FAC_OS_IGBT1_OVERTEMP_ALM_LIM                       60
-#define FAC_OS_IGBT1_OVERTEMP_ITLK_LIM                      80
+#define FAC_OS_IGBT1_OVERTEMP_ALM_LIM                       60.0
+#define FAC_OS_IGBT1_OVERTEMP_ITLK_LIM                      80.0
 
-#define FAC_OS_IGBT2_OVERTEMP_ALM_LIM                       60
-#define FAC_OS_IGBT2_OVERTEMP_ITLK_LIM                      80
+#define FAC_OS_IGBT2_OVERTEMP_ALM_LIM                       60.0
+#define FAC_OS_IGBT2_OVERTEMP_ITLK_LIM                      80.0
 
 #define FAC_OS_DRIVER_OVERVOLTAGE_ALM_LIM                   16.0
 #define FAC_OS_DRIVER_OVERVOLTAGE_ITLK_LIM                  17.0
@@ -459,17 +459,17 @@ extern fac_os_t fac_os;
 #define FAC_OS_GROUND_LEAKAGE_ALM_LIM                       1.3
 #define FAC_OS_GROUND_LEAKAGE_ITLK_LIM                      1.5
 
-#define FAC_OS_INDUC_OVERTEMP_ALM_LIM                       50
-#define FAC_OS_INDUC_OVERTEMP_ITLK_LIM                      60
+#define FAC_OS_INDUC_OVERTEMP_ALM_LIM                       50.0
+#define FAC_OS_INDUC_OVERTEMP_ITLK_LIM                      60.0
 
-#define FAC_OS_HS_OVERTEMP_ALM_LIM                          50
-#define FAC_OS_HS_OVERTEMP_ITLK_LIM                         60
+#define FAC_OS_HS_OVERTEMP_ALM_LIM                          50.0
+#define FAC_OS_HS_OVERTEMP_ITLK_LIM                         60.0
 
-#define FAC_OS_RH_OVERHUMIDITY_ALM_LIM                      50
-#define FAC_OS_RH_OVERHUMIDITY_ITLK_LIM                     90
+#define FAC_OS_RH_OVERHUMIDITY_ALM_LIM                      50.0
+#define FAC_OS_RH_OVERHUMIDITY_ITLK_LIM                     90.0
 
-#define FAC_OS_BOARD_OVERTEMP_ALM_LIM                       50
-#define FAC_OS_BOARD_OVERTEMP_ITLK_LIM                      60
+#define FAC_OS_BOARD_OVERTEMP_ALM_LIM                       50.0
+#define FAC_OS_BOARD_OVERTEMP_ITLK_LIM                      60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -652,11 +652,11 @@ extern fac_os_t fac_os;
 #define FAC_OS_OUTPUT_OVERCURRENT_ALM_LIM                   160.0
 #define FAC_OS_OUTPUT_OVERCURRENT_ITLK_LIM                  170.0
 
-#define FAC_OS_IGBT1_OVERTEMP_ALM_LIM                       60
-#define FAC_OS_IGBT1_OVERTEMP_ITLK_LIM                      80
+#define FAC_OS_IGBT1_OVERTEMP_ALM_LIM                       60.0
+#define FAC_OS_IGBT1_OVERTEMP_ITLK_LIM                      80.0
 
-#define FAC_OS_IGBT2_OVERTEMP_ALM_LIM                       60
-#define FAC_OS_IGBT2_OVERTEMP_ITLK_LIM                      80
+#define FAC_OS_IGBT2_OVERTEMP_ALM_LIM                       60.0
+#define FAC_OS_IGBT2_OVERTEMP_ITLK_LIM                      80.0
 
 #define FAC_OS_DRIVER_OVERVOLTAGE_ALM_LIM                   16.0
 #define FAC_OS_DRIVER_OVERVOLTAGE_ITLK_LIM                  17.0
@@ -670,17 +670,17 @@ extern fac_os_t fac_os;
 #define FAC_OS_GROUND_LEAKAGE_ALM_LIM                       1.3
 #define FAC_OS_GROUND_LEAKAGE_ITLK_LIM                      1.5
 
-#define FAC_OS_INDUC_OVERTEMP_ALM_LIM                       50
-#define FAC_OS_INDUC_OVERTEMP_ITLK_LIM                      60
+#define FAC_OS_INDUC_OVERTEMP_ALM_LIM                       50.0
+#define FAC_OS_INDUC_OVERTEMP_ITLK_LIM                      60.0
 
-#define FAC_OS_HS_OVERTEMP_ALM_LIM                          50
-#define FAC_OS_HS_OVERTEMP_ITLK_LIM                         60
+#define FAC_OS_HS_OVERTEMP_ALM_LIM                          50.0
+#define FAC_OS_HS_OVERTEMP_ITLK_LIM                         60.0
 
-#define FAC_OS_RH_OVERHUMIDITY_ALM_LIM                      50
-#define FAC_OS_RH_OVERHUMIDITY_ITLK_LIM                     90
+#define FAC_OS_RH_OVERHUMIDITY_ALM_LIM                      50.0
+#define FAC_OS_RH_OVERHUMIDITY_ITLK_LIM                     90.0
 
-#define FAC_OS_BOARD_OVERTEMP_ALM_LIM                       50
-#define FAC_OS_BOARD_OVERTEMP_ITLK_LIM                      60
+#define FAC_OS_BOARD_OVERTEMP_ALM_LIM                       50.0
+#define FAC_OS_BOARD_OVERTEMP_ITLK_LIM                      60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -861,11 +861,11 @@ extern fac_os_t fac_os;
 #define FAC_OS_OUTPUT_OVERCURRENT_ALM_LIM                   570.0
 #define FAC_OS_OUTPUT_OVERCURRENT_ITLK_LIM                  590.0
 
-#define FAC_OS_IGBT1_OVERTEMP_ALM_LIM                       60
-#define FAC_OS_IGBT1_OVERTEMP_ITLK_LIM                      80
+#define FAC_OS_IGBT1_OVERTEMP_ALM_LIM                       60.0
+#define FAC_OS_IGBT1_OVERTEMP_ITLK_LIM                      80.0
 
-#define FAC_OS_IGBT2_OVERTEMP_ALM_LIM                       60
-#define FAC_OS_IGBT2_OVERTEMP_ITLK_LIM                      80
+#define FAC_OS_IGBT2_OVERTEMP_ALM_LIM                       60.0
+#define FAC_OS_IGBT2_OVERTEMP_ITLK_LIM                      80.0
 
 #define FAC_OS_DRIVER_OVERVOLTAGE_ALM_LIM                   16.0
 #define FAC_OS_DRIVER_OVERVOLTAGE_ITLK_LIM                  17.0
@@ -879,17 +879,17 @@ extern fac_os_t fac_os;
 #define FAC_OS_GROUND_LEAKAGE_ALM_LIM                       45.0
 #define FAC_OS_GROUND_LEAKAGE_ITLK_LIM                      50.0
 
-#define FAC_OS_INDUC_OVERTEMP_ALM_LIM                       40
-#define FAC_OS_INDUC_OVERTEMP_ITLK_LIM                      45
+#define FAC_OS_INDUC_OVERTEMP_ALM_LIM                       40.0
+#define FAC_OS_INDUC_OVERTEMP_ITLK_LIM                      45.0
 
-#define FAC_OS_HS_OVERTEMP_ALM_LIM                          40
-#define FAC_OS_HS_OVERTEMP_ITLK_LIM                         45
+#define FAC_OS_HS_OVERTEMP_ALM_LIM                          40.0
+#define FAC_OS_HS_OVERTEMP_ITLK_LIM                         45.0
 
-#define FAC_OS_RH_OVERHUMIDITY_ALM_LIM                      50
-#define FAC_OS_RH_OVERHUMIDITY_ITLK_LIM                     90
+#define FAC_OS_RH_OVERHUMIDITY_ALM_LIM                      50.0
+#define FAC_OS_RH_OVERHUMIDITY_ITLK_LIM                     90.0
 
-#define FAC_OS_BOARD_OVERTEMP_ALM_LIM                       50
-#define FAC_OS_BOARD_OVERTEMP_ITLK_LIM                      60
+#define FAC_OS_BOARD_OVERTEMP_ALM_LIM                       50.0
+#define FAC_OS_BOARD_OVERTEMP_ITLK_LIM                      60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

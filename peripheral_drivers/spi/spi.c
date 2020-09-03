@@ -29,7 +29,6 @@ void spi_init()
     // TODO: change this to select the port/pin you are using.
 
     GPIOPinConfigure(GPIO_PA2_SSI0CLK);
-    //GPIOPinConfigure(GPIO_PA3_SSI0FSS);
     GPIOPinConfigure(GPIO_PA4_SSI0XDAT0);
     GPIOPinConfigure(GPIO_PA5_SSI0XDAT1);
 
@@ -44,14 +43,12 @@ void spi_init()
     //      PA2 - SSI0CLK
     // TODO: change this to select the port/pin you are using.
     //
-//    GPIOPinTypeSSI(GPIO_PORTA_BASE, GPIO_PIN_5 | GPIO_PIN_4 | GPIO_PIN_3 |
-//                   GPIO_PIN_2);
+
     GPIOPinTypeSSI(GPIO_PORTA_BASE, GPIO_PIN_5 | GPIO_PIN_4 | GPIO_PIN_2);
 
     // SPI Mode 3 for MAX31865
     SSIConfigSetExpClk(SSI0_BASE, SYSCLOCK, SSI_FRF_MOTO_MODE_3,
                                         SSI_MODE_MASTER, 1000000, 8);
-
 
     // Enable the SSI0 module.
     SSIEnable(SSI0_BASE);

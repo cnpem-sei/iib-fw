@@ -8,9 +8,9 @@
 
 typedef struct
 {
-    unsigned char Value;
-    unsigned char AlarmLimit;
-    unsigned char TripLimit;
+    float Value;
+    float AlarmLimit;
+    float TripLimit;
     unsigned char Alarm;
     unsigned char Trip;
     unsigned int  Alarm_Delay_ms; // milisecond
@@ -25,9 +25,9 @@ extern rh_tempboard_t TemperatureBoard;
 extern rh_tempboard_t RelativeHumidity;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-void RhBoardTempSenseInit(void);
-unsigned char RhRead(void);
-unsigned char BoardTempRead(void);
+extern void RhBoardTempSenseInit(void);
+extern float RhRead(void);
+extern float BoardTempRead(void);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -38,8 +38,8 @@ extern void RelativeHumidityRead(void);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-extern void BoardTempAlarmLevelSet(unsigned char nValue);
-extern void BoardTempTripLevelSet(unsigned char nValue);
+extern void BoardTempAlarmLevelSet(float nValue);
+extern void BoardTempTripLevelSet(float nValue);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -52,8 +52,8 @@ extern unsigned char BoardTempTripStatusRead(void);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-extern void RhAlarmLevelSet(unsigned char nValue);
-extern void RhTripLevelSet(unsigned char nValue);
+extern void RhAlarmLevelSet(float nValue);
+extern void RhTripLevelSet(float nValue);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -215,28 +215,28 @@ void check_fac_cmd_indication_leds()
 void fac_cmd_application_readings()
 {
     //PT100 CH1 Indutor
-    fac_cmd.TempL.f = (float) Pt100ReadCh1();
-    fac_cmd.TempLAlarmSts = Pt100ReadCh1AlarmSts();
-    if(!fac_cmd.TempLItlkSts)fac_cmd.TempLItlkSts = Pt100ReadCh1TripSts();
+    fac_cmd.TempL.f = Pt100Ch1Read();
+    fac_cmd.TempLAlarmSts = Pt100Ch1AlarmStatusRead();
+    if(!fac_cmd.TempLItlkSts)fac_cmd.TempLItlkSts = Pt100Ch1TripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //PT100 CH2 Dissipador
-    fac_cmd.TempHeatSink.f = (float) Pt100ReadCh2();
-    fac_cmd.TempHeatSinkAlarmSts = Pt100ReadCh2AlarmSts();
-    if(!fac_cmd.TempHeatSinkItlkSts)fac_cmd.TempHeatSinkItlkSts = Pt100ReadCh2TripSts();
+    fac_cmd.TempHeatSink.f = Pt100Ch2Read();
+    fac_cmd.TempHeatSinkAlarmSts = Pt100Ch2AlarmStatusRead();
+    if(!fac_cmd.TempHeatSinkItlkSts)fac_cmd.TempHeatSinkItlkSts = Pt100Ch2TripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Temperatura PCB IIB
-    fac_cmd.BoardTemperature.f = (float) BoardTempRead();
+    fac_cmd.BoardTemperature.f = BoardTempRead();
     fac_cmd.BoardTemperatureAlarmSts = BoardTempAlarmStatusRead();
     if(!fac_cmd.BoardTemperatureItlkSts)fac_cmd.BoardTemperatureItlkSts = BoardTempTripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Umidade Relativa
-    fac_cmd.RelativeHumidity.f = (float) RhRead();
+    fac_cmd.RelativeHumidity.f = RhRead();
     fac_cmd.RelativeHumidityAlarmSts = RhAlarmStatusRead();
     if(!fac_cmd.RelativeHumidityItlkSts)fac_cmd.RelativeHumidityItlkSts = RhTripStatusRead();
 
@@ -389,14 +389,14 @@ void config_module_fac_cmd(void)
 
     //PT100 configuration
     //Delay 4 seconds
-    Pt100SetCh1Delay(Delay_PT100CH1);
-    Pt100SetCh2Delay(Delay_PT100CH2);
+    Pt100Ch1Delay(Delay_PT100CH1);
+    Pt100Ch2Delay(Delay_PT100CH2);
 
     /* Pt-100 Configuration Limits */
-    Pt100SetCh1AlarmLevel(FAC_CMD_INDUC_OVERTEMP_ALM_LIM);
-    Pt100SetCh1TripLevel(FAC_CMD_INDUC_OVERTEMP_ITLK_LIM);
-    Pt100SetCh2AlarmLevel(FAC_CMD_HS_OVERTEMP_ALM_LIM);
-    Pt100SetCh2TripLevel(FAC_CMD_HS_OVERTEMP_ITLK_LIM);
+    Pt100Ch1AlarmLevelSet(FAC_CMD_INDUC_OVERTEMP_ALM_LIM);
+    Pt100Ch1TripLevelSet(FAC_CMD_INDUC_OVERTEMP_ITLK_LIM);
+    Pt100Ch2AlarmLevelSet(FAC_CMD_HS_OVERTEMP_ALM_LIM);
+    Pt100Ch2TripLevelSet(FAC_CMD_HS_OVERTEMP_ITLK_LIM);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -203,17 +203,17 @@ extern fac_cmd_t fac_cmd;
 #define FAC_CMD_GROUND_LEAKAGE_ALM_LIM                      1.3
 #define FAC_CMD_GROUND_LEAKAGE_ITLK_LIM                     1.5
 
-#define FAC_CMD_INDUC_OVERTEMP_ALM_LIM                      50
-#define FAC_CMD_INDUC_OVERTEMP_ITLK_LIM                     60
+#define FAC_CMD_INDUC_OVERTEMP_ALM_LIM                      50.0
+#define FAC_CMD_INDUC_OVERTEMP_ITLK_LIM                     60.0
 
-#define FAC_CMD_HS_OVERTEMP_ALM_LIM                         50
-#define FAC_CMD_HS_OVERTEMP_ITLK_LIM                        60
+#define FAC_CMD_HS_OVERTEMP_ALM_LIM                         50.0
+#define FAC_CMD_HS_OVERTEMP_ITLK_LIM                        60.0
 
-#define FAC_CMD_RH_OVERHUMIDITY_ALM_LIM                     50
-#define FAC_CMD_RH_OVERHUMIDITY_ITLK_LIM                    90
+#define FAC_CMD_RH_OVERHUMIDITY_ALM_LIM                     50.0
+#define FAC_CMD_RH_OVERHUMIDITY_ITLK_LIM                    90.0
 
-#define FAC_CMD_BOARD_OVERTEMP_ALM_LIM                      50
-#define FAC_CMD_BOARD_OVERTEMP_ITLK_LIM                     60
+#define FAC_CMD_BOARD_OVERTEMP_ALM_LIM                      50.0
+#define FAC_CMD_BOARD_OVERTEMP_ITLK_LIM                     60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -404,17 +404,17 @@ extern fac_cmd_t fac_cmd;
 #define FAC_CMD_GROUND_LEAKAGE_ALM_LIM                      45.0
 #define FAC_CMD_GROUND_LEAKAGE_ITLK_LIM                     50.0
 
-#define FAC_CMD_INDUC_OVERTEMP_ALM_LIM                      55
-#define FAC_CMD_INDUC_OVERTEMP_ITLK_LIM                     60
+#define FAC_CMD_INDUC_OVERTEMP_ALM_LIM                      55.0
+#define FAC_CMD_INDUC_OVERTEMP_ITLK_LIM                     60.0
 
-#define FAC_CMD_HS_OVERTEMP_ALM_LIM                         55
-#define FAC_CMD_HS_OVERTEMP_ITLK_LIM                        60
+#define FAC_CMD_HS_OVERTEMP_ALM_LIM                         55.0
+#define FAC_CMD_HS_OVERTEMP_ITLK_LIM                        60.0
 
-#define FAC_CMD_RH_OVERHUMIDITY_ALM_LIM                     50
-#define FAC_CMD_RH_OVERHUMIDITY_ITLK_LIM                    90
+#define FAC_CMD_RH_OVERHUMIDITY_ALM_LIM                     50.0
+#define FAC_CMD_RH_OVERHUMIDITY_ITLK_LIM                    90.0
 
-#define FAC_CMD_BOARD_OVERTEMP_ALM_LIM                      50
-#define FAC_CMD_BOARD_OVERTEMP_ITLK_LIM                     60
+#define FAC_CMD_BOARD_OVERTEMP_ALM_LIM                      50.0
+#define FAC_CMD_BOARD_OVERTEMP_ITLK_LIM                     60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

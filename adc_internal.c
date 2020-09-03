@@ -148,8 +148,8 @@ void VoltageCh1Init(float nValue, unsigned int Delay)
     VoltageCh1.Gain = (nValue/2048.0);
     VoltageCh1.Value = 0.0;
     VoltageCh1.Offset = 0x0800; //OffsetRead(OFFSET_VOLT_CH1);
-    VoltageCh1.AlarmLimit = 10; //VoltCh1AlarmLevelMemmoryRead();
-    VoltageCh1.TripLimit = 10; //VoltCh1TripLevelMemmoryRead();
+    VoltageCh1.AlarmLimit = 10.0; //VoltCh1AlarmLevelMemmoryRead();
+    VoltageCh1.TripLimit = 10.0; //VoltCh1TripLevelMemmoryRead();
     VoltageCh1.Alarm = 0;
     VoltageCh1.Trip = 0;
     VoltageCh1.InvertPol = 0;
@@ -167,8 +167,8 @@ void VoltageCh2Init(float nValue, unsigned int Delay)
     VoltageCh2.Gain = (nValue/2048.0);
     VoltageCh2.Value = 0.0;
     VoltageCh2.Offset = 0x0800; //OffsetRead(OFFSET_VOLT_CH2);
-    VoltageCh2.AlarmLimit = 10; //VoltCh2AlarmLevelMemmoryRead();
-    VoltageCh2.TripLimit = 10; //VoltCh2TripLevelMemmoryRead();
+    VoltageCh2.AlarmLimit = 10.0; //VoltCh2AlarmLevelMemmoryRead();
+    VoltageCh2.TripLimit = 10.0; //VoltCh2TripLevelMemmoryRead();
     VoltageCh2.Alarm = 0;
     VoltageCh2.Trip = 0;
     VoltageCh2.InvertPol = 0;
@@ -186,8 +186,8 @@ void VoltageCh3Init(float nValue, unsigned int Delay)
     VoltageCh3.Gain = (nValue/2048.0);
     VoltageCh3.Value = 0.0;
     VoltageCh3.Offset = 0x0800; //OffsetRead(OFFSET_VOLT_CH3);
-    VoltageCh3.AlarmLimit = 10; //VoltCh3AlarmLevelMemmoryRead();
-    VoltageCh3.TripLimit = 10; //VoltCh3TripLevelMemmoryRead();
+    VoltageCh3.AlarmLimit = 10.0; //VoltCh3AlarmLevelMemmoryRead();
+    VoltageCh3.TripLimit = 10.0; //VoltCh3TripLevelMemmoryRead();
     VoltageCh3.Alarm = 0;
     VoltageCh3.Trip = 0;
     VoltageCh3.InvertPol = 0;
@@ -205,8 +205,8 @@ void VoltageCh4Init(float nValue, unsigned int Delay)
     VoltageCh4.Gain = (nValue/2048.0);
     VoltageCh4.Value = 0.0;
     VoltageCh4.Offset = 0x0800; //OffsetRead(OFFSET_VOLT_CH4);
-    VoltageCh4.AlarmLimit = 10; //VoltCh4AlarmLevelMemmoryRead();
-    VoltageCh4.TripLimit = 10; //VoltCh4TripLevelMemmoryRead();
+    VoltageCh4.AlarmLimit = 10.0; //VoltCh4AlarmLevelMemmoryRead();
+    VoltageCh4.TripLimit = 10.0; //VoltCh4TripLevelMemmoryRead();
     VoltageCh4.Alarm = 0;
     VoltageCh4.Trip = 0;
     VoltageCh4.InvertPol = 0;

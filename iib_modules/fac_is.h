@@ -176,8 +176,8 @@ extern fac_is_t fac_is;
 #define FAC_IS_INPUT_OVERCURRENT_ALM_LIM                    130.0
 #define FAC_IS_INPUT_OVERCURRENT_ITLK_LIM                   140.0
 
-#define FAC_IS_IGBT1_OVERTEMP_ALM_LIM                       60
-#define FAC_IS_IGBT1_OVERTEMP_ITLK_LIM                      80
+#define FAC_IS_IGBT1_OVERTEMP_ALM_LIM                       60.0
+#define FAC_IS_IGBT1_OVERTEMP_ITLK_LIM                      80.0
 
 #define FAC_IS_DRIVER_OVERVOLTAGE_ALM_LIM                   16.0
 #define FAC_IS_DRIVER_OVERVOLTAGE_ITLK_LIM                  17.0
@@ -185,17 +185,17 @@ extern fac_is_t fac_is;
 #define FAC_IS_DRIVER1_OVERCURRENT_ALM_LIM                  2.0
 #define FAC_IS_DRIVER1_OVERCURRENT_ITLK_LIM                 2.4
 
-#define FAC_IS_INDUC_OVERTEMP_ALM_LIM                       50
-#define FAC_IS_INDUC_OVERTEMP_ITLK_LIM                      60
+#define FAC_IS_INDUC_OVERTEMP_ALM_LIM                       50.0
+#define FAC_IS_INDUC_OVERTEMP_ITLK_LIM                      60.0
 
-#define FAC_IS_HS_OVERTEMP_ALM_LIM                          50
-#define FAC_IS_HS_OVERTEMP_ITLK_LIM                         60
+#define FAC_IS_HS_OVERTEMP_ALM_LIM                          50.0
+#define FAC_IS_HS_OVERTEMP_ITLK_LIM                         60.0
 
-#define FAC_IS_RH_OVERHUMIDITY_ALM_LIM                      50
-#define FAC_IS_RH_OVERHUMIDITY_ITLK_LIM                     90
+#define FAC_IS_RH_OVERHUMIDITY_ALM_LIM                      50.0
+#define FAC_IS_RH_OVERHUMIDITY_ITLK_LIM                     90.0
 
-#define FAC_IS_BOARD_OVERTEMP_ALM_LIM                       50
-#define FAC_IS_BOARD_OVERTEMP_ITLK_LIM                      60
+#define FAC_IS_BOARD_OVERTEMP_ALM_LIM                       50.0
+#define FAC_IS_BOARD_OVERTEMP_ITLK_LIM                      60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -364,8 +364,8 @@ extern fac_is_t fac_is;
 #define FAC_IS_INPUT_OVERCURRENT_ALM_LIM                    160.0
 #define FAC_IS_INPUT_OVERCURRENT_ITLK_LIM                   170.0
 
-#define FAC_IS_IGBT1_OVERTEMP_ALM_LIM                       60
-#define FAC_IS_IGBT1_OVERTEMP_ITLK_LIM                      80
+#define FAC_IS_IGBT1_OVERTEMP_ALM_LIM                       60.0
+#define FAC_IS_IGBT1_OVERTEMP_ITLK_LIM                      80.0
 
 #define FAC_IS_DRIVER_OVERVOLTAGE_ALM_LIM                   16.0
 #define FAC_IS_DRIVER_OVERVOLTAGE_ITLK_LIM                  17.0
@@ -373,17 +373,17 @@ extern fac_is_t fac_is;
 #define FAC_IS_DRIVER1_OVERCURRENT_ALM_LIM                  2.0
 #define FAC_IS_DRIVER1_OVERCURRENT_ITLK_LIM                 2.4
 
-#define FAC_IS_INDUC_OVERTEMP_ALM_LIM                       55
-#define FAC_IS_INDUC_OVERTEMP_ITLK_LIM                      60
+#define FAC_IS_INDUC_OVERTEMP_ALM_LIM                       55.0
+#define FAC_IS_INDUC_OVERTEMP_ITLK_LIM                      60.0
 
-#define FAC_IS_HS_OVERTEMP_ALM_LIM                          50
-#define FAC_IS_HS_OVERTEMP_ITLK_LIM                         60
+#define FAC_IS_HS_OVERTEMP_ALM_LIM                          50.0
+#define FAC_IS_HS_OVERTEMP_ITLK_LIM                         60.0
 
-#define FAC_IS_RH_OVERHUMIDITY_ALM_LIM                      50
-#define FAC_IS_RH_OVERHUMIDITY_ITLK_LIM                     90
+#define FAC_IS_RH_OVERHUMIDITY_ALM_LIM                      50.0
+#define FAC_IS_RH_OVERHUMIDITY_ITLK_LIM                     90.0
 
-#define FAC_IS_BOARD_OVERTEMP_ALM_LIM                       50
-#define FAC_IS_BOARD_OVERTEMP_ITLK_LIM                      60
+#define FAC_IS_BOARD_OVERTEMP_ALM_LIM                       50.0
+#define FAC_IS_BOARD_OVERTEMP_ITLK_LIM                      60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
