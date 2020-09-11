@@ -221,8 +221,8 @@ extern fac_os_t fac_os;
 #define ON                                                  1
 #define OFF                                                 0
 
-#define FAC_OS_INPUT_OVERVOLTAGE_ALM_LIM                    330.0
-#define FAC_OS_INPUT_OVERVOLTAGE_ITLK_LIM                   350.0
+#define FAC_OS_INPUT_OVERVOLTAGE_ALM_LIM                    370.0
+#define FAC_OS_INPUT_OVERVOLTAGE_ITLK_LIM                   380.0
 
 #define FAC_OS_INPUT_OVERCURRENT_ALM_LIM                    130.0
 #define FAC_OS_INPUT_OVERCURRENT_ITLK_LIM                   140.0

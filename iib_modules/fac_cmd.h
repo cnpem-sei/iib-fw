@@ -185,8 +185,8 @@ extern fac_cmd_t fac_cmd;
 #define ON                                                  1
 #define OFF                                                 0
 
-#define FAC_CMD_CAPBANK_OVERVOLTAGE_ALM_LIM                 330.0
-#define FAC_CMD_CAPBANK_OVERVOLTAGE_ITLK_LIM                350.0
+#define FAC_CMD_CAPBANK_OVERVOLTAGE_ALM_LIM                 370.0
+#define FAC_CMD_CAPBANK_OVERVOLTAGE_ITLK_LIM                380.0
 
 #define FAC_CMD_OUTPUT_OVERVOLTAGE_ALM_LIM                  260.0
 #define FAC_CMD_OUTPUT_OVERVOLTAGE_ITLK_LIM                 270.0
