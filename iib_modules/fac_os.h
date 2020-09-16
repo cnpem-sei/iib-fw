@@ -667,8 +667,8 @@ extern fac_os_t fac_os;
 #define FAC_OS_DRIVER2_OVERCURRENT_ALM_LIM                  2.0
 #define FAC_OS_DRIVER2_OVERCURRENT_ITLK_LIM                 2.4
 
-#define FAC_OS_GROUND_LEAKAGE_ALM_LIM                       1.3
-#define FAC_OS_GROUND_LEAKAGE_ITLK_LIM                      1.5
+#define FAC_OS_GROUND_LEAKAGE_ALM_LIM                       0.0
+#define FAC_OS_GROUND_LEAKAGE_ITLK_LIM                      0.0
 
 #define FAC_OS_INDUC_OVERTEMP_ALM_LIM                       50.0
 #define FAC_OS_INDUC_OVERTEMP_ITLK_LIM                      60.0
@@ -730,7 +730,7 @@ extern fac_os_t fac_os;
 
 #define LvCurrentCh1Enable                                  ON
 #define LvCurrentCh2Enable                                  OFF
-#define LvCurrentCh3Enable                                  ON
+#define LvCurrentCh3Enable                                  OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
