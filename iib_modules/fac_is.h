@@ -191,7 +191,7 @@ extern fac_is_t fac_is;
 #define FAC_IS_HS_OVERTEMP_ALM_LIM                          50.0
 #define FAC_IS_HS_OVERTEMP_ITLK_LIM                         60.0
 
-#define FAC_IS_RH_OVERHUMIDITY_ALM_LIM                      50.0
+#define FAC_IS_RH_OVERHUMIDITY_ALM_LIM                      80.0
 #define FAC_IS_RH_OVERHUMIDITY_ITLK_LIM                     90.0
 
 #define FAC_IS_BOARD_OVERTEMP_ALM_LIM                       50.0
@@ -362,8 +362,8 @@ extern fac_is_t fac_is;
 #define ON                                                  1
 #define OFF                                                 0
 
-#define FAC_IS_DCLINK_OVERVOLTAGE_ALM_LIM                   500.0
-#define FAC_IS_DCLINK_OVERVOLTAGE_ITLK_LIM                  520.0
+#define FAC_IS_DCLINK_OVERVOLTAGE_ALM_LIM                   560.0
+#define FAC_IS_DCLINK_OVERVOLTAGE_ITLK_LIM                  580.0
 
 #define FAC_IS_INPUT_OVERCURRENT_ALM_LIM                    160.0
 #define FAC_IS_INPUT_OVERCURRENT_ITLK_LIM                   170.0
@@ -383,7 +383,7 @@ extern fac_is_t fac_is;
 #define FAC_IS_HS_OVERTEMP_ALM_LIM                          50.0
 #define FAC_IS_HS_OVERTEMP_ITLK_LIM                         60.0
 
-#define FAC_IS_RH_OVERHUMIDITY_ALM_LIM                      50.0
+#define FAC_IS_RH_OVERHUMIDITY_ALM_LIM                      80.0
 #define FAC_IS_RH_OVERHUMIDITY_ITLK_LIM                     90.0
 
 #define FAC_IS_BOARD_OVERTEMP_ALM_LIM                       50.0
