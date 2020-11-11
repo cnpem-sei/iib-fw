@@ -417,7 +417,7 @@ extern fac_is_t fac_is;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                              555.0
+#define LV_Primary_Voltage_Vin                              600.0
 
 #define LV_Secondary_Current_Vin                            0.025
 
