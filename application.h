@@ -21,7 +21,7 @@
 
 //#define BO_FAM_PS_B1_and_B2__CMD
 //#define BO_FAM_PS_B1_and_B2__IS
-//#define BO_FAM_PS_B1_and_B2__OS
+#define BO_FAM_PS_B1_and_B2__OS
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -45,9 +45,12 @@
 //#define SI_FAM_PS_QFB
 //#define SI_FAM_PS_QDA_QDP1_QDP2
 //#define SI_FAM_PS_QDB1_QDB2
-//#define SI_FAM_PS_Q1_Q2_Q3_Q4
-//#define SI_FAM_PS_SDA0_SDP0_SFA0_SFP0_SDA1_SDA2_SDA3_SFA1_SFA2_SDP1_SDP2_SDP3_SFP1_SFP2
-//#define SI_FAM_PS_SDB0_SDB1_SDB2_SDB3_SFB0_SFB1_SFB2
+//#define SI_FAM_PS_Q1_Q3_Q4
+//#define SI_FAM_PS_Q2
+//#define SI_FAM_PS_SDA0_SDP0_SFA0_SFP0_SDA1_SDA2_SDA3_SFA1_SFA2_SDP1_SDP2_SDP3_SFP2
+//#define SI_FAM_PS_SFP1
+//#define SI_FAM_PS_SDB0_SDB1_SDB2_SDB3_SFB0_SFB2
+//#define SI_FAM_PS_SFB1
 //#define SI_FAM_PS_B1B2_1_and_B1B2_2
 //#define TS_FAM_PS_B
 //#define TB_FAM_PS_B
