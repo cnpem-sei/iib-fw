@@ -21,7 +21,7 @@
 
 //#define BO_FAM_PS_B1_and_B2__CMD
 //#define BO_FAM_PS_B1_and_B2__IS
-#define BO_FAM_PS_B1_and_B2__OS
+//#define BO_FAM_PS_B1_and_B2__OS
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

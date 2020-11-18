@@ -362,8 +362,8 @@ extern fac_is_t fac_is;
 #define ON                                                  1
 #define OFF                                                 0
 
-#define FAC_IS_DCLINK_OVERVOLTAGE_ALM_LIM                   560.0
-#define FAC_IS_DCLINK_OVERVOLTAGE_ITLK_LIM                  580.0
+#define FAC_IS_DCLINK_OVERVOLTAGE_ALM_LIM                   590.0
+#define FAC_IS_DCLINK_OVERVOLTAGE_ITLK_LIM                  600.0
 
 #define FAC_IS_INPUT_OVERCURRENT_ALM_LIM                    160.0
 #define FAC_IS_INPUT_OVERCURRENT_ITLK_LIM                   170.0
