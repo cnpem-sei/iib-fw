@@ -57,6 +57,8 @@
 //#define TS_01_PS_QF1A_TS_01_PS_QF1B_TS_02_PS_QF2_TS_02_PS_QD2_TS_03_PS_QF3_TS_04_PS_QF4_TS_04_PS_QD4A_TS_04_PS_QD4B
 //#define FAP_GIGA_TESTE_IGBT_1200V
 //#define GIGA_TESTES_IIBs
+//#define FAP_GIGA_TESTE_IGBT_1200V_DCLINK_400V
+//#define FAP_GIGA_TESTE_IGBT_600V_DCLINK_400V
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

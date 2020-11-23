@@ -3499,8 +3499,8 @@ extern fap_t fap;
 #define FAP_INPUT_OVERVOLTAGE_ALM_LIM           555.0
 #define FAP_INPUT_OVERVOLTAGE_ITLK_LIM          560.0
 
-#define FAP_OUTPUT_OVERVOLTAGE_ALM_LIM          260.0
-#define FAP_OUTPUT_OVERVOLTAGE_ITLK_LIM         270.0
+#define FAP_OUTPUT_OVERVOLTAGE_ALM_LIM          280.0      //original 260.0
+#define FAP_OUTPUT_OVERVOLTAGE_ITLK_LIM         290.0      //original 270.0
 
 #define FAP_OUTPUT_OVERCURRENT_1_ALM_LIM        115.0
 #define FAP_OUTPUT_OVERCURRENT_1_ITLK_LIM       120.0
@@ -3511,11 +3511,11 @@ extern fap_t fap;
 #define FAP_GROUND_LEAKAGE_ALM_LIM              40.0
 #define FAP_GROUND_LEAKAGE_ITLK_LIM             45.0
 
-#define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
-#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
+#define FAP_IGBT1_OVERTEMP_ALM_LIM              90.0       //original 60.0
+#define FAP_IGBT1_OVERTEMP_ITLK_LIM             110.0      //original 80.0
 
-#define FAP_IGBT2_OVERTEMP_ALM_LIM              60.0
-#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80.0
+#define FAP_IGBT2_OVERTEMP_ALM_LIM              90.0       //original 60.0
+#define FAP_IGBT2_OVERTEMP_ITLK_LIM             110.0      //original 80.0
 
 #define FAP_DRIVER_OVERVOLTAGE_ALM_LIM          16.0
 #define FAP_DRIVER_OVERVOLTAGE_ITLK_LIM         17.0
@@ -3526,11 +3526,11 @@ extern fap_t fap;
 #define FAP_DRIVER2_OVERCURRENT_ALM_LIM         2.0
 #define FAP_DRIVER2_OVERCURRENT_ITLK_LIM        2.4
 
-#define FAP_INDUC_OVERTEMP_ALM_LIM              70.0
-#define FAP_INDUC_OVERTEMP_ITLK_LIM             80.0
+#define FAP_INDUC_OVERTEMP_ALM_LIM              100.0      //original 70.0
+#define FAP_INDUC_OVERTEMP_ITLK_LIM             110.0      //original 80.0
 
-#define FAP_HS_OVERTEMP_ALM_LIM                 50.0
-#define FAP_HS_OVERTEMP_ITLK_LIM                60.0
+#define FAP_HS_OVERTEMP_ALM_LIM                 60.0       //original 50.0
+#define FAP_HS_OVERTEMP_ITLK_LIM                65.0       //original 60.0
 
 #define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
 #define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
@@ -3577,7 +3577,7 @@ extern fap_t fap;
 #define LV_Burden_Resistor                      120.0
 
 //Debouncing delay_ms
-#define Delay_Vin                               100
+#define Delay_Vin                               250        //original 100
 
 //Debouncing delay_ms
 #define Delay_Vout                              100
@@ -3610,8 +3610,8 @@ extern fap_t fap;
 #define Delay_IGBT1                             3
 #define Delay_IGBT2                             3
 
-#define TempIgbt1Enable                         ON
-#define TempIgbt2Enable                         ON
+#define TempIgbt1Enable                         OFF        //original ON
+#define TempIgbt2Enable                         OFF        //original ON
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3912,6 +3912,436 @@ extern fap_t fap;
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 #endif /* GIGA_TESTES_IIBs */
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Set Power Module Alarms And Interlocks
+
+//FAP Giga de Testes IGBT 1200V Com DCLink 400V
+
+#ifdef FAP_GIGA_TESTE_IGBT_1200V_DCLINK_400V
+
+#define FAP
+
+#define ON                                      1
+#define OFF                                     0
+
+#define FAP_INPUT_OVERVOLTAGE_ALM_LIM           435.0
+#define FAP_INPUT_OVERVOLTAGE_ITLK_LIM          440.0
+
+#define FAP_OUTPUT_OVERVOLTAGE_ALM_LIM          230.0
+#define FAP_OUTPUT_OVERVOLTAGE_ITLK_LIM         235.0
+
+#define FAP_OUTPUT_OVERCURRENT_1_ALM_LIM        115.0
+#define FAP_OUTPUT_OVERCURRENT_1_ITLK_LIM       120.0
+
+#define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM        115.0
+#define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM       120.0
+
+#define FAP_GROUND_LEAKAGE_ALM_LIM              40.0
+#define FAP_GROUND_LEAKAGE_ITLK_LIM             45.0
+
+#define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
+
+#define FAP_IGBT2_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80.0
+
+#define FAP_DRIVER_OVERVOLTAGE_ALM_LIM          16.0
+#define FAP_DRIVER_OVERVOLTAGE_ITLK_LIM         17.0
+
+#define FAP_DRIVER1_OVERCURRENT_ALM_LIM         2.0
+#define FAP_DRIVER1_OVERCURRENT_ITLK_LIM        2.4
+
+#define FAP_DRIVER2_OVERCURRENT_ALM_LIM         2.0
+#define FAP_DRIVER2_OVERCURRENT_ITLK_LIM        2.4
+
+#define FAP_INDUC_OVERTEMP_ALM_LIM              50.0
+#define FAP_INDUC_OVERTEMP_ITLK_LIM             60.0
+
+#define FAP_HS_OVERTEMP_ALM_LIM                 60.0
+#define FAP_HS_OVERTEMP_ITLK_LIM                80.0
+
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
+
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Set current range FAP 130 A
+
+//Sensor Hall LEM LA 130-P
+
+//CurrentCh1Init and CurrentCh2Init
+
+#define LA_Primary_Current                      130.0
+
+#define LA_Secondary_Current                    0.130
+
+#define LA_Burden_Resistor                      50.0
+
+//Debouncing delay_ms
+#define LA_Delay                                3
+
+#define CurrentCh1Enable                        ON
+#define CurrentCh2Enable                        ON
+#define CurrentCh3Enable                        OFF
+#define CurrentCh4Enable                        OFF
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Set LV 20P range
+
+//LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
+
+#define LV_Primary_Voltage_Vin                  722.5
+
+#define LV_Primary_Voltage_Vout                 302.5
+
+#define LV_Primary_Voltage_GND_Leakage          52.5
+
+#define LV_Secondary_Current_Vin                0.025
+
+#define LV_Burden_Resistor                      120.0
+
+//Debouncing delay_ms
+#define Delay_Vin                               250
+
+//Debouncing delay_ms
+#define Delay_Vout                              100
+
+//Debouncing delay_ms
+#define Delay_GND_Leakage                       3
+
+#define LvCurrentCh1Enable                      ON
+#define LvCurrentCh2Enable                      ON
+#define LvCurrentCh3Enable                      ON
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//PT100 CH1 and CH2 configuration
+//Debouncing Delay seconds
+
+#define Delay_PT100CH1                          4
+#define Delay_PT100CH2                          4
+
+#define Pt100Ch1Enable                          ON
+#define Pt100Ch2Enable                          ON
+#define Pt100Ch3Enable                          OFF
+#define Pt100Ch4Enable                          OFF
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Temperature igbt1 and igbt2 configuration
+//Debouncing delay_ms
+
+#define Delay_IGBT1                             3
+#define Delay_IGBT2                             3
+
+#define TempIgbt1Enable                         OFF
+#define TempIgbt2Enable                         OFF
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Temperature Board and Humidity Board configuration
+//Debouncing delay_ms
+
+#define Delay_BoardTemp                         3
+#define Delay_BoardRh                           3
+
+#define BoardTempEnable                         ON
+#define RhEnable                                ON
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Driver Voltage and Driver Current configuration
+//Debouncing delay_ms
+
+#define Delay_DriverVoltage                     3
+#define Delay_DriverCurrent                     3
+
+#define DriverVoltageEnable                     ON
+#define Driver1CurrentEnable                    ON
+#define Driver2CurrentEnable                    ON
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Driver1 error configuration
+
+#define Driver1TopErrorEnable                   ON
+#define Driver1BotErrorEnable                   OFF
+#define Driver1OverTempEnable                   OFF
+
+//Driver2 error configuration
+
+#define Driver2TopErrorEnable                   ON
+#define Driver2BotErrorEnable                   OFF
+#define Driver2OverTempEnable                   OFF
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Voltage configuration
+
+#define VoltageCh1Enable                        OFF
+#define VoltageCh2Enable                        OFF
+#define VoltageCh3Enable                        OFF
+#define VoltageCh4Enable                        OFF
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Gpdi configuration
+
+#define GIGA
+
+#define Gpdi1Enable                             OFF
+#define Gpdi2Enable                             OFF
+#define Gpdi3Enable                             OFF
+#define Gpdi4Enable                             OFF
+#define Gpdi5Enable                             ON  // ExternalITLK
+#define Gpdi6Enable                             ON  // RackITLK
+#define Gpdi7Enable                             ON  // RelayStatus
+#define Gpdi8Enable                             OFF
+#define Gpdi9Enable                             OFF
+#define Gpdi10Enable                            OFF
+#define Gpdi11Enable                            OFF
+#define Gpdi12Enable                            OFF
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Gpdo configuration
+
+#define Gpdo1Enable                             OFF
+#define Gpdo2Enable                             OFF
+#define Gpdo3Enable                             OFF
+#define Gpdo4Enable                             OFF
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//ReleAux and ReleExtItlk configuration
+
+#define ReleAuxEnable                           ON
+#define ReleExtItlkEnable                       ON
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+#endif /* FAP Giga de Testes IGBT 1200V Com DCLink 400V */
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Set Power Module Alarms And Interlocks
+
+//FAP Giga de Testes IGBT 600V Com DCLink 400V
+
+#ifdef FAP_GIGA_TESTE_IGBT_600V_DCLINK_400V
+
+#define FAP
+
+#define ON                                      1
+#define OFF                                     0
+
+#define FAP_INPUT_OVERVOLTAGE_ALM_LIM           435.0
+#define FAP_INPUT_OVERVOLTAGE_ITLK_LIM          440.0
+
+#define FAP_OUTPUT_OVERVOLTAGE_ALM_LIM          230.0
+#define FAP_OUTPUT_OVERVOLTAGE_ITLK_LIM         235.0
+
+#define FAP_OUTPUT_OVERCURRENT_1_ALM_LIM        115.0
+#define FAP_OUTPUT_OVERCURRENT_1_ITLK_LIM       120.0
+
+#define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM        115.0
+#define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM       120.0
+
+#define FAP_GROUND_LEAKAGE_ALM_LIM              40.0
+#define FAP_GROUND_LEAKAGE_ITLK_LIM             45.0
+
+#define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
+
+#define FAP_IGBT2_OVERTEMP_ALM_LIM              60.0
+#define FAP_IGBT2_OVERTEMP_ITLK_LIM             80.0
+
+#define FAP_DRIVER_OVERVOLTAGE_ALM_LIM          16.0
+#define FAP_DRIVER_OVERVOLTAGE_ITLK_LIM         17.0
+
+#define FAP_DRIVER1_OVERCURRENT_ALM_LIM         2.0
+#define FAP_DRIVER1_OVERCURRENT_ITLK_LIM        2.4
+
+#define FAP_DRIVER2_OVERCURRENT_ALM_LIM         2.0
+#define FAP_DRIVER2_OVERCURRENT_ITLK_LIM        2.4
+
+#define FAP_INDUC_OVERTEMP_ALM_LIM              50.0
+#define FAP_INDUC_OVERTEMP_ITLK_LIM             60.0
+
+#define FAP_HS_OVERTEMP_ALM_LIM                 60.0
+#define FAP_HS_OVERTEMP_ITLK_LIM                80.0
+
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
+
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Set current range FAP 130 A
+
+//Sensor Hall LEM LA 130-P
+
+//CurrentCh1Init and CurrentCh2Init
+
+#define LA_Primary_Current                      130.0
+
+#define LA_Secondary_Current                    0.130
+
+#define LA_Burden_Resistor                      50.0
+
+//Debouncing delay_ms
+#define LA_Delay                                3
+
+#define CurrentCh1Enable                        ON
+#define CurrentCh2Enable                        ON
+#define CurrentCh3Enable                        OFF
+#define CurrentCh4Enable                        OFF
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Set LV 20P range
+
+//LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
+
+#define LV_Primary_Voltage_Vin                  602.5
+
+#define LV_Primary_Voltage_Vout                 302.5
+
+#define LV_Primary_Voltage_GND_Leakage          52.5
+
+#define LV_Secondary_Current_Vin                0.025
+
+#define LV_Burden_Resistor                      120.0
+
+//Debouncing delay_ms
+#define Delay_Vin                               250
+
+//Debouncing delay_ms
+#define Delay_Vout                              100
+
+//Debouncing delay_ms
+#define Delay_GND_Leakage                       3
+
+#define LvCurrentCh1Enable                      ON
+#define LvCurrentCh2Enable                      ON
+#define LvCurrentCh3Enable                      ON
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//PT100 CH1 and CH2 configuration
+//Debouncing Delay seconds
+
+#define Delay_PT100CH1                          4
+#define Delay_PT100CH2                          4
+
+#define Pt100Ch1Enable                          ON
+#define Pt100Ch2Enable                          ON
+#define Pt100Ch3Enable                          OFF
+#define Pt100Ch4Enable                          OFF
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Temperature igbt1 and igbt2 configuration
+//Debouncing delay_ms
+
+#define Delay_IGBT1                             3
+#define Delay_IGBT2                             3
+
+#define TempIgbt1Enable                         OFF
+#define TempIgbt2Enable                         OFF
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Temperature Board and Humidity Board configuration
+//Debouncing delay_ms
+
+#define Delay_BoardTemp                         3
+#define Delay_BoardRh                           3
+
+#define BoardTempEnable                         ON
+#define RhEnable                                ON
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Driver Voltage and Driver Current configuration
+//Debouncing delay_ms
+
+#define Delay_DriverVoltage                     3
+#define Delay_DriverCurrent                     3
+
+#define DriverVoltageEnable                     ON
+#define Driver1CurrentEnable                    ON
+#define Driver2CurrentEnable                    ON
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Driver1 error configuration
+
+#define Driver1TopErrorEnable                   ON
+#define Driver1BotErrorEnable                   OFF
+#define Driver1OverTempEnable                   OFF
+
+//Driver2 error configuration
+
+#define Driver2TopErrorEnable                   ON
+#define Driver2BotErrorEnable                   OFF
+#define Driver2OverTempEnable                   OFF
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Voltage configuration
+
+#define VoltageCh1Enable                        OFF
+#define VoltageCh2Enable                        OFF
+#define VoltageCh3Enable                        OFF
+#define VoltageCh4Enable                        OFF
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Gpdi configuration
+
+#define GIGA
+
+#define Gpdi1Enable                             OFF
+#define Gpdi2Enable                             OFF
+#define Gpdi3Enable                             OFF
+#define Gpdi4Enable                             OFF
+#define Gpdi5Enable                             ON  // ExternalITLK
+#define Gpdi6Enable                             ON  // RackITLK
+#define Gpdi7Enable                             ON  // RelayStatus
+#define Gpdi8Enable                             OFF
+#define Gpdi9Enable                             OFF
+#define Gpdi10Enable                            OFF
+#define Gpdi11Enable                            OFF
+#define Gpdi12Enable                            OFF
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//Gpdo configuration
+
+#define Gpdo1Enable                             OFF
+#define Gpdo2Enable                             OFF
+#define Gpdo3Enable                             OFF
+#define Gpdo4Enable                             OFF
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//ReleAux and ReleExtItlk configuration
+
+#define ReleAuxEnable                           ON
+#define ReleExtItlkEnable                       ON
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+#endif /* FAP Giga de Testes IGBT 600V Com DCLink 400V */
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
