@@ -117,8 +117,20 @@ void IntTimer100usHandler(void)
 
 void Timer_1ms_Init(void)
 {
-    // Enable timer 1.
+    // Disable timer 1 peripheral
+    SysCtlPeripheralDisable(SYSCTL_PERIPH_TIMER1);
+
+    // Reset timer 1 peripheral
+    SysCtlPeripheralReset(SYSCTL_PERIPH_TIMER1);
+
+    // Enable timer 1 peripheral
     SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER1);
+
+    // Wait for the timer 1 peripheral to be ready.
+    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_TIMER1));
+
+    // Disable the timer 1 module.
+    TimerDisable(TIMER1_BASE, TIMER_A);
 
     // Configure the two 32-bit periodic timers.
     TimerConfigure(TIMER1_BASE, TIMER_CFG_PERIODIC);
@@ -138,8 +150,20 @@ void Timer_1ms_Init(void)
 
 void Timer_100us_Init(void)
 {
-    // Enable timer 0.
+    // Disable timer 0 peripheral
+    SysCtlPeripheralDisable(SYSCTL_PERIPH_TIMER0);
+
+    // Reset timer 0 peripheral
+    SysCtlPeripheralReset(SYSCTL_PERIPH_TIMER0);
+
+    // Enable timer 0 peripheral
     SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
+
+    // Wait for the timer 0 peripheral to be ready.
+    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_TIMER0));
+
+    // Disable the timer 0 module.
+    TimerDisable(TIMER0_BASE, TIMER_A);
 
     // Configure the two 32-bit periodic timers.
     TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);

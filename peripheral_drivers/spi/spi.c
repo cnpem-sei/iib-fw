@@ -20,9 +20,17 @@ void spi_init()
     // Chip Select
     set_gpio_as_output(GPIO_PORTA_BASE, GPIO_PIN_3);
 
+    // Disable SSI0 peripheral
+    SysCtlPeripheralDisable(SYSCTL_PERIPH_SSI0);
+
+    // Reset SSI0 peripheral
+    SysCtlPeripheralReset(SYSCTL_PERIPH_SSI0);
+
     // The SSI0 peripheral must be enabled for use.
     SysCtlPeripheralEnable(SYSCTL_PERIPH_SSI0);
 
+    // Wait for the SSI0 module to be ready.
+    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_SSI0));
 
     // Configure the pin muxing for SSI0 functions on port A2, A3, A4, and A5.
     // This step is not necessary if your part does not support pin muxing.
@@ -45,6 +53,9 @@ void spi_init()
     //
 
     GPIOPinTypeSSI(GPIO_PORTA_BASE, GPIO_PIN_5 | GPIO_PIN_4 | GPIO_PIN_2);
+
+    // Disable the SSI0 module.
+    SSIDisable(SSI0_BASE);
 
     // SPI Mode 3 for MAX31865
     SSIConfigSetExpClk(SSI0_BASE, SYSCLOCK, SSI_FRF_MOTO_MODE_3,

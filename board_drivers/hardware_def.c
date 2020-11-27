@@ -46,9 +46,43 @@
 
 void pinout_config(void)
 {
-
+    // Disable WDOG0 and WDOG1
     SysCtlPeripheralDisable(SYSCTL_PERIPH_WDOG1);
     SysCtlPeripheralDisable(SYSCTL_PERIPH_WDOG0);
+
+    // Disable all GPIO.
+    SysCtlPeripheralDisable(SYSCTL_PERIPH_GPIOA);
+    SysCtlPeripheralDisable(SYSCTL_PERIPH_GPIOB);
+    SysCtlPeripheralDisable(SYSCTL_PERIPH_GPIOC);
+    SysCtlPeripheralDisable(SYSCTL_PERIPH_GPIOD);
+    SysCtlPeripheralDisable(SYSCTL_PERIPH_GPIOE);
+    SysCtlPeripheralDisable(SYSCTL_PERIPH_GPIOF);
+    SysCtlPeripheralDisable(SYSCTL_PERIPH_GPIOG);
+    SysCtlPeripheralDisable(SYSCTL_PERIPH_GPIOH);
+    SysCtlPeripheralDisable(SYSCTL_PERIPH_GPIOJ);
+    SysCtlPeripheralDisable(SYSCTL_PERIPH_GPIOK);
+    SysCtlPeripheralDisable(SYSCTL_PERIPH_GPIOL);
+    SysCtlPeripheralDisable(SYSCTL_PERIPH_GPIOM);
+    SysCtlPeripheralDisable(SYSCTL_PERIPH_GPION);
+    SysCtlPeripheralDisable(SYSCTL_PERIPH_GPIOP);
+    SysCtlPeripheralDisable(SYSCTL_PERIPH_GPIOQ);
+
+    // Reset all GPIO.
+    SysCtlPeripheralReset(SYSCTL_PERIPH_GPIOA);
+    SysCtlPeripheralReset(SYSCTL_PERIPH_GPIOB);
+    SysCtlPeripheralReset(SYSCTL_PERIPH_GPIOC);
+    SysCtlPeripheralReset(SYSCTL_PERIPH_GPIOD);
+    SysCtlPeripheralReset(SYSCTL_PERIPH_GPIOE);
+    SysCtlPeripheralReset(SYSCTL_PERIPH_GPIOF);
+    SysCtlPeripheralReset(SYSCTL_PERIPH_GPIOG);
+    SysCtlPeripheralReset(SYSCTL_PERIPH_GPIOH);
+    SysCtlPeripheralReset(SYSCTL_PERIPH_GPIOJ);
+    SysCtlPeripheralReset(SYSCTL_PERIPH_GPIOK);
+    SysCtlPeripheralReset(SYSCTL_PERIPH_GPIOL);
+    SysCtlPeripheralReset(SYSCTL_PERIPH_GPIOM);
+    SysCtlPeripheralReset(SYSCTL_PERIPH_GPION);
+    SysCtlPeripheralReset(SYSCTL_PERIPH_GPIOP);
+    SysCtlPeripheralReset(SYSCTL_PERIPH_GPIOQ);
 
 	// Enable all GPIO.
 	SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);

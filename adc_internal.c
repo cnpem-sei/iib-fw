@@ -51,16 +51,24 @@ static uint32_t adc_1_value[7];
 
 void AdcsInit(void)
 {
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOK);
+    // Disable ADC0 and ADC1 peripheral
+    SysCtlPeripheralDisable(SYSCTL_PERIPH_ADC0);
+    SysCtlPeripheralDisable(SYSCTL_PERIPH_ADC1);
 
-    // Enable ADC0 and ADC1
+    // Reset ADC0 and ADC1 peripheral
+    SysCtlPeripheralReset(SYSCTL_PERIPH_ADC0);
+    SysCtlPeripheralReset(SYSCTL_PERIPH_ADC1);
+
+    // Enable ADC0 and ADC1 peripheral
     SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC0);
     SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC1);
 
     while(!SysCtlPeripheralReady(SYSCTL_PERIPH_ADC0));
     while(!SysCtlPeripheralReady(SYSCTL_PERIPH_ADC1));
+
+    // Disable sample sequences.
+    ADCSequenceDisable(ADC0_BASE, 0);
+    ADCSequenceDisable(ADC1_BASE, 0);
 
     // Config ADC as a external voltage reference
     ADCReferenceSet(ADC0_BASE, ADC_REF_EXT_3V);

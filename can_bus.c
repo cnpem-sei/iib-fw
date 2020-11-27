@@ -236,9 +236,20 @@ void InitCan(uint32_t ui32SysClock)
     // Enable the alternate function on the GPIO pins.  The above step selects
     GPIOPinTypeCAN(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
 
-    // The GPIO port and pins have been set up for CAN.  The CAN peripheral
-    // must be enabled.
+    // Disable CAN0 peripheral
+    SysCtlPeripheralDisable(SYSCTL_PERIPH_CAN0);
+
+    // Reset CAN0 peripheral
+    SysCtlPeripheralReset(SYSCTL_PERIPH_CAN0);
+
+    // Enable CAN0 peripheral
     SysCtlPeripheralEnable(SYSCTL_PERIPH_CAN0);
+
+    // Wait for the CAN0 module to be ready.
+    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_CAN0));
+
+    // Disable the CAN0 module.
+    CANDisable(CAN0_BASE);
 
     // Initialize the CAN controller
     CANInit(CAN0_BASE);

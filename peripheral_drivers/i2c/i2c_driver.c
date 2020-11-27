@@ -32,15 +32,6 @@
 //initialize I2C module 2
 void InitI2C2(void)
 {
-    // Enable the I2C2 peripheral
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_I2C2);
-
-    //reset I2C2 module
-    SysCtlPeripheralReset(SYSCTL_PERIPH_I2C2);
-
-    // Wait for the I2C2 module to be ready.
-    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_I2C2));
-
     // Configure Pins for I2C2 Master Interface
     GPIOPinConfigure(GPIO_PN5_I2C2SCL);
     GPIOPinConfigure(GPIO_PN4_I2C2SDA);
@@ -48,8 +39,23 @@ void InitI2C2(void)
     GPIOPinTypeI2CSCL(GPIO_PORTN_BASE, GPIO_PIN_5);
     GPIOPinTypeI2C(GPIO_PORTN_BASE, GPIO_PIN_4);
 
+    // Disable I2C2 peripheral
+    SysCtlPeripheralDisable(SYSCTL_PERIPH_I2C2);
+
+    // Reset I2C2 peripheral
+    SysCtlPeripheralReset(SYSCTL_PERIPH_I2C2);
+
+    // Enable I2C2 peripheral
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_I2C2);
+
+    // Wait for the I2C2 module to be ready.
+    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_I2C2));
+
+    // Disable the I2C2 module.
+    I2CMasterDisable(I2C2_BASE);
+
     // Initialize and Configure the Master Module
-    //false = 100Khz, true = 400Khz.
+    // false = 100Khz, true = 400Khz.
     I2CMasterInitExpClk(I2C2_BASE, SysCtlClockGetTM4C129(), true);
 
     // Enable the Glitch Filter
@@ -62,15 +68,6 @@ void InitI2C2(void)
 //initialize I2C module 5
 void InitI2C5(void)
 {
-    // Enable the I2C5 peripheral
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_I2C5);
-
-    //reset I2C5 module
-    SysCtlPeripheralReset(SYSCTL_PERIPH_I2C5);
-
-    // Wait for the I2C5 module to be ready.
-    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_I2C5));
-
     // Configure Pins for I2C5 Master Interface
     GPIOPinConfigure(GPIO_PB0_I2C5SCL);
     GPIOPinConfigure(GPIO_PB1_I2C5SDA);
@@ -78,8 +75,23 @@ void InitI2C5(void)
     GPIOPinTypeI2CSCL(GPIO_PORTB_BASE, GPIO_PIN_0);
     GPIOPinTypeI2C(GPIO_PORTB_BASE, GPIO_PIN_1);
 
+    // Disable I2C5 peripheral
+    SysCtlPeripheralDisable(SYSCTL_PERIPH_I2C5);
+
+    // Reset I2C5 peripheral
+    SysCtlPeripheralReset(SYSCTL_PERIPH_I2C5);
+
+    // Enable I2C5 peripheral
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_I2C5);
+
+    // Wait for the I2C5 module to be ready.
+    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_I2C5));
+
+    // Disable the I2C5 module.
+    I2CMasterDisable(I2C5_BASE);
+
     // Initialize and Configure the Master Module
-    //false = 100Khz, true = 400Khz.
+    // false = 100Khz, true = 400Khz.
     I2CMasterInitExpClk(I2C5_BASE, SysCtlClockGetTM4C129(), true);
 
     // Enable the Glitch Filter

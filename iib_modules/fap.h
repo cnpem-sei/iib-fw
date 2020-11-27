@@ -4255,8 +4255,8 @@ extern fap_t fap;
 #define Delay_IGBT1                             3
 #define Delay_IGBT2                             3
 
-#define TempIgbt1Enable                         OFF
-#define TempIgbt2Enable                         OFF
+#define TempIgbt1Enable                         ON
+#define TempIgbt2Enable                         ON
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
