@@ -58,7 +58,7 @@
 //#define FAP_GIGA_TESTE_IGBT_1200V
 //#define GIGA_TESTES_IIBs
 //#define FAP_GIGA_TESTE_IGBT_1200V_DCLINK_400V
-#define FAP_GIGA_TESTE_IGBT_600V_DCLINK_400V
+//#define FAP_GIGA_TESTE_IGBT_600V_DCLINK_400V
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

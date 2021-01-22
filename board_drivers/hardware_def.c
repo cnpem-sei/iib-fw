@@ -47,8 +47,8 @@
 void pinout_config(void)
 {
     // Disable WDOG0 and WDOG1
-    SysCtlPeripheralDisable(SYSCTL_PERIPH_WDOG1);
     SysCtlPeripheralDisable(SYSCTL_PERIPH_WDOG0);
+    SysCtlPeripheralDisable(SYSCTL_PERIPH_WDOG1);
 
     // Disable all GPIO.
     SysCtlPeripheralDisable(SYSCTL_PERIPH_GPIOA);
