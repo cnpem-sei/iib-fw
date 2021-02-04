@@ -267,11 +267,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 40.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -484,11 +484,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 40.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -701,11 +701,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 40.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -918,11 +918,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 40.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1135,11 +1135,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 40.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1352,11 +1352,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 45.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1569,11 +1569,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 45.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1788,11 +1788,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 40.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2007,11 +2007,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 40.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2226,11 +2226,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 40.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2445,11 +2445,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 40.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2662,11 +2662,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 45.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             70.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2881,11 +2881,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 40.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3100,11 +3100,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 60.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                70.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3317,11 +3317,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 40.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
