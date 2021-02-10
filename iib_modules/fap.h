@@ -1316,7 +1316,7 @@ extern fap_t fap;
 #define ON                                      1
 #define OFF                                     0
 
-#define FAP_INPUT_OVERVOLTAGE_ALM_LIM           430.0
+#define FAP_INPUT_OVERVOLTAGE_ALM_LIM           435.0
 #define FAP_INPUT_OVERVOLTAGE_ITLK_LIM          440.0
 
 #define FAP_OUTPUT_OVERVOLTAGE_ALM_LIM          255.0
@@ -1397,10 +1397,10 @@ extern fap_t fap;
 #define LV_Burden_Resistor                      120.0
 
 //Debouncing delay_ms
-#define Delay_Vin                               100
+#define Delay_Vin                               200
 
 //Debouncing delay_ms
-#define Delay_Vout                              100
+#define Delay_Vout                              200
 
 //Debouncing delay_ms
 #define Delay_GND_Leakage                       3
@@ -1533,7 +1533,7 @@ extern fap_t fap;
 #define ON                                      1
 #define OFF                                     0
 
-#define FAP_INPUT_OVERVOLTAGE_ALM_LIM           430.0
+#define FAP_INPUT_OVERVOLTAGE_ALM_LIM           435.0
 #define FAP_INPUT_OVERVOLTAGE_ITLK_LIM          440.0
 
 #define FAP_OUTPUT_OVERVOLTAGE_ALM_LIM          285.0
@@ -1614,10 +1614,10 @@ extern fap_t fap;
 #define LV_Burden_Resistor                      120.0
 
 //Debouncing delay_ms
-#define Delay_Vin                               100
+#define Delay_Vin                               200
 
 //Debouncing delay_ms
-#define Delay_Vout                              100
+#define Delay_Vout                              200
 
 //Debouncing delay_ms
 #define Delay_GND_Leakage                       3
@@ -1752,8 +1752,8 @@ extern fap_t fap;
 #define ON                                      1
 #define OFF                                     0
 
-#define FAP_INPUT_OVERVOLTAGE_ALM_LIM           140.0
-#define FAP_INPUT_OVERVOLTAGE_ITLK_LIM          145.0
+#define FAP_INPUT_OVERVOLTAGE_ALM_LIM           145.0
+#define FAP_INPUT_OVERVOLTAGE_ITLK_LIM          150.0
 
 #define FAP_OUTPUT_OVERVOLTAGE_ALM_LIM          80.0
 #define FAP_OUTPUT_OVERVOLTAGE_ITLK_LIM         85.0
@@ -1833,10 +1833,10 @@ extern fap_t fap;
 #define LV_Burden_Resistor                      120.0
 
 //Debouncing delay_ms
-#define Delay_Vin                               100
+#define Delay_Vin                               200
 
 //Debouncing delay_ms
-#define Delay_Vout                              100
+#define Delay_Vout                              200
 
 //Debouncing delay_ms
 #define Delay_GND_Leakage                       3
@@ -1971,8 +1971,8 @@ extern fap_t fap;
 #define ON                                      1
 #define OFF                                     0
 
-#define FAP_INPUT_OVERVOLTAGE_ALM_LIM           140.0
-#define FAP_INPUT_OVERVOLTAGE_ITLK_LIM          145.0
+#define FAP_INPUT_OVERVOLTAGE_ALM_LIM           145.0
+#define FAP_INPUT_OVERVOLTAGE_ITLK_LIM          150.0
 
 #define FAP_OUTPUT_OVERVOLTAGE_ALM_LIM          80.0
 #define FAP_OUTPUT_OVERVOLTAGE_ITLK_LIM         85.0
@@ -2052,10 +2052,10 @@ extern fap_t fap;
 #define LV_Burden_Resistor                      120.0
 
 //Debouncing delay_ms
-#define Delay_Vin                               100
+#define Delay_Vin                               200
 
 //Debouncing delay_ms
-#define Delay_Vout                              100
+#define Delay_Vout                              200
 
 //Debouncing delay_ms
 #define Delay_GND_Leakage                       3
@@ -2190,8 +2190,8 @@ extern fap_t fap;
 #define ON                                      1
 #define OFF                                     0
 
-#define FAP_INPUT_OVERVOLTAGE_ALM_LIM           210.0
-#define FAP_INPUT_OVERVOLTAGE_ITLK_LIM          215.0
+#define FAP_INPUT_OVERVOLTAGE_ALM_LIM           215.0
+#define FAP_INPUT_OVERVOLTAGE_ITLK_LIM          220.0
 
 #define FAP_OUTPUT_OVERVOLTAGE_ALM_LIM          135.0
 #define FAP_OUTPUT_OVERVOLTAGE_ITLK_LIM         140.0
@@ -2271,10 +2271,10 @@ extern fap_t fap;
 #define LV_Burden_Resistor                      120.0
 
 //Debouncing delay_ms
-#define Delay_Vin                               100
+#define Delay_Vin                               200
 
 //Debouncing delay_ms
-#define Delay_Vout                              100
+#define Delay_Vout                              200
 
 //Debouncing delay_ms
 #define Delay_GND_Leakage                       3
@@ -2409,8 +2409,8 @@ extern fap_t fap;
 #define ON                                      1
 #define OFF                                     0
 
-#define FAP_INPUT_OVERVOLTAGE_ALM_LIM           210.0
-#define FAP_INPUT_OVERVOLTAGE_ITLK_LIM          215.0
+#define FAP_INPUT_OVERVOLTAGE_ALM_LIM           215.0
+#define FAP_INPUT_OVERVOLTAGE_ITLK_LIM          220.0
 
 #define FAP_OUTPUT_OVERVOLTAGE_ALM_LIM          145.0
 #define FAP_OUTPUT_OVERVOLTAGE_ITLK_LIM         150.0
@@ -2490,10 +2490,10 @@ extern fap_t fap;
 #define LV_Burden_Resistor                      120.0
 
 //Debouncing delay_ms
-#define Delay_Vin                               100
+#define Delay_Vin                               200
 
 //Debouncing delay_ms
-#define Delay_Vout                              100
+#define Delay_Vout                              200
 
 //Debouncing delay_ms
 #define Delay_GND_Leakage                       3
