@@ -1136,7 +1136,7 @@ extern fac_os_t fac_os;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                              330.0
+#define LV_Primary_Voltage_Vin                              600.0
 
 #define LV_Primary_Voltage_GND_Leakage                      50.0
 
