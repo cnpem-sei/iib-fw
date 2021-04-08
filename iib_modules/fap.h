@@ -267,11 +267,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 40.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -287,7 +287,7 @@ extern fap_t fap;
 
 #define LA_Burden_Resistor                      50.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define LA_Delay                                3
 
 #define CurrentCh1Enable                        ON
@@ -301,9 +301,9 @@ extern fap_t fap;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                  452.5
+#define LV_Primary_Voltage_Vin                  452.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_Vout                 252.5
+#define LV_Primary_Voltage_Vout                 252.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Primary_Voltage_GND_Leakage          50.0
 
@@ -311,23 +311,23 @@ extern fap_t fap;
 
 #define LV_Burden_Resistor                      120.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vin                               100
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vout                              100
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
-#define LvCurrentCh3Enable                      ON
+#define LvCurrentCh3Enable                      OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //PT100 CH1 and CH2 configuration
-//Debouncing Delay seconds
+//Debouncing delay_ms
 
 #define Delay_PT100CH1                          4
 #define Delay_PT100CH2                          4
@@ -358,6 +358,9 @@ extern fap_t fap;
 
 #define BoardTempEnable                         ON
 #define RhEnable                                ON
+
+#define ItlkBoardTempEnable                     OFF
+#define ItlkRhEnable                            OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -484,11 +487,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 40.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -504,7 +507,7 @@ extern fap_t fap;
 
 #define LA_Burden_Resistor                      50.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define LA_Delay                                3
 
 #define CurrentCh1Enable                        ON
@@ -518,9 +521,9 @@ extern fap_t fap;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                  452.5
+#define LV_Primary_Voltage_Vin                  452.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_Vout                 252.5
+#define LV_Primary_Voltage_Vout                 252.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Primary_Voltage_GND_Leakage          50.0
 
@@ -528,23 +531,23 @@ extern fap_t fap;
 
 #define LV_Burden_Resistor                      120.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vin                               100
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vout                              100
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
-#define LvCurrentCh3Enable                      ON
+#define LvCurrentCh3Enable                      OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //PT100 CH1 and CH2 configuration
-//Debouncing Delay seconds
+//Debouncing delay_ms
 
 #define Delay_PT100CH1                          4
 #define Delay_PT100CH2                          4
@@ -575,6 +578,9 @@ extern fap_t fap;
 
 #define BoardTempEnable                         ON
 #define RhEnable                                ON
+
+#define ItlkBoardTempEnable                     OFF
+#define ItlkRhEnable                            OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -701,11 +707,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 40.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -721,7 +727,7 @@ extern fap_t fap;
 
 #define LA_Burden_Resistor                      50.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define LA_Delay                                3
 
 #define CurrentCh1Enable                        ON
@@ -735,9 +741,9 @@ extern fap_t fap;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                  452.5
+#define LV_Primary_Voltage_Vin                  452.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_Vout                 252.5
+#define LV_Primary_Voltage_Vout                 252.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Primary_Voltage_GND_Leakage          50.0
 
@@ -745,23 +751,23 @@ extern fap_t fap;
 
 #define LV_Burden_Resistor                      120.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vin                               100
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vout                              100
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
-#define LvCurrentCh3Enable                      ON
+#define LvCurrentCh3Enable                      OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //PT100 CH1 and CH2 configuration
-//Debouncing Delay seconds
+//Debouncing delay_ms
 
 #define Delay_PT100CH1                          4
 #define Delay_PT100CH2                          4
@@ -792,6 +798,9 @@ extern fap_t fap;
 
 #define BoardTempEnable                         ON
 #define RhEnable                                ON
+
+#define ItlkBoardTempEnable                     OFF
+#define ItlkRhEnable                            OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -918,11 +927,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 40.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -938,7 +947,7 @@ extern fap_t fap;
 
 #define LA_Burden_Resistor                      50.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define LA_Delay                                3
 
 #define CurrentCh1Enable                        ON
@@ -952,9 +961,9 @@ extern fap_t fap;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                  452.5
+#define LV_Primary_Voltage_Vin                  452.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_Vout                 252.5
+#define LV_Primary_Voltage_Vout                 252.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Primary_Voltage_GND_Leakage          50.0
 
@@ -962,23 +971,23 @@ extern fap_t fap;
 
 #define LV_Burden_Resistor                      120.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vin                               100
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vout                              100
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
-#define LvCurrentCh3Enable                      ON
+#define LvCurrentCh3Enable                      OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //PT100 CH1 and CH2 configuration
-//Debouncing Delay seconds
+//Debouncing delay_ms
 
 #define Delay_PT100CH1                          4
 #define Delay_PT100CH2                          4
@@ -1009,6 +1018,9 @@ extern fap_t fap;
 
 #define BoardTempEnable                         ON
 #define RhEnable                                ON
+
+#define ItlkBoardTempEnable                     OFF
+#define ItlkRhEnable                            OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1135,11 +1147,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 40.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1155,7 +1167,7 @@ extern fap_t fap;
 
 #define LA_Burden_Resistor                      50.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define LA_Delay                                3
 
 #define CurrentCh1Enable                        ON
@@ -1169,9 +1181,9 @@ extern fap_t fap;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                  452.5
+#define LV_Primary_Voltage_Vin                  452.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_Vout                 252.5
+#define LV_Primary_Voltage_Vout                 252.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Primary_Voltage_GND_Leakage          50.0
 
@@ -1179,23 +1191,23 @@ extern fap_t fap;
 
 #define LV_Burden_Resistor                      120.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vin                               100
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vout                              100
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
-#define LvCurrentCh3Enable                      ON
+#define LvCurrentCh3Enable                      OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //PT100 CH1 and CH2 configuration
-//Debouncing Delay seconds
+//Debouncing delay_ms
 
 #define Delay_PT100CH1                          4
 #define Delay_PT100CH2                          4
@@ -1226,6 +1238,9 @@ extern fap_t fap;
 
 #define BoardTempEnable                         ON
 #define RhEnable                                ON
+
+#define ItlkBoardTempEnable                     OFF
+#define ItlkRhEnable                            OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1352,11 +1367,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 45.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1372,7 +1387,7 @@ extern fap_t fap;
 
 #define LA_Burden_Resistor                      50.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define LA_Delay                                3
 
 #define CurrentCh1Enable                        ON
@@ -1386,9 +1401,9 @@ extern fap_t fap;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                  452.5
+#define LV_Primary_Voltage_Vin                  452.5      // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_Vout                 335.833333
+#define LV_Primary_Voltage_Vout                 335.833333 // resistores mais 250 ohms do LV 20P
 
 #define LV_Primary_Voltage_GND_Leakage          50.0
 
@@ -1396,23 +1411,23 @@ extern fap_t fap;
 
 #define LV_Burden_Resistor                      120.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vin                               200
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vout                              200
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
-#define LvCurrentCh3Enable                      ON
+#define LvCurrentCh3Enable                      OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //PT100 CH1 and CH2 configuration
-//Debouncing Delay seconds
+//Debouncing delay_ms
 
 #define Delay_PT100CH1                          4
 #define Delay_PT100CH2                          4
@@ -1443,6 +1458,9 @@ extern fap_t fap;
 
 #define BoardTempEnable                         ON
 #define RhEnable                                ON
+
+#define ItlkBoardTempEnable                     OFF
+#define ItlkRhEnable                            OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1569,11 +1587,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 45.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1589,7 +1607,7 @@ extern fap_t fap;
 
 #define LA_Burden_Resistor                      50.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define LA_Delay                                3
 
 #define CurrentCh1Enable                        ON
@@ -1603,9 +1621,9 @@ extern fap_t fap;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                  452.5
+#define LV_Primary_Voltage_Vin                  452.5      // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_Vout                 335.833333
+#define LV_Primary_Voltage_Vout                 335.833333 // resistores mais 250 ohms do LV 20P
 
 #define LV_Primary_Voltage_GND_Leakage          50.0
 
@@ -1613,23 +1631,23 @@ extern fap_t fap;
 
 #define LV_Burden_Resistor                      120.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vin                               200
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vout                              200
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
-#define LvCurrentCh3Enable                      ON
+#define LvCurrentCh3Enable                      OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //PT100 CH1 and CH2 configuration
-//Debouncing Delay seconds
+//Debouncing delay_ms
 
 #define Delay_PT100CH1                          4
 #define Delay_PT100CH2                          4
@@ -1660,6 +1678,9 @@ extern fap_t fap;
 
 #define BoardTempEnable                         ON
 #define RhEnable                                ON
+
+#define ItlkBoardTempEnable                     OFF
+#define ItlkRhEnable                            OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1788,11 +1809,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 40.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1808,7 +1829,7 @@ extern fap_t fap;
 
 #define LA_Burden_Resistor                      50.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define LA_Delay                                3
 
 #define CurrentCh1Enable                        ON
@@ -1822,9 +1843,9 @@ extern fap_t fap;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                  452.5
+#define LV_Primary_Voltage_Vin                  452.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_Vout                 252.5
+#define LV_Primary_Voltage_Vout                 252.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Primary_Voltage_GND_Leakage          50.0
 
@@ -1832,23 +1853,23 @@ extern fap_t fap;
 
 #define LV_Burden_Resistor                      120.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vin                               200
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vout                              200
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
-#define LvCurrentCh3Enable                      ON
+#define LvCurrentCh3Enable                      OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //PT100 CH1 and CH2 configuration
-//Debouncing Delay seconds
+//Debouncing delay_ms
 
 #define Delay_PT100CH1                          4
 #define Delay_PT100CH2                          4
@@ -1879,6 +1900,9 @@ extern fap_t fap;
 
 #define BoardTempEnable                         ON
 #define RhEnable                                ON
+
+#define ItlkBoardTempEnable                     OFF
+#define ItlkRhEnable                            OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2007,11 +2031,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 40.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2027,7 +2051,7 @@ extern fap_t fap;
 
 #define LA_Burden_Resistor                      50.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define LA_Delay                                3
 
 #define CurrentCh1Enable                        ON
@@ -2041,9 +2065,9 @@ extern fap_t fap;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                  452.5
+#define LV_Primary_Voltage_Vin                  452.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_Vout                 252.5
+#define LV_Primary_Voltage_Vout                 252.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Primary_Voltage_GND_Leakage          50.0
 
@@ -2051,23 +2075,23 @@ extern fap_t fap;
 
 #define LV_Burden_Resistor                      120.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vin                               200
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vout                              200
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
-#define LvCurrentCh3Enable                      ON
+#define LvCurrentCh3Enable                      OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //PT100 CH1 and CH2 configuration
-//Debouncing Delay seconds
+//Debouncing delay_ms
 
 #define Delay_PT100CH1                          4
 #define Delay_PT100CH2                          4
@@ -2098,6 +2122,9 @@ extern fap_t fap;
 
 #define BoardTempEnable                         ON
 #define RhEnable                                ON
+
+#define ItlkBoardTempEnable                     OFF
+#define ItlkRhEnable                            OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2226,11 +2253,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 40.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2246,7 +2273,7 @@ extern fap_t fap;
 
 #define LA_Burden_Resistor                      50.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define LA_Delay                                3
 
 #define CurrentCh1Enable                        ON
@@ -2260,9 +2287,9 @@ extern fap_t fap;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                  452.5
+#define LV_Primary_Voltage_Vin                  452.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_Vout                 252.5
+#define LV_Primary_Voltage_Vout                 252.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Primary_Voltage_GND_Leakage          50.0
 
@@ -2270,23 +2297,23 @@ extern fap_t fap;
 
 #define LV_Burden_Resistor                      120.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vin                               200
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vout                              200
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
-#define LvCurrentCh3Enable                      ON
+#define LvCurrentCh3Enable                      OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //PT100 CH1 and CH2 configuration
-//Debouncing Delay seconds
+//Debouncing delay_ms
 
 #define Delay_PT100CH1                          4
 #define Delay_PT100CH2                          4
@@ -2317,6 +2344,9 @@ extern fap_t fap;
 
 #define BoardTempEnable                         ON
 #define RhEnable                                ON
+
+#define ItlkBoardTempEnable                     OFF
+#define ItlkRhEnable                            OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2445,11 +2475,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 40.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2465,7 +2495,7 @@ extern fap_t fap;
 
 #define LA_Burden_Resistor                      50.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define LA_Delay                                3
 
 #define CurrentCh1Enable                        ON
@@ -2479,9 +2509,9 @@ extern fap_t fap;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                  452.5
+#define LV_Primary_Voltage_Vin                  452.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_Vout                 252.5
+#define LV_Primary_Voltage_Vout                 252.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Primary_Voltage_GND_Leakage          50.0
 
@@ -2489,23 +2519,23 @@ extern fap_t fap;
 
 #define LV_Burden_Resistor                      120.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vin                               200
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vout                              200
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
-#define LvCurrentCh3Enable                      ON
+#define LvCurrentCh3Enable                      OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //PT100 CH1 and CH2 configuration
-//Debouncing Delay seconds
+//Debouncing delay_ms
 
 #define Delay_PT100CH1                          4
 #define Delay_PT100CH2                          4
@@ -2536,6 +2566,9 @@ extern fap_t fap;
 
 #define BoardTempEnable                         ON
 #define RhEnable                                ON
+
+#define ItlkBoardTempEnable                     OFF
+#define ItlkRhEnable                            OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2663,10 +2696,10 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
 #define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2682,7 +2715,7 @@ extern fap_t fap;
 
 #define LA_Burden_Resistor                      50.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define LA_Delay                                3
 
 #define CurrentCh1Enable                        ON
@@ -2696,9 +2729,9 @@ extern fap_t fap;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                  452.5
+#define LV_Primary_Voltage_Vin                  602.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_Vout                 335.833333
+#define LV_Primary_Voltage_Vout                 302.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Primary_Voltage_GND_Leakage          50.0
 
@@ -2706,23 +2739,23 @@ extern fap_t fap;
 
 #define LV_Burden_Resistor                      120.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vin                               500
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vout                              500
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
-#define LvCurrentCh3Enable                      ON
+#define LvCurrentCh3Enable                      OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //PT100 CH1 and CH2 configuration
-//Debouncing Delay seconds
+//Debouncing delay_ms
 
 #define Delay_PT100CH1                          4
 #define Delay_PT100CH2                          4
@@ -2753,6 +2786,9 @@ extern fap_t fap;
 
 #define BoardTempEnable                         ON
 #define RhEnable                                ON
+
+#define ItlkBoardTempEnable                     OFF
+#define ItlkRhEnable                            OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2793,16 +2829,16 @@ extern fap_t fap;
 
 //Gpdi configuration
 
-#define SIRIUS_SALA_FONTES
+#define GIGA
 
 #define Gpdi1Enable                             OFF
 #define Gpdi2Enable                             OFF
 #define Gpdi3Enable                             OFF
 #define Gpdi4Enable                             OFF
 #define Gpdi5Enable                             ON  // ExternalITLK
-#define Gpdi6Enable                             OFF
-#define Gpdi7Enable                             ON  // RackITLK
-#define Gpdi8Enable                             ON  // RelayStatus
+#define Gpdi6Enable                             ON  // RackITLK
+#define Gpdi7Enable                             ON  // RelayStatus
+#define Gpdi8Enable                             OFF
 #define Gpdi9Enable                             OFF
 #define Gpdi10Enable                            OFF
 #define Gpdi11Enable                            OFF
@@ -2881,11 +2917,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 40.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2901,7 +2937,7 @@ extern fap_t fap;
 
 #define LA_Burden_Resistor                      50.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define LA_Delay                                3
 
 #define CurrentCh1Enable                        ON
@@ -2915,9 +2951,9 @@ extern fap_t fap;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                  452.5
+#define LV_Primary_Voltage_Vin                  452.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_Vout                 252.5
+#define LV_Primary_Voltage_Vout                 252.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Primary_Voltage_GND_Leakage          50.0
 
@@ -2925,23 +2961,23 @@ extern fap_t fap;
 
 #define LV_Burden_Resistor                      120.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vin                               100
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vout                              100
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
-#define LvCurrentCh3Enable                      ON
+#define LvCurrentCh3Enable                      OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //PT100 CH1 and CH2 configuration
-//Debouncing Delay seconds
+//Debouncing delay_ms
 
 #define Delay_PT100CH1                          4
 #define Delay_PT100CH2                          4
@@ -2972,6 +3008,9 @@ extern fap_t fap;
 
 #define BoardTempEnable                         ON
 #define RhEnable                                ON
+
+#define ItlkBoardTempEnable                     OFF
+#define ItlkRhEnable                            OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3100,11 +3139,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 60.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                70.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3120,7 +3159,7 @@ extern fap_t fap;
 
 #define LA_Burden_Resistor                      50.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define LA_Delay                                3
 
 #define CurrentCh1Enable                        ON
@@ -3134,9 +3173,9 @@ extern fap_t fap;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                  452.5
+#define LV_Primary_Voltage_Vin                  452.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_Vout                 252.5
+#define LV_Primary_Voltage_Vout                 252.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Primary_Voltage_GND_Leakage          50.0
 
@@ -3144,23 +3183,23 @@ extern fap_t fap;
 
 #define LV_Burden_Resistor                      120.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vin                               3
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vout                              3
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
-#define LvCurrentCh3Enable                      ON
+#define LvCurrentCh3Enable                      OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //PT100 CH1 and CH2 configuration
-//Debouncing Delay seconds
+//Debouncing delay_ms
 
 #define Delay_PT100CH1                          4
 #define Delay_PT100CH2                          4
@@ -3191,6 +3230,9 @@ extern fap_t fap;
 
 #define BoardTempEnable                         ON
 #define RhEnable                                ON
+
+#define ItlkBoardTempEnable                     OFF
+#define ItlkRhEnable                            OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3317,11 +3359,11 @@ extern fap_t fap;
 #define FAP_HS_OVERTEMP_ALM_LIM                 40.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                50.0
 
-#define FAP_RH_OVERHUMIDITY_ALM_LIM             80.0
-#define FAP_RH_OVERHUMIDITY_ITLK_LIM            500.0
+#define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
+#define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
 
-#define FAP_BOARD_OVERTEMP_ALM_LIM              60.0
-#define FAP_BOARD_OVERTEMP_ITLK_LIM             500.0
+#define FAP_BOARD_OVERTEMP_ALM_LIM              50.0
+#define FAP_BOARD_OVERTEMP_ITLK_LIM             60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3337,7 +3379,7 @@ extern fap_t fap;
 
 #define LA_Burden_Resistor                      50.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define LA_Delay                                3
 
 #define CurrentCh1Enable                        ON
@@ -3351,9 +3393,9 @@ extern fap_t fap;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                  452.5
+#define LV_Primary_Voltage_Vin                  452.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_Vout                 252.5
+#define LV_Primary_Voltage_Vout                 252.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Primary_Voltage_GND_Leakage          50.0
 
@@ -3361,23 +3403,23 @@ extern fap_t fap;
 
 #define LV_Burden_Resistor                      120.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vin                               100
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vout                              100
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
-#define LvCurrentCh3Enable                      ON
+#define LvCurrentCh3Enable                      OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //PT100 CH1 and CH2 configuration
-//Debouncing Delay seconds
+//Debouncing delay_ms
 
 #define Delay_PT100CH1                          4
 #define Delay_PT100CH2                          4
@@ -3408,6 +3450,9 @@ extern fap_t fap;
 
 #define BoardTempEnable                         ON
 #define RhEnable                                ON
+
+#define ItlkBoardTempEnable                     OFF
+#define ItlkRhEnable                            OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3499,8 +3544,8 @@ extern fap_t fap;
 #define FAP_INPUT_OVERVOLTAGE_ALM_LIM           555.0
 #define FAP_INPUT_OVERVOLTAGE_ITLK_LIM          560.0
 
-#define FAP_OUTPUT_OVERVOLTAGE_ALM_LIM          280.0      //original 260.0
-#define FAP_OUTPUT_OVERVOLTAGE_ITLK_LIM         290.0      //original 270.0
+#define FAP_OUTPUT_OVERVOLTAGE_ALM_LIM          280.0 //original 260.0
+#define FAP_OUTPUT_OVERVOLTAGE_ITLK_LIM         290.0 //original 270.0
 
 #define FAP_OUTPUT_OVERCURRENT_1_ALM_LIM        115.0
 #define FAP_OUTPUT_OVERCURRENT_1_ITLK_LIM       120.0
@@ -3511,11 +3556,11 @@ extern fap_t fap;
 #define FAP_GROUND_LEAKAGE_ALM_LIM              40.0
 #define FAP_GROUND_LEAKAGE_ITLK_LIM             45.0
 
-#define FAP_IGBT1_OVERTEMP_ALM_LIM              90.0       //original 60.0
-#define FAP_IGBT1_OVERTEMP_ITLK_LIM             110.0      //original 80.0
+#define FAP_IGBT1_OVERTEMP_ALM_LIM              90.0  //original 60.0
+#define FAP_IGBT1_OVERTEMP_ITLK_LIM             110.0 //original 80.0
 
-#define FAP_IGBT2_OVERTEMP_ALM_LIM              90.0       //original 60.0
-#define FAP_IGBT2_OVERTEMP_ITLK_LIM             110.0      //original 80.0
+#define FAP_IGBT2_OVERTEMP_ALM_LIM              90.0  //original 60.0
+#define FAP_IGBT2_OVERTEMP_ITLK_LIM             110.0 //original 80.0
 
 #define FAP_DRIVER_OVERVOLTAGE_ALM_LIM          16.0
 #define FAP_DRIVER_OVERVOLTAGE_ITLK_LIM         17.0
@@ -3526,11 +3571,11 @@ extern fap_t fap;
 #define FAP_DRIVER2_OVERCURRENT_ALM_LIM         2.0
 #define FAP_DRIVER2_OVERCURRENT_ITLK_LIM        2.4
 
-#define FAP_INDUC_OVERTEMP_ALM_LIM              100.0      //original 70.0
-#define FAP_INDUC_OVERTEMP_ITLK_LIM             110.0      //original 80.0
+#define FAP_INDUC_OVERTEMP_ALM_LIM              100.0 //original 70.0
+#define FAP_INDUC_OVERTEMP_ITLK_LIM             110.0 //original 80.0
 
-#define FAP_HS_OVERTEMP_ALM_LIM                 60.0       //original 50.0
-#define FAP_HS_OVERTEMP_ITLK_LIM                65.0       //original 60.0
+#define FAP_HS_OVERTEMP_ALM_LIM                 60.0  //original 50.0
+#define FAP_HS_OVERTEMP_ITLK_LIM                65.0  //original 60.0
 
 #define FAP_RH_OVERHUMIDITY_ALM_LIM             60.0
 #define FAP_RH_OVERHUMIDITY_ITLK_LIM            90.0
@@ -3552,7 +3597,7 @@ extern fap_t fap;
 
 #define LA_Burden_Resistor                      50.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define LA_Delay                                3
 
 #define CurrentCh1Enable                        ON
@@ -3566,9 +3611,9 @@ extern fap_t fap;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                  722.5
+#define LV_Primary_Voltage_Vin                  722.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_Vout                 302.5
+#define LV_Primary_Voltage_Vout                 302.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Primary_Voltage_GND_Leakage          52.5
 
@@ -3576,23 +3621,23 @@ extern fap_t fap;
 
 #define LV_Burden_Resistor                      120.0
 
-//Debouncing delay_ms
-#define Delay_Vin                               250        //original 100
+//Debouncing delay_us
+#define Delay_Vin                               250  //original 100
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vout                              100
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
-#define LvCurrentCh3Enable                      ON
+#define LvCurrentCh3Enable                      OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //PT100 CH1 and CH2 configuration
-//Debouncing Delay seconds
+//Debouncing delay_ms
 
 #define Delay_PT100CH1                          4
 #define Delay_PT100CH2                          4
@@ -3610,8 +3655,8 @@ extern fap_t fap;
 #define Delay_IGBT1                             3
 #define Delay_IGBT2                             3
 
-#define TempIgbt1Enable                         OFF        //original ON
-#define TempIgbt2Enable                         OFF        //original ON
+#define TempIgbt1Enable                         OFF //original ON
+#define TempIgbt2Enable                         OFF //original ON
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3623,6 +3668,9 @@ extern fap_t fap;
 
 #define BoardTempEnable                         ON
 #define RhEnable                                ON
+
+#define ItlkBoardTempEnable                     OFF
+#define ItlkRhEnable                            OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3767,7 +3815,7 @@ extern fap_t fap;
 
 #define LA_Burden_Resistor                      50.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define LA_Delay                                3
 
 #define CurrentCh1Enable                        ON
@@ -3791,13 +3839,13 @@ extern fap_t fap;
 
 #define LV_Burden_Resistor                      120.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vin                               100
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vout                              100
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
@@ -3807,7 +3855,7 @@ extern fap_t fap;
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //PT100 CH1 and CH2 configuration
-//Debouncing Delay seconds
+//Debouncing delay_ms
 
 #define Delay_PT100CH1                          4
 #define Delay_PT100CH2                          4
@@ -3825,8 +3873,8 @@ extern fap_t fap;
 #define Delay_IGBT1                             3
 #define Delay_IGBT2                             3
 
-#define TempIgbt1Enable                         OFF
-#define TempIgbt2Enable                         OFF
+#define TempIgbt1Enable                         ON
+#define TempIgbt2Enable                         ON
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3838,6 +3886,9 @@ extern fap_t fap;
 
 #define BoardTempEnable                         ON
 #define RhEnable                                ON
+
+#define ItlkBoardTempEnable                     OFF
+#define ItlkRhEnable                            OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3982,7 +4033,7 @@ extern fap_t fap;
 
 #define LA_Burden_Resistor                      50.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define LA_Delay                                3
 
 #define CurrentCh1Enable                        ON
@@ -3996,9 +4047,9 @@ extern fap_t fap;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                  722.5
+#define LV_Primary_Voltage_Vin                  722.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_Vout                 302.5
+#define LV_Primary_Voltage_Vout                 302.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Primary_Voltage_GND_Leakage          52.5
 
@@ -4006,23 +4057,23 @@ extern fap_t fap;
 
 #define LV_Burden_Resistor                      120.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vin                               250
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vout                              100
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
-#define LvCurrentCh3Enable                      ON
+#define LvCurrentCh3Enable                      OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //PT100 CH1 and CH2 configuration
-//Debouncing Delay seconds
+//Debouncing delay_ms
 
 #define Delay_PT100CH1                          4
 #define Delay_PT100CH2                          4
@@ -4053,6 +4104,9 @@ extern fap_t fap;
 
 #define BoardTempEnable                         ON
 #define RhEnable                                ON
+
+#define ItlkBoardTempEnable                     OFF
+#define ItlkRhEnable                            OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -4144,8 +4198,8 @@ extern fap_t fap;
 #define FAP_INPUT_OVERVOLTAGE_ALM_LIM           435.0
 #define FAP_INPUT_OVERVOLTAGE_ITLK_LIM          440.0
 
-#define FAP_OUTPUT_OVERVOLTAGE_ALM_LIM          230.0
-#define FAP_OUTPUT_OVERVOLTAGE_ITLK_LIM         235.0
+#define FAP_OUTPUT_OVERVOLTAGE_ALM_LIM          240.0 //230.0 alterado para teste do modulo
+#define FAP_OUTPUT_OVERVOLTAGE_ITLK_LIM         245.0 //235.0 alterado para teste do modulo
 
 #define FAP_OUTPUT_OVERCURRENT_1_ALM_LIM        115.0
 #define FAP_OUTPUT_OVERCURRENT_1_ITLK_LIM       120.0
@@ -4171,8 +4225,8 @@ extern fap_t fap;
 #define FAP_DRIVER2_OVERCURRENT_ALM_LIM         2.0
 #define FAP_DRIVER2_OVERCURRENT_ITLK_LIM        2.4
 
-#define FAP_INDUC_OVERTEMP_ALM_LIM              50.0
-#define FAP_INDUC_OVERTEMP_ITLK_LIM             60.0
+#define FAP_INDUC_OVERTEMP_ALM_LIM              80.0 //50.0 alterado para teste do modulo
+#define FAP_INDUC_OVERTEMP_ITLK_LIM             90.0 //60.0 alterado para teste do modulo
 
 #define FAP_HS_OVERTEMP_ALM_LIM                 60.0
 #define FAP_HS_OVERTEMP_ITLK_LIM                80.0
@@ -4197,7 +4251,7 @@ extern fap_t fap;
 
 #define LA_Burden_Resistor                      50.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define LA_Delay                                3
 
 #define CurrentCh1Enable                        ON
@@ -4211,9 +4265,9 @@ extern fap_t fap;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                  602.5
+#define LV_Primary_Voltage_Vin                  602.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_Vout                 302.5
+#define LV_Primary_Voltage_Vout                 302.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Primary_Voltage_GND_Leakage          52.5
 
@@ -4221,23 +4275,23 @@ extern fap_t fap;
 
 #define LV_Burden_Resistor                      120.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vin                               250
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Vout                              100
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
-#define LvCurrentCh3Enable                      ON
+#define LvCurrentCh3Enable                      OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //PT100 CH1 and CH2 configuration
-//Debouncing Delay seconds
+//Debouncing delay_ms
 
 #define Delay_PT100CH1                          4
 #define Delay_PT100CH2                          4
@@ -4268,6 +4322,9 @@ extern fap_t fap;
 
 #define BoardTempEnable                         ON
 #define RhEnable                                ON
+
+#define ItlkBoardTempEnable                     OFF
+#define ItlkRhEnable                            OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

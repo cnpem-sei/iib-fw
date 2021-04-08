@@ -280,14 +280,24 @@ void fap_application_readings()
     //Temperatura PCB IIB
     fap.BoardTemperature.f = BoardTempRead();
     fap.BoardTemperatureAlarmSts = BoardTempAlarmStatusRead();
+
+#if (ItlkBoardTempEnable == 1)
+
     if(!fap.BoardTemperatureItlkSts)fap.BoardTemperatureItlkSts = BoardTempTripStatusRead();
+
+#endif
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Umidade Relativa
     fap.RelativeHumidity.f = RhRead();
     fap.RelativeHumidityAlarmSts = RhAlarmStatusRead();
+
+#if (ItlkRhEnable == 1)
+
     if(!fap.RelativeHumidityItlkSts)fap.RelativeHumidityItlkSts = RhTripStatusRead();
+
+#endif
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

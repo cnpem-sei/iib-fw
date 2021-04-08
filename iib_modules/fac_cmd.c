@@ -231,14 +231,24 @@ void fac_cmd_application_readings()
     //Temperatura PCB IIB
     fac_cmd.BoardTemperature.f = BoardTempRead();
     fac_cmd.BoardTemperatureAlarmSts = BoardTempAlarmStatusRead();
+
+#if (ItlkBoardTempEnable == 1)
+
     if(!fac_cmd.BoardTemperatureItlkSts)fac_cmd.BoardTemperatureItlkSts = BoardTempTripStatusRead();
+
+#endif
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Umidade Relativa
     fac_cmd.RelativeHumidity.f = RhRead();
     fac_cmd.RelativeHumidityAlarmSts = RhAlarmStatusRead();
+
+#if (ItlkRhEnable == 1)
+
     if(!fac_cmd.RelativeHumidityItlkSts)fac_cmd.RelativeHumidityItlkSts = RhTripStatusRead();
+
+#endif
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

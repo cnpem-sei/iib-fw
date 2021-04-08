@@ -27,11 +27,11 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-#define SlaveAddress 0x40
-#define RegisterAddress0 0x00
-#define RegisterAddress1 0x01
-#define RegisterAddress2 0x02
-#define RegisterAddress3 0x03
+#define SlaveAddress      0x40
+#define RegisterAddress0  0x00
+#define RegisterAddress1  0x01
+#define RegisterAddress2  0x02
+#define RegisterAddress3  0x03
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -51,59 +51,42 @@ rh_tempboard_t RelativeHumidity;
 static unsigned char Start1 = 0x01;
 static unsigned char Start2 = 0x11;
 
+static unsigned char Size_8_Bits 	= 0;
+static unsigned char Size_16_Bits 	= 1;
+
+static unsigned char RegisterReady       		= 0;
+static unsigned char RegisterTemperature 		= 1;
+static unsigned char RegisterRelativeHumidity 	= 2;
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-//******************************************************************************
-// /* Read the temperature */
-//******************************************************************************
+//Configure the Si7005 temperature sensor initialization.
 void BoardTemperatureStartConversion(void)
 {
-
-  toggle_pin(TP_1_BASE, TP_1_PIN);
-
-  I2C5Send(SlaveAddress, 2, RegisterAddress3, Start2);
-
-  toggle_pin(TP_1_BASE, TP_1_PIN);
-
+	I2C5Send(SlaveAddress, 2, RegisterAddress3, Start2);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 void BoardTemperatureRead(void)
 {
-    unsigned char Status = 1;
-    unsigned char TemperatureH;
-    unsigned char TemperatureL;
-    unsigned int Tempa;
-    unsigned int Tempb;
-    unsigned int Tempc;
+	int16_t Status = 1;
 
-    toggle_pin(TP_1_BASE, TP_1_PIN);
+    int16_t TempValue;
 
+    //Wait until conversion is finished (typical 35ms)
     while(Status == 1)
     {
-
-        Status = I2C5Receive(SlaveAddress, RegisterAddress0);
-
+    	Status = I2C5Receive(SlaveAddress, RegisterAddress0, Size_8_Bits, RegisterReady);
     }
 
-    toggle_pin(TP_1_BASE, TP_1_PIN);
+    TempValue = I2C5Receive(SlaveAddress, RegisterAddress1, Size_16_Bits, RegisterTemperature);
 
-    TemperatureH = I2C5Receive(SlaveAddress, RegisterAddress1);
+//*******************************************************************************************
 
-    toggle_pin(TP_1_BASE, TP_1_PIN);
+    TemperatureBoard.Value = (TempValue/32.0) - 50.0;
 
-    TemperatureL = I2C5Receive(SlaveAddress, RegisterAddress2);
-
-    toggle_pin(TP_1_BASE, TP_1_PIN);
-
-    Tempa = TemperatureH;
-    Tempb = Tempa<<8;
-
-    Tempb += TemperatureL;
-    Tempc = Tempb>>2;
-
-    TemperatureBoard.Value = (Tempc/32.0) - 50.0;
+//*******************************************************************************************
 
     if(TemperatureBoard.Value > TemperatureBoard.AlarmLimit)
     {
@@ -130,64 +113,45 @@ void BoardTemperatureRead(void)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-//******************************************************************************
-// /* Read humidity. The 'compensate' variable contains the current temperature used to calculate the temperature compensation.*/
-//******************************************************************************
+//Configure the Si7005 relative humidity sensor initialization
 void RelativeHumidityStartConversion(void)
 {
-
-  toggle_pin(TP_2_BASE, TP_2_PIN);
-
-  I2C5Send(SlaveAddress, 2, RegisterAddress3, Start1);
-
-  toggle_pin(TP_2_BASE, TP_2_PIN);
-
+	I2C5Send(SlaveAddress, 2, RegisterAddress3, Start1);
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 void RelativeHumidityRead(void)
 {
-    unsigned char Status = 1;
-    unsigned char RelativeHumidityH;
-    unsigned char RelativeHumidityL;
-    unsigned int RelHuma;
-    unsigned int RelHumb;
-    unsigned int RelHumc;
+	int16_t Status = 1;
 
-    float curve;
-    float rawHumidity;
-    float linearHumidity;
+	int16_t RelHumValue;
 
+	float curve;
+	float rawHumidity;
+	float linearHumidity;
+
+    //Wait until conversion is finished (typical 35ms)
     while(Status == 1)
     {
-
-        Status = I2C5Receive(SlaveAddress, RegisterAddress0);
-
+    	Status = I2C5Receive(SlaveAddress, RegisterAddress0, Size_8_Bits, RegisterReady);
     }
 
-    toggle_pin(TP_2_BASE, TP_2_PIN);
+    RelHumValue = I2C5Receive(SlaveAddress, RegisterAddress1, Size_16_Bits, RegisterRelativeHumidity);
 
-    RelativeHumidityH = I2C5Receive(SlaveAddress, RegisterAddress1);
+//*******************************************************************************************
 
-    toggle_pin(TP_2_BASE, TP_2_PIN);
-
-    RelativeHumidityL = I2C5Receive(SlaveAddress, RegisterAddress2);
-
-    toggle_pin(TP_2_BASE, TP_2_PIN);
-
-    RelHuma = RelativeHumidityH;
-    RelHumb = RelHuma<<8;
-
-    RelHumb += RelativeHumidityL;
-    RelHumc = RelHumb>>4;
-
-    rawHumidity = RelHumc;
+    rawHumidity = RelHumValue;
 
     curve = (rawHumidity/16.0)-24.0;
 
     linearHumidity = curve - ( (curve * curve) * a2 + curve * a1 + a0);
+
     linearHumidity = linearHumidity + ( TemperatureBoard.Value - 30.0 ) * ( linearHumidity * q1 + q0 );
 
     RelativeHumidity.Value = linearHumidity;
+
+//*******************************************************************************************
 
     if(RelativeHumidity.Value > RelativeHumidity.AlarmLimit)
     {
@@ -214,44 +178,36 @@ void RelativeHumidityRead(void)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-//******************************************************************************
-// Init Si7005-B SENSOR
-//******************************************************************************
+//Initializes the I2C communication of the Si7005-B-FM1 sensor.
 void RhBoardTempSenseInit(void)
 {
+	//I2C5 initialization
+	InitI2C5();
 
-    set_gpio_as_output(TP_1_BASE, TP_1_PIN);
-    set_gpio_as_output(TP_2_BASE, TP_2_PIN);
+	//Configure CS for Si7005-B
+	set_gpio_as_output(GPIO_PORTB_BASE, GPIO_PIN_2);
 
-    // performs I2C initialization
-    InitI2C5();
+	clear_pin(GPIO_PORTB_BASE, GPIO_PIN_2);
 
-   // configura CS como output
-   set_gpio_as_output(GPIO_PORTB_BASE, GPIO_PIN_2);
-   clear_pin(GPIO_PORTB_BASE, GPIO_PIN_2);
+	TemperatureBoard.Value = 0.0;
+	TemperatureBoard.AlarmLimit = 90.0;
+	TemperatureBoard.TripLimit = 100.0;
+	TemperatureBoard.Alarm = 0;
+	TemperatureBoard.Trip = 0;
+	TemperatureBoard.Alarm_Delay_ms = 0;	// milisecond
+	TemperatureBoard.Alarm_DelayCount = 0;
+	TemperatureBoard.Itlk_Delay_ms = 0;		// milisecond
+	TemperatureBoard.Itlk_DelayCount = 0;
 
-   delay_ms(10);
-
-   TemperatureBoard.Value = 0.0;
-   TemperatureBoard.AlarmLimit = 90.0;
-   TemperatureBoard.TripLimit = 100.0;
-   TemperatureBoard.Alarm = 0;
-   TemperatureBoard.Trip = 0;
-   TemperatureBoard.Alarm_Delay_ms = 0; // milisecond
-   TemperatureBoard.Alarm_DelayCount = 0;
-   TemperatureBoard.Itlk_Delay_ms = 0; // milisecond
-   TemperatureBoard.Itlk_DelayCount = 0;
-
-   RelativeHumidity.Value = 0.0;
-   RelativeHumidity.AlarmLimit = 90.0;
-   RelativeHumidity.TripLimit = 100.0;
-   RelativeHumidity.Alarm = 0;
-   RelativeHumidity.Trip = 0;
-   RelativeHumidity.Alarm_Delay_ms = 0; // milisecond
-   RelativeHumidity.Alarm_DelayCount = 0;
-   RelativeHumidity.Itlk_Delay_ms = 0; // milisecond
-   RelativeHumidity.Itlk_DelayCount = 0;
-
+	RelativeHumidity.Value = 0.0;
+	RelativeHumidity.AlarmLimit = 90.0;
+	RelativeHumidity.TripLimit = 100.0;
+	RelativeHumidity.Alarm = 0;
+	RelativeHumidity.Trip = 0;
+	RelativeHumidity.Alarm_Delay_ms = 0;	// milisecond
+	RelativeHumidity.Alarm_DelayCount = 0;
+	RelativeHumidity.Itlk_Delay_ms = 0;		// milisecond
+	RelativeHumidity.Itlk_DelayCount = 0;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -300,10 +256,10 @@ void BoardTempTripLevelSet(float nValue)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void BoardTempDelay(unsigned int Delay_Set)
+void BoardTempDelay(unsigned int delay_ms)
 {
-    TemperatureBoard.Alarm_Delay_ms = Delay_Set;
-    TemperatureBoard.Itlk_Delay_ms = Delay_Set;
+    TemperatureBoard.Alarm_Delay_ms = delay_ms;
+    TemperatureBoard.Itlk_Delay_ms = delay_ms;
 
 }
 
@@ -353,10 +309,10 @@ void RhTripLevelSet(float nValue)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void RhDelay(unsigned int Delay_Set)
+void RhDelay(unsigned int delay_ms)
 {
-    RelativeHumidity.Alarm_Delay_ms = Delay_Set;
-    RelativeHumidity.Itlk_Delay_ms = Delay_Set;
+    RelativeHumidity.Alarm_Delay_ms = delay_ms;
+    RelativeHumidity.Itlk_Delay_ms = delay_ms;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

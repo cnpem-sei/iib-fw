@@ -150,7 +150,7 @@ void sample_adc(void)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void VoltageCh1Init(float nValue, unsigned int Delay)
+void VoltageCh1Init(float nValue, unsigned int delay_us)
 {
     VoltageCh1.Ch = 1;
     VoltageCh1.Gain = (nValue/2048.0);
@@ -161,15 +161,15 @@ void VoltageCh1Init(float nValue, unsigned int Delay)
     VoltageCh1.Alarm = 0;
     VoltageCh1.Trip = 0;
     VoltageCh1.InvertPol = 0;
-    VoltageCh1.Alarm_Delay_ms = Delay;
+    VoltageCh1.Alarm_Delay_us = delay_us;
     VoltageCh1.Alarm_DelayCount = 0;
-    VoltageCh1.Itlk_Delay_ms = Delay;
+    VoltageCh1.Itlk_Delay_us = delay_us;
     VoltageCh1.Itlk_DelayCount = 0;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void VoltageCh2Init(float nValue, unsigned int Delay)
+void VoltageCh2Init(float nValue, unsigned int delay_us)
 {
     VoltageCh2.Ch = 2;
     VoltageCh2.Gain = (nValue/2048.0);
@@ -180,15 +180,15 @@ void VoltageCh2Init(float nValue, unsigned int Delay)
     VoltageCh2.Alarm = 0;
     VoltageCh2.Trip = 0;
     VoltageCh2.InvertPol = 0;
-    VoltageCh2.Alarm_Delay_ms = Delay;
+    VoltageCh2.Alarm_Delay_us = delay_us;
     VoltageCh2.Alarm_DelayCount = 0;
-    VoltageCh2.Itlk_Delay_ms = Delay;
+    VoltageCh2.Itlk_Delay_us = delay_us;
     VoltageCh2.Itlk_DelayCount = 0;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void VoltageCh3Init(float nValue, unsigned int Delay)
+void VoltageCh3Init(float nValue, unsigned int delay_us)
 {
     VoltageCh3.Ch = 3;
     VoltageCh3.Gain = (nValue/2048.0);
@@ -199,15 +199,15 @@ void VoltageCh3Init(float nValue, unsigned int Delay)
     VoltageCh3.Alarm = 0;
     VoltageCh3.Trip = 0;
     VoltageCh3.InvertPol = 0;
-    VoltageCh3.Alarm_Delay_ms = Delay;
+    VoltageCh3.Alarm_Delay_us = delay_us;
     VoltageCh3.Alarm_DelayCount = 0;
-    VoltageCh3.Itlk_Delay_ms = Delay;
+    VoltageCh3.Itlk_Delay_us = delay_us;
     VoltageCh3.Itlk_DelayCount = 0;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void VoltageCh4Init(float nValue, unsigned int Delay)
+void VoltageCh4Init(float nValue, unsigned int delay_us)
 {
     VoltageCh4.Ch = 4;
     VoltageCh4.Gain = (nValue/2048.0);
@@ -218,9 +218,9 @@ void VoltageCh4Init(float nValue, unsigned int Delay)
     VoltageCh4.Alarm = 0;
     VoltageCh4.Trip = 0;
     VoltageCh4.InvertPol = 0;
-    VoltageCh4.Alarm_Delay_ms = Delay;
+    VoltageCh4.Alarm_Delay_us = delay_us;
     VoltageCh4.Alarm_DelayCount = 0;
-    VoltageCh4.Itlk_Delay_ms = Delay;
+    VoltageCh4.Itlk_Delay_us = delay_us;
     VoltageCh4.Itlk_DelayCount = 0;
 }
 
@@ -239,7 +239,7 @@ float CurrentRange(float nFstCurr, float nSecCurr, float nBurden, float MaxVoltI
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void CurrentCh1Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int delay_ms)
+void CurrentCh1Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int delay_us)
 {
     CurrentCh1.Ch = 1;
     CurrentCh1.Gain = (CurrentRange(nFstCurr, nSecCurr, nBurden, 7.5)/2048.0);
@@ -250,15 +250,15 @@ void CurrentCh1Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int 
     CurrentCh1.Alarm = 0;
     CurrentCh1.Trip = 0;
     CurrentCh1.InvertPol = 0;
-    CurrentCh1.Alarm_Delay_ms = delay_ms;
+    CurrentCh1.Alarm_Delay_us = delay_us;
     CurrentCh1.Alarm_DelayCount = 0;
-    CurrentCh1.Itlk_Delay_ms = delay_ms;
+    CurrentCh1.Itlk_Delay_us = delay_us;
     CurrentCh1.Itlk_DelayCount = 0;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void CurrentCh2Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int delay_ms)
+void CurrentCh2Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int delay_us)
 {
     CurrentCh2.Ch = 2;
     CurrentCh2.Gain = (CurrentRange(nFstCurr, nSecCurr, nBurden, 7.5)/2048.0);
@@ -269,15 +269,15 @@ void CurrentCh2Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int 
     CurrentCh2.Alarm = 0;
     CurrentCh2.Trip = 0;
     CurrentCh2.InvertPol = 0;
-    CurrentCh2.Alarm_Delay_ms = delay_ms;
+    CurrentCh2.Alarm_Delay_us = delay_us;
     CurrentCh2.Alarm_DelayCount = 0;
-    CurrentCh2.Itlk_Delay_ms = delay_ms;
+    CurrentCh2.Itlk_Delay_us = delay_us;
     CurrentCh2.Itlk_DelayCount = 0;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void CurrentCh3Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int delay_ms)
+void CurrentCh3Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int delay_us)
 {
     CurrentCh3.Ch = 3;
     CurrentCh3.Gain = (CurrentRange(nFstCurr, nSecCurr, nBurden, 7.5)/2048.0);
@@ -288,15 +288,15 @@ void CurrentCh3Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int 
     CurrentCh3.Alarm = 0;
     CurrentCh3.Trip = 0;
     CurrentCh3.InvertPol = 0;
-    CurrentCh3.Alarm_Delay_ms = delay_ms;
+    CurrentCh3.Alarm_Delay_us = delay_us;
     CurrentCh3.Alarm_DelayCount = 0;
-    CurrentCh3.Itlk_Delay_ms = delay_ms;
+    CurrentCh3.Itlk_Delay_us = delay_us;
     CurrentCh3.Itlk_DelayCount = 0;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void CurrentCh4Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int delay_ms)
+void CurrentCh4Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int delay_us)
 {
     CurrentCh4.Ch = 4;
     CurrentCh4.Gain = (CurrentRange(nFstCurr, nSecCurr, nBurden, 7.5)/2048.0);
@@ -307,15 +307,15 @@ void CurrentCh4Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int 
     CurrentCh4.Alarm = 0;
     CurrentCh4.Trip = 0;
     CurrentCh4.InvertPol = 0;
-    CurrentCh4.Alarm_Delay_ms = delay_ms;
+    CurrentCh4.Alarm_Delay_us = delay_us;
     CurrentCh4.Alarm_DelayCount = 0;
-    CurrentCh4.Itlk_Delay_ms = delay_ms;
+    CurrentCh4.Itlk_Delay_us = delay_us;
     CurrentCh4.Itlk_DelayCount = 0;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void LvCurrentCh1Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int delay_ms)
+void LvCurrentCh1Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int delay_us)
 {
     LvCurrentCh1.Ch = 1;
     LvCurrentCh1.Gain = (CurrentRange(nFstCurr, nSecCurr, nBurden, 3.0)/2048.0);
@@ -326,15 +326,15 @@ void LvCurrentCh1Init(float nFstCurr, float nSecCurr, float nBurden, unsigned in
     LvCurrentCh1.Alarm = 0;
     LvCurrentCh1.Trip = 0;
     LvCurrentCh1.InvertPol = 0;
-    LvCurrentCh1.Alarm_Delay_ms = delay_ms;
+    LvCurrentCh1.Alarm_Delay_us = delay_us;
     LvCurrentCh1.Alarm_DelayCount = 0;
-    LvCurrentCh1.Itlk_Delay_ms = delay_ms;
+    LvCurrentCh1.Itlk_Delay_us = delay_us;
     LvCurrentCh1.Itlk_DelayCount = 0;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void LvCurrentCh2Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int delay_ms)
+void LvCurrentCh2Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int delay_us)
 {
     LvCurrentCh2.Ch = 2;
     LvCurrentCh2.Gain = (CurrentRange(nFstCurr, nSecCurr, nBurden, 3.0)/2048.0);
@@ -345,15 +345,15 @@ void LvCurrentCh2Init(float nFstCurr, float nSecCurr, float nBurden, unsigned in
     LvCurrentCh2.Alarm = 0;
     LvCurrentCh2.Trip = 0;
     LvCurrentCh2.InvertPol = 0;
-    LvCurrentCh2.Alarm_Delay_ms = delay_ms;
+    LvCurrentCh2.Alarm_Delay_us = delay_us;
     LvCurrentCh2.Alarm_DelayCount = 0;
-    LvCurrentCh2.Itlk_Delay_ms = delay_ms;
+    LvCurrentCh2.Itlk_Delay_us = delay_us;
     LvCurrentCh2.Itlk_DelayCount = 0;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void LvCurrentCh3Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int delay_ms)
+void LvCurrentCh3Init(float nFstCurr, float nSecCurr, float nBurden, unsigned int delay_us)
 {
     LvCurrentCh3.Ch = 3;
     LvCurrentCh3.Gain = (CurrentRange(nFstCurr, nSecCurr, nBurden, 3.0)/2048.0);
@@ -364,9 +364,9 @@ void LvCurrentCh3Init(float nFstCurr, float nSecCurr, float nBurden, unsigned in
     LvCurrentCh3.Alarm = 0;
     LvCurrentCh3.Trip = 0;
     LvCurrentCh3.InvertPol = 0;
-    LvCurrentCh3.Alarm_Delay_ms = delay_ms;
+    LvCurrentCh3.Alarm_Delay_us = delay_us;
     LvCurrentCh3.Alarm_DelayCount = 0;
-    LvCurrentCh3.Itlk_Delay_ms = delay_ms;
+    LvCurrentCh3.Itlk_Delay_us = delay_us;
     LvCurrentCh3.Itlk_DelayCount = 0;
 }
 
@@ -434,7 +434,7 @@ void VoltageCh1Sample(void)
     
     if(VoltageCh1.Value > VoltageCh1.AlarmLimit || VoltageCh1.Value < -VoltageCh1.AlarmLimit)
     {
-        if(VoltageCh1.Alarm_DelayCount < VoltageCh1.Alarm_Delay_ms) VoltageCh1.Alarm_DelayCount++;
+        if(VoltageCh1.Alarm_DelayCount < VoltageCh1.Alarm_Delay_us) VoltageCh1.Alarm_DelayCount++;
         else
         {
            VoltageCh1.Alarm_DelayCount = 0;
@@ -445,7 +445,7 @@ void VoltageCh1Sample(void)
 
     if(VoltageCh1.Value > VoltageCh1.TripLimit || VoltageCh1.Value < -VoltageCh1.TripLimit)
     {
-        if(VoltageCh1.Itlk_DelayCount < VoltageCh1.Itlk_Delay_ms) VoltageCh1.Itlk_DelayCount++;
+        if(VoltageCh1.Itlk_DelayCount < VoltageCh1.Itlk_Delay_us) VoltageCh1.Itlk_DelayCount++;
         else
         {
            VoltageCh1.Itlk_DelayCount = 0;
@@ -467,7 +467,7 @@ void VoltageCh2Sample(void)
 
     if(VoltageCh2.Value > VoltageCh2.AlarmLimit || VoltageCh2.Value < -VoltageCh2.AlarmLimit)
     {
-        if(VoltageCh2.Alarm_DelayCount < VoltageCh2.Alarm_Delay_ms) VoltageCh2.Alarm_DelayCount++;
+        if(VoltageCh2.Alarm_DelayCount < VoltageCh2.Alarm_Delay_us) VoltageCh2.Alarm_DelayCount++;
         else
         {
            VoltageCh2.Alarm_DelayCount = 0;
@@ -478,7 +478,7 @@ void VoltageCh2Sample(void)
 
     if(VoltageCh2.Value > VoltageCh2.TripLimit || VoltageCh2.Value < -VoltageCh2.TripLimit)
     {
-        if(VoltageCh2.Itlk_DelayCount < VoltageCh2.Itlk_Delay_ms) VoltageCh2.Itlk_DelayCount++;
+        if(VoltageCh2.Itlk_DelayCount < VoltageCh2.Itlk_Delay_us) VoltageCh2.Itlk_DelayCount++;
         else
         {
            VoltageCh2.Itlk_DelayCount = 0;
@@ -500,7 +500,7 @@ void VoltageCh3Sample(void)
 
     if(VoltageCh3.Value > VoltageCh3.AlarmLimit || VoltageCh3.Value < -VoltageCh3.AlarmLimit)
     {
-        if(VoltageCh3.Alarm_DelayCount < VoltageCh3.Alarm_Delay_ms) VoltageCh3.Alarm_DelayCount++;
+        if(VoltageCh3.Alarm_DelayCount < VoltageCh3.Alarm_Delay_us) VoltageCh3.Alarm_DelayCount++;
         else
         {
            VoltageCh3.Alarm_DelayCount = 0;
@@ -511,7 +511,7 @@ void VoltageCh3Sample(void)
 
     if(VoltageCh3.Value > VoltageCh3.TripLimit || VoltageCh3.Value < -VoltageCh3.TripLimit)
     {
-        if(VoltageCh3.Itlk_DelayCount < VoltageCh3.Itlk_Delay_ms) VoltageCh3.Itlk_DelayCount++;
+        if(VoltageCh3.Itlk_DelayCount < VoltageCh3.Itlk_Delay_us) VoltageCh3.Itlk_DelayCount++;
         else
         {
            VoltageCh3.Itlk_DelayCount = 0;
@@ -533,7 +533,7 @@ void VoltageCh4Sample(void)
 
     if(VoltageCh4.Value > VoltageCh4.AlarmLimit || VoltageCh4.Value < -VoltageCh4.AlarmLimit)
     {
-        if(VoltageCh4.Alarm_DelayCount < VoltageCh4.Alarm_Delay_ms) VoltageCh4.Alarm_DelayCount++;
+        if(VoltageCh4.Alarm_DelayCount < VoltageCh4.Alarm_Delay_us) VoltageCh4.Alarm_DelayCount++;
         else
         {
            VoltageCh4.Alarm_DelayCount = 0;
@@ -544,7 +544,7 @@ void VoltageCh4Sample(void)
 
     if(VoltageCh4.Value > VoltageCh4.TripLimit || VoltageCh4.Value < -VoltageCh4.TripLimit)
     {
-        if(VoltageCh4.Itlk_DelayCount < VoltageCh4.Itlk_Delay_ms) VoltageCh4.Itlk_DelayCount++;
+        if(VoltageCh4.Itlk_DelayCount < VoltageCh4.Itlk_Delay_us) VoltageCh4.Itlk_DelayCount++;
         else
         {
            VoltageCh4.Itlk_DelayCount = 0;
@@ -566,7 +566,7 @@ void CurrentCh1Sample(void)
 
     if(CurrentCh1.Value > CurrentCh1.AlarmLimit || CurrentCh1.Value < -CurrentCh1.AlarmLimit)
     {
-        if(CurrentCh1.Alarm_DelayCount < CurrentCh1.Alarm_Delay_ms) CurrentCh1.Alarm_DelayCount++;
+        if(CurrentCh1.Alarm_DelayCount < CurrentCh1.Alarm_Delay_us) CurrentCh1.Alarm_DelayCount++;
         else
         {
            CurrentCh1.Alarm_DelayCount = 0;
@@ -577,7 +577,7 @@ void CurrentCh1Sample(void)
 
     if(CurrentCh1.Value > CurrentCh1.TripLimit || CurrentCh1.Value < -CurrentCh1.TripLimit)
     {
-        if(CurrentCh1.Itlk_DelayCount < CurrentCh1.Itlk_Delay_ms) CurrentCh1.Itlk_DelayCount++;
+        if(CurrentCh1.Itlk_DelayCount < CurrentCh1.Itlk_Delay_us) CurrentCh1.Itlk_DelayCount++;
         else
         {
            CurrentCh1.Itlk_DelayCount = 0;
@@ -599,7 +599,7 @@ void CurrentCh2Sample(void)
 
     if(CurrentCh2.Value > CurrentCh2.AlarmLimit || CurrentCh2.Value < -CurrentCh2.AlarmLimit)
     {
-        if(CurrentCh2.Alarm_DelayCount < CurrentCh2.Alarm_Delay_ms) CurrentCh2.Alarm_DelayCount++;
+        if(CurrentCh2.Alarm_DelayCount < CurrentCh2.Alarm_Delay_us) CurrentCh2.Alarm_DelayCount++;
         else
         {
            CurrentCh2.Alarm_DelayCount = 0;
@@ -610,7 +610,7 @@ void CurrentCh2Sample(void)
 
     if(CurrentCh2.Value > CurrentCh2.TripLimit || CurrentCh2.Value < -CurrentCh2.TripLimit)
     {
-       if(CurrentCh2.Itlk_DelayCount < CurrentCh2.Itlk_Delay_ms) CurrentCh2.Itlk_DelayCount++;
+       if(CurrentCh2.Itlk_DelayCount < CurrentCh2.Itlk_Delay_us) CurrentCh2.Itlk_DelayCount++;
        else
        {
           CurrentCh2.Itlk_DelayCount = 0;
@@ -633,7 +633,7 @@ void CurrentCh3Sample(void)
 
     if(CurrentCh3.Value > CurrentCh3.AlarmLimit || CurrentCh3.Value < -CurrentCh3.AlarmLimit)
     {
-        if(CurrentCh3.Alarm_DelayCount < CurrentCh3.Alarm_Delay_ms) CurrentCh3.Alarm_DelayCount++;
+        if(CurrentCh3.Alarm_DelayCount < CurrentCh3.Alarm_Delay_us) CurrentCh3.Alarm_DelayCount++;
         else
         {
            CurrentCh3.Alarm_DelayCount = 0;
@@ -644,7 +644,7 @@ void CurrentCh3Sample(void)
 
     if(CurrentCh3.Value > CurrentCh3.TripLimit || CurrentCh3.Value < -CurrentCh3.TripLimit)
     {
-       if(CurrentCh3.Itlk_DelayCount < CurrentCh3.Itlk_Delay_ms) CurrentCh3.Itlk_DelayCount++;
+       if(CurrentCh3.Itlk_DelayCount < CurrentCh3.Itlk_Delay_us) CurrentCh3.Itlk_DelayCount++;
        else
        {
           CurrentCh3.Itlk_DelayCount = 0;
@@ -666,7 +666,7 @@ void CurrentCh4Sample(void)
 
     if(CurrentCh4.Value > CurrentCh4.AlarmLimit || CurrentCh4.Value < -CurrentCh4.AlarmLimit)
     {
-        if(CurrentCh4.Alarm_DelayCount < CurrentCh4.Alarm_Delay_ms) CurrentCh4.Alarm_DelayCount++;
+        if(CurrentCh4.Alarm_DelayCount < CurrentCh4.Alarm_Delay_us) CurrentCh4.Alarm_DelayCount++;
         else
         {
            CurrentCh4.Alarm_DelayCount = 0;
@@ -677,7 +677,7 @@ void CurrentCh4Sample(void)
 
     if(CurrentCh4.Value > CurrentCh4.TripLimit || CurrentCh4.Value < -CurrentCh4.TripLimit)
     {
-        if(CurrentCh4.Itlk_DelayCount < CurrentCh4.Itlk_Delay_ms) CurrentCh4.Itlk_DelayCount++;
+        if(CurrentCh4.Itlk_DelayCount < CurrentCh4.Itlk_Delay_us) CurrentCh4.Itlk_DelayCount++;
         else
         {
            CurrentCh4.Itlk_DelayCount = 0;
@@ -699,7 +699,7 @@ void LvCurrentCh1Sample(void)
 
     if(LvCurrentCh1.Value > LvCurrentCh1.AlarmLimit || LvCurrentCh1.Value < -LvCurrentCh1.AlarmLimit)
     {
-        if(LvCurrentCh1.Alarm_DelayCount < LvCurrentCh1.Alarm_Delay_ms) LvCurrentCh1.Alarm_DelayCount++;
+        if(LvCurrentCh1.Alarm_DelayCount < LvCurrentCh1.Alarm_Delay_us) LvCurrentCh1.Alarm_DelayCount++;
         else
         {
             LvCurrentCh1.Alarm_DelayCount = 0;
@@ -710,7 +710,7 @@ void LvCurrentCh1Sample(void)
 
     if(LvCurrentCh1.Value > LvCurrentCh1.TripLimit || LvCurrentCh1.Value < -LvCurrentCh1.TripLimit)
     {
-        if(LvCurrentCh1.Itlk_DelayCount < LvCurrentCh1.Itlk_Delay_ms) LvCurrentCh1.Itlk_DelayCount++;
+        if(LvCurrentCh1.Itlk_DelayCount < LvCurrentCh1.Itlk_Delay_us) LvCurrentCh1.Itlk_DelayCount++;
         else
         {
            LvCurrentCh1.Itlk_DelayCount = 0;
@@ -732,7 +732,7 @@ void LvCurrentCh2Sample(void)
 
     if(LvCurrentCh2.Value > LvCurrentCh2.AlarmLimit || LvCurrentCh2.Value < -LvCurrentCh2.AlarmLimit)
     {
-        if(LvCurrentCh2.Alarm_DelayCount < LvCurrentCh2.Alarm_Delay_ms) LvCurrentCh2.Alarm_DelayCount++;
+        if(LvCurrentCh2.Alarm_DelayCount < LvCurrentCh2.Alarm_Delay_us) LvCurrentCh2.Alarm_DelayCount++;
         else
         {
             LvCurrentCh2.Alarm_DelayCount = 0;
@@ -743,7 +743,7 @@ void LvCurrentCh2Sample(void)
 
     if(LvCurrentCh2.Value > LvCurrentCh2.TripLimit || LvCurrentCh2.Value < -LvCurrentCh2.TripLimit)
     {
-        if(LvCurrentCh2.Itlk_DelayCount < LvCurrentCh2.Itlk_Delay_ms) LvCurrentCh2.Itlk_DelayCount++;
+        if(LvCurrentCh2.Itlk_DelayCount < LvCurrentCh2.Itlk_Delay_us) LvCurrentCh2.Itlk_DelayCount++;
         else
         {
            LvCurrentCh2.Itlk_DelayCount = 0;
@@ -765,7 +765,7 @@ void LvCurrentCh3Sample(void)
 
     if(LvCurrentCh3.Value > LvCurrentCh3.AlarmLimit || LvCurrentCh3.Value < -LvCurrentCh3.AlarmLimit)
     {
-        if(LvCurrentCh3.Alarm_DelayCount < LvCurrentCh3.Alarm_Delay_ms) LvCurrentCh3.Alarm_DelayCount++;
+        if(LvCurrentCh3.Alarm_DelayCount < LvCurrentCh3.Alarm_Delay_us) LvCurrentCh3.Alarm_DelayCount++;
         else
         {
             LvCurrentCh3.Alarm_DelayCount = 0;
@@ -776,7 +776,7 @@ void LvCurrentCh3Sample(void)
 
     if(LvCurrentCh3.Value > LvCurrentCh3.TripLimit || LvCurrentCh3.Value < -LvCurrentCh3.TripLimit)
     {
-        if(LvCurrentCh3.Itlk_DelayCount < LvCurrentCh3.Itlk_Delay_ms) LvCurrentCh3.Itlk_DelayCount++;
+        if(LvCurrentCh3.Itlk_DelayCount < LvCurrentCh3.Itlk_Delay_us) LvCurrentCh3.Itlk_DelayCount++;
         else
         {
            LvCurrentCh3.Itlk_DelayCount = 0;
@@ -1364,22 +1364,22 @@ void Driver2CurrentTripLevelSet(float nValue)
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //Set DriverVoltage Interlock and Alarm Delay
-void DriverVoltageDelay(unsigned int Delay_Set)
+void DriverVoltageDelay(unsigned int delay_ms)
 {
-    DriverVolt.Alarm_Delay_ms = Delay_Set;
-    DriverVolt.Itlk_Delay_ms = Delay_Set;
+    DriverVolt.Alarm_Delay_ms = delay_ms;
+    DriverVolt.Itlk_Delay_ms = delay_ms;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //Set DriverCurrent 1 and 2 Interlock and Alarm Delay
-void DriverCurrentDelay(unsigned int Delay_Set)
+void DriverCurrentDelay(unsigned int delay_ms)
 {
-    Driver1Curr.Alarm_Delay_ms = Delay_Set;
-    Driver1Curr.Itlk_Delay_ms = Delay_Set;
+    Driver1Curr.Alarm_Delay_ms = delay_ms;
+    Driver1Curr.Itlk_Delay_ms = delay_ms;
 
-    Driver2Curr.Alarm_Delay_ms = Delay_Set;
-    Driver2Curr.Itlk_Delay_ms = Delay_Set;
+    Driver2Curr.Alarm_Delay_ms = delay_ms;
+    Driver2Curr.Itlk_Delay_ms = delay_ms;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

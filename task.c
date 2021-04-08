@@ -50,23 +50,23 @@ unsigned int _8Hz = 0;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-bool TempCh1Read             = 0;
-bool TempCh2Read             = 0;
-bool TempCh3Read             = 0;
-bool TempCh4Read             = 0;
-bool RhSample                = 0;
-bool RhSampleRead            = 0;
-bool BoardTempSample         = 0;
-bool BoardTempSampleRead     = 0;
-bool ErrorCheck              = 0;
-bool LedUpdate               = 0;
+bool TempPt100Ch1ReadTask    = 0;
+bool TempPt100Ch2ReadTask    = 0;
+bool TempPt100Ch3ReadTask    = 0;
+bool TempPt100Ch4ReadTask    = 0;
+bool StartBoardTempTask      = 0;
+bool BoardTempReadTask       = 0;
+bool StartRhTask             = 0;
+bool RhReadTask              = 0;
+bool ErrorCheckTask          = 0;
+bool LedUpdateTask           = 0;
 bool InterlockAlarmCheckTask = 0;
 bool DriverVoltReadTask      = 0;
 bool Driver1CurrtReadTask    = 0;
 bool Driver2CurrtReadTask    = 0;
-bool SendCanData             = 0;
-bool NtcSample               = 0;
-bool NtcSampleRead           = 0;
+bool SendCanDataTask         = 0;
+bool StartNtcTask            = 0;
+bool NtcReadTask             = 0;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -77,13 +77,12 @@ void ErrorCheckHandle(void)
     if(Pt100Ch3ErrorRead()) Pt100Ch3Clear();
     if(Pt100Ch4ErrorRead()) Pt100Ch4Clear();
 
-    //Check CanNotCommunicate
-    //Indicate channel problem, need a PT100 initialization or a chip verification
+    // Check CanNotCommunicate
+    // Indicate channel problem, need a PT100 initialization or a chip verification
     // Reset() -> Reset implemented by software
 
-
-    //Check RTD Out Of Range
-    //send a command to indication layer to signalize the user
+    // Check RTD Out Of Range
+    // send a command to indication layer to signalize the user
     if(Pt100Ch1RtdStatusRead()) Pt100Ch1Reset();
     if(Pt100Ch2RtdStatusRead()) Pt100Ch2Reset();
     if(Pt100Ch3RtdStatusRead()) Pt100Ch3Reset();
@@ -228,7 +227,7 @@ void task_1_ms(void)
     if(_8Hz >= 125)
     {
         _8Hz = 0;
-        LedUpdate = 1;
+        LedUpdateTask = 1;
     }
     else _8Hz++;
 
@@ -242,60 +241,77 @@ void task_1_ms(void)
     // trigger for 1s period tasks (no critical tasks)
     switch(Second)
     {
+
     case 20:
-       SendCanData = 1;
-       break;
+    	SendCanDataTask = 1;        	// 80ms
+    	break;
+
     case 100:
-       TempCh1Read = 1;
-       break;
+    	TempPt100Ch1ReadTask = 1;   	// 100ms
+    	break;
+
     case 200:
-       RhSample = 1;
-       break;
-    case 250:
-       RhSampleRead = 1;
-       break;
-    case 350:
-       TempCh2Read = 1;
-       break;
-    case 450:
-       BoardTempSample = 1;
-       break;
-    case 500:
-       BoardTempSampleRead = 1;
-       break;
-    case 600:
-       TempCh3Read = 1;
-       break;
-    case 700:
-       TempCh4Read = 1;
-       break;
-    case 740:
-       DriverVoltReadTask = 1;
-       break;
-    case 780:
-       Driver1CurrtReadTask = 1;
-       break;
-    case 820:
-       Driver2CurrtReadTask = 1;
-       break;
-    case 850:
-       NtcSample = 1;
-       break;
+    	DriverVoltReadTask = 1;			// 30ms
+    	break;
+
+    case 230:
+    	TempPt100Ch2ReadTask = 1;		// 100ms
+    	break;
+
+    case 330:
+    	Driver1CurrtReadTask = 1;		// 30ms
+    	break;
+
+    case 360:
+    	TempPt100Ch3ReadTask = 1;		// 20ms
+    	break;
+
+    case 380:
+    	Driver2CurrtReadTask = 1;		// 30ms
+    	break;
+
+    case 410:
+    	TempPt100Ch4ReadTask = 1;		// 20ms
+    	break;
+
+    case 430:
+    	StartBoardTempTask = 1;			// 40ms
+    	break;
+
+    case 470:
+    	BoardTempReadTask = 1;			// 100ms
+    	break;
+
+    case 570:
+    	StartNtcTask  = 1;				// 50ms
+    	break;
+
+    case 620:
+    	NtcReadTask = 1;				// 100ms
+    	break;
+
+    case 720:
+    	StartRhTask = 1;           		// 40ms
+    	break;
+
+    case 760:
+    	RhReadTask = 1;					// 100ms
+    	break;
+
+    case 860:
+    	ErrorCheckTask = 1;				// 40ms
+    	break;
+
     case 900:
-       NtcSampleRead = 1;
-       break;
-    case 950:
-       ErrorCheck = 1;
-       break;
-    case 990:
-       InterlockAlarmCheckTask = 1;
-       break;
+    	InterlockAlarmCheckTask = 1;	// 100ms
+    	break;
+
     case 1000:
 
-       break;
+    	break;
     default:
 
-       break;
+    	break;
 
     }
 
@@ -306,127 +322,151 @@ void task_1_ms(void)
 void BoardTask(void)
 {
 
+//*******************************************************************************************
+
   RunToggle();
 
-  if(TempCh1Read)
+//*******************************************************************************************
+
+  if(TempPt100Ch1ReadTask)
   {
 
 #if (Pt100Ch1Enable == 1)
 
-      Pt100Ch1Sample();
+	  Pt100Ch1Sample();
 
 #endif
 
-      TempCh1Read = 0;
+	  TempPt100Ch1ReadTask = 0;
   }
 
-  else if(TempCh2Read)
+//*******************************************************************************************
+
+  else if(TempPt100Ch2ReadTask)
   {
 
 #if (Pt100Ch2Enable == 1)
 
-      Pt100Ch2Sample();
+	  Pt100Ch2Sample();
 
 #endif
 
-      TempCh2Read = 0;
+	  TempPt100Ch2ReadTask = 0;
   }
 
-  else if(TempCh3Read)
+//*******************************************************************************************
+
+  else if(TempPt100Ch3ReadTask)
   {
 
 #if (Pt100Ch3Enable == 1)
 
-      Pt100Ch3Sample();
+	  Pt100Ch3Sample();
 
 #endif
 
-      TempCh3Read = 0;
+	  TempPt100Ch3ReadTask = 0;
   }
 
-  else if(TempCh4Read)
+//*******************************************************************************************
+
+  else if(TempPt100Ch4ReadTask)
   {
 
 #if (Pt100Ch4Enable == 1)
 
-      Pt100Ch4Sample();
+	  Pt100Ch4Sample();
 
 #endif
 
-      TempCh4Read = 0;
+	  TempPt100Ch4ReadTask = 0;
   }
 
-  else if(RhSample)
-  {
+//*******************************************************************************************
 
-#if (RhEnable == 1)
-
-      RelativeHumidityStartConversion();
-
-#endif
-
-      RhSample = 0;
-  }
-
-  else if(RhSampleRead)
-  {
-
-#if (RhEnable == 1)
-
-      RelativeHumidityRead();
-
-#endif
-
-      RhSampleRead = 0;
-  }
-
-  else if(BoardTempSample)
+  else if(StartBoardTempTask)
   {
 
 #if (BoardTempEnable == 1)
 
-      BoardTemperatureStartConversion();
+	  BoardTemperatureStartConversion();
 
 #endif
 
-      BoardTempSample = 0;
+	  StartBoardTempTask = 0;
   }
 
-  else if(BoardTempSampleRead)
+//*******************************************************************************************
+
+  else if(BoardTempReadTask)
   {
 
 #if (BoardTempEnable == 1)
 
-      BoardTemperatureRead();
+	  BoardTemperatureRead();
 
 #endif
 
-      BoardTempSampleRead = 0;
+	  BoardTempReadTask = 0;
   }
 
-  else if(NtcSample)
+//*******************************************************************************************
+
+  else if(StartRhTask)
+  {
+
+#if (RhEnable == 1)
+
+	  RelativeHumidityStartConversion();
+
+#endif
+
+	  StartRhTask = 0;
+  }
+
+//*******************************************************************************************
+
+  else if(RhReadTask)
+  {
+
+#if (RhEnable == 1)
+
+	  RelativeHumidityRead();
+
+#endif
+
+	  RhReadTask = 0;
+  }
+
+//*******************************************************************************************
+
+  else if(StartNtcTask)
   {
 
 #if ((TempIgbt1Enable || TempIgbt2Enable) == 1)
 
-      NtcStartConversion();
+	  NtcStartConversion();
 
 #endif
 
-      NtcSample = 0;
+	  StartNtcTask = 0;
   }
 
-  else if(NtcSampleRead)
+//*******************************************************************************************
+
+  else if(NtcReadTask)
   {
 
 #if ((TempIgbt1Enable || TempIgbt2Enable) == 1)
 
-      NtcRead();
+	  NtcRead();
 
 #endif
 
-      NtcSampleRead = 0;
+	  NtcReadTask = 0;
   }
+
+//*******************************************************************************************
 
   else if(DriverVoltReadTask)
   {
@@ -440,6 +480,8 @@ void BoardTask(void)
       DriverVoltReadTask = 0;
   }
 
+//*******************************************************************************************
+
   else if(Driver1CurrtReadTask)
   {
 
@@ -451,6 +493,8 @@ void BoardTask(void)
 
       Driver1CurrtReadTask = 0;
   }
+
+//*******************************************************************************************
 
   else if(Driver2CurrtReadTask)
   {
@@ -464,12 +508,16 @@ void BoardTask(void)
       Driver2CurrtReadTask = 0;
   }
 
-  else if(ErrorCheck)
+//*******************************************************************************************
+
+  else if(ErrorCheckTask)
   {
       ErrorCheckHandle();
 
-      ErrorCheck = 0;
+      ErrorCheckTask = 0;
   }
+
+//*******************************************************************************************
 
   else if(InterlockAlarmCheckTask)
   {
@@ -480,21 +528,31 @@ void BoardTask(void)
       InterlockAlarmCheckTask = 0;
   }
 
-  else if(LedUpdate)
+//*******************************************************************************************
+
+  else if(LedUpdateTask)
   {
       LedIndicationStatus();
 
-      LedUpdate = 0;
+      LedUpdateTask = 0;
   }
 
-  else if (SendCanData)
+//*******************************************************************************************
+
+  else if (SendCanDataTask)
   {
-      send_data_schedule();
+	  // Usado para testes com leituras rapidas, comentar linha ao usar.
 
-      SendCanData = 0;
+	  send_data_schedule();
+
+      SendCanDataTask = 0;
   }
+
+//*******************************************************************************************
 
   power_on_check();
+
+//*******************************************************************************************
 
 }
 

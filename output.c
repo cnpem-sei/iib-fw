@@ -22,7 +22,6 @@
 
 void OutputInit(void)
 {
-    
     set_gpio_as_output(RELAY_1_BASE, RELAY_1_PIN);
     set_gpio_as_output(RELAY_2_BASE, RELAY_2_PIN);
 
@@ -30,10 +29,6 @@ void OutputInit(void)
     set_gpio_as_output(GPDO_2_BASE, GPDO_2_PIN);
     set_gpio_as_output(GPDO_3_BASE, GPDO_3_PIN);
     set_gpio_as_output(GPDO_4_BASE, GPDO_4_PIN);
-
-    set_gpio_as_output(TP_1_BASE, TP_1_PIN);
-    set_gpio_as_output(TP_2_BASE, TP_2_PIN);
-    set_gpio_as_output(TP_3_BASE, TP_3_PIN);
 
     set_gpio_as_output(STATUS_LED_BASE, STATUS_LED_PIN);
 
@@ -45,12 +40,7 @@ void OutputInit(void)
     clear_pin(GPDO_3_BASE, GPDO_3_PIN);
     clear_pin(GPDO_4_BASE, GPDO_4_PIN);
     
-    clear_pin(TP_1_BASE, TP_1_PIN);
-    clear_pin(TP_2_BASE, TP_2_PIN);
-    clear_pin(TP_3_BASE, TP_3_PIN);
-
     clear_pin(STATUS_LED_BASE, STATUS_LED_PIN);
-
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

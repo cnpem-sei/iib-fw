@@ -75,6 +75,18 @@ void delay_ms(uint32_t time)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
+// Usado para testes com leituras rapidas.
+
+/*void IntTimerTestHandler(void)
+{
+    // Clear the timer interrupt.
+    TimerIntClear(TIMER2_BASE, TIMER_TIMA_TIMEOUT);
+
+    send_data_schedule();
+}*/
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 void IntTimer1msHandler(void)
 {
     // Clear the timer interrupt.
@@ -114,6 +126,40 @@ void IntTimer100usHandler(void)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
+// Usado para testes com leituras rapidas.
+
+/*void Timer_Test_Init(void)
+{
+    // Disable timer 2 peripheral
+    SysCtlPeripheralDisable(SYSCTL_PERIPH_TIMER2);
+
+    // Reset timer 2 peripheral
+    SysCtlPeripheralReset(SYSCTL_PERIPH_TIMER2);
+
+    // Enable timer 2 peripheral
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER2);
+
+    // Wait for the timer 2 peripheral to be ready.
+    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_TIMER2));
+
+    // Disable the timer 2 module.
+    TimerDisable(TIMER2_BASE, TIMER_A);
+
+    // Configure the two 32-bit periodic timers.
+    TimerConfigure(TIMER2_BASE, TIMER_CFG_PERIODIC);
+    TimerLoadSet(TIMER2_BASE, TIMER_A, (SYSCLOCK / 142) - 1);
+
+    // Setup the interrupts for the timer timeouts.
+    IntEnable(INT_TIMER2A);
+    TimerIntEnable(TIMER2_BASE, TIMER_TIMA_TIMEOUT);
+    TimerIntRegister(TIMER2_BASE, TIMER_A, IntTimerTestHandler);
+    IntPrioritySet(INT_TIMER2A, 1);
+
+    // Enable the timer 2.
+    TimerEnable(TIMER2_BASE, TIMER_A);
+}*/
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 void Timer_1ms_Init(void)
 {
@@ -211,6 +257,14 @@ int main(void)
     Timer_1ms_Init();
 
     Timer_100us_Init();
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Usado para testes com leituras rapidas.
+
+    //Timer_Test_Init();
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
     //PWM1SoftwareInit();
 

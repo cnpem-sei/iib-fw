@@ -278,7 +278,7 @@ extern fac_os_t fac_os;
 
 #define Hall_Burden_Resistor                                50.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Hall_Delay                                          2
 
 #define CurrentCh1Enable                                    ON
@@ -292,7 +292,7 @@ extern fac_os_t fac_os;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                              600.0
+#define LV_Primary_Voltage_Vin                              602.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Primary_Voltage_GND_Leakage                      4.86
 
@@ -300,10 +300,10 @@ extern fac_os_t fac_os;
 
 #define LV_Burden_Resistor                                  120.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Voltage_Vin                                   3
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_GND_Leakage                                   3
 
 #define LvCurrentCh1Enable                                  ON
@@ -313,7 +313,7 @@ extern fac_os_t fac_os;
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //PT100 CH1 and CH2 configuration
-//Debouncing Delay seconds
+//Debouncing delay_ms
 
 #define Delay_PT100CH1                                      2
 #define Delay_PT100CH2                                      2
@@ -344,6 +344,9 @@ extern fac_os_t fac_os;
 
 #define BoardTempEnable                                     ON
 #define RhEnable                                            ON
+
+#define ItlkBoardTempEnable                                 OFF
+#define ItlkRhEnable                                        OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -489,7 +492,7 @@ extern fac_os_t fac_os;
 
 #define Hall_Burden_Resistor                                50.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Hall_Delay                                          2
 
 #define CurrentCh1Enable                                    ON
@@ -503,7 +506,7 @@ extern fac_os_t fac_os;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                              330.0
+#define LV_Primary_Voltage_Vin                              335.833333 // resistores mais 250 ohms do LV 20P
 
 #define LV_Primary_Voltage_GND_Leakage                      4.86
 
@@ -511,10 +514,10 @@ extern fac_os_t fac_os;
 
 #define LV_Burden_Resistor                                  120.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Voltage_Vin                                   3
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_GND_Leakage                                   3
 
 #define LvCurrentCh1Enable                                  ON
@@ -524,7 +527,7 @@ extern fac_os_t fac_os;
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //PT100 CH1 and CH2 configuration
-//Debouncing Delay seconds
+//Debouncing delay_ms
 
 #define Delay_PT100CH1                                      2
 #define Delay_PT100CH2                                      2
@@ -555,6 +558,9 @@ extern fac_os_t fac_os;
 
 #define BoardTempEnable                                     ON
 #define RhEnable                                            ON
+
+#define ItlkBoardTempEnable                                 OFF
+#define ItlkRhEnable                                        OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -700,7 +706,7 @@ extern fac_os_t fac_os;
 
 #define Hall_Burden_Resistor                                50.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Hall_Delay                                          0
 
 #define CurrentCh1Enable                                    ON
@@ -714,7 +720,7 @@ extern fac_os_t fac_os;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                              330.0
+#define LV_Primary_Voltage_Vin                              335.833333 // resistores mais 250 ohms do LV 20P
 
 #define LV_Primary_Voltage_GND_Leakage                      4.86
 
@@ -722,10 +728,10 @@ extern fac_os_t fac_os;
 
 #define LV_Burden_Resistor                                  120.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Voltage_Vin                                   3
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_GND_Leakage                                   3
 
 #define LvCurrentCh1Enable                                  ON
@@ -735,7 +741,7 @@ extern fac_os_t fac_os;
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //PT100 CH1 and CH2 configuration
-//Debouncing Delay seconds
+//Debouncing delay_ms
 
 #define Delay_PT100CH1                                      2
 #define Delay_PT100CH2                                      2
@@ -766,6 +772,9 @@ extern fac_os_t fac_os;
 
 #define BoardTempEnable                                     ON
 #define RhEnable                                            ON
+
+#define ItlkBoardTempEnable                                 OFF
+#define ItlkRhEnable                                        OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -913,7 +922,7 @@ extern fac_os_t fac_os;
 
 #define Hall_Burden_Resistor                                50.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Hall_Delay                                          2
 
 #define CurrentCh1Enable                                    ON
@@ -927,7 +936,7 @@ extern fac_os_t fac_os;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                              600.0
+#define LV_Primary_Voltage_Vin                              602.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Primary_Voltage_GND_Leakage                      4.86
 
@@ -935,10 +944,10 @@ extern fac_os_t fac_os;
 
 #define LV_Burden_Resistor                                  120.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Voltage_Vin                                   3
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_GND_Leakage                                   3
 
 #define LvCurrentCh1Enable                                  ON
@@ -948,7 +957,7 @@ extern fac_os_t fac_os;
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //PT100 CH1 and CH2 configuration
-//Debouncing Delay seconds
+//Debouncing delay_ms
 
 #define Delay_PT100CH1                                      2
 #define Delay_PT100CH2                                      2
@@ -979,6 +988,9 @@ extern fac_os_t fac_os;
 
 #define BoardTempEnable                                     ON
 #define RhEnable                                            ON
+
+#define ItlkBoardTempEnable                                 OFF
+#define ItlkRhEnable                                        OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1098,7 +1110,7 @@ extern fac_os_t fac_os;
 #define FAC_OS_HS_OVERTEMP_ALM_LIM                          40.0
 #define FAC_OS_HS_OVERTEMP_ITLK_LIM                         45.0
 
-#define FAC_OS_RH_OVERHUMIDITY_ALM_LIM                      50.0
+#define FAC_OS_RH_OVERHUMIDITY_ALM_LIM                      60.0
 #define FAC_OS_RH_OVERHUMIDITY_ITLK_LIM                     90.0
 
 #define FAC_OS_BOARD_OVERTEMP_ALM_LIM                       50.0
@@ -1122,7 +1134,7 @@ extern fac_os_t fac_os;
 
 #define Hall_Burden_Resistor                                50.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Hall_Delay                                          0
 
 #define CurrentCh1Enable                                    ON
@@ -1136,7 +1148,7 @@ extern fac_os_t fac_os;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                              600.0
+#define LV_Primary_Voltage_Vin                              602.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Primary_Voltage_GND_Leakage                      50.0
 
@@ -1144,10 +1156,10 @@ extern fac_os_t fac_os;
 
 #define LV_Burden_Resistor                                  120.0
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_Voltage_Vin                                   3
 
-//Debouncing delay_ms
+//Debouncing delay_us
 #define Delay_GND_Leakage                                   3
 
 #define LvCurrentCh1Enable                                  ON
@@ -1157,7 +1169,7 @@ extern fac_os_t fac_os;
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //PT100 CH1 and CH2 configuration
-//Debouncing Delay seconds
+//Debouncing delay_ms
 
 #define Delay_PT100CH1                                      2
 #define Delay_PT100CH2                                      2
@@ -1188,6 +1200,9 @@ extern fac_os_t fac_os;
 
 #define BoardTempEnable                                     ON
 #define RhEnable                                            ON
+
+#define ItlkBoardTempEnable                                 OFF
+#define ItlkRhEnable                                        OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

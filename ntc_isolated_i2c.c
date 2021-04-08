@@ -123,7 +123,7 @@ ADS1x1x_config_t ntc_igbt2;
 /**************************************************************************/
 void ADS1x1x_write_register(uint8_t i2c_address, uint8_t reg, uint16_t value)
 {
-    I2C2Send16Bits(i2c_address, 3, reg, ((uint8_t)value>>8), ((uint8_t)value&0xff));
+    I2C2Send(i2c_address, 3, reg, ((uint8_t)value>>8), ((uint8_t)value&0xff));
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -137,7 +137,7 @@ uint16_t ADS1x1x_read_register(uint8_t i2c_address, uint8_t reg)
 {
     uint16_t result = 0;
 
-    result = I2C2Receive16Bits(i2c_address, reg);
+    result = I2C2Receive(i2c_address, reg);
 
     return result;
 }
@@ -322,7 +322,7 @@ void ADS1x1x_set_comparator_queue(ADS1x1x_config_t *p_config, ADS1x1x_comparator
 //******************************************************************************
 void NtcInit(void)
 {
-  // performs I2C initialization
+  //I2C2 initialization
   InitI2C2();
 
   // Initialise ADC object igbt1.
@@ -489,10 +489,10 @@ void TempIgbt1TripLevelSet(float nValue)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void TempIgbt1Delay(unsigned int Delay_Set)
+void TempIgbt1Delay(unsigned int delay_ms)
 {
-    TempNtcIgbt1.Alarm_Delay_ms = Delay_Set;
-    TempNtcIgbt1.Itlk_Delay_ms = Delay_Set;
+    TempNtcIgbt1.Alarm_Delay_ms = delay_ms;
+    TempNtcIgbt1.Itlk_Delay_ms = delay_ms;
 
 }
 
@@ -542,10 +542,10 @@ void TempIgbt2TripLevelSet(float nValue)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void TempIgbt2Delay(unsigned int Delay_Set)
+void TempIgbt2Delay(unsigned int delay_ms)
 {
-    TempNtcIgbt2.Alarm_Delay_ms = Delay_Set;
-    TempNtcIgbt2.Itlk_Delay_ms = Delay_Set;
+    TempNtcIgbt2.Alarm_Delay_ms = delay_ms;
+    TempNtcIgbt2.Itlk_Delay_ms = delay_ms;
 
 }
 
