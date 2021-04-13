@@ -40,7 +40,7 @@
 
 //Modules iib FAPs
 
-#define SI_FAM_PS_QFA
+//#define SI_FAM_PS_QFA
 //#define SI_FAM_PS_QFP
 //#define SI_FAM_PS_QFB
 //#define SI_FAM_PS_QDA_QDP1_QDP2
