@@ -1412,7 +1412,7 @@ extern fap_t fap;
 #define LV_Burden_Resistor                      120.0
 
 //Debouncing delay_us
-#define Delay_Vin                               200
+#define Delay_Vin                               120000
 
 //Debouncing delay_us
 #define Delay_Vout                              200
@@ -2298,7 +2298,7 @@ extern fap_t fap;
 #define LV_Burden_Resistor                      120.0
 
 //Debouncing delay_us
-#define Delay_Vin                               200
+#define Delay_Vin                               100000
 
 //Debouncing delay_us
 #define Delay_Vout                              200
@@ -2520,7 +2520,7 @@ extern fap_t fap;
 #define LV_Burden_Resistor                      120.0
 
 //Debouncing delay_us
-#define Delay_Vin                               200
+#define Delay_Vin                               100000
 
 //Debouncing delay_us
 #define Delay_Vout                              200
