@@ -1,11 +1,10 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-#include <adc_internal.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
-#include "stdlib.h"
+#include <stdlib.h>
 #include <stdio.h>
 #include "inc/hw_can.h"
 #include "inc/hw_ints.h"
@@ -39,7 +38,6 @@
 #include "pt100.h"
 #include "task.h"
 #include "iib_data.h"
-#include "PWMSoftware.h"
 
 #include <iib_modules/fap.h>
 #include <iib_modules/fac_os.h>
@@ -265,8 +263,6 @@ int main(void)
     //Timer_Test_Init();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-
-    //PWM1SoftwareInit();
 
     //PT100 channels initialization
     Pt100Init();

@@ -96,9 +96,9 @@ void clear_fap_interlocks()
     fap.ExternalItlkSts          = 0;
     fap.RackItlkSts              = 0;
     fap.GroundLeakageItlkSts     = 0;
-    fap.DriveVoltageItlkSts      = 0;
-    fap.Drive1CurrentItlkSts     = 0;
-    fap.Drive2CurrentItlkSts     = 0;
+    fap.DriverVoltageItlkSts     = 0;
+    fap.Driver1CurrentItlkSts    = 0;
+    fap.Driver2CurrentItlkSts    = 0;
     fap.BoardTemperatureItlkSts  = 0;
     fap.RelativeHumidityItlkSts  = 0;
 
@@ -125,9 +125,9 @@ uint8_t check_fap_interlocks()
     test |= fap.ExternalItlkSts;
     test |= fap.RackItlkSts;
     test |= fap.GroundLeakageItlkSts;
-    test |= fap.DriveVoltageItlkSts;
-    test |= fap.Drive1CurrentItlkSts;
-    test |= fap.Drive2CurrentItlkSts;
+    test |= fap.DriverVoltageItlkSts;
+    test |= fap.Driver1CurrentItlkSts;
+    test |= fap.Driver2CurrentItlkSts;
     test |= fap.BoardTemperatureItlkSts;
     test |= fap.RelativeHumidityItlkSts;
 
@@ -147,9 +147,9 @@ void clear_fap_alarms()
     fap.TempLAlarmSts             = 0;
     fap.TempHeatSinkAlarmSts      = 0;
     fap.GroundLeakageAlarmSts     = 0;
-    fap.DriveVoltageAlarmSts      = 0;
-    fap.Drive1CurrentAlarmSts     = 0;
-    fap.Drive2CurrentAlarmSts     = 0;
+    fap.DriverVoltageAlarmSts     = 0;
+    fap.Driver1CurrentAlarmSts    = 0;
+    fap.Driver2CurrentAlarmSts    = 0;
     fap.BoardTemperatureAlarmSts  = 0;
     fap.RelativeHumidityAlarmSts  = 0;
 
@@ -172,9 +172,9 @@ uint8_t check_fap_alarms()
     test |= fap.TempLAlarmSts;
     test |= fap.TempHeatSinkAlarmSts;
     test |= fap.GroundLeakageAlarmSts;
-    test |= fap.DriveVoltageAlarmSts;
-    test |= fap.Drive1CurrentAlarmSts;
-    test |= fap.Drive2CurrentAlarmSts;
+    test |= fap.DriverVoltageAlarmSts;
+    test |= fap.Driver1CurrentAlarmSts;
+    test |= fap.Driver2CurrentAlarmSts;
     test |= fap.BoardTemperatureAlarmSts;
     test |= fap.RelativeHumidityAlarmSts;
 
@@ -233,8 +233,8 @@ void check_fap_indication_leds()
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Interlocks dos Drivers
-    if(fap.Driver1ErrorItlkSts || fap.Driver2ErrorItlkSts || fap.DriveVoltageItlkSts || fap.Drive1CurrentItlkSts || fap.Drive2CurrentItlkSts) Led9TurnOff();
-    else if(fap.DriveVoltageAlarmSts || fap.Drive1CurrentAlarmSts || fap.Drive2CurrentAlarmSts) Led9Toggle();
+    if(fap.Driver1ErrorItlkSts || fap.Driver2ErrorItlkSts || fap.DriverVoltageItlkSts || fap.Driver1CurrentItlkSts || fap.Driver2CurrentItlkSts) Led9TurnOff();
+    else if(fap.DriverVoltageAlarmSts || fap.Driver1CurrentAlarmSts || fap.Driver2CurrentAlarmSts) Led9Toggle();
     else Led9TurnOn();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -302,23 +302,23 @@ void fap_application_readings()
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //DriverVotage
-    fap.DriveVoltage.f = DriverVoltageRead();
-    fap.DriveVoltageAlarmSts = DriverVoltageAlarmStatusRead();
-    if(!fap.DriveVoltageItlkSts)fap.DriveVoltageItlkSts = DriverVolatgeTripStatusRead();
+    fap.DriverVoltage.f = DriverVoltageRead();
+    fap.DriverVoltageAlarmSts = DriverVoltageAlarmStatusRead();
+    if(!fap.DriverVoltageItlkSts)fap.DriverVoltageItlkSts = DriverVolatgeTripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Drive1Current
-    fap.Drive1Current.f = Driver1CurrentRead();
-    fap.Drive1CurrentAlarmSts = Driver1CurrentAlarmStatusRead();
-    if(!fap.Drive1CurrentItlkSts)fap.Drive1CurrentItlkSts = Driver1CurrentTripStatusRead();
+    fap.Driver1Current.f = Driver1CurrentRead();
+    fap.Driver1CurrentAlarmSts = Driver1CurrentAlarmStatusRead();
+    if(!fap.Driver1CurrentItlkSts)fap.Driver1CurrentItlkSts = Driver1CurrentTripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Drive2Current
-    fap.Drive2Current.f = Driver2CurrentRead();
-    fap.Drive2CurrentAlarmSts = Driver2CurrentAlarmStatusRead();
-    if(!fap.Drive2CurrentItlkSts)fap.Drive2CurrentItlkSts = Driver2CurrentTripStatusRead();
+    fap.Driver2Current.f = Driver2CurrentRead();
+    fap.Driver2CurrentAlarmSts = Driver2CurrentAlarmStatusRead();
+    if(!fap.Driver2CurrentItlkSts)fap.Driver2CurrentItlkSts = Driver2CurrentTripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -513,9 +513,9 @@ void fap_application_readings()
     if (fap.IoutA2ItlkSts)                  itlk_id |= FAP_OUTPUT_OVERCURRENT_2_ITLK;
     if (fap.TempIGBT1ItlkSts)               itlk_id |= FAP_IGBT1_OVERTEMP_ITLK;
     if (fap.TempIGBT2ItlkSts)               itlk_id |= FAP_IGBT2_OVERTEMP_ITLK;
-    if (fap.DriveVoltageItlkSts)            itlk_id |= FAP_DRIVER_OVERVOLTAGE_ITLK;
-    if (fap.Drive1CurrentItlkSts)           itlk_id |= FAP_DRIVER1_OVERCURRENT_ITLK;
-    if (fap.Drive2CurrentItlkSts)           itlk_id |= FAP_DRIVER2_OVERCURRENT_ITLK;
+    if (fap.DriverVoltageItlkSts)           itlk_id |= FAP_DRIVER_OVERVOLTAGE_ITLK;
+    if (fap.Driver1CurrentItlkSts)          itlk_id |= FAP_DRIVER1_OVERCURRENT_ITLK;
+    if (fap.Driver2CurrentItlkSts)          itlk_id |= FAP_DRIVER2_OVERCURRENT_ITLK;
     if (fap.Driver1ErrorItlkSts)            itlk_id |= FAP_DRIVER1_ERROR_ITLK;
     if (fap.Driver2ErrorItlkSts)            itlk_id |= FAP_DRIVER2_ERROR_ITLK;
     if (fap.TempLItlkSts)                   itlk_id |= FAP_INDUC_OVERTEMP_ITLK;
@@ -539,9 +539,9 @@ void fap_application_readings()
     if (fap.TempLAlarmSts)                  alarm_id |= FAP_INDUC_OVERTEMP_ALM;
     if (fap.TempHeatSinkAlarmSts)           alarm_id |= FAP_HS_OVERTEMP_ALM;
     if (fap.GroundLeakageAlarmSts)          alarm_id |= FAP_GROUND_LKG_ALM;
-    if (fap.DriveVoltageAlarmSts)           alarm_id |= FAP_DRIVER_OVERVOLTAGE_ALM;
-    if (fap.Drive1CurrentAlarmSts)          alarm_id |= FAP_DRIVER1_OVERCURRENT_ALM;
-    if (fap.Drive2CurrentAlarmSts)          alarm_id |= FAP_DRIVER2_OVERCURRENT_ALM;
+    if (fap.DriverVoltageAlarmSts)          alarm_id |= FAP_DRIVER_OVERVOLTAGE_ALM;
+    if (fap.Driver1CurrentAlarmSts)         alarm_id |= FAP_DRIVER1_OVERCURRENT_ALM;
+    if (fap.Driver2CurrentAlarmSts)         alarm_id |= FAP_DRIVER2_OVERCURRENT_ALM;
     if (fap.BoardTemperatureAlarmSts)       alarm_id |= FAP_BOARD_IIB_OVERTEMP_ALM;
     if (fap.RelativeHumidityAlarmSts)       alarm_id |= FAP_BOARD_IIB_OVERHUMIDITY_ALM;
 
@@ -562,9 +562,9 @@ void fap_application_readings()
     g_controller_iib.iib_signals[3].f       = fap.IoutA2.f;
     g_controller_iib.iib_signals[4].f       = fap.TempIGBT1.f;
     g_controller_iib.iib_signals[5].f       = fap.TempIGBT2.f;
-    g_controller_iib.iib_signals[6].f       = fap.DriveVoltage.f;
-    g_controller_iib.iib_signals[7].f       = fap.Drive1Current.f;
-    g_controller_iib.iib_signals[8].f       = fap.Drive2Current.f;
+    g_controller_iib.iib_signals[6].f       = fap.DriverVoltage.f;
+    g_controller_iib.iib_signals[7].f       = fap.Driver1Current.f;
+    g_controller_iib.iib_signals[8].f       = fap.Driver2Current.f;
     g_controller_iib.iib_signals[9].f       = fap.TempL.f;
     g_controller_iib.iib_signals[10].f      = fap.TempHeatSink.f;
     g_controller_iib.iib_signals[11].f      = fap.GroundLeakage.f;
@@ -702,15 +702,15 @@ void config_module_fap(void)
     fap.TempIGBT2.f                  = 0.0;
     fap.TempIGBT2AlarmSts            = 0;
     fap.TempIGBT2ItlkSts             = 0;
-    fap.DriveVoltage.f               = 0.0;
-    fap.DriveVoltageAlarmSts         = 0;
-    fap.DriveVoltageItlkSts          = 0;
-    fap.Drive1Current.f              = 0.0;
-    fap.Drive1CurrentAlarmSts        = 0;
-    fap.Drive1CurrentItlkSts         = 0;
-    fap.Drive2Current.f              = 0.0;
-    fap.Drive2CurrentAlarmSts        = 0;
-    fap.Drive2CurrentItlkSts         = 0;
+    fap.DriverVoltage.f              = 0.0;
+    fap.DriverVoltageAlarmSts        = 0;
+    fap.DriverVoltageItlkSts         = 0;
+    fap.Driver1Current.f             = 0.0;
+    fap.Driver1CurrentAlarmSts       = 0;
+    fap.Driver1CurrentItlkSts        = 0;
+    fap.Driver2Current.f             = 0.0;
+    fap.Driver2CurrentAlarmSts       = 0;
+    fap.Driver2CurrentItlkSts        = 0;
     fap.Driver1Error                 = 0;
     fap.Driver1ErrorItlkSts          = 0;
     fap.Driver2Error                 = 0;

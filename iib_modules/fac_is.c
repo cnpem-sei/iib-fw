@@ -72,8 +72,8 @@ void clear_fac_is_interlocks()
     fac_is.Driver1ErrorBotItlkSts    = 0;
     fac_is.TempLItlkSts              = 0;
     fac_is.TempHeatSinkItlkSts       = 0;
-    fac_is.DriveVoltageItlkSts       = 0;
-    fac_is.Drive1CurrentItlkSts      = 0;
+    fac_is.DriverVoltageItlkSts      = 0;
+    fac_is.Driver1CurrentItlkSts     = 0;
     fac_is.BoardTemperatureItlkSts   = 0;
     fac_is.RelativeHumidityItlkSts   = 0;
 
@@ -95,8 +95,8 @@ uint8_t check_fac_is_interlocks()
     test |= fac_is.Driver1ErrorBotItlkSts;
     test |= fac_is.TempLItlkSts;
     test |= fac_is.TempHeatSinkItlkSts;
-    test |= fac_is.DriveVoltageItlkSts;
-    test |= fac_is.Drive1CurrentItlkSts;
+    test |= fac_is.DriverVoltageItlkSts;
+    test |= fac_is.Driver1CurrentItlkSts;
     test |= fac_is.BoardTemperatureItlkSts;
     test |= fac_is.RelativeHumidityItlkSts;
 
@@ -112,8 +112,8 @@ void clear_fac_is_alarms()
     fac_is.TempIGBT1AlarmSts         = 0;
     fac_is.TempLAlarmSts             = 0;
     fac_is.TempHeatSinkAlarmSts      = 0;
-    fac_is.DriveVoltageAlarmSts      = 0;
-    fac_is.Drive1CurrentAlarmSts     = 0;
+    fac_is.DriverVoltageAlarmSts     = 0;
+    fac_is.Driver1CurrentAlarmSts    = 0;
     fac_is.BoardTemperatureAlarmSts  = 0;
     fac_is.RelativeHumidityAlarmSts  = 0;
 
@@ -132,8 +132,8 @@ uint8_t check_fac_is_alarms()
     test |= fac_is.TempIGBT1AlarmSts;
     test |= fac_is.TempLAlarmSts;
     test |= fac_is.TempHeatSinkAlarmSts;
-    test |= fac_is.DriveVoltageAlarmSts;
-    test |= fac_is.Drive1CurrentAlarmSts;
+    test |= fac_is.DriverVoltageAlarmSts;
+    test |= fac_is.Driver1CurrentAlarmSts;
     test |= fac_is.BoardTemperatureAlarmSts;
     test |= fac_is.RelativeHumidityAlarmSts;
 
@@ -186,8 +186,8 @@ void check_fac_is_indication_leds()
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Interlocks do Driver
-    if(fac_is.DriveVoltageItlkSts || fac_is.Drive1CurrentItlkSts) Led8TurnOff();
-    else if(fac_is.DriveVoltageAlarmSts || fac_is.Drive1CurrentAlarmSts) Led8Toggle();
+    if(fac_is.DriverVoltageItlkSts || fac_is.Driver1CurrentItlkSts) Led8TurnOff();
+    else if(fac_is.DriverVoltageAlarmSts || fac_is.Driver1CurrentAlarmSts) Led8Toggle();
     else Led8TurnOn();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -261,16 +261,16 @@ void fac_is_application_readings()
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //DriverVotage
-    fac_is.DriveVoltage.f = DriverVoltageRead();
-    fac_is.DriveVoltageAlarmSts = DriverVoltageAlarmStatusRead();
-    if(!fac_is.DriveVoltageItlkSts)fac_is.DriveVoltageItlkSts = DriverVolatgeTripStatusRead();
+    fac_is.DriverVoltage.f = DriverVoltageRead();
+    fac_is.DriverVoltageAlarmSts = DriverVoltageAlarmStatusRead();
+    if(!fac_is.DriverVoltageItlkSts)fac_is.DriverVoltageItlkSts = DriverVolatgeTripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Drive1Current
-    fac_is.Drive1Current.f = Driver1CurrentRead();
-    fac_is.Drive1CurrentAlarmSts = Driver1CurrentAlarmStatusRead();
-    if(!fac_is.Drive1CurrentItlkSts)fac_is.Drive1CurrentItlkSts = Driver1CurrentTripStatusRead();
+    fac_is.Driver1Current.f = Driver1CurrentRead();
+    fac_is.Driver1CurrentAlarmSts = Driver1CurrentAlarmStatusRead();
+    if(!fac_is.Driver1CurrentItlkSts)fac_is.Driver1CurrentItlkSts = Driver1CurrentTripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -307,8 +307,8 @@ void fac_is_application_readings()
     if (fac_is.IinItlkSts)                  itlk_id |= FAC_IS_INPUT_OVERCURRENT_ITLK;
     if (fac_is.TempIGBT1ItlkSts)            itlk_id |= FAC_IS_IGBT1_OVERTEMP_ITLK;
     if (fac_is.TempIGBT1HwrItlkSts)         itlk_id |= FAC_IS_IGBT1_HWR_OVERTEMP_ITLK;
-    if (fac_is.DriveVoltageItlkSts)         itlk_id |= FAC_IS_DRIVER_OVERVOLTAGE_ITLK;
-    if (fac_is.Drive1CurrentItlkSts)        itlk_id |= FAC_IS_DRIVER1_OVERCURRENT_ITLK;
+    if (fac_is.DriverVoltageItlkSts)        itlk_id |= FAC_IS_DRIVER_OVERVOLTAGE_ITLK;
+    if (fac_is.Driver1CurrentItlkSts)       itlk_id |= FAC_IS_DRIVER1_OVERCURRENT_ITLK;
     if (fac_is.Driver1ErrorTopItlkSts)      itlk_id |= FAC_IS_DRIVER1_ERROR_TOP_ITLK;
     if (fac_is.Driver1ErrorBotItlkSts)      itlk_id |= FAC_IS_DRIVER1_ERROR_BOT_ITLK;
     if (fac_is.TempLItlkSts)                itlk_id |= FAC_IS_INDUC_OVERTEMP_ITLK;
@@ -321,8 +321,8 @@ void fac_is_application_readings()
     if (fac_is.VdcLinkAlarmSts)             alarm_id |= FAC_IS_DCLINK_OVERVOLTAGE_ALM;
     if (fac_is.IinAlarmSts)                 alarm_id |= FAC_IS_INPUT_OVERCURRENT_ALM;
     if (fac_is.TempIGBT1AlarmSts)           alarm_id |= FAC_IS_IGBT1_OVERTEMP_ALM;
-    if (fac_is.DriveVoltageAlarmSts)        alarm_id |= FAC_IS_DRIVER_OVERVOLTAGE_ALM;
-    if (fac_is.Drive1CurrentAlarmSts)       alarm_id |= FAC_IS_DRIVER1_OVERCURRENT_ALM;
+    if (fac_is.DriverVoltageAlarmSts)       alarm_id |= FAC_IS_DRIVER_OVERVOLTAGE_ALM;
+    if (fac_is.Driver1CurrentAlarmSts)      alarm_id |= FAC_IS_DRIVER1_OVERCURRENT_ALM;
     if (fac_is.TempLAlarmSts)               alarm_id |= FAC_IS_INDUC_OVERTEMP_ALM;
     if (fac_is.TempHeatSinkAlarmSts)        alarm_id |= FAC_IS_HS_OVERTEMP_ALM;
     if (fac_is.BoardTemperatureAlarmSts)    alarm_id |= FAC_IS_BOARD_IIB_OVERTEMP_ALM;
@@ -342,8 +342,8 @@ void fac_is_application_readings()
     g_controller_iib.iib_signals[0].f       = fac_is.VdcLink.f;
     g_controller_iib.iib_signals[1].f       = fac_is.Iin.f;
     g_controller_iib.iib_signals[2].f       = fac_is.TempIGBT1.f;
-    g_controller_iib.iib_signals[3].f       = fac_is.DriveVoltage.f;
-    g_controller_iib.iib_signals[4].f       = fac_is.Drive1Current.f;
+    g_controller_iib.iib_signals[3].f       = fac_is.DriverVoltage.f;
+    g_controller_iib.iib_signals[4].f       = fac_is.Driver1Current.f;
     g_controller_iib.iib_signals[5].f       = fac_is.TempL.f;
     g_controller_iib.iib_signals[6].f       = fac_is.TempHeatSink.f;
     g_controller_iib.iib_signals[7].f       = fac_is.BoardTemperature.f;
@@ -452,12 +452,12 @@ void config_module_fac_is(void)
     fac_is.TempIGBT1ItlkSts           = 0;
     fac_is.TempIGBT1HwrItlk           = 0;
     fac_is.TempIGBT1HwrItlkSts        = 0;
-    fac_is.DriveVoltage.f             = 0.0;
-    fac_is.DriveVoltageAlarmSts       = 0;
-    fac_is.DriveVoltageItlkSts        = 0;
-    fac_is.Drive1Current.f            = 0.0;
-    fac_is.Drive1CurrentAlarmSts      = 0;
-    fac_is.Drive1CurrentItlkSts       = 0;
+    fac_is.DriverVoltage.f            = 0.0;
+    fac_is.DriverVoltageAlarmSts      = 0;
+    fac_is.DriverVoltageItlkSts       = 0;
+    fac_is.Driver1Current.f           = 0.0;
+    fac_is.Driver1CurrentAlarmSts     = 0;
+    fac_is.Driver1CurrentItlkSts      = 0;
     fac_is.Driver1ErrorTop            = 0;
     fac_is.Driver1ErrorTopItlkSts     = 0;
     fac_is.Driver1ErrorBot            = 0;

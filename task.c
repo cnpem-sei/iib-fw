@@ -44,8 +44,8 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-unsigned int Second = 0;
-unsigned char uSecond = 0;
+unsigned int mSecond = 0;
+unsigned int uSecond = 0;
 unsigned int _8Hz = 0;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -93,15 +93,14 @@ void ErrorCheckHandle(void)
 
 void task_100_us(void)
 {
+	if(uSecond >= 10)
+	{
+		uSecond = 0;
+	}
+	else uSecond++;
 
-    if (uSecond >= 10 )
-    {
-        uSecond = 0;
-    }
-    else uSecond++;
-
-    if(uSecond == 0)
-    {
+	if(uSecond == 0)
+	{
 
 #if (VoltageCh1Enable == 1)
 
@@ -222,8 +221,7 @@ void task_100_us(void)
 
 void task_1_ms(void)
 {
-
-    // timestamp for 8Hz tasks (no critical tasks)
+	// Timestamp for 8Hz tasks (no critical tasks)
     if(_8Hz >= 125)
     {
         _8Hz = 0;
@@ -231,15 +229,15 @@ void task_1_ms(void)
     }
     else _8Hz++;
 
-    // timestamp for 1 second tasks
-    if(Second >= 1000)
+    // Timestamp for 1ms tasks
+    if(mSecond >= 1000)
     {
-        Second = 0;
+        mSecond = 0;
     }
-    else Second++;
+    else mSecond++;
 
-    // trigger for 1s period tasks (no critical tasks)
-    switch(Second)
+    // Trigger for 1s period tasks (no critical tasks)
+    switch(mSecond)
     {
 
     case 20:

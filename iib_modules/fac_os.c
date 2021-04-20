@@ -78,9 +78,9 @@ void clear_fac_os_interlocks()
     fac_os.GroundLeakageItlkSts     = 0;
     fac_os.TempLItlkSts             = 0;
     fac_os.TempHeatSinkItlkSts      = 0;
-    fac_os.DriveVoltageItlkSts      = 0;
-    fac_os.Drive1CurrentItlkSts     = 0;
-    fac_os.Drive2CurrentItlkSts     = 0;
+    fac_os.DriverVoltageItlkSts     = 0;
+    fac_os.Driver1CurrentItlkSts    = 0;
+    fac_os.Driver2CurrentItlkSts    = 0;
     fac_os.BoardTemperatureItlkSts  = 0;
     fac_os.RelativeHumidityItlkSts  = 0;
 
@@ -108,9 +108,9 @@ uint8_t check_fac_os_interlocks()
     test |= fac_os.GroundLeakageItlkSts;
     test |= fac_os.TempLItlkSts;
     test |= fac_os.TempHeatSinkItlkSts;
-    test |= fac_os.DriveVoltageItlkSts;
-    test |= fac_os.Drive1CurrentItlkSts;
-    test |= fac_os.Drive2CurrentItlkSts;
+    test |= fac_os.DriverVoltageItlkSts;
+    test |= fac_os.Driver1CurrentItlkSts;
+    test |= fac_os.Driver2CurrentItlkSts;
     test |= fac_os.BoardTemperatureItlkSts;
     test |= fac_os.RelativeHumidityItlkSts;
 
@@ -129,9 +129,9 @@ void clear_fac_os_alarms()
     fac_os.GroundLeakageAlarmSts     = 0;
     fac_os.TempLAlarmSts             = 0;
     fac_os.TempHeatSinkAlarmSts      = 0;
-    fac_os.DriveVoltageAlarmSts      = 0;
-    fac_os.Drive1CurrentAlarmSts     = 0;
-    fac_os.Drive2CurrentAlarmSts     = 0;
+    fac_os.DriverVoltageAlarmSts     = 0;
+    fac_os.Driver1CurrentAlarmSts    = 0;
+    fac_os.Driver2CurrentAlarmSts    = 0;
     fac_os.BoardTemperatureAlarmSts  = 0;
     fac_os.RelativeHumidityAlarmSts  = 0;
 
@@ -153,9 +153,9 @@ uint8_t check_fac_os_alarms()
     test |= fac_os.GroundLeakageAlarmSts;
     test |= fac_os.TempLAlarmSts;
     test |= fac_os.TempHeatSinkAlarmSts;
-    test |= fac_os.DriveVoltageAlarmSts;
-    test |= fac_os.Drive1CurrentAlarmSts;
-    test |= fac_os.Drive2CurrentAlarmSts;
+    test |= fac_os.DriverVoltageAlarmSts;
+    test |= fac_os.Driver1CurrentAlarmSts;
+    test |= fac_os.Driver2CurrentAlarmSts;
     test |= fac_os.BoardTemperatureAlarmSts;
     test |= fac_os.RelativeHumidityAlarmSts;
 
@@ -215,8 +215,8 @@ void check_fac_os_indication_leds()
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Interlocks dos Drivers
-    if(fac_os.DriveVoltageItlkSts || fac_os.Drive1CurrentItlkSts || fac_os.Drive2CurrentItlkSts) Led9TurnOff();
-    else if(fac_os.DriveVoltageAlarmSts || fac_os.Drive1CurrentAlarmSts || fac_os.Drive2CurrentAlarmSts) Led9Toggle();
+    if(fac_os.DriverVoltageItlkSts || fac_os.Driver1CurrentItlkSts || fac_os.Driver2CurrentItlkSts) Led9TurnOff();
+    else if(fac_os.DriverVoltageAlarmSts || fac_os.Driver1CurrentAlarmSts || fac_os.Driver2CurrentAlarmSts) Led9Toggle();
     else Led9TurnOn();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -296,23 +296,23 @@ void fac_os_application_readings()
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //DriverVotage
-    fac_os.DriveVoltage.f = DriverVoltageRead();
-    fac_os.DriveVoltageAlarmSts = DriverVoltageAlarmStatusRead();
-    if(!fac_os.DriveVoltageItlkSts)fac_os.DriveVoltageItlkSts = DriverVolatgeTripStatusRead();
+    fac_os.DriverVoltage.f = DriverVoltageRead();
+    fac_os.DriverVoltageAlarmSts = DriverVoltageAlarmStatusRead();
+    if(!fac_os.DriverVoltageItlkSts)fac_os.DriverVoltageItlkSts = DriverVolatgeTripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Drive1Current
-    fac_os.Drive1Current.f = Driver1CurrentRead();
-    fac_os.Drive1CurrentAlarmSts = Driver1CurrentAlarmStatusRead();
-    if(!fac_os.Drive1CurrentItlkSts)fac_os.Drive1CurrentItlkSts = Driver1CurrentTripStatusRead();
+    fac_os.Driver1Current.f = Driver1CurrentRead();
+    fac_os.Driver1CurrentAlarmSts = Driver1CurrentAlarmStatusRead();
+    if(!fac_os.Driver1CurrentItlkSts)fac_os.Driver1CurrentItlkSts = Driver1CurrentTripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Drive2Current
-    fac_os.Drive2Current.f = Driver2CurrentRead();
-    fac_os.Drive2CurrentAlarmSts = Driver2CurrentAlarmStatusRead();
-    if(!fac_os.Drive2CurrentItlkSts)fac_os.Drive2CurrentItlkSts = Driver2CurrentTripStatusRead();
+    fac_os.Driver2Current.f = Driver2CurrentRead();
+    fac_os.Driver2CurrentAlarmSts = Driver2CurrentAlarmStatusRead();
+    if(!fac_os.Driver2CurrentItlkSts)fac_os.Driver2CurrentItlkSts = Driver2CurrentTripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -378,9 +378,9 @@ void fac_os_application_readings()
     if (fac_os.TempIGBT1HwrItlkSts)         itlk_id |= FAC_OS_IGBT1_HWR_OVERTEMP_ITLK;
     if (fac_os.TempIGBT2ItlkSts)            itlk_id |= FAC_OS_IGBT2_OVERTEMP_ITLK;
     if (fac_os.TempIGBT2HwrItlkSts)         itlk_id |= FAC_OS_IGBT2_HWR_OVERTEMP_ITLK;
-    if (fac_os.DriveVoltageItlkSts)         itlk_id |= FAC_OS_DRIVER_OVERVOLTAGE_ITLK;
-    if (fac_os.Drive1CurrentItlkSts)        itlk_id |= FAC_OS_DRIVER1_OVERCURRENT_ITLK;
-    if (fac_os.Drive2CurrentItlkSts)        itlk_id |= FAC_OS_DRIVER2_OVERCURRENT_ITLK;
+    if (fac_os.DriverVoltageItlkSts)        itlk_id |= FAC_OS_DRIVER_OVERVOLTAGE_ITLK;
+    if (fac_os.Driver1CurrentItlkSts)       itlk_id |= FAC_OS_DRIVER1_OVERCURRENT_ITLK;
+    if (fac_os.Driver2CurrentItlkSts)       itlk_id |= FAC_OS_DRIVER2_OVERCURRENT_ITLK;
     if (fac_os.Driver1ErrorTopItlkSts)      itlk_id |= FAC_OS_DRIVER1_ERROR_TOP_ITLK;
     if (fac_os.Driver1ErrorBotItlkSts)      itlk_id |= FAC_OS_DRIVER1_ERROR_BOT_ITLK;
     if (fac_os.Driver2ErrorTopItlkSts)      itlk_id |= FAC_OS_DRIVER2_ERROR_TOP_ITLK;
@@ -398,9 +398,9 @@ void fac_os_application_readings()
     if (fac_os.IoutAlarmSts)                alarm_id |= FAC_OS_OUTPUT_OVERCURRENT_ALM;
     if (fac_os.TempIGBT1AlarmSts)           alarm_id |= FAC_OS_IGBT1_OVERTEMP_ALM;
     if (fac_os.TempIGBT2AlarmSts)           alarm_id |= FAC_OS_IGBT2_OVERTEMP_ALM;
-    if (fac_os.DriveVoltageAlarmSts)        alarm_id |= FAC_OS_DRIVER_OVERVOLTAGE_ALM;
-    if (fac_os.Drive1CurrentAlarmSts)       alarm_id |= FAC_OS_DRIVER1_OVERCURRENT_ALM;
-    if (fac_os.Drive2CurrentAlarmSts)       alarm_id |= FAC_OS_DRIVER2_OVERCURRENT_ALM;
+    if (fac_os.DriverVoltageAlarmSts)       alarm_id |= FAC_OS_DRIVER_OVERVOLTAGE_ALM;
+    if (fac_os.Driver1CurrentAlarmSts)      alarm_id |= FAC_OS_DRIVER1_OVERCURRENT_ALM;
+    if (fac_os.Driver2CurrentAlarmSts)      alarm_id |= FAC_OS_DRIVER2_OVERCURRENT_ALM;
     if (fac_os.TempLAlarmSts)               alarm_id |= FAC_OS_INDUC_OVERTEMP_ALM;
     if (fac_os.TempHeatSinkAlarmSts)        alarm_id |= FAC_OS_HS_OVERTEMP_ALM;
     if (fac_os.GroundLeakageAlarmSts)       alarm_id |= FAC_OS_GROUND_LKG_ALM;
@@ -423,9 +423,9 @@ void fac_os_application_readings()
     g_controller_iib.iib_signals[2].f       = fac_os.Iout.f;
     g_controller_iib.iib_signals[3].f       = fac_os.TempIGBT1.f;
     g_controller_iib.iib_signals[4].f       = fac_os.TempIGBT2.f;
-    g_controller_iib.iib_signals[5].f       = fac_os.DriveVoltage.f;
-    g_controller_iib.iib_signals[6].f       = fac_os.Drive1Current.f;
-    g_controller_iib.iib_signals[7].f       = fac_os.Drive2Current.f;
+    g_controller_iib.iib_signals[5].f       = fac_os.DriverVoltage.f;
+    g_controller_iib.iib_signals[6].f       = fac_os.Driver1Current.f;
+    g_controller_iib.iib_signals[7].f       = fac_os.Driver2Current.f;
     g_controller_iib.iib_signals[8].f       = fac_os.GroundLeakage.f;
     g_controller_iib.iib_signals[9].f       = fac_os.TempL.f;
     g_controller_iib.iib_signals[10].f      = fac_os.TempHeatSink.f;
@@ -562,15 +562,15 @@ void config_module_fac_os(void)
     fac_os.TempIGBT2ItlkSts             = 0;
     fac_os.TempIGBT2HwrItlk             = 0;
     fac_os.TempIGBT2HwrItlkSts          = 0;
-    fac_os.DriveVoltage.f               = 0.0;
-    fac_os.DriveVoltageAlarmSts         = 0;
-    fac_os.DriveVoltageItlkSts          = 0;
-    fac_os.Drive1Current.f              = 0.0;
-    fac_os.Drive1CurrentAlarmSts        = 0;
-    fac_os.Drive1CurrentItlkSts         = 0;
-    fac_os.Drive2Current.f              = 0.0;
-    fac_os.Drive2CurrentAlarmSts        = 0;
-    fac_os.Drive2CurrentItlkSts         = 0;
+    fac_os.DriverVoltage.f              = 0.0;
+    fac_os.DriverVoltageAlarmSts        = 0;
+    fac_os.DriverVoltageItlkSts         = 0;
+    fac_os.Driver1Current.f             = 0.0;
+    fac_os.Driver1CurrentAlarmSts       = 0;
+    fac_os.Driver1CurrentItlkSts        = 0;
+    fac_os.Driver2Current.f             = 0.0;
+    fac_os.Driver2CurrentAlarmSts       = 0;
+    fac_os.Driver2CurrentItlkSts        = 0;
     fac_os.Driver1ErrorTop              = 0;
     fac_os.Driver1ErrorTopItlkSts       = 0;
     fac_os.Driver1ErrorBot              = 0;

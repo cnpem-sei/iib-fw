@@ -63,18 +63,18 @@ typedef struct
     union {
         float       f;
         uint8_t     u8[4];
-    } DriveVoltage;
+    } DriverVoltage;
 
-    bool DriveVoltageAlarmSts;
-    bool DriveVoltageItlkSts;
+    bool DriverVoltageAlarmSts;
+    bool DriverVoltageItlkSts;
 
     union {
         float       f;
         uint8_t     u8[4];
-    } Drive1Current;
+    } Driver1Current;
 
-    bool Drive1CurrentAlarmSts;
-    bool Drive1CurrentItlkSts;
+    bool Driver1CurrentAlarmSts;
+    bool Driver1CurrentItlkSts;
 
     bool Driver1ErrorTop;
     bool Driver1ErrorTopItlkSts;
