@@ -539,9 +539,13 @@ void BoardTask(void)
 
   else if (SendCanDataTask)
   {
-	  // Usado para testes com leituras rapidas, comentar linha ao usar.
+	  // Usado para testes com leituras rapidas.
+
+#if (Fast_CAN == 0)
 
 	  send_data_schedule();
+
+#endif
 
       SendCanDataTask = 0;
   }

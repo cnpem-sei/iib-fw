@@ -22,6 +22,7 @@
 #include "driverlib/i2c.h"
 #include "driverlib/pin_map.h"
 #include "driverlib/interrupt.h"
+#include "driverlib/timer.h"
 #include "i2c_driver.h"
 #include "board_drivers/hardware_def.h"
 #include "peripheral_drivers/gpio/gpio_driver.h"
@@ -29,30 +30,12 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-#define I2C_MASTER_CMD_BURST_RECEIVE_STOP                               \
-                                0x00000004
+static uint32_t Wait = 6;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-bool I2CWhileMasterBusy(uint32_t ui32Base)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(_I2CBaseValid(ui32Base));
-
-    //
-    // Return the status master interrupt
-    //
-    if(HWREG(ui32Base + I2C_O_MRIS) & I2C_MRIS_RIS)
-    {
-        return(true);
-    }
-    else
-    {
-        return(false);
-    }
-}
+#define I2C_MASTER_CMD_BURST_RECEIVE_STOP                               \
+                                0x00000004
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -149,14 +132,14 @@ void I2C2Send(uint8_t slave_addr, uint8_t num_of_args, ...)
     // single send I2C function
     if(num_of_args == 1)
     {
-    	// Clear the RIS bit (master interrupt)
-    	I2CMasterIntClear(I2C2_BASE);
-
     	// Initiate send of data from the MCU
         I2CMasterControl(I2C2_BASE, I2C_MASTER_CMD_SINGLE_SEND);
 
         // Wait until MCU is done transferring.
-        while(!I2CWhileMasterBusy(I2C2_BASE));
+        delay_us(Wait);
+
+        // Wait until MCU is done transferring.
+        while(I2CMasterBusy(I2C2_BASE));
 
         // "close" variable argument list
         va_end(vargs);
@@ -166,14 +149,14 @@ void I2C2Send(uint8_t slave_addr, uint8_t num_of_args, ...)
     // I2C bus
     else
     {
-    	// Clear the RIS bit (master interrupt)
-    	I2CMasterIntClear(I2C2_BASE);
-
     	// Initiate send of data from the MCU
         I2CMasterControl(I2C2_BASE, I2C_MASTER_CMD_BURST_SEND_START);
 
         // Wait until MCU is done transferring.
-        while(!I2CWhileMasterBusy(I2C2_BASE));
+        delay_us(Wait);
+
+        // Wait until MCU is done transferring.
+        while(I2CMasterBusy(I2C2_BASE));
 
         // send num_of_args-2 pieces of data, using the
         // BURST_SEND_CONT command of the I2C module
@@ -184,27 +167,28 @@ void I2C2Send(uint8_t slave_addr, uint8_t num_of_args, ...)
             // put next piece of data into I2C FIFO
             I2CMasterDataPut(I2C2_BASE, va_arg(vargs, uint32_t));
 
-            // Clear the RIS bit (master interrupt)
-            I2CMasterIntClear(I2C2_BASE);
-
             // send next data that was just placed into FIFO
             I2CMasterControl(I2C2_BASE, I2C_MASTER_CMD_BURST_SEND_CONT);
 
             // Wait until MCU is done transferring.
-            while(!I2CWhileMasterBusy(I2C2_BASE));
+            delay_us(Wait);
+
+            // Wait until MCU is done transferring.
+            while(I2CMasterBusy(I2C2_BASE));
+
         }
 
         // put last piece of data into I2C FIFO
         I2CMasterDataPut(I2C2_BASE, va_arg(vargs, uint32_t));
 
-        // Clear the RIS bit (master interrupt)
-        I2CMasterIntClear(I2C2_BASE);
-
         // send next data that was just placed into FIFO
         I2CMasterControl(I2C2_BASE, I2C_MASTER_CMD_BURST_SEND_FINISH);
 
         // Wait until MCU is done transferring.
-        while(!I2CWhileMasterBusy(I2C2_BASE));
+        delay_us(Wait);
+
+        // Wait until MCU is done transferring.
+        while(I2CMasterBusy(I2C2_BASE));
 
         // "close" variable args list
         va_end(vargs);
@@ -228,49 +212,49 @@ uint16_t I2C2Receive(uint32_t slave_addr, uint8_t reg)
     // specify register to be read
     I2CMasterDataPut(I2C2_BASE, reg);
 
-    // Clear the RIS bit (master interrupt)
-    I2CMasterIntClear(I2C2_BASE);
-
     // send control byte and register address byte to slave device
     I2CMasterControl(I2C2_BASE, I2C_MASTER_CMD_SINGLE_SEND);
 
     // Wait until MCU is done transferring.
-    while(!I2CWhileMasterBusy(I2C2_BASE));
+    delay_us(Wait);
+
+    // Wait until MCU is done transferring.
+    while(I2CMasterBusy(I2C2_BASE));
 
     // specify that we are going to read from slave device
     I2CMasterSlaveAddrSet(I2C2_BASE, slave_addr, true);
-
-    // Clear the RIS bit (master interrupt)
-    I2CMasterIntClear(I2C2_BASE);
 
     // send control byte and read from the register we
     // specified
     I2CMasterControl(I2C2_BASE, I2C_MASTER_CMD_BURST_RECEIVE_START);
 
     // Wait until MCU is done transferring.
-    while(!I2CWhileMasterBusy(I2C2_BASE));
+    delay_us(Wait);
+
+    // Wait until MCU is done transferring.
+    while(I2CMasterBusy(I2C2_BASE));
 
     // return 1st byte pulled from the specified register
     data[0] = (uint8_t)I2CMasterDataGet(I2C2_BASE);
 
-    // Clear the RIS bit (master interrupt)
-    I2CMasterIntClear(I2C2_BASE);
-
     I2CMasterControl(I2C2_BASE, I2C_MASTER_CMD_BURST_RECEIVE_CONT);
 
     // Wait until MCU is done transferring.
-    while(!I2CWhileMasterBusy(I2C2_BASE));
+    delay_us(Wait);
+
+    // Wait until MCU is done transferring.
+    while(I2CMasterBusy(I2C2_BASE));
 
     // return 2th byte pulled from the specified register
     data[1] = (uint8_t)I2CMasterDataGet(I2C2_BASE);
 
-    // Clear the RIS bit (master interrupt)
-    I2CMasterIntClear(I2C2_BASE);
-
     I2CMasterControl(I2C2_BASE, I2C_MASTER_CMD_BURST_RECEIVE_STOP);
 
     // Wait until MCU is done transferring.
-    while(!I2CWhileMasterBusy(I2C2_BASE));
+    delay_us(Wait);
+
+    // Wait until MCU is done transferring.
+    while(I2CMasterBusy(I2C2_BASE));
 
     value = (data[0] << 8) | data[1];
 
@@ -301,14 +285,14 @@ void I2C5Send(uint8_t slave_addr, uint8_t num_of_args, ...)
     // single send I2C function
     if(num_of_args == 1)
     {
-    	//  Clear the RIS bit (master interrupt)
-    	I2CMasterIntClear(I2C5_BASE);
-
     	// Initiate send of data from the MCU
         I2CMasterControl(I2C5_BASE, I2C_MASTER_CMD_SINGLE_SEND);
 
         // Wait until MCU is done transferring.
-        while(!I2CWhileMasterBusy(I2C5_BASE));
+        delay_us(Wait);
+
+        // Wait until MCU is done transferring.
+        while(I2CMasterBusy(I2C5_BASE));
 
         // "close" variable argument list
         va_end(vargs);
@@ -318,14 +302,14 @@ void I2C5Send(uint8_t slave_addr, uint8_t num_of_args, ...)
     // I2C bus
     else
     {
-    	// Clear the RIS bit (master interrupt)
-    	I2CMasterIntClear(I2C5_BASE);
-
     	// Initiate send of data from the MCU
         I2CMasterControl(I2C5_BASE, I2C_MASTER_CMD_BURST_SEND_START);
 
         // Wait until MCU is done transferring.
-        while(!I2CWhileMasterBusy(I2C5_BASE));
+        delay_us(Wait);
+
+        // Wait until MCU is done transferring.
+        while(I2CMasterBusy(I2C5_BASE));
 
         // send num_of_args-2 pieces of data, using the
         // BURST_SEND_CONT command of the I2C module
@@ -336,27 +320,28 @@ void I2C5Send(uint8_t slave_addr, uint8_t num_of_args, ...)
             // put next piece of data into I2C FIFO
             I2CMasterDataPut(I2C5_BASE, va_arg(vargs, uint32_t));
 
-            // Clear the RIS bit (master interrupt)
-            I2CMasterIntClear(I2C5_BASE);
-
             // send next data that was just placed into FIFO
             I2CMasterControl(I2C5_BASE, I2C_MASTER_CMD_BURST_SEND_CONT);
 
             // Wait until MCU is done transferring.
-            while(!I2CWhileMasterBusy(I2C5_BASE));
+            delay_us(Wait);
+
+            // Wait until MCU is done transferring.
+            while(I2CMasterBusy(I2C5_BASE));
+
         }
 
         // put last piece of data into I2C FIFO
         I2CMasterDataPut(I2C5_BASE, va_arg(vargs, uint32_t));
 
-        // Clear the RIS bit (master interrupt)
-        I2CMasterIntClear(I2C5_BASE);
-
         // send next data that was just placed into FIFO
         I2CMasterControl(I2C5_BASE, I2C_MASTER_CMD_BURST_SEND_FINISH);
 
         // Wait until MCU is done transferring.
-        while(!I2CWhileMasterBusy(I2C5_BASE));
+        delay_us(Wait);
+
+        // Wait until MCU is done transferring.
+        while(I2CMasterBusy(I2C5_BASE));
 
         // "close" variable args list
         va_end(vargs);
@@ -385,14 +370,14 @@ uint16_t I2C5Receive(uint32_t slave_addr, uint8_t reg, bool size, uint8_t select
     // specify register to be read
     I2CMasterDataPut(I2C5_BASE, reg);
 
-    // Clear the RIS bit (master interrupt)
-    I2CMasterIntClear(I2C5_BASE);
-
     // send control byte and register address byte to slave device
     I2CMasterControl(I2C5_BASE, I2C_MASTER_CMD_BURST_SEND_START);
 
     // Wait until MCU is done transferring.
-    while(!I2CWhileMasterBusy(I2C5_BASE));
+    delay_us(Wait);
+
+    // Wait until MCU is done transferring.
+    while(I2CMasterBusy(I2C5_BASE));
 
 //*******************************************************************************************
 
@@ -401,26 +386,26 @@ uint16_t I2C5Receive(uint32_t slave_addr, uint8_t reg, bool size, uint8_t select
     	// specify that we are going to read from slave device
     	I2CMasterSlaveAddrSet(I2C5_BASE, slave_addr, true);
 
-    	// Clear the RIS bit (master interrupt)
-    	I2CMasterIntClear(I2C5_BASE);
-
     	// send control byte and read from the register we
     	// specified
     	I2CMasterControl(I2C5_BASE, I2C_MASTER_CMD_BURST_RECEIVE_START);
 
     	// Wait until MCU is done transferring.
-    	while(!I2CWhileMasterBusy(I2C5_BASE));
+    	delay_us(Wait);
+
+    	// Wait until MCU is done transferring.
+        while(I2CMasterBusy(I2C5_BASE));
 
     	// return 1st byte pulled from the specified register
     	data[0] = (uint8_t)I2CMasterDataGet(I2C5_BASE);
 
-    	// Clear the RIS bit (master interrupt)
-    	I2CMasterIntClear(I2C5_BASE);
-
     	I2CMasterControl(I2C5_BASE, I2C_MASTER_CMD_BURST_RECEIVE_FINISH);
 
     	// Wait until MCU is done transferring.
-    	while(!I2CWhileMasterBusy(I2C5_BASE));
+    	delay_us(Wait);
+
+    	// Wait until MCU is done transferring.
+        while(I2CMasterBusy(I2C5_BASE));
 
     	// return 2th byte pulled from the specified register
     	data[1] = (uint8_t)I2CMasterDataGet(I2C5_BASE);
@@ -433,15 +418,15 @@ uint16_t I2C5Receive(uint32_t slave_addr, uint8_t reg, bool size, uint8_t select
     	// specify that we are going to read from slave device
     	I2CMasterSlaveAddrSet(I2C5_BASE, slave_addr, true);
 
-    	// Clear the RIS bit (master interrupt)
-    	I2CMasterIntClear(I2C5_BASE);
-
     	// send control byte and read from the register we
     	// specified
     	I2CMasterControl(I2C5_BASE, I2C_MASTER_CMD_SINGLE_RECEIVE);
 
     	// Wait until MCU is done transferring.
-    	while(!I2CWhileMasterBusy(I2C5_BASE));
+    	delay_us(Wait);
+
+    	// Wait until MCU is done transferring.
+        while(I2CMasterBusy(I2C5_BASE));
 
     	// return 1st byte pulled from the specified register
     	data[0] = (uint8_t)I2CMasterDataGet(I2C5_BASE);
