@@ -64,7 +64,6 @@ bool InterlockAlarmCheckTask = 0;
 bool DriverVoltReadTask      = 0;
 bool Driver1CurrtReadTask    = 0;
 bool Driver2CurrtReadTask    = 0;
-bool SendCanDataTask         = 0;
 bool StartNtcTask            = 0;
 bool NtcReadTask             = 0;
 
@@ -241,35 +240,31 @@ void task_1_ms(void)
     {
 
     case 20:
-    	SendCanDataTask = 1;        	// 80ms
-    	break;
-
-    case 100:
     	TempPt100Ch1ReadTask = 1;   	// 100ms
     	break;
 
-    case 200:
+    case 120:
     	DriverVoltReadTask = 1;			// 30ms
     	break;
 
-    case 230:
+    case 150:
     	TempPt100Ch2ReadTask = 1;		// 100ms
     	break;
 
-    case 330:
+    case 250:
     	Driver1CurrtReadTask = 1;		// 30ms
     	break;
 
-    case 360:
-    	TempPt100Ch3ReadTask = 1;		// 20ms
+    case 280:
+    	TempPt100Ch3ReadTask = 1;		// 60ms
     	break;
 
-    case 380:
+    case 340:
     	Driver2CurrtReadTask = 1;		// 30ms
     	break;
 
-    case 410:
-    	TempPt100Ch4ReadTask = 1;		// 20ms
+    case 370:
+    	TempPt100Ch4ReadTask = 1;		// 60ms
     	break;
 
     case 430:
@@ -307,6 +302,7 @@ void task_1_ms(void)
     case 1000:
 
     	break;
+
     default:
 
     	break;
@@ -533,21 +529,6 @@ void BoardTask(void)
       LedIndicationStatus();
 
       LedUpdateTask = 0;
-  }
-
-//*******************************************************************************************
-
-  else if (SendCanDataTask)
-  {
-	  // Usado para testes com leituras rapidas.
-
-#if (Fast_CAN == 0)
-
-	  send_data_schedule();
-
-#endif
-
-      SendCanDataTask = 0;
   }
 
 //*******************************************************************************************

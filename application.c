@@ -257,8 +257,6 @@ void InterlockAppCheck(void)
     if(test)
     {
         InterlockSet();
-
-        send_itlk_message(0);
     }
 }
 
@@ -305,8 +303,6 @@ void AlarmAppCheck(void)
     if(test)
     {
         AlarmSet();
-
-        send_alarm_message(0);
     }
 }
 
@@ -460,7 +456,7 @@ void send_data_schedule()
 
     i++;
 
-    if (i > 13) i = 0;
+    if (i > 7) i = 0;
 
 #endif
 
@@ -474,7 +470,7 @@ void send_data_schedule()
 
     i++;
 
-    if (i > 12) i = 0;
+    if (i > 7) i = 0;
 
 #endif
 
@@ -488,7 +484,7 @@ void send_data_schedule()
 
     i++;
 
-    if (i > 8) i = 0;
+    if (i > 5) i = 0;
 
 #endif
 
@@ -502,7 +498,7 @@ void send_data_schedule()
 
     i++;
 
-    if (i > 9) i = 0;
+    if (i > 5) i = 0;
 
 #endif
 

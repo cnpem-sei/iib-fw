@@ -7,6 +7,9 @@
  *  Created on: 16 de abr de 2021
  *      Author: rogerio.marcondeli
  */
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 #include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
@@ -123,14 +126,7 @@ void IntTimer100msHandler(void)
     // Clear the timer 3 interrupt.
     TimerIntClear(TIMER3_BASE, TIMER_TIMA_TIMEOUT);
 
-    // Usado para testes com leituras rapidas.
-
-#if (Fast_CAN == 1)
-
     send_data_schedule();
-
-#endif
-
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -253,7 +249,7 @@ void Timer_100ms_Init(void)
 
     // Configure the two 32-bit periodic timers.
     TimerConfigure(TIMER3_BASE, TIMER_CFG_PERIODIC);
-    TimerLoadSet(TIMER3_BASE, TIMER_A, (SYSCLOCK / 142) - 1); //10Hz
+    TimerLoadSet(TIMER3_BASE, TIMER_A, (SYSCLOCK / 10) - 1);
 
     // Setup the interrupts for the timer timeouts.
     IntEnable(INT_TIMER3A);
