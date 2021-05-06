@@ -3754,8 +3754,6 @@ extern fap_t fap;
 
 #ifdef GIGA_TESTES_IIBs
 
-#define Fast_CAN                                ON
-
 #define FAP
 
 #define ON                                      1
