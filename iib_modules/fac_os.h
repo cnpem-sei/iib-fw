@@ -852,7 +852,7 @@ extern fac_os_t fac_os;
 
 //Set Power Module Alarms And Interlocks
 
-//Rack
+//Rack EMA:B:PS01
 
 //FAC_DCDC_EMA__OS
 
