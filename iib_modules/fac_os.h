@@ -852,7 +852,7 @@ extern fac_os_t fac_os;
 
 //Set Power Module Alarms And Interlocks
 
-//Rack
+//Rack EMA:B:PS01
 
 //FAC_DCDC_EMA__OS
 
@@ -921,7 +921,7 @@ extern fac_os_t fac_os;
 #define Hall_Burden_Resistor                                50.0
 
 //Debouncing delay_us
-#define Hall_Delay                                          2
+#define Hall_Delay                                          2000
 
 #define CurrentCh1Enable                                    ON
 #define CurrentCh2Enable                                    ON
