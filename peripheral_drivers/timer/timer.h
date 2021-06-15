@@ -20,11 +20,11 @@ extern void delay_ms(uint32_t time);
 extern void IntTimer1usHandler(void);
 extern void IntTimer100usHandler(void);
 extern void IntTimer1msHandler(void);
-extern void IntTimer100msHandler(void);
+extern void IntTimerCanBusHandler(void);
 extern void Timer_1us_Init(void);
 extern void Timer_100us_Init(void);
 extern void Timer_1ms_Init(void);
-extern void Timer_100ms_Init(void);
+extern void Timer_Can_Bus_Init(void);
 extern uint32_t SysCtlClockGetTM4C129(void);
 
 /////////////////////////////////////////////////////////////////////////////////////////////

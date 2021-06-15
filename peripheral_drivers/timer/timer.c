@@ -63,6 +63,38 @@ volatile static uint32_t millis = 0;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
+#ifdef FAP
+
+#define Timer_CAN_BUS			80 // 10Hz cada ID de Mensagem, 8 mensages em 1/12.5ms
+
+#endif
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+#ifdef FAC_OS
+
+#define Timer_CAN_BUS			80 // 10Hz cada ID de Mensagem, 8 mensages em 1/12.5ms
+
+#endif
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+#ifdef FAC_IS
+
+#define Timer_CAN_BUS			60 // 10Hz cada ID de Mensagem, 6 mensages em 1/16.6ms
+
+#endif
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+#ifdef FAC_CMD
+
+#define Timer_CAN_BUS			60 // 10Hz cada ID de Mensagem, 6 mensages em 1/16.6ms
+
+#endif
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 void delay_us(uint32_t time)
 {
     volatile uint32_t temp = micros;
@@ -121,7 +153,7 @@ void IntTimer1msHandler(void)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void IntTimer100msHandler(void)
+void IntTimerCanBusHandler(void)
 {
     // Clear the timer 3 interrupt.
     TimerIntClear(TIMER3_BASE, TIMER_TIMA_TIMEOUT);
@@ -230,7 +262,7 @@ void Timer_1ms_Init(void)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void Timer_100ms_Init(void)
+void Timer_Can_Bus_Init(void)
 {
     // Disable timer 3 peripheral
     SysCtlPeripheralDisable(SYSCTL_PERIPH_TIMER3);
@@ -249,12 +281,12 @@ void Timer_100ms_Init(void)
 
     // Configure the two 32-bit periodic timers.
     TimerConfigure(TIMER3_BASE, TIMER_CFG_PERIODIC);
-    TimerLoadSet(TIMER3_BASE, TIMER_A, (SYSCLOCK / 10) - 1);
+    TimerLoadSet(TIMER3_BASE, TIMER_A, (SYSCLOCK / Timer_CAN_BUS) - 1);
 
     // Setup the interrupts for the timer timeouts.
     IntEnable(INT_TIMER3A);
     TimerIntEnable(TIMER3_BASE, TIMER_TIMA_TIMEOUT);
-    TimerIntRegister(TIMER3_BASE, TIMER_A, IntTimer100msHandler);
+    TimerIntRegister(TIMER3_BASE, TIMER_A, IntTimerCanBusHandler);
     IntPrioritySet(INT_TIMER3A, 3);
 
     // Enable the timer 3.
