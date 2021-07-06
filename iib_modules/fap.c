@@ -351,9 +351,9 @@ void fap_application_readings()
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Medida de Fuga para o Terra
-    fap.GroundLeakage.f = LvCurrentCh3Read();
-    fap.GroundLeakageAlarmSts = LvCurrentCh3AlarmStatusRead();
-    if(!fap.GroundLeakageItlkSts)fap.GroundLeakageItlkSts = LvCurrentCh3TripStatusRead();
+    fap.GroundLeakage.f = VoltageCh1Read();
+    fap.GroundLeakageAlarmSts = VoltageCh1AlarmStatusRead();
+    if(!fap.GroundLeakageItlkSts)fap.GroundLeakageItlkSts = VoltageCh1TripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -595,14 +595,19 @@ void config_module_fap(void)
     //Leitura de tensão isolada
     LvCurrentCh1Init(LV_Primary_Voltage_Vin, LV_Secondary_Current_Vin, LV_Burden_Resistor, Delay_Vin); // Vin
     LvCurrentCh2Init(LV_Primary_Voltage_Vout, LV_Secondary_Current_Vin, LV_Burden_Resistor, Delay_Vout); // Vout
-    LvCurrentCh3Init(LV_Primary_Voltage_GND_Leakage, LV_Secondary_Current_Vin, LV_Burden_Resistor, Delay_GND_Leakage); // Ground Leakage
 
     LvCurrentCh1AlarmLevelSet(FAP_INPUT_OVERVOLTAGE_ALM_LIM);  //Tensão de entrada Alarme
     LvCurrentCh1TripLevelSet(FAP_INPUT_OVERVOLTAGE_ITLK_LIM);  //Tensão de entrada Interlock
     LvCurrentCh2AlarmLevelSet(FAP_OUTPUT_OVERVOLTAGE_ALM_LIM); //Tensão de saída Alarme
     LvCurrentCh2TripLevelSet(FAP_OUTPUT_OVERVOLTAGE_ITLK_LIM); //Tensão de saída Interlock
-    LvCurrentCh3AlarmLevelSet(FAP_GROUND_LEAKAGE_ALM_LIM);     //Fuga para o terra alarme
-    LvCurrentCh3TripLevelSet(FAP_GROUND_LEAKAGE_ITLK_LIM);     //Fuga para o terra interlock
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+    //Leitura de tensão
+    VoltageCh1Init(Current_GND_Leakage, Delay_GND_Leakage); //Ground Leakage
+
+    VoltageCh1AlarmLevelSet(FAP_GROUND_LEAKAGE_ALM_LIM); //Fuga para o terra alarme
+    VoltageCh1TripLevelSet(FAP_GROUND_LEAKAGE_ITLK_LIM); //Fuga para o terra interlock
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

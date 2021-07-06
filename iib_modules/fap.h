@@ -243,8 +243,8 @@ extern fap_t fap;
 #define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM        85.0
 #define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM       90.0
 
-#define FAP_GROUND_LEAKAGE_ALM_LIM              45.0
-#define FAP_GROUND_LEAKAGE_ITLK_LIM             50.0
+#define FAP_GROUND_LEAKAGE_ALM_LIM              0.0
+#define FAP_GROUND_LEAKAGE_ITLK_LIM             0.0
 
 #define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
 #define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
@@ -305,8 +305,6 @@ extern fap_t fap;
 
 #define LV_Primary_Voltage_Vout                 302.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_GND_Leakage          50.0
-
 #define LV_Secondary_Current_Vin                0.025
 
 #define LV_Burden_Resistor                      120.0
@@ -316,9 +314,6 @@ extern fap_t fap;
 
 //Debouncing delay_us
 #define Delay_Vout                              100
-
-//Debouncing delay_us
-#define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
@@ -391,6 +386,13 @@ extern fap_t fap;
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //Voltage configuration
+
+//VoltageCh1 convert to Current
+
+#define Current_GND_Leakage                     0.0
+
+//Debouncing delay_us
+#define Delay_GND_Leakage                       0
 
 #define VoltageCh1Enable                        OFF
 #define VoltageCh2Enable                        OFF
@@ -463,8 +465,8 @@ extern fap_t fap;
 #define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM        85.0
 #define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM       90.0
 
-#define FAP_GROUND_LEAKAGE_ALM_LIM              45.0
-#define FAP_GROUND_LEAKAGE_ITLK_LIM             50.0
+#define FAP_GROUND_LEAKAGE_ALM_LIM              0.0
+#define FAP_GROUND_LEAKAGE_ITLK_LIM             0.0
 
 #define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
 #define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
@@ -525,8 +527,6 @@ extern fap_t fap;
 
 #define LV_Primary_Voltage_Vout                 302.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_GND_Leakage          50.0
-
 #define LV_Secondary_Current_Vin                0.025
 
 #define LV_Burden_Resistor                      120.0
@@ -536,9 +536,6 @@ extern fap_t fap;
 
 //Debouncing delay_us
 #define Delay_Vout                              100
-
-//Debouncing delay_us
-#define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
@@ -611,6 +608,13 @@ extern fap_t fap;
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //Voltage configuration
+
+//VoltageCh1 convert to Current
+
+#define Current_GND_Leakage                     0.0
+
+//Debouncing delay_us
+#define Delay_GND_Leakage                       0
 
 #define VoltageCh1Enable                        OFF
 #define VoltageCh2Enable                        OFF
@@ -683,8 +687,8 @@ extern fap_t fap;
 #define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM        85.0
 #define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM       90.0
 
-#define FAP_GROUND_LEAKAGE_ALM_LIM              45.0
-#define FAP_GROUND_LEAKAGE_ITLK_LIM             50.0
+#define FAP_GROUND_LEAKAGE_ALM_LIM              0.0
+#define FAP_GROUND_LEAKAGE_ITLK_LIM             0.0
 
 #define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
 #define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
@@ -745,8 +749,6 @@ extern fap_t fap;
 
 #define LV_Primary_Voltage_Vout                 302.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_GND_Leakage          50.0
-
 #define LV_Secondary_Current_Vin                0.025
 
 #define LV_Burden_Resistor                      120.0
@@ -756,9 +758,6 @@ extern fap_t fap;
 
 //Debouncing delay_us
 #define Delay_Vout                              100
-
-//Debouncing delay_us
-#define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
@@ -831,6 +830,13 @@ extern fap_t fap;
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //Voltage configuration
+
+//VoltageCh1 convert to Current
+
+#define Current_GND_Leakage                     0.0
+
+//Debouncing delay_us
+#define Delay_GND_Leakage                       0
 
 #define VoltageCh1Enable                        OFF
 #define VoltageCh2Enable                        OFF
@@ -903,8 +909,8 @@ extern fap_t fap;
 #define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM        85.0
 #define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM       90.0
 
-#define FAP_GROUND_LEAKAGE_ALM_LIM              45.0
-#define FAP_GROUND_LEAKAGE_ITLK_LIM             50.0
+#define FAP_GROUND_LEAKAGE_ALM_LIM              0.0
+#define FAP_GROUND_LEAKAGE_ITLK_LIM             0.0
 
 #define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
 #define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
@@ -965,8 +971,6 @@ extern fap_t fap;
 
 #define LV_Primary_Voltage_Vout                 302.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_GND_Leakage          50.0
-
 #define LV_Secondary_Current_Vin                0.025
 
 #define LV_Burden_Resistor                      120.0
@@ -976,9 +980,6 @@ extern fap_t fap;
 
 //Debouncing delay_us
 #define Delay_Vout                              100
-
-//Debouncing delay_us
-#define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
@@ -1051,6 +1052,13 @@ extern fap_t fap;
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //Voltage configuration
+
+//VoltageCh1 convert to Current
+
+#define Current_GND_Leakage                     0.0
+
+//Debouncing delay_us
+#define Delay_GND_Leakage                       0
 
 #define VoltageCh1Enable                        OFF
 #define VoltageCh2Enable                        OFF
@@ -1123,8 +1131,8 @@ extern fap_t fap;
 #define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM        85.0
 #define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM       90.0
 
-#define FAP_GROUND_LEAKAGE_ALM_LIM              45.0
-#define FAP_GROUND_LEAKAGE_ITLK_LIM             50.0
+#define FAP_GROUND_LEAKAGE_ALM_LIM              0.0
+#define FAP_GROUND_LEAKAGE_ITLK_LIM             0.0
 
 #define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
 #define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
@@ -1185,8 +1193,6 @@ extern fap_t fap;
 
 #define LV_Primary_Voltage_Vout                 302.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_GND_Leakage          50.0
-
 #define LV_Secondary_Current_Vin                0.025
 
 #define LV_Burden_Resistor                      120.0
@@ -1196,9 +1202,6 @@ extern fap_t fap;
 
 //Debouncing delay_us
 #define Delay_Vout                              100
-
-//Debouncing delay_us
-#define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
@@ -1271,6 +1274,13 @@ extern fap_t fap;
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //Voltage configuration
+
+//VoltageCh1 convert to Current
+
+#define Current_GND_Leakage                     0.0
+
+//Debouncing delay_us
+#define Delay_GND_Leakage                       0
 
 #define VoltageCh1Enable                        OFF
 #define VoltageCh2Enable                        OFF
@@ -1343,8 +1353,8 @@ extern fap_t fap;
 #define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM        90.0
 #define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM       95.0
 
-#define FAP_GROUND_LEAKAGE_ALM_LIM              45.0
-#define FAP_GROUND_LEAKAGE_ITLK_LIM             50.0
+#define FAP_GROUND_LEAKAGE_ALM_LIM              0.0
+#define FAP_GROUND_LEAKAGE_ITLK_LIM             0.0
 
 #define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
 #define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
@@ -1405,8 +1415,6 @@ extern fap_t fap;
 
 #define LV_Primary_Voltage_Vout                 335.833333 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_GND_Leakage          50.0
-
 #define LV_Secondary_Current_Vin                0.025
 
 #define LV_Burden_Resistor                      120.0
@@ -1416,9 +1424,6 @@ extern fap_t fap;
 
 //Debouncing delay_us
 #define Delay_Vout                              200
-
-//Debouncing delay_us
-#define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
@@ -1491,6 +1496,13 @@ extern fap_t fap;
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //Voltage configuration
+
+//VoltageCh1 convert to Current
+
+#define Current_GND_Leakage                     0.0
+
+//Debouncing delay_us
+#define Delay_GND_Leakage                       0
 
 #define VoltageCh1Enable                        OFF
 #define VoltageCh2Enable                        OFF
@@ -1563,8 +1575,8 @@ extern fap_t fap;
 #define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM        95.0
 #define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM       100.0
 
-#define FAP_GROUND_LEAKAGE_ALM_LIM              45.0
-#define FAP_GROUND_LEAKAGE_ITLK_LIM             50.0
+#define FAP_GROUND_LEAKAGE_ALM_LIM              0.0
+#define FAP_GROUND_LEAKAGE_ITLK_LIM             0.0
 
 #define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
 #define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
@@ -1625,8 +1637,6 @@ extern fap_t fap;
 
 #define LV_Primary_Voltage_Vout                 335.833333 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_GND_Leakage          50.0
-
 #define LV_Secondary_Current_Vin                0.025
 
 #define LV_Burden_Resistor                      120.0
@@ -1636,9 +1646,6 @@ extern fap_t fap;
 
 //Debouncing delay_us
 #define Delay_Vout                              200
-
-//Debouncing delay_us
-#define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
@@ -1711,6 +1718,13 @@ extern fap_t fap;
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //Voltage configuration
+
+//VoltageCh1 convert to Current
+
+#define Current_GND_Leakage                     0.0
+
+//Debouncing delay_us
+#define Delay_GND_Leakage                       0
 
 #define VoltageCh1Enable                        OFF
 #define VoltageCh2Enable                        OFF
@@ -1785,8 +1799,8 @@ extern fap_t fap;
 #define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM        90.0
 #define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM       100.0
 
-#define FAP_GROUND_LEAKAGE_ALM_LIM              45.0
-#define FAP_GROUND_LEAKAGE_ITLK_LIM             50.0
+#define FAP_GROUND_LEAKAGE_ALM_LIM              0.0
+#define FAP_GROUND_LEAKAGE_ITLK_LIM             0.0
 
 #define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
 #define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
@@ -1847,8 +1861,6 @@ extern fap_t fap;
 
 #define LV_Primary_Voltage_Vout                 252.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_GND_Leakage          50.0
-
 #define LV_Secondary_Current_Vin                0.025
 
 #define LV_Burden_Resistor                      120.0
@@ -1858,9 +1870,6 @@ extern fap_t fap;
 
 //Debouncing delay_us
 #define Delay_Vout                              200
-
-//Debouncing delay_us
-#define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
@@ -1933,6 +1942,13 @@ extern fap_t fap;
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //Voltage configuration
+
+//VoltageCh1 convert to Current
+
+#define Current_GND_Leakage                     0.0
+
+//Debouncing delay_us
+#define Delay_GND_Leakage                       0
 
 #define VoltageCh1Enable                        OFF
 #define VoltageCh2Enable                        OFF
@@ -2007,8 +2023,8 @@ extern fap_t fap;
 #define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM        95.0
 #define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM       100.0
 
-#define FAP_GROUND_LEAKAGE_ALM_LIM              45.0
-#define FAP_GROUND_LEAKAGE_ITLK_LIM             50.0
+#define FAP_GROUND_LEAKAGE_ALM_LIM              0.0
+#define FAP_GROUND_LEAKAGE_ITLK_LIM             0.0
 
 #define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
 #define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
@@ -2069,8 +2085,6 @@ extern fap_t fap;
 
 #define LV_Primary_Voltage_Vout                 252.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_GND_Leakage          50.0
-
 #define LV_Secondary_Current_Vin                0.025
 
 #define LV_Burden_Resistor                      120.0
@@ -2080,9 +2094,6 @@ extern fap_t fap;
 
 //Debouncing delay_us
 #define Delay_Vout                              200
-
-//Debouncing delay_us
-#define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
@@ -2155,6 +2166,13 @@ extern fap_t fap;
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //Voltage configuration
+
+//VoltageCh1 convert to Current
+
+#define Current_GND_Leakage                     0.0
+
+//Debouncing delay_us
+#define Delay_GND_Leakage                       0
 
 #define VoltageCh1Enable                        OFF
 #define VoltageCh2Enable                        OFF
@@ -2229,8 +2247,8 @@ extern fap_t fap;
 #define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM        90.0
 #define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM       100.0
 
-#define FAP_GROUND_LEAKAGE_ALM_LIM              45.0
-#define FAP_GROUND_LEAKAGE_ITLK_LIM             50.0
+#define FAP_GROUND_LEAKAGE_ALM_LIM              0.0
+#define FAP_GROUND_LEAKAGE_ITLK_LIM             0.0
 
 #define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
 #define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
@@ -2291,8 +2309,6 @@ extern fap_t fap;
 
 #define LV_Primary_Voltage_Vout                 252.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_GND_Leakage          50.0
-
 #define LV_Secondary_Current_Vin                0.025
 
 #define LV_Burden_Resistor                      120.0
@@ -2302,9 +2318,6 @@ extern fap_t fap;
 
 //Debouncing delay_us
 #define Delay_Vout                              200
-
-//Debouncing delay_us
-#define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
@@ -2377,6 +2390,13 @@ extern fap_t fap;
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //Voltage configuration
+
+//VoltageCh1 convert to Current
+
+#define Current_GND_Leakage                     0.0
+
+//Debouncing delay_us
+#define Delay_GND_Leakage                       0
 
 #define VoltageCh1Enable                        OFF
 #define VoltageCh2Enable                        OFF
@@ -2451,8 +2471,8 @@ extern fap_t fap;
 #define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM        95.0
 #define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM       100.0
 
-#define FAP_GROUND_LEAKAGE_ALM_LIM              45.0
-#define FAP_GROUND_LEAKAGE_ITLK_LIM             50.0
+#define FAP_GROUND_LEAKAGE_ALM_LIM              0.0
+#define FAP_GROUND_LEAKAGE_ITLK_LIM             0.0
 
 #define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
 #define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
@@ -2513,8 +2533,6 @@ extern fap_t fap;
 
 #define LV_Primary_Voltage_Vout                 252.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_GND_Leakage          50.0
-
 #define LV_Secondary_Current_Vin                0.025
 
 #define LV_Burden_Resistor                      120.0
@@ -2524,9 +2542,6 @@ extern fap_t fap;
 
 //Debouncing delay_us
 #define Delay_Vout                              200
-
-//Debouncing delay_us
-#define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
@@ -2599,6 +2614,13 @@ extern fap_t fap;
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //Voltage configuration
+
+//VoltageCh1 convert to Current
+
+#define Current_GND_Leakage                     0.0
+
+//Debouncing delay_us
+#define Delay_GND_Leakage                       0
 
 #define VoltageCh1Enable                        OFF
 #define VoltageCh2Enable                        OFF
@@ -2671,8 +2693,8 @@ extern fap_t fap;
 #define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM        115.0
 #define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM       130.0
 
-#define FAP_GROUND_LEAKAGE_ALM_LIM              45.0
-#define FAP_GROUND_LEAKAGE_ITLK_LIM             50.0
+#define FAP_GROUND_LEAKAGE_ALM_LIM              0.0
+#define FAP_GROUND_LEAKAGE_ITLK_LIM             0.0
 
 #define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
 #define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
@@ -2733,8 +2755,6 @@ extern fap_t fap;
 
 #define LV_Primary_Voltage_Vout                 302.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_GND_Leakage          50.0
-
 #define LV_Secondary_Current_Vin                0.025
 
 #define LV_Burden_Resistor                      120.0
@@ -2744,9 +2764,6 @@ extern fap_t fap;
 
 //Debouncing delay_us
 #define Delay_Vout                              500
-
-//Debouncing delay_us
-#define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
@@ -2819,6 +2836,13 @@ extern fap_t fap;
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //Voltage configuration
+
+//VoltageCh1 convert to Current
+
+#define Current_GND_Leakage                     0.0
+
+//Debouncing delay_us
+#define Delay_GND_Leakage                       0
 
 #define VoltageCh1Enable                        OFF
 #define VoltageCh2Enable                        OFF
@@ -2893,8 +2917,8 @@ extern fap_t fap;
 #define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM        100.0
 #define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM       105.0
 
-#define FAP_GROUND_LEAKAGE_ALM_LIM              45.0
-#define FAP_GROUND_LEAKAGE_ITLK_LIM             50.0
+#define FAP_GROUND_LEAKAGE_ALM_LIM              0.0
+#define FAP_GROUND_LEAKAGE_ITLK_LIM             0.0
 
 #define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
 #define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
@@ -2955,8 +2979,6 @@ extern fap_t fap;
 
 #define LV_Primary_Voltage_Vout                 252.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_GND_Leakage          50.0
-
 #define LV_Secondary_Current_Vin                0.025
 
 #define LV_Burden_Resistor                      120.0
@@ -2966,9 +2988,6 @@ extern fap_t fap;
 
 //Debouncing delay_us
 #define Delay_Vout                              100
-
-//Debouncing delay_us
-#define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
@@ -3041,6 +3060,13 @@ extern fap_t fap;
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //Voltage configuration
+
+//VoltageCh1 convert to Current
+
+#define Current_GND_Leakage                     0.0
+
+//Debouncing delay_us
+#define Delay_GND_Leakage                       0
 
 #define VoltageCh1Enable                        OFF
 #define VoltageCh2Enable                        OFF
@@ -3115,8 +3141,8 @@ extern fap_t fap;
 #define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM        151.0
 #define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM       152.0
 
-#define FAP_GROUND_LEAKAGE_ALM_LIM              45.0
-#define FAP_GROUND_LEAKAGE_ITLK_LIM             50.0
+#define FAP_GROUND_LEAKAGE_ALM_LIM              0.0
+#define FAP_GROUND_LEAKAGE_ITLK_LIM             0.0
 
 #define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
 #define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
@@ -3177,8 +3203,6 @@ extern fap_t fap;
 
 #define LV_Primary_Voltage_Vout                 252.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_GND_Leakage          50.0
-
 #define LV_Secondary_Current_Vin                0.025
 
 #define LV_Burden_Resistor                      120.0
@@ -3188,9 +3212,6 @@ extern fap_t fap;
 
 //Debouncing delay_us
 #define Delay_Vout                              3
-
-//Debouncing delay_us
-#define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
@@ -3263,6 +3284,13 @@ extern fap_t fap;
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //Voltage configuration
+
+//VoltageCh1 convert to Current
+
+#define Current_GND_Leakage                     0.0
+
+//Debouncing delay_us
+#define Delay_GND_Leakage                       0
 
 #define VoltageCh1Enable                        OFF
 #define VoltageCh2Enable                        OFF
@@ -3335,8 +3363,8 @@ extern fap_t fap;
 #define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM        80.0
 #define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM       85.0
 
-#define FAP_GROUND_LEAKAGE_ALM_LIM              45.0
-#define FAP_GROUND_LEAKAGE_ITLK_LIM             50.0
+#define FAP_GROUND_LEAKAGE_ALM_LIM              0.0
+#define FAP_GROUND_LEAKAGE_ITLK_LIM             0.0
 
 #define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
 #define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
@@ -3397,8 +3425,6 @@ extern fap_t fap;
 
 #define LV_Primary_Voltage_Vout                 252.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_GND_Leakage          50.0
-
 #define LV_Secondary_Current_Vin                0.025
 
 #define LV_Burden_Resistor                      120.0
@@ -3408,9 +3434,6 @@ extern fap_t fap;
 
 //Debouncing delay_us
 #define Delay_Vout                              100
-
-//Debouncing delay_us
-#define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
@@ -3484,6 +3507,13 @@ extern fap_t fap;
 
 //Voltage configuration
 
+//VoltageCh1 convert to Current
+
+#define Current_GND_Leakage                     0.0
+
+//Debouncing delay_us
+#define Delay_GND_Leakage                       0
+
 #define VoltageCh1Enable                        OFF
 #define VoltageCh2Enable                        OFF
 #define VoltageCh3Enable                        OFF
@@ -3553,8 +3583,8 @@ extern fap_t fap;
 #define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM        115.0
 #define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM       120.0
 
-#define FAP_GROUND_LEAKAGE_ALM_LIM              40.0
-#define FAP_GROUND_LEAKAGE_ITLK_LIM             45.0
+#define FAP_GROUND_LEAKAGE_ALM_LIM              0.0
+#define FAP_GROUND_LEAKAGE_ITLK_LIM             0.0
 
 #define FAP_IGBT1_OVERTEMP_ALM_LIM              90.0  //original 60.0
 #define FAP_IGBT1_OVERTEMP_ITLK_LIM             110.0 //original 80.0
@@ -3615,8 +3645,6 @@ extern fap_t fap;
 
 #define LV_Primary_Voltage_Vout                 302.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_GND_Leakage          52.5
-
 #define LV_Secondary_Current_Vin                0.025
 
 #define LV_Burden_Resistor                      120.0
@@ -3626,9 +3654,6 @@ extern fap_t fap;
 
 //Debouncing delay_us
 #define Delay_Vout                              100
-
-//Debouncing delay_us
-#define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
@@ -3702,6 +3727,13 @@ extern fap_t fap;
 
 //Voltage configuration
 
+//VoltageCh1 convert to Current
+
+#define Current_GND_Leakage                     0.0
+
+//Debouncing delay_us
+#define Delay_GND_Leakage                       0
+
 #define VoltageCh1Enable                        OFF
 #define VoltageCh2Enable                        OFF
 #define VoltageCh3Enable                        OFF
@@ -3771,8 +3803,8 @@ extern fap_t fap;
 #define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM        115.0
 #define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM       120.0
 
-#define FAP_GROUND_LEAKAGE_ALM_LIM              40.0
-#define FAP_GROUND_LEAKAGE_ITLK_LIM             45.0
+#define FAP_GROUND_LEAKAGE_ALM_LIM              0.350
+#define FAP_GROUND_LEAKAGE_ITLK_LIM             0.400
 
 #define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
 #define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
@@ -3833,8 +3865,6 @@ extern fap_t fap;
 
 #define LV_Primary_Voltage_Vout                 34.5
 
-#define LV_Primary_Voltage_GND_Leakage          34.5
-
 #define LV_Secondary_Current_Vin                0.025
 
 #define LV_Burden_Resistor                      120.0
@@ -3845,12 +3875,9 @@ extern fap_t fap;
 //Debouncing delay_us
 #define Delay_Vout                              100
 
-//Debouncing delay_us
-#define Delay_GND_Leakage                       3
-
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
-#define LvCurrentCh3Enable                      ON
+#define LvCurrentCh3Enable                      OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3920,7 +3947,14 @@ extern fap_t fap;
 
 //Voltage configuration
 
-#define VoltageCh1Enable                        OFF
+//VoltageCh1 convert to Current
+
+#define Current_GND_Leakage                     0.500
+
+//Debouncing delay_us
+#define Delay_GND_Leakage                       100
+
+#define VoltageCh1Enable                        ON
 #define VoltageCh2Enable                        OFF
 #define VoltageCh3Enable                        OFF
 #define VoltageCh4Enable                        OFF
@@ -3948,7 +3982,7 @@ extern fap_t fap;
 
 //Gpdo configuration
 
-#define Gpdo1Enable                             OFF
+#define Gpdo1Enable                             ON
 #define Gpdo2Enable                             OFF
 #define Gpdo3Enable                             OFF
 #define Gpdo4Enable                             OFF
@@ -3989,8 +4023,8 @@ extern fap_t fap;
 #define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM        115.0
 #define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM       120.0
 
-#define FAP_GROUND_LEAKAGE_ALM_LIM              40.0
-#define FAP_GROUND_LEAKAGE_ITLK_LIM             45.0
+#define FAP_GROUND_LEAKAGE_ALM_LIM              0.0
+#define FAP_GROUND_LEAKAGE_ITLK_LIM             0.0
 
 #define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
 #define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
@@ -4051,8 +4085,6 @@ extern fap_t fap;
 
 #define LV_Primary_Voltage_Vout                 302.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_GND_Leakage          52.5
-
 #define LV_Secondary_Current_Vin                0.025
 
 #define LV_Burden_Resistor                      120.0
@@ -4062,9 +4094,6 @@ extern fap_t fap;
 
 //Debouncing delay_us
 #define Delay_Vout                              100
-
-//Debouncing delay_us
-#define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
@@ -4138,6 +4167,13 @@ extern fap_t fap;
 
 //Voltage configuration
 
+//VoltageCh1 convert to Current
+
+#define Current_GND_Leakage                     0.0
+
+//Debouncing delay_us
+#define Delay_GND_Leakage                       0
+
 #define VoltageCh1Enable                        OFF
 #define VoltageCh2Enable                        OFF
 #define VoltageCh3Enable                        OFF
@@ -4207,8 +4243,8 @@ extern fap_t fap;
 #define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM        115.0
 #define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM       120.0
 
-#define FAP_GROUND_LEAKAGE_ALM_LIM              40.0
-#define FAP_GROUND_LEAKAGE_ITLK_LIM             45.0
+#define FAP_GROUND_LEAKAGE_ALM_LIM              0.250
+#define FAP_GROUND_LEAKAGE_ITLK_LIM             0.300
 
 #define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
 #define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
@@ -4269,8 +4305,6 @@ extern fap_t fap;
 
 #define LV_Primary_Voltage_Vout                 302.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_GND_Leakage          52.5
-
 #define LV_Secondary_Current_Vin                0.025
 
 #define LV_Burden_Resistor                      120.0
@@ -4280,9 +4314,6 @@ extern fap_t fap;
 
 //Debouncing delay_us
 #define Delay_Vout                              100
-
-//Debouncing delay_us
-#define Delay_GND_Leakage                       3
 
 #define LvCurrentCh1Enable                      ON
 #define LvCurrentCh2Enable                      ON
@@ -4356,7 +4387,14 @@ extern fap_t fap;
 
 //Voltage configuration
 
-#define VoltageCh1Enable                        OFF
+//VoltageCh1 convert to Current
+
+#define Current_GND_Leakage                     0.500
+
+//Debouncing delay_us
+#define Delay_GND_Leakage                       100
+
+#define VoltageCh1Enable                        ON
 #define VoltageCh2Enable                        OFF
 #define VoltageCh3Enable                        OFF
 #define VoltageCh4Enable                        OFF
