@@ -490,7 +490,7 @@ void handle_reset_message(void)
 {
     uint8_t id;
 
-    rx_message_reset.pui8MsgData = message_reset;
+    rx_message_reset.pui8MsgData = (uint8_t*)message_reset;
 
     CANMessageGet(CAN0_BASE, MESSAGE_RESET_OBJ, &rx_message_reset, 0);
 
@@ -971,7 +971,7 @@ void send_data_message(uint8_t var)
 
 	tx_message_data.ui32MsgID = (can_id + var);
 
-	tx_message_data.pui8MsgData = message_data;
+	tx_message_data.pui8MsgData = (uint8_t*)message_data;
 
 	CANMessageSet(CAN0_BASE, MESSAGE_DATA_OBJ, &tx_message_data, MSG_OBJ_TYPE_TX);
 }

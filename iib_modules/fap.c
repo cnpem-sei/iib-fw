@@ -45,26 +45,26 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-fap_t fap;
+volatile fap_t fap;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-static uint32_t fap_interlocks_indication;
-static uint32_t fap_alarms_indication;
+static volatile uint32_t fap_interlocks_indication;
+static volatile uint32_t fap_alarms_indication;
 
-static uint32_t ResetInterlocksRegister = 0;
-static uint32_t ResetAlarmsRegister = 0;
+static volatile uint32_t ResetInterlocksRegister = 0;
+static volatile uint32_t ResetAlarmsRegister = 0;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-static uint32_t itlk_id;
-static uint32_t alarm_id;
+static volatile uint32_t itlk_id;
+static volatile uint32_t alarm_id;
 
-static uint8_t flag1 = 0;
-static uint32_t FiltroUP1 = 1024;
+static volatile uint8_t flag1 = 0;
+static volatile uint32_t FiltroUP1 = 1024;
 
-static uint8_t flag2 = 0;
-static uint32_t FiltroUP2 = 1024;
+static volatile uint8_t flag2 = 0;
+static volatile uint32_t FiltroUP2 = 1024;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

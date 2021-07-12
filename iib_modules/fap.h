@@ -35,132 +35,132 @@
 typedef volatile struct
 {
     union {
-        float       f;
-        uint8_t     u8[4];
+    	volatile float       f;
+    	volatile uint8_t     u8[4];
     } Vin;
 
-    bool VinAlarmSts;
-    bool VinItlkSts;
+    volatile bool VinAlarmSts;
+    volatile bool VinItlkSts;
 
     union {
-        float       f;
-        uint8_t     u8[4];
+    	volatile float       f;
+    	volatile uint8_t     u8[4];
     } Vout;
 
-    bool VoutAlarmSts;
-    bool VoutItlkSts;
+    volatile bool VoutAlarmSts;
+    volatile bool VoutItlkSts;
 
     union {
-        float       f;
-        uint8_t     u8[4];
+    	volatile float       f;
+    	volatile uint8_t     u8[4];
     } IoutA1;
 
-    bool IoutA1AlarmSts;
-    bool IoutA1ItlkSts;
+    volatile bool IoutA1AlarmSts;
+    volatile bool IoutA1ItlkSts;
 
     union {
-        float       f;
-        uint8_t     u8[4];
+    	volatile float       f;
+    	volatile uint8_t     u8[4];
     } IoutA2;
 
-    bool IoutA2AlarmSts;
-    bool IoutA2ItlkSts;
+    volatile bool IoutA2AlarmSts;
+    volatile bool IoutA2ItlkSts;
 
     union {
-        float       f;
-        uint8_t     u8[4];
+    	volatile float       f;
+    	volatile uint8_t     u8[4];
     } GroundLeakage;
 
-    bool GroundLeakageItlkSts;
-    bool GroundLeakageAlarmSts;
+    volatile bool GroundLeakageItlkSts;
+    volatile bool GroundLeakageAlarmSts;
 
     union {
-        float       f;
-        uint8_t     u8[4];
+    	volatile float       f;
+    	volatile uint8_t     u8[4];
     } TempIGBT1;
 
-    bool TempIGBT1AlarmSts;
-    bool TempIGBT1ItlkSts;
+    volatile bool TempIGBT1AlarmSts;
+    volatile bool TempIGBT1ItlkSts;
 
     union {
-        float       f;
-        uint8_t     u8[4];
+    	volatile float       f;
+    	volatile uint8_t     u8[4];
     } TempIGBT2;
 
-    bool TempIGBT2AlarmSts;
-    bool TempIGBT2ItlkSts;
+    volatile bool TempIGBT2AlarmSts;
+    volatile bool TempIGBT2ItlkSts;
 
     union {
-        float       f;
-        uint8_t     u8[4];
+    	volatile float       f;
+    	volatile uint8_t     u8[4];
     } DriverVoltage;
 
-    bool DriverVoltageAlarmSts;
-    bool DriverVoltageItlkSts;
+    volatile bool DriverVoltageAlarmSts;
+    volatile bool DriverVoltageItlkSts;
 
     union {
-        float       f;
-        uint8_t     u8[4];
+    	volatile float       f;
+    	volatile uint8_t     u8[4];
     } Driver1Current;
 
-    bool Driver1CurrentAlarmSts;
-    bool Driver1CurrentItlkSts;
+    volatile bool Driver1CurrentAlarmSts;
+    volatile bool Driver1CurrentItlkSts;
 
     union {
-        float       f;
-        uint8_t     u8[4];
+    	volatile float       f;
+    	volatile uint8_t     u8[4];
     } Driver2Current;
 
-    bool Driver2CurrentAlarmSts;
-    bool Driver2CurrentItlkSts;
+    volatile bool Driver2CurrentAlarmSts;
+    volatile bool Driver2CurrentItlkSts;
 
-    bool Driver1Error;
-    bool Driver1ErrorItlkSts;
-    bool Driver2Error;
-    bool Driver2ErrorItlkSts;
+    volatile bool Driver1Error;
+    volatile bool Driver1ErrorItlkSts;
+    volatile bool Driver2Error;
+    volatile bool Driver2ErrorItlkSts;
 
     union {
-        float       f;
-        uint8_t     u8[4];
+    	volatile float       f;
+    	volatile uint8_t     u8[4];
     } TempL;
 
-    bool TempLAlarmSts;
-    bool TempLItlkSts;
+    volatile bool TempLAlarmSts;
+    volatile bool TempLItlkSts;
 
     union {
-        float       f;
-        uint8_t     u8[4];
+    	volatile float       f;
+    	volatile uint8_t     u8[4];
     } TempHeatSink;
 
-    bool TempHeatSinkAlarmSts;
-    bool TempHeatSinkItlkSts;
+    volatile bool TempHeatSinkAlarmSts;
+    volatile bool TempHeatSinkItlkSts;
 
     union {
-        float       f;
-        uint8_t     u8[4];
+    	volatile float       f;
+    	volatile uint8_t     u8[4];
     } BoardTemperature;
 
-    bool BoardTemperatureAlarmSts;
-    bool BoardTemperatureItlkSts;
+    volatile bool BoardTemperatureAlarmSts;
+    volatile bool BoardTemperatureItlkSts;
 
     union {
-        float       f;
-        uint8_t     u8[4];
+    	volatile float       f;
+    	volatile uint8_t     u8[4];
     } RelativeHumidity;
 
-    bool RelativeHumidityAlarmSts;
-    bool RelativeHumidityItlkSts;
+    volatile bool RelativeHumidityAlarmSts;
+    volatile bool RelativeHumidityItlkSts;
 
-    bool Relay;
-    bool ExternalItlk;
-    bool ExternalItlkSts;
-    bool Rack;
-    bool RackItlkSts;
+    volatile bool Relay;
+    volatile bool ExternalItlk;
+    volatile bool ExternalItlkSts;
+    volatile bool Rack;
+    volatile bool RackItlkSts;
 
-    bool ReleAuxItlkSts;
-    bool ReleExtItlkSts;
-    bool RelayOpenItlkSts;
-    bool RelayContactStickingItlkSts;
+    volatile bool ReleAuxItlkSts;
+    volatile bool ReleExtItlkSts;
+    volatile bool RelayOpenItlkSts;
+    volatile bool RelayContactStickingItlkSts;
 
 } fap_t;
 
@@ -214,7 +214,7 @@ extern void check_fap_indication_leds(void);
 extern void fap_application_readings(void);
 extern void config_module_fap(void);
 
-extern fap_t fap;
+extern volatile fap_t fap;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3803,8 +3803,8 @@ extern fap_t fap;
 #define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM        115.0
 #define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM       120.0
 
-#define FAP_GROUND_LEAKAGE_ALM_LIM              0.350
-#define FAP_GROUND_LEAKAGE_ITLK_LIM             0.400
+#define FAP_GROUND_LEAKAGE_ALM_LIM              0.600
+#define FAP_GROUND_LEAKAGE_ITLK_LIM             0.650
 
 #define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
 #define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
