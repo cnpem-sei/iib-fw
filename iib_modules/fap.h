@@ -151,6 +151,16 @@ typedef volatile struct
     volatile bool RelativeHumidityAlarmSts;
     volatile bool RelativeHumidityItlkSts;
 
+    union {
+        volatile uint8_t     u8[4];
+        volatile uint32_t    u32;
+    } InterlocksRegister;
+
+    union {
+        volatile uint8_t     u8[4];
+        volatile uint32_t    u32;
+    } AlarmsRegister;
+
     volatile bool Relay;
     volatile bool ExternalItlk;
     volatile bool ExternalItlkSts;
