@@ -32,99 +32,109 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-typedef struct
+typedef volatile struct
 {
     union {
-        float       f;
-        uint8_t     u8[4];
+        volatile float       f;
+        volatile uint8_t     u8[4];
     } VcapBank;
 
-    bool VcapBankAlarmSts;
-    bool VcapBankItlkSts;
+    volatile bool VcapBankAlarmSts;
+    volatile bool VcapBankItlkSts;
 
     union {
-        float       f;
-        uint8_t     u8[4];
+        volatile float       f;
+        volatile uint8_t     u8[4];
     } Vout;
 
-    bool VoutAlarmSts;
-    bool VoutItlkSts;
+    volatile bool VoutAlarmSts;
+    volatile bool VoutItlkSts;
 
     union {
-        float       f;
-        uint8_t     u8[4];
+        volatile float       f;
+        volatile uint8_t     u8[4];
     } AuxIdbVoltage;
 
-    bool AuxIdbVoltageAlarmSts;
-    bool AuxIdbVoltageItlkSts;
+    volatile bool AuxIdbVoltageAlarmSts;
+    volatile bool AuxIdbVoltageItlkSts;
 
     union {
-        float       f;
-        uint8_t     u8[4];
+        volatile float       f;
+        volatile uint8_t     u8[4];
     } AuxCurrent;
 
-    bool AuxCurrentAlarmSts;
-    bool AuxCurrentItlkSts;
+    volatile bool AuxCurrentAlarmSts;
+    volatile bool AuxCurrentItlkSts;
 
     union {
-        float       f;
-        uint8_t     u8[4];
+        volatile float       f;
+        volatile uint8_t     u8[4];
     } IdbCurrent;
 
-    bool IdbCurrentAlarmSts;
-    bool IdbCurrentItlkSts;
+    volatile bool IdbCurrentAlarmSts;
+    volatile bool IdbCurrentItlkSts;
 
     union {
-        float       f;
-        uint8_t     u8[4];
+        volatile float       f;
+        volatile uint8_t     u8[4];
     } TempL;
 
-    bool TempLAlarmSts;
-    bool TempLItlkSts;
+    volatile bool TempLAlarmSts;
+    volatile bool TempLItlkSts;
 
     union {
-        float       f;
-        uint8_t     u8[4];
+        volatile float       f;
+        volatile uint8_t     u8[4];
     } TempHeatSink;
 
-    bool TempHeatSinkAlarmSts;
-    bool TempHeatSinkItlkSts;
+    volatile bool TempHeatSinkAlarmSts;
+    volatile bool TempHeatSinkItlkSts;
 
-    bool MainOverCurrentItlk;
-    bool MainOverCurrentItlkSts;
+    volatile bool MainOverCurrentItlk;
+    volatile bool MainOverCurrentItlkSts;
 
-    bool EmergencyButtonItlk;
-    bool EmergencyButtonItlkSts;
+    volatile bool EmergencyButtonItlk;
+    volatile bool EmergencyButtonItlkSts;
 
-    bool MainUnderVoltageItlk;
-    bool MainUnderVoltageItlkSts;
+    volatile bool MainUnderVoltageItlk;
+    volatile bool MainUnderVoltageItlkSts;
 
-    bool MainOverVoltageItlk;
-    bool MainOverVoltageItlkSts;
+    volatile bool MainOverVoltageItlk;
+    volatile bool MainOverVoltageItlkSts;
 
     union {
-        float       f;
-        uint8_t     u8[4];
+        volatile float       f;
+        volatile uint8_t     u8[4];
     } GroundLeakage;
 
-    bool GroundLeakageAlarmSts;
-    bool GroundLeakageItlkSts;
+    volatile bool GroundLeakageAlarmSts;
+    volatile bool GroundLeakageItlkSts;
 
     union {
-        float       f;
-        uint8_t     u8[4];
+        volatile float       f;
+        volatile uint8_t     u8[4];
     } BoardTemperature;
 
-    bool BoardTemperatureAlarmSts;
-    bool BoardTemperatureItlkSts;
+    volatile bool BoardTemperatureAlarmSts;
+    volatile bool BoardTemperatureItlkSts;
 
     union {
-        float       f;
-        uint8_t     u8[4];
+        volatile float       f;
+        volatile uint8_t     u8[4];
     } RelativeHumidity;
 
-    bool RelativeHumidityAlarmSts;
-    bool RelativeHumidityItlkSts;
+    volatile bool RelativeHumidityAlarmSts;
+    volatile bool RelativeHumidityItlkSts;
+
+    union {
+    	volatile uint8_t     u8[4];
+    	volatile uint32_t    u32;
+    } InterlocksRegister;
+
+    union {
+    	volatile uint8_t     u8[4];
+    	volatile uint32_t    u32;
+    } AlarmsRegister;
 
 } fac_cmd_t;
 
@@ -168,7 +178,7 @@ extern void check_fac_cmd_indication_leds(void);
 extern void fac_cmd_application_readings(void);
 extern void config_module_fac_cmd(void);
 
-extern fac_cmd_t fac_cmd;
+extern volatile fac_cmd_t fac_cmd;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

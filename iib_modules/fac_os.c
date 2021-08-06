@@ -45,20 +45,7 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-fac_os_t fac_os;
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-static uint32_t fac_os_interlocks_indication;
-static uint32_t fac_os_alarms_indication;
-
-static uint32_t ResetInterlocksRegister = 0;
-static uint32_t ResetAlarmsRegister = 0;
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-static uint32_t itlk_id;
-static uint32_t alarm_id;
+volatile fac_os_t fac_os;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -84,7 +71,7 @@ void clear_fac_os_interlocks()
     fac_os.BoardTemperatureItlkSts  = 0;
     fac_os.RelativeHumidityItlkSts  = 0;
 
-    itlk_id = 0;
+    fac_os.InterlocksRegister.u32   = 0;
 
 }
 
@@ -135,7 +122,7 @@ void clear_fac_os_alarms()
     fac_os.BoardTemperatureAlarmSts  = 0;
     fac_os.RelativeHumidityAlarmSts  = 0;
 
-    alarm_id = 0;
+    fac_os.AlarmsRegister.u32        = 0;
 
 }
 
@@ -371,52 +358,59 @@ void fac_os_application_readings()
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-    if (fac_os.VdcLinkItlkSts)              itlk_id |= FAC_OS_INPUT_OVERVOLTAGE_ITLK;
-    if (fac_os.IinItlkSts)                  itlk_id |= FAC_OS_INPUT_OVERCURRENT_ITLK;
-    if (fac_os.IoutItlkSts)                 itlk_id |= FAC_OS_OUTPUT_OVERCURRENT_ITLK;
-    if (fac_os.TempIGBT1ItlkSts)            itlk_id |= FAC_OS_IGBT1_OVERTEMP_ITLK;
-    if (fac_os.TempIGBT1HwrItlkSts)         itlk_id |= FAC_OS_IGBT1_HWR_OVERTEMP_ITLK;
-    if (fac_os.TempIGBT2ItlkSts)            itlk_id |= FAC_OS_IGBT2_OVERTEMP_ITLK;
-    if (fac_os.TempIGBT2HwrItlkSts)         itlk_id |= FAC_OS_IGBT2_HWR_OVERTEMP_ITLK;
-    if (fac_os.DriverVoltageItlkSts)        itlk_id |= FAC_OS_DRIVER_OVERVOLTAGE_ITLK;
-    if (fac_os.Driver1CurrentItlkSts)       itlk_id |= FAC_OS_DRIVER1_OVERCURRENT_ITLK;
-    if (fac_os.Driver2CurrentItlkSts)       itlk_id |= FAC_OS_DRIVER2_OVERCURRENT_ITLK;
-    if (fac_os.Driver1ErrorTopItlkSts)      itlk_id |= FAC_OS_DRIVER1_ERROR_TOP_ITLK;
-    if (fac_os.Driver1ErrorBotItlkSts)      itlk_id |= FAC_OS_DRIVER1_ERROR_BOT_ITLK;
-    if (fac_os.Driver2ErrorTopItlkSts)      itlk_id |= FAC_OS_DRIVER2_ERROR_TOP_ITLK;
-    if (fac_os.Driver2ErrorBotItlkSts)      itlk_id |= FAC_OS_DRIVER2_ERROR_BOT_ITLK;
-    if (fac_os.TempLItlkSts)                itlk_id |= FAC_OS_INDUC_OVERTEMP_ITLK;
-    if (fac_os.TempHeatSinkItlkSts)         itlk_id |= FAC_OS_HS_OVERTEMP_ITLK;
-    if (fac_os.GroundLeakageItlkSts)        itlk_id |= FAC_OS_GROUND_LKG_ITLK;
-    if (fac_os.BoardTemperatureItlkSts)     itlk_id |= FAC_OS_BOARD_IIB_OVERTEMP_ITLK;
-    if (fac_os.RelativeHumidityItlkSts)     itlk_id |= FAC_OS_BOARD_IIB_OVERHUMIDITY_ITLK;
+    if(Interlock == 1)
+    {
+    	if (fac_os.VdcLinkItlkSts)              fac_os.InterlocksRegister.u32 |= FAC_OS_INPUT_OVERVOLTAGE_ITLK;
+    	if (fac_os.IinItlkSts)                  fac_os.InterlocksRegister.u32 |= FAC_OS_INPUT_OVERCURRENT_ITLK;
+    	if (fac_os.IoutItlkSts)                 fac_os.InterlocksRegister.u32 |= FAC_OS_OUTPUT_OVERCURRENT_ITLK;
+    	if (fac_os.TempIGBT1ItlkSts)            fac_os.InterlocksRegister.u32 |= FAC_OS_IGBT1_OVERTEMP_ITLK;
+    	if (fac_os.TempIGBT1HwrItlkSts)         fac_os.InterlocksRegister.u32 |= FAC_OS_IGBT1_HWR_OVERTEMP_ITLK;
+    	if (fac_os.TempIGBT2ItlkSts)            fac_os.InterlocksRegister.u32 |= FAC_OS_IGBT2_OVERTEMP_ITLK;
+    	if (fac_os.TempIGBT2HwrItlkSts)         fac_os.InterlocksRegister.u32 |= FAC_OS_IGBT2_HWR_OVERTEMP_ITLK;
+    	if (fac_os.DriverVoltageItlkSts)        fac_os.InterlocksRegister.u32 |= FAC_OS_DRIVER_OVERVOLTAGE_ITLK;
+    	if (fac_os.Driver1CurrentItlkSts)       fac_os.InterlocksRegister.u32 |= FAC_OS_DRIVER1_OVERCURRENT_ITLK;
+    	if (fac_os.Driver2CurrentItlkSts)       fac_os.InterlocksRegister.u32 |= FAC_OS_DRIVER2_OVERCURRENT_ITLK;
+    	if (fac_os.Driver1ErrorTopItlkSts)      fac_os.InterlocksRegister.u32 |= FAC_OS_DRIVER1_ERROR_TOP_ITLK;
+    	if (fac_os.Driver1ErrorBotItlkSts)      fac_os.InterlocksRegister.u32 |= FAC_OS_DRIVER1_ERROR_BOT_ITLK;
+    	if (fac_os.Driver2ErrorTopItlkSts)      fac_os.InterlocksRegister.u32 |= FAC_OS_DRIVER2_ERROR_TOP_ITLK;
+    	if (fac_os.Driver2ErrorBotItlkSts)      fac_os.InterlocksRegister.u32 |= FAC_OS_DRIVER2_ERROR_BOT_ITLK;
+    	if (fac_os.TempLItlkSts)                fac_os.InterlocksRegister.u32 |= FAC_OS_INDUC_OVERTEMP_ITLK;
+    	if (fac_os.TempHeatSinkItlkSts)         fac_os.InterlocksRegister.u32 |= FAC_OS_HS_OVERTEMP_ITLK;
+    	if (fac_os.GroundLeakageItlkSts)        fac_os.InterlocksRegister.u32 |= FAC_OS_GROUND_LKG_ITLK;
+    	if (fac_os.BoardTemperatureItlkSts)     fac_os.InterlocksRegister.u32 |= FAC_OS_BOARD_IIB_OVERTEMP_ITLK;
+    	if (fac_os.RelativeHumidityItlkSts)     fac_os.InterlocksRegister.u32 |= FAC_OS_BOARD_IIB_OVERHUMIDITY_ITLK;
+    }
+
+    else
+    {
+    	fac_os.InterlocksRegister.u32 = 0x00000000;
+    }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-    if (fac_os.VdcLinkAlarmSts)             alarm_id |= FAC_OS_INPUT_OVERVOLTAGE_ALM;
-    if (fac_os.IinAlarmSts)                 alarm_id |= FAC_OS_INPUT_OVERCURRENT_ALM;
-    if (fac_os.IoutAlarmSts)                alarm_id |= FAC_OS_OUTPUT_OVERCURRENT_ALM;
-    if (fac_os.TempIGBT1AlarmSts)           alarm_id |= FAC_OS_IGBT1_OVERTEMP_ALM;
-    if (fac_os.TempIGBT2AlarmSts)           alarm_id |= FAC_OS_IGBT2_OVERTEMP_ALM;
-    if (fac_os.DriverVoltageAlarmSts)       alarm_id |= FAC_OS_DRIVER_OVERVOLTAGE_ALM;
-    if (fac_os.Driver1CurrentAlarmSts)      alarm_id |= FAC_OS_DRIVER1_OVERCURRENT_ALM;
-    if (fac_os.Driver2CurrentAlarmSts)      alarm_id |= FAC_OS_DRIVER2_OVERCURRENT_ALM;
-    if (fac_os.TempLAlarmSts)               alarm_id |= FAC_OS_INDUC_OVERTEMP_ALM;
-    if (fac_os.TempHeatSinkAlarmSts)        alarm_id |= FAC_OS_HS_OVERTEMP_ALM;
-    if (fac_os.GroundLeakageAlarmSts)       alarm_id |= FAC_OS_GROUND_LKG_ALM;
-    if (fac_os.BoardTemperatureAlarmSts)    alarm_id |= FAC_OS_BOARD_IIB_OVERTEMP_ALM;
-    if (fac_os.RelativeHumidityAlarmSts)    alarm_id |= FAC_OS_BOARD_IIB_OVERHUMIDITY_ALM;
+    if(Alarm == 1)
+    {
+    	if (fac_os.VdcLinkAlarmSts)             fac_os.AlarmsRegister.u32 |= FAC_OS_INPUT_OVERVOLTAGE_ALM;
+    	if (fac_os.IinAlarmSts)                 fac_os.AlarmsRegister.u32 |= FAC_OS_INPUT_OVERCURRENT_ALM;
+    	if (fac_os.IoutAlarmSts)                fac_os.AlarmsRegister.u32 |= FAC_OS_OUTPUT_OVERCURRENT_ALM;
+    	if (fac_os.TempIGBT1AlarmSts)           fac_os.AlarmsRegister.u32 |= FAC_OS_IGBT1_OVERTEMP_ALM;
+    	if (fac_os.TempIGBT2AlarmSts)           fac_os.AlarmsRegister.u32 |= FAC_OS_IGBT2_OVERTEMP_ALM;
+    	if (fac_os.DriverVoltageAlarmSts)       fac_os.AlarmsRegister.u32 |= FAC_OS_DRIVER_OVERVOLTAGE_ALM;
+    	if (fac_os.Driver1CurrentAlarmSts)      fac_os.AlarmsRegister.u32 |= FAC_OS_DRIVER1_OVERCURRENT_ALM;
+    	if (fac_os.Driver2CurrentAlarmSts)      fac_os.AlarmsRegister.u32 |= FAC_OS_DRIVER2_OVERCURRENT_ALM;
+    	if (fac_os.TempLAlarmSts)               fac_os.AlarmsRegister.u32 |= FAC_OS_INDUC_OVERTEMP_ALM;
+    	if (fac_os.TempHeatSinkAlarmSts)        fac_os.AlarmsRegister.u32 |= FAC_OS_HS_OVERTEMP_ALM;
+    	if (fac_os.GroundLeakageAlarmSts)       fac_os.AlarmsRegister.u32 |= FAC_OS_GROUND_LKG_ALM;
+    	if (fac_os.BoardTemperatureAlarmSts)    fac_os.AlarmsRegister.u32 |= FAC_OS_BOARD_IIB_OVERTEMP_ALM;
+    	if (fac_os.RelativeHumidityAlarmSts)    fac_os.AlarmsRegister.u32 |= FAC_OS_BOARD_IIB_OVERHUMIDITY_ALM;
+    }
+
+    else
+    {
+    	fac_os.AlarmsRegister.u32 = 0x00000000;
+    }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-
-    fac_os_interlocks_indication = itlk_id;
-    fac_os_alarms_indication = alarm_id;
-
-    g_controller_iib.iib_itlk[0].u32        = fac_os_interlocks_indication;
-    g_controller_iib.iib_itlk[1].u32        = ResetInterlocksRegister;
-
-    g_controller_iib.iib_alarm[0].u32       = fac_os_alarms_indication;
-    g_controller_iib.iib_alarm[1].u32       = ResetAlarmsRegister;
 
     g_controller_iib.iib_signals[0].f       = fac_os.VdcLink.f;
     g_controller_iib.iib_signals[1].f       = fac_os.Iin.f;
@@ -431,7 +425,8 @@ void fac_os_application_readings()
     g_controller_iib.iib_signals[10].f      = fac_os.TempHeatSink.f;
     g_controller_iib.iib_signals[11].f      = fac_os.BoardTemperature.f;
     g_controller_iib.iib_signals[12].f      = fac_os.RelativeHumidity.f;
-
+    g_controller_iib.iib_signals[13].u32    = fac_os.InterlocksRegister.u32;
+    g_controller_iib.iib_signals[14].u32    = fac_os.AlarmsRegister.u32;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -594,7 +589,8 @@ void config_module_fac_os(void)
     fac_os.RelativeHumidity.f           = 0.0;
     fac_os.RelativeHumidityAlarmSts     = 0;
     fac_os.RelativeHumidityItlkSts      = 0;
-
+    fac_os.InterlocksRegister.u32       = 0;
+    fac_os.AlarmsRegister.u32           = 0;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

@@ -19,11 +19,12 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-static unsigned char Interlock = 0;
-static unsigned char InterlockOld = 0;
+volatile unsigned char Interlock = 0;
+volatile unsigned char Alarm = 0;
+
 static unsigned char ItlkClrCmd = 0;
+static unsigned char InterlockOld = 0;
 static unsigned char InitApp = 0;
-unsigned char Alarm = 0;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -100,6 +101,8 @@ void InterlockClearCheck(void)
     if(ItlkClrCmd)
     {
         Interlock = 0;
+
+        Alarm = 0;
 
         InterlockOld = 0;
 

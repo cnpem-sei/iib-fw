@@ -625,15 +625,15 @@ void send_data_message(uint8_t var)
 		}
 		case 7:
 		{
-			message_data[0] = g_controller_iib.iib_itlk[0].u8[0]; // fap Interlock
-			message_data[1] = g_controller_iib.iib_itlk[0].u8[1]; //
-			message_data[2] = g_controller_iib.iib_itlk[0].u8[2]; //
-			message_data[3] = g_controller_iib.iib_itlk[0].u8[3]; //
+			message_data[0] = g_controller_iib.iib_signals[14].u8[0]; // fap Interlock
+			message_data[1] = g_controller_iib.iib_signals[14].u8[1]; //
+			message_data[2] = g_controller_iib.iib_signals[14].u8[2]; //
+			message_data[3] = g_controller_iib.iib_signals[14].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_alarm[0].u8[0]; // fap Alarm
-			message_data[5] = g_controller_iib.iib_alarm[0].u8[1]; //
-			message_data[6] = g_controller_iib.iib_alarm[0].u8[2]; //
-			message_data[7] = g_controller_iib.iib_alarm[0].u8[3]; //
+			message_data[4] = g_controller_iib.iib_signals[15].u8[0]; // fap Alarm
+			message_data[5] = g_controller_iib.iib_signals[15].u8[1]; //
+			message_data[6] = g_controller_iib.iib_signals[15].u8[2]; //
+			message_data[7] = g_controller_iib.iib_signals[15].u8[3]; //
 
 			break;
 		}
@@ -751,15 +751,15 @@ void send_data_message(uint8_t var)
 		}
 		case 7:
 		{
-			message_data[0] = g_controller_iib.iib_itlk[0].u8[0]; // fac_os Interlock
-			message_data[1] = g_controller_iib.iib_itlk[0].u8[1]; //
-			message_data[2] = g_controller_iib.iib_itlk[0].u8[2]; //
-			message_data[3] = g_controller_iib.iib_itlk[0].u8[3]; //
+			message_data[0] = g_controller_iib.iib_signals[13].u8[0]; // fac_os Interlock
+			message_data[1] = g_controller_iib.iib_signals[13].u8[1]; //
+			message_data[2] = g_controller_iib.iib_signals[13].u8[2]; //
+			message_data[3] = g_controller_iib.iib_signals[13].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_alarm[0].u8[0]; // fac_os Alarm
-			message_data[5] = g_controller_iib.iib_alarm[0].u8[1]; //
-			message_data[6] = g_controller_iib.iib_alarm[0].u8[2]; //
-			message_data[7] = g_controller_iib.iib_alarm[0].u8[3]; //
+			message_data[4] = g_controller_iib.iib_signals[14].u8[0]; // fac_os Alarm
+			message_data[5] = g_controller_iib.iib_signals[14].u8[1]; //
+			message_data[6] = g_controller_iib.iib_signals[14].u8[2]; //
+			message_data[7] = g_controller_iib.iib_signals[14].u8[3]; //
 
 			break;
 		}
@@ -849,15 +849,15 @@ void send_data_message(uint8_t var)
 		}
 		case 5:
 		{
-			message_data[0] = g_controller_iib.iib_itlk[0].u8[0]; // fac_is Interlock
-			message_data[1] = g_controller_iib.iib_itlk[0].u8[1]; //
-			message_data[2] = g_controller_iib.iib_itlk[0].u8[2]; //
-			message_data[3] = g_controller_iib.iib_itlk[0].u8[3]; //
+			message_data[0] = g_controller_iib.iib_signals[9].u8[0]; // fac_is Interlock
+			message_data[1] = g_controller_iib.iib_signals[9].u8[1]; //
+			message_data[2] = g_controller_iib.iib_signals[9].u8[2]; //
+			message_data[3] = g_controller_iib.iib_signals[9].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_alarm[0].u8[0]; // fac_is Alarm
-			message_data[5] = g_controller_iib.iib_alarm[0].u8[1]; //
-			message_data[6] = g_controller_iib.iib_alarm[0].u8[2]; //
-			message_data[7] = g_controller_iib.iib_alarm[0].u8[3]; //
+			message_data[4] = g_controller_iib.iib_signals[10].u8[0]; // fac_is Alarm
+			message_data[5] = g_controller_iib.iib_signals[10].u8[1]; //
+			message_data[6] = g_controller_iib.iib_signals[10].u8[2]; //
+			message_data[7] = g_controller_iib.iib_signals[10].u8[3]; //
 
 			break;
 		}
@@ -947,15 +947,15 @@ void send_data_message(uint8_t var)
 		}
 		case 5:
 		{
-			message_data[0] = g_controller_iib.iib_itlk[0].u8[0]; // fac_cmd Interlock
-			message_data[1] = g_controller_iib.iib_itlk[0].u8[1]; //
-			message_data[2] = g_controller_iib.iib_itlk[0].u8[2]; //
-			message_data[3] = g_controller_iib.iib_itlk[0].u8[3]; //
+			message_data[0] = g_controller_iib.iib_signals[10].u8[0]; // fac_cmd Interlock
+			message_data[1] = g_controller_iib.iib_signals[10].u8[1]; //
+			message_data[2] = g_controller_iib.iib_signals[10].u8[2]; //
+			message_data[3] = g_controller_iib.iib_signals[10].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_alarm[0].u8[0]; // fac_cmd Alarm
-			message_data[5] = g_controller_iib.iib_alarm[0].u8[1]; //
-			message_data[6] = g_controller_iib.iib_alarm[0].u8[2]; //
-			message_data[7] = g_controller_iib.iib_alarm[0].u8[3]; //
+			message_data[4] = g_controller_iib.iib_signals[11].u8[0]; // fac_cmd Alarm
+			message_data[5] = g_controller_iib.iib_signals[11].u8[1]; //
+			message_data[6] = g_controller_iib.iib_signals[11].u8[2]; //
+			message_data[7] = g_controller_iib.iib_signals[11].u8[3]; //
 
 			break;
 		}

@@ -496,43 +496,59 @@ void fap_application_readings()
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-    if (fap.VinItlkSts)                     fap.InterlocksRegister.u32 |= FAP_INPUT_OVERVOLTAGE_ITLK;
-    if (fap.VoutItlkSts)                    fap.InterlocksRegister.u32 |= FAP_OUTPUT_OVERVOLTAGE_ITLK;
-    if (fap.IoutA1ItlkSts)                  fap.InterlocksRegister.u32 |= FAP_OUTPUT_OVERCURRENT_1_ITLK;
-    if (fap.IoutA2ItlkSts)                  fap.InterlocksRegister.u32 |= FAP_OUTPUT_OVERCURRENT_2_ITLK;
-    if (fap.TempIGBT1ItlkSts)               fap.InterlocksRegister.u32 |= FAP_IGBT1_OVERTEMP_ITLK;
-    if (fap.TempIGBT2ItlkSts)               fap.InterlocksRegister.u32 |= FAP_IGBT2_OVERTEMP_ITLK;
-    if (fap.DriverVoltageItlkSts)           fap.InterlocksRegister.u32 |= FAP_DRIVER_OVERVOLTAGE_ITLK;
-    if (fap.Driver1CurrentItlkSts)          fap.InterlocksRegister.u32 |= FAP_DRIVER1_OVERCURRENT_ITLK;
-    if (fap.Driver2CurrentItlkSts)          fap.InterlocksRegister.u32 |= FAP_DRIVER2_OVERCURRENT_ITLK;
-    if (fap.Driver1ErrorItlkSts)            fap.InterlocksRegister.u32 |= FAP_DRIVER1_ERROR_ITLK;
-    if (fap.Driver2ErrorItlkSts)            fap.InterlocksRegister.u32 |= FAP_DRIVER2_ERROR_ITLK;
-    if (fap.TempLItlkSts)                   fap.InterlocksRegister.u32 |= FAP_INDUC_OVERTEMP_ITLK;
-    if (fap.TempHeatSinkItlkSts)            fap.InterlocksRegister.u32 |= FAP_HS_OVERTEMP_ITLK;
-    if (fap.RelayOpenItlkSts)               fap.InterlocksRegister.u32 |= FAP_RELAY_ITLK;
-    if (fap.RelayContactStickingItlkSts)    fap.InterlocksRegister.u32 |= FAP_RELAY_CONTACT_STICKING_ITLK;
-    if (fap.ExternalItlkSts)                fap.InterlocksRegister.u32 |= FAP_EXTERNAL_ITLK;
-    if (fap.RackItlkSts)                    fap.InterlocksRegister.u32 |= FAP_RACK_ITLK;
-    if (fap.GroundLeakageItlkSts)           fap.InterlocksRegister.u32 |= FAP_GROUND_LKG_ITLK;
-    if (fap.BoardTemperatureItlkSts)        fap.InterlocksRegister.u32 |= FAP_BOARD_IIB_OVERTEMP_ITLK;
-    if (fap.RelativeHumidityItlkSts)        fap.InterlocksRegister.u32 |= FAP_BOARD_IIB_OVERHUMIDITY_ITLK;
+    if(Interlock == 1)
+    {
+    	if (fap.VinItlkSts)                     fap.InterlocksRegister.u32 |= FAP_INPUT_OVERVOLTAGE_ITLK;
+    	if (fap.VoutItlkSts)                    fap.InterlocksRegister.u32 |= FAP_OUTPUT_OVERVOLTAGE_ITLK;
+    	if (fap.IoutA1ItlkSts)                  fap.InterlocksRegister.u32 |= FAP_OUTPUT_OVERCURRENT_1_ITLK;
+    	if (fap.IoutA2ItlkSts)                  fap.InterlocksRegister.u32 |= FAP_OUTPUT_OVERCURRENT_2_ITLK;
+    	if (fap.TempIGBT1ItlkSts)               fap.InterlocksRegister.u32 |= FAP_IGBT1_OVERTEMP_ITLK;
+    	if (fap.TempIGBT2ItlkSts)               fap.InterlocksRegister.u32 |= FAP_IGBT2_OVERTEMP_ITLK;
+    	if (fap.DriverVoltageItlkSts)           fap.InterlocksRegister.u32 |= FAP_DRIVER_OVERVOLTAGE_ITLK;
+    	if (fap.Driver1CurrentItlkSts)          fap.InterlocksRegister.u32 |= FAP_DRIVER1_OVERCURRENT_ITLK;
+    	if (fap.Driver2CurrentItlkSts)          fap.InterlocksRegister.u32 |= FAP_DRIVER2_OVERCURRENT_ITLK;
+    	if (fap.Driver1ErrorItlkSts)            fap.InterlocksRegister.u32 |= FAP_DRIVER1_ERROR_ITLK;
+    	if (fap.Driver2ErrorItlkSts)            fap.InterlocksRegister.u32 |= FAP_DRIVER2_ERROR_ITLK;
+    	if (fap.TempLItlkSts)                   fap.InterlocksRegister.u32 |= FAP_INDUC_OVERTEMP_ITLK;
+    	if (fap.TempHeatSinkItlkSts)            fap.InterlocksRegister.u32 |= FAP_HS_OVERTEMP_ITLK;
+    	if (fap.RelayOpenItlkSts)               fap.InterlocksRegister.u32 |= FAP_RELAY_ITLK;
+    	if (fap.RelayContactStickingItlkSts)    fap.InterlocksRegister.u32 |= FAP_RELAY_CONTACT_STICKING_ITLK;
+    	if (fap.ExternalItlkSts)                fap.InterlocksRegister.u32 |= FAP_EXTERNAL_ITLK;
+    	if (fap.RackItlkSts)                    fap.InterlocksRegister.u32 |= FAP_RACK_ITLK;
+    	if (fap.GroundLeakageItlkSts)           fap.InterlocksRegister.u32 |= FAP_GROUND_LKG_ITLK;
+    	if (fap.BoardTemperatureItlkSts)        fap.InterlocksRegister.u32 |= FAP_BOARD_IIB_OVERTEMP_ITLK;
+    	if (fap.RelativeHumidityItlkSts)        fap.InterlocksRegister.u32 |= FAP_BOARD_IIB_OVERHUMIDITY_ITLK;
+    }
+
+    else
+    {
+    	fap.InterlocksRegister.u32 = 0x00000000;
+    }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-    if (fap.VinAlarmSts)                    fap.AlarmsRegister.u32 |= FAP_INPUT_OVERVOLTAGE_ALM;
-    if (fap.VoutAlarmSts)                   fap.AlarmsRegister.u32 |= FAP_OUTPUT_OVERVOLTAGE_ALM;
-    if (fap.IoutA1AlarmSts)                 fap.AlarmsRegister.u32 |= FAP_OUTPUT_OVERCURRENT_1_ALM;
-    if (fap.IoutA2AlarmSts)                 fap.AlarmsRegister.u32 |= FAP_OUTPUT_OVERCURRENT_2_ALM;
-    if (fap.TempIGBT1AlarmSts)              fap.AlarmsRegister.u32 |= FAP_IGBT1_OVERTEMP_ALM;
-    if (fap.TempIGBT2AlarmSts)              fap.AlarmsRegister.u32 |= FAP_IGBT2_OVERTEMP_ALM;
-    if (fap.TempLAlarmSts)                  fap.AlarmsRegister.u32 |= FAP_INDUC_OVERTEMP_ALM;
-    if (fap.TempHeatSinkAlarmSts)           fap.AlarmsRegister.u32 |= FAP_HS_OVERTEMP_ALM;
-    if (fap.GroundLeakageAlarmSts)          fap.AlarmsRegister.u32 |= FAP_GROUND_LKG_ALM;
-    if (fap.DriverVoltageAlarmSts)          fap.AlarmsRegister.u32 |= FAP_DRIVER_OVERVOLTAGE_ALM;
-    if (fap.Driver1CurrentAlarmSts)         fap.AlarmsRegister.u32 |= FAP_DRIVER1_OVERCURRENT_ALM;
-    if (fap.Driver2CurrentAlarmSts)         fap.AlarmsRegister.u32 |= FAP_DRIVER2_OVERCURRENT_ALM;
-    if (fap.BoardTemperatureAlarmSts)       fap.AlarmsRegister.u32 |= FAP_BOARD_IIB_OVERTEMP_ALM;
-    if (fap.RelativeHumidityAlarmSts)       fap.AlarmsRegister.u32 |= FAP_BOARD_IIB_OVERHUMIDITY_ALM;
+    if(Alarm == 1)
+    {
+    	if (fap.VinAlarmSts)                    fap.AlarmsRegister.u32 |= FAP_INPUT_OVERVOLTAGE_ALM;
+    	if (fap.VoutAlarmSts)                   fap.AlarmsRegister.u32 |= FAP_OUTPUT_OVERVOLTAGE_ALM;
+    	if (fap.IoutA1AlarmSts)                 fap.AlarmsRegister.u32 |= FAP_OUTPUT_OVERCURRENT_1_ALM;
+    	if (fap.IoutA2AlarmSts)                 fap.AlarmsRegister.u32 |= FAP_OUTPUT_OVERCURRENT_2_ALM;
+    	if (fap.TempIGBT1AlarmSts)              fap.AlarmsRegister.u32 |= FAP_IGBT1_OVERTEMP_ALM;
+    	if (fap.TempIGBT2AlarmSts)              fap.AlarmsRegister.u32 |= FAP_IGBT2_OVERTEMP_ALM;
+    	if (fap.TempLAlarmSts)                  fap.AlarmsRegister.u32 |= FAP_INDUC_OVERTEMP_ALM;
+    	if (fap.TempHeatSinkAlarmSts)           fap.AlarmsRegister.u32 |= FAP_HS_OVERTEMP_ALM;
+    	if (fap.GroundLeakageAlarmSts)          fap.AlarmsRegister.u32 |= FAP_GROUND_LKG_ALM;
+    	if (fap.DriverVoltageAlarmSts)          fap.AlarmsRegister.u32 |= FAP_DRIVER_OVERVOLTAGE_ALM;
+    	if (fap.Driver1CurrentAlarmSts)         fap.AlarmsRegister.u32 |= FAP_DRIVER1_OVERCURRENT_ALM;
+    	if (fap.Driver2CurrentAlarmSts)         fap.AlarmsRegister.u32 |= FAP_DRIVER2_OVERCURRENT_ALM;
+    	if (fap.BoardTemperatureAlarmSts)       fap.AlarmsRegister.u32 |= FAP_BOARD_IIB_OVERTEMP_ALM;
+    	if (fap.RelativeHumidityAlarmSts)       fap.AlarmsRegister.u32 |= FAP_BOARD_IIB_OVERHUMIDITY_ALM;
+    }
+
+    else
+    {
+    	fap.AlarmsRegister.u32 = 0x00000000;
+    }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -550,9 +566,8 @@ void fap_application_readings()
     g_controller_iib.iib_signals[11].f      = fap.GroundLeakage.f;
     g_controller_iib.iib_signals[12].f      = fap.BoardTemperature.f;
     g_controller_iib.iib_signals[13].f      = fap.RelativeHumidity.f;
-
-    g_controller_iib.iib_itlk[0].u32        = fap.InterlocksRegister.u32;
-    g_controller_iib.iib_alarm[0].u32       = fap.AlarmsRegister.u32;
+    g_controller_iib.iib_signals[14].u32    = fap.InterlocksRegister.u32;
+    g_controller_iib.iib_signals[15].u32    = fap.AlarmsRegister.u32;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

@@ -45,20 +45,7 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-fac_cmd_t fac_cmd;
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-static uint32_t fac_cmd_interlocks_indication;
-static uint32_t fac_cmd_alarms_indication;
-
-static uint32_t ResetInterlocksRegister = 0;
-static uint32_t ResetAlarmsRegister = 0;
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-static uint32_t itlk_id;
-static uint32_t alarm_id;
+volatile fac_cmd_t fac_cmd;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -79,7 +66,7 @@ void clear_fac_cmd_interlocks()
     fac_cmd.BoardTemperatureItlkSts = 0;
     fac_cmd.RelativeHumidityItlkSts = 0;
 
-    itlk_id = 0;
+    fac_cmd.InterlocksRegister.u32  = 0;
 
 }
 
@@ -122,7 +109,7 @@ void clear_fac_cmd_alarms()
     fac_cmd.BoardTemperatureAlarmSts    = 0;
     fac_cmd.RelativeHumidityAlarmSts    = 0;
 
-    alarm_id = 0;
+    fac_cmd.AlarmsRegister.u32          = 0;
 
 }
 
@@ -323,44 +310,51 @@ void fac_cmd_application_readings()
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-    if (fac_cmd.VcapBankItlkSts)             itlk_id |= FAC_CMD_CAPBANK_OVERVOLTAGE_ITLK;
-    if (fac_cmd.VoutItlkSts)                 itlk_id |= FAC_CMD_OUTPUT_OVERVOLTAGE_ITLK;
-    if (fac_cmd.AuxIdbVoltageItlkSts)        itlk_id |= FAC_CMD_AUX_AND_IDB_SUPPLY_OVERVOLTAGE_ITLK;
-    if (fac_cmd.AuxCurrentItlkSts)           itlk_id |= FAC_CMD_AUX_SUPPLY_OVERCURRENT_ITLK;
-    if (fac_cmd.IdbCurrentItlkSts)           itlk_id |= FAC_CMD_IDB_SUPPLY_OVERCURRENT_ITLK;
-    if (fac_cmd.TempLItlkSts)                itlk_id |= FAC_CMD_INDUC_OVERTEMP_ITLK;
-    if (fac_cmd.TempHeatSinkItlkSts)         itlk_id |= FAC_CMD_HS_OVERTEMP_ITLK;
-    if (fac_cmd.MainOverCurrentItlkSts)      itlk_id |= FAC_CMD_MAIN_OVER_CURRENT_ITLK;
-    if (fac_cmd.EmergencyButtonItlkSts)      itlk_id |= FAC_CMD_EMERGENCY_BUTTON_ITLK;
-    if (fac_cmd.MainUnderVoltageItlkSts)     itlk_id |= FAC_CMD_MAIN_UNDER_VOLTAGE_ITLK;
-    if (fac_cmd.MainOverVoltageItlkSts)      itlk_id |= FAC_CMD_MAIN_OVER_VOLTAGE_ITLK;
-    if (fac_cmd.GroundLeakageItlkSts)        itlk_id |= FAC_CMD_GROUND_LKG_ITLK;
-    if (fac_cmd.BoardTemperatureItlkSts)     itlk_id |= FAC_CMD_BOARD_IIB_OVERTEMP_ITLK;
-    if (fac_cmd.RelativeHumidityItlkSts)     itlk_id |= FAC_CMD_BOARD_IIB_OVERHUMIDITY_ITLK;
+    if(Interlock == 1)
+    {
+    	if (fac_cmd.VcapBankItlkSts)             fac_cmd.InterlocksRegister.u32 |= FAC_CMD_CAPBANK_OVERVOLTAGE_ITLK;
+    	if (fac_cmd.VoutItlkSts)                 fac_cmd.InterlocksRegister.u32 |= FAC_CMD_OUTPUT_OVERVOLTAGE_ITLK;
+    	if (fac_cmd.AuxIdbVoltageItlkSts)        fac_cmd.InterlocksRegister.u32 |= FAC_CMD_AUX_AND_IDB_SUPPLY_OVERVOLTAGE_ITLK;
+    	if (fac_cmd.AuxCurrentItlkSts)           fac_cmd.InterlocksRegister.u32 |= FAC_CMD_AUX_SUPPLY_OVERCURRENT_ITLK;
+    	if (fac_cmd.IdbCurrentItlkSts)           fac_cmd.InterlocksRegister.u32 |= FAC_CMD_IDB_SUPPLY_OVERCURRENT_ITLK;
+    	if (fac_cmd.TempLItlkSts)                fac_cmd.InterlocksRegister.u32 |= FAC_CMD_INDUC_OVERTEMP_ITLK;
+    	if (fac_cmd.TempHeatSinkItlkSts)         fac_cmd.InterlocksRegister.u32 |= FAC_CMD_HS_OVERTEMP_ITLK;
+    	if (fac_cmd.MainOverCurrentItlkSts)      fac_cmd.InterlocksRegister.u32 |= FAC_CMD_MAIN_OVER_CURRENT_ITLK;
+    	if (fac_cmd.EmergencyButtonItlkSts)      fac_cmd.InterlocksRegister.u32 |= FAC_CMD_EMERGENCY_BUTTON_ITLK;
+    	if (fac_cmd.MainUnderVoltageItlkSts)     fac_cmd.InterlocksRegister.u32 |= FAC_CMD_MAIN_UNDER_VOLTAGE_ITLK;
+    	if (fac_cmd.MainOverVoltageItlkSts)      fac_cmd.InterlocksRegister.u32 |= FAC_CMD_MAIN_OVER_VOLTAGE_ITLK;
+    	if (fac_cmd.GroundLeakageItlkSts)        fac_cmd.InterlocksRegister.u32 |= FAC_CMD_GROUND_LKG_ITLK;
+    	if (fac_cmd.BoardTemperatureItlkSts)     fac_cmd.InterlocksRegister.u32 |= FAC_CMD_BOARD_IIB_OVERTEMP_ITLK;
+    	if (fac_cmd.RelativeHumidityItlkSts)     fac_cmd.InterlocksRegister.u32 |= FAC_CMD_BOARD_IIB_OVERHUMIDITY_ITLK;
+    }
+
+    else
+    {
+    	fac_cmd.InterlocksRegister.u32 = 0x00000000;
+    }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-    if (fac_cmd.VcapBankAlarmSts)            alarm_id |= FAC_CMD_CAPBANK_OVERVOLTAGE_ALM;
-    if (fac_cmd.VoutItlkSts)                 alarm_id |= FAC_CMD_OUTPUT_OVERVOLTAGE_ALM;
-    if (fac_cmd.AuxIdbVoltageAlarmSts)       alarm_id |= FAC_CMD_AUX_AND_IDB_SUPPLY_OVERVOLTAGE_ALM;
-    if (fac_cmd.AuxCurrentAlarmSts)          alarm_id |= FAC_CMD_AUX_SUPPLY_OVERCURRENT_ALM;
-    if (fac_cmd.IdbCurrentAlarmSts)          alarm_id |= FAC_CMD_IDB_SUPPLY_OVERCURRENT_ALM;
-    if (fac_cmd.TempLAlarmSts)               alarm_id |= FAC_CMD_INDUC_OVERTEMP_ALM;
-    if (fac_cmd.TempHeatSinkAlarmSts)        alarm_id |= FAC_CMD_HS_OVERTEMP_ALM;
-    if (fac_cmd.GroundLeakageAlarmSts)       alarm_id |= FAC_CMD_GROUND_LKG_ALM;
-    if (fac_cmd.BoardTemperatureAlarmSts)    alarm_id |= FAC_CMD_BOARD_IIB_OVERTEMP_ALM;
-    if (fac_cmd.RelativeHumidityAlarmSts)    alarm_id |= FAC_CMD_BOARD_IIB_OVERHUMIDITY_ALM;
+    if(Alarm == 1)
+    {
+    	if (fac_cmd.VcapBankAlarmSts)            fac_cmd.AlarmsRegister.u32 |= FAC_CMD_CAPBANK_OVERVOLTAGE_ALM;
+    	if (fac_cmd.VoutItlkSts)                 fac_cmd.AlarmsRegister.u32 |= FAC_CMD_OUTPUT_OVERVOLTAGE_ALM;
+    	if (fac_cmd.AuxIdbVoltageAlarmSts)       fac_cmd.AlarmsRegister.u32 |= FAC_CMD_AUX_AND_IDB_SUPPLY_OVERVOLTAGE_ALM;
+    	if (fac_cmd.AuxCurrentAlarmSts)          fac_cmd.AlarmsRegister.u32 |= FAC_CMD_AUX_SUPPLY_OVERCURRENT_ALM;
+    	if (fac_cmd.IdbCurrentAlarmSts)          fac_cmd.AlarmsRegister.u32 |= FAC_CMD_IDB_SUPPLY_OVERCURRENT_ALM;
+    	if (fac_cmd.TempLAlarmSts)               fac_cmd.AlarmsRegister.u32 |= FAC_CMD_INDUC_OVERTEMP_ALM;
+    	if (fac_cmd.TempHeatSinkAlarmSts)        fac_cmd.AlarmsRegister.u32 |= FAC_CMD_HS_OVERTEMP_ALM;
+    	if (fac_cmd.GroundLeakageAlarmSts)       fac_cmd.AlarmsRegister.u32 |= FAC_CMD_GROUND_LKG_ALM;
+    	if (fac_cmd.BoardTemperatureAlarmSts)    fac_cmd.AlarmsRegister.u32 |= FAC_CMD_BOARD_IIB_OVERTEMP_ALM;
+    	if (fac_cmd.RelativeHumidityAlarmSts)    fac_cmd.AlarmsRegister.u32 |= FAC_CMD_BOARD_IIB_OVERHUMIDITY_ALM;
+    }
+
+    else
+    {
+    	fac_cmd.AlarmsRegister.u32 = 0x00000000;
+    }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-
-    fac_cmd_interlocks_indication = itlk_id;
-    fac_cmd_alarms_indication = alarm_id;
-
-    g_controller_iib.iib_itlk[0].u32        = fac_cmd_interlocks_indication;
-    g_controller_iib.iib_itlk[1].u32        = ResetInterlocksRegister;
-
-    g_controller_iib.iib_alarm[0].u32       = fac_cmd_alarms_indication;
-    g_controller_iib.iib_alarm[1].u32       = ResetAlarmsRegister;
 
     g_controller_iib.iib_signals[0].f       = fac_cmd.VcapBank.f;
     g_controller_iib.iib_signals[1].f       = fac_cmd.Vout.f;
@@ -372,7 +366,8 @@ void fac_cmd_application_readings()
     g_controller_iib.iib_signals[7].f       = fac_cmd.TempHeatSink.f;
     g_controller_iib.iib_signals[8].f       = fac_cmd.BoardTemperature.f;
     g_controller_iib.iib_signals[9].f       = fac_cmd.RelativeHumidity.f;
-
+    g_controller_iib.iib_signals[10].u32	= fac_cmd.InterlocksRegister.u32;
+	g_controller_iib.iib_signals[11].u32    = fac_cmd.AlarmsRegister.u32;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -495,6 +490,8 @@ void config_module_fac_cmd(void)
     fac_cmd.RelativeHumidity.f       = 0.0;
     fac_cmd.RelativeHumidityAlarmSts = 0;
     fac_cmd.RelativeHumidityItlkSts  = 0;
+    fac_cmd.InterlocksRegister.u32   = 0;
+    fac_cmd.AlarmsRegister.u32       = 0;
 
 }
 
