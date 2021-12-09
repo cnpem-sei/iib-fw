@@ -413,8 +413,6 @@ extern volatile fap_t fap;
 
 //Gpdi configuration
 
-#define GIGA
-
 #define Gpdi1Enable                             OFF
 #define Gpdi2Enable                             OFF
 #define Gpdi3Enable                             OFF
@@ -634,8 +632,6 @@ extern volatile fap_t fap;
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //Gpdi configuration
-
-#define GIGA
 
 #define Gpdi1Enable                             OFF
 #define Gpdi2Enable                             OFF
@@ -857,8 +853,6 @@ extern volatile fap_t fap;
 
 //Gpdi configuration
 
-#define GIGA
-
 #define Gpdi1Enable                             OFF
 #define Gpdi2Enable                             OFF
 #define Gpdi3Enable                             OFF
@@ -1078,8 +1072,6 @@ extern volatile fap_t fap;
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //Gpdi configuration
-
-#define GIGA
 
 #define Gpdi1Enable                             OFF
 #define Gpdi2Enable                             OFF
@@ -1301,8 +1293,6 @@ extern volatile fap_t fap;
 
 //Gpdi configuration
 
-#define GIGA
-
 #define Gpdi1Enable                             OFF
 #define Gpdi2Enable                             OFF
 #define Gpdi3Enable                             OFF
@@ -1421,9 +1411,9 @@ extern volatile fap_t fap;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                  452.5      // resistores mais 250 ohms do LV 20P
+#define LV_Primary_Voltage_Vin                  602.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_Vout                 335.833333 // resistores mais 250 ohms do LV 20P
+#define LV_Primary_Voltage_Vout                 302.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Secondary_Current_Vin                0.025
 
@@ -1523,16 +1513,14 @@ extern volatile fap_t fap;
 
 //Gpdi configuration
 
-#define SIRIUS_SALA_FONTES
-
 #define Gpdi1Enable                             OFF
 #define Gpdi2Enable                             OFF
 #define Gpdi3Enable                             OFF
 #define Gpdi4Enable                             OFF
 #define Gpdi5Enable                             ON  // ExternalITLK
-#define Gpdi6Enable                             OFF
-#define Gpdi7Enable                             ON  // RackITLK
-#define Gpdi8Enable                             ON  // RelayStatus
+#define Gpdi6Enable                             ON  // RackITLK
+#define Gpdi7Enable                             ON  // RelayStatus
+#define Gpdi8Enable                             OFF
 #define Gpdi9Enable                             OFF
 #define Gpdi10Enable                            OFF
 #define Gpdi11Enable                            OFF
@@ -1643,9 +1631,9 @@ extern volatile fap_t fap;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                  452.5      // resistores mais 250 ohms do LV 20P
+#define LV_Primary_Voltage_Vin                  602.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_Vout                 335.833333 // resistores mais 250 ohms do LV 20P
+#define LV_Primary_Voltage_Vout                 302.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Secondary_Current_Vin                0.025
 
@@ -1745,16 +1733,14 @@ extern volatile fap_t fap;
 
 //Gpdi configuration
 
-#define SIRIUS_SALA_FONTES
-
 #define Gpdi1Enable                             OFF
 #define Gpdi2Enable                             OFF
 #define Gpdi3Enable                             OFF
 #define Gpdi4Enable                             OFF
 #define Gpdi5Enable                             ON  // ExternalITLK
-#define Gpdi6Enable                             OFF
-#define Gpdi7Enable                             ON  // RackITLK
-#define Gpdi8Enable                             ON  // RelayStatus
+#define Gpdi6Enable                             ON  // RackITLK
+#define Gpdi7Enable                             ON  // RelayStatus
+#define Gpdi8Enable                             OFF
 #define Gpdi9Enable                             OFF
 #define Gpdi10Enable                            OFF
 #define Gpdi11Enable                            OFF
@@ -1867,9 +1853,9 @@ extern volatile fap_t fap;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                  452.5 // resistores mais 250 ohms do LV 20P
+#define LV_Primary_Voltage_Vin                  602.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_Vout                 252.5 // resistores mais 250 ohms do LV 20P
+#define LV_Primary_Voltage_Vout                 302.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Secondary_Current_Vin                0.025
 
@@ -1969,16 +1955,14 @@ extern volatile fap_t fap;
 
 //Gpdi configuration
 
-#define SIRIUS_SALA_FONTES
-
 #define Gpdi1Enable                             OFF
 #define Gpdi2Enable                             OFF
 #define Gpdi3Enable                             OFF
 #define Gpdi4Enable                             OFF
 #define Gpdi5Enable                             ON  // ExternalITLK
-#define Gpdi6Enable                             OFF
-#define Gpdi7Enable                             ON  // RackITLK
-#define Gpdi8Enable                             ON  // RelayStatus
+#define Gpdi6Enable                             ON  // RackITLK
+#define Gpdi7Enable                             ON  // RelayStatus
+#define Gpdi8Enable                             OFF
 #define Gpdi9Enable                             OFF
 #define Gpdi10Enable                            OFF
 #define Gpdi11Enable                            OFF
@@ -2091,9 +2075,9 @@ extern volatile fap_t fap;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                  452.5 // resistores mais 250 ohms do LV 20P
+#define LV_Primary_Voltage_Vin                  602.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_Vout                 252.5 // resistores mais 250 ohms do LV 20P
+#define LV_Primary_Voltage_Vout                 302.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Secondary_Current_Vin                0.025
 
@@ -2193,16 +2177,14 @@ extern volatile fap_t fap;
 
 //Gpdi configuration
 
-#define SIRIUS_SALA_FONTES
-
 #define Gpdi1Enable                             OFF
 #define Gpdi2Enable                             OFF
 #define Gpdi3Enable                             OFF
 #define Gpdi4Enable                             OFF
 #define Gpdi5Enable                             ON  // ExternalITLK
-#define Gpdi6Enable                             OFF
-#define Gpdi7Enable                             ON  // RackITLK
-#define Gpdi8Enable                             ON  // RelayStatus
+#define Gpdi6Enable                             ON  // RackITLK
+#define Gpdi7Enable                             ON  // RelayStatus
+#define Gpdi8Enable                             OFF
 #define Gpdi9Enable                             OFF
 #define Gpdi10Enable                            OFF
 #define Gpdi11Enable                            OFF
@@ -2315,9 +2297,9 @@ extern volatile fap_t fap;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                  452.5 // resistores mais 250 ohms do LV 20P
+#define LV_Primary_Voltage_Vin                  602.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_Vout                 252.5 // resistores mais 250 ohms do LV 20P
+#define LV_Primary_Voltage_Vout                 302.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Secondary_Current_Vin                0.025
 
@@ -2417,16 +2399,14 @@ extern volatile fap_t fap;
 
 //Gpdi configuration
 
-#define SIRIUS_SALA_FONTES
-
 #define Gpdi1Enable                             OFF
 #define Gpdi2Enable                             OFF
 #define Gpdi3Enable                             OFF
 #define Gpdi4Enable                             OFF
 #define Gpdi5Enable                             ON  // ExternalITLK
-#define Gpdi6Enable                             OFF
-#define Gpdi7Enable                             ON  // RackITLK
-#define Gpdi8Enable                             ON  // RelayStatus
+#define Gpdi6Enable                             ON  // RackITLK
+#define Gpdi7Enable                             ON  // RelayStatus
+#define Gpdi8Enable                             OFF
 #define Gpdi9Enable                             OFF
 #define Gpdi10Enable                            OFF
 #define Gpdi11Enable                            OFF
@@ -2539,9 +2519,9 @@ extern volatile fap_t fap;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                  452.5 // resistores mais 250 ohms do LV 20P
+#define LV_Primary_Voltage_Vin                  602.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_Vout                 252.5 // resistores mais 250 ohms do LV 20P
+#define LV_Primary_Voltage_Vout                 302.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Secondary_Current_Vin                0.025
 
@@ -2641,16 +2621,14 @@ extern volatile fap_t fap;
 
 //Gpdi configuration
 
-#define SIRIUS_SALA_FONTES
-
 #define Gpdi1Enable                             OFF
 #define Gpdi2Enable                             OFF
 #define Gpdi3Enable                             OFF
 #define Gpdi4Enable                             OFF
 #define Gpdi5Enable                             ON  // ExternalITLK
-#define Gpdi6Enable                             OFF
-#define Gpdi7Enable                             ON  // RackITLK
-#define Gpdi8Enable                             ON  // RelayStatus
+#define Gpdi6Enable                             ON  // RackITLK
+#define Gpdi7Enable                             ON  // RelayStatus
+#define Gpdi8Enable                             OFF
 #define Gpdi9Enable                             OFF
 #define Gpdi10Enable                            OFF
 #define Gpdi11Enable                            OFF
@@ -2863,8 +2841,6 @@ extern volatile fap_t fap;
 
 //Gpdi configuration
 
-#define GIGA
-
 #define Gpdi1Enable                             OFF
 #define Gpdi2Enable                             OFF
 #define Gpdi3Enable                             OFF
@@ -2985,9 +2961,9 @@ extern volatile fap_t fap;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                  452.5 // resistores mais 250 ohms do LV 20P
+#define LV_Primary_Voltage_Vin                  602.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_Vout                 252.5 // resistores mais 250 ohms do LV 20P
+#define LV_Primary_Voltage_Vout                 302.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Secondary_Current_Vin                0.025
 
@@ -3087,15 +3063,13 @@ extern volatile fap_t fap;
 
 //Gpdi configuration
 
-#define SIRIUS_LT
-
-#define Gpdi1Enable                             ON  // ExternalITLK
+#define Gpdi1Enable                             OFF
 #define Gpdi2Enable                             OFF
-#define Gpdi3Enable                             ON  // RackITLK
-#define Gpdi4Enable                             ON  // RelayStatus
-#define Gpdi5Enable                             OFF
-#define Gpdi6Enable                             OFF
-#define Gpdi7Enable                             OFF
+#define Gpdi3Enable                             OFF
+#define Gpdi4Enable                             OFF
+#define Gpdi5Enable                             ON  // ExternalITLK
+#define Gpdi6Enable                             ON  // RackITLK
+#define Gpdi7Enable                             ON  // RelayStatus
 #define Gpdi8Enable                             OFF
 #define Gpdi9Enable                             OFF
 #define Gpdi10Enable                            OFF
@@ -3209,9 +3183,9 @@ extern volatile fap_t fap;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                  452.5 // resistores mais 250 ohms do LV 20P
+#define LV_Primary_Voltage_Vin                  602.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_Vout                 252.5 // resistores mais 250 ohms do LV 20P
+#define LV_Primary_Voltage_Vout                 302.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Secondary_Current_Vin                0.025
 
@@ -3311,15 +3285,13 @@ extern volatile fap_t fap;
 
 //Gpdi configuration
 
-#define SIRIUS_LT
-
-#define Gpdi1Enable                             ON  // ExternalITLK
+#define Gpdi1Enable                             OFF
 #define Gpdi2Enable                             OFF
-#define Gpdi3Enable                             ON  // RackITLK
-#define Gpdi4Enable                             ON  // RelayStatus
-#define Gpdi5Enable                             OFF
-#define Gpdi6Enable                             OFF
-#define Gpdi7Enable                             OFF
+#define Gpdi3Enable                             OFF
+#define Gpdi4Enable                             OFF
+#define Gpdi5Enable                             ON  // ExternalITLK
+#define Gpdi6Enable                             ON  // RackITLK
+#define Gpdi7Enable                             ON  // RelayStatus
 #define Gpdi8Enable                             OFF
 #define Gpdi9Enable                             OFF
 #define Gpdi10Enable                            OFF
@@ -3431,9 +3403,9 @@ extern volatile fap_t fap;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                  452.5 // resistores mais 250 ohms do LV 20P
+#define LV_Primary_Voltage_Vin                  602.5 // resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_Vout                 252.5 // resistores mais 250 ohms do LV 20P
+#define LV_Primary_Voltage_Vout                 302.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Secondary_Current_Vin                0.025
 
@@ -3533,15 +3505,13 @@ extern volatile fap_t fap;
 
 //Gpdi configuration
 
-#define SIRIUS_LT
-
-#define Gpdi1Enable                             ON  // ExternalITLK
+#define Gpdi1Enable                             OFF
 #define Gpdi2Enable                             OFF
-#define Gpdi3Enable                             ON  // RackITLK
-#define Gpdi4Enable                             ON  // RelayStatus
-#define Gpdi5Enable                             OFF
-#define Gpdi6Enable                             OFF
-#define Gpdi7Enable                             OFF
+#define Gpdi3Enable                             OFF
+#define Gpdi4Enable                             OFF
+#define Gpdi5Enable                             ON  // ExternalITLK
+#define Gpdi6Enable                             ON  // RackITLK
+#define Gpdi7Enable                             ON  // RelayStatus
 #define Gpdi8Enable                             OFF
 #define Gpdi9Enable                             OFF
 #define Gpdi10Enable                            OFF
@@ -3752,8 +3722,6 @@ extern volatile fap_t fap;
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //Gpdi configuration
-
-#define GIGA
 
 #define Gpdi1Enable                             OFF
 #define Gpdi2Enable                             OFF
@@ -3973,8 +3941,6 @@ extern volatile fap_t fap;
 
 //Gpdi configuration
 
-#define GIGA
-
 #define Gpdi1Enable                             OFF
 #define Gpdi2Enable                             OFF
 #define Gpdi3Enable                             OFF
@@ -4193,8 +4159,6 @@ extern volatile fap_t fap;
 
 //Gpdi configuration
 
-#define GIGA
-
 #define Gpdi1Enable                             OFF
 #define Gpdi2Enable                             OFF
 #define Gpdi3Enable                             OFF
@@ -4412,8 +4376,6 @@ extern volatile fap_t fap;
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //Gpdi configuration
-
-#define GIGA
 
 #define Gpdi1Enable                             OFF
 #define Gpdi2Enable                             OFF

@@ -346,90 +346,20 @@ void fap_application_readings()
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifdef GIGA
-
     //Interlock externo
     fap.ExternalItlk = Gpdi5Read();//Variavel usada para debug
     if(!fap.ExternalItlkSts)fap.ExternalItlkSts = Gpdi5Read();
-
-#endif
-
-/*******************************************************************************************/
-
-#ifdef SIRIUS_SALA_FONTES
-
-    //Interlock externo
-    fap.ExternalItlk = Gpdi5Read();//Variavel usada para debug
-    if(!fap.ExternalItlkSts)fap.ExternalItlkSts = Gpdi5Read();
-
-#endif
-
-/*******************************************************************************************/
-
-#ifdef SIRIUS_LT
-
-    //Interlock externo
-    fap.ExternalItlk = Gpdi1Read();//Variavel usada para debug
-    if(!fap.ExternalItlkSts)fap.ExternalItlkSts = Gpdi1Read();
-
-#endif
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-
-#ifdef GIGA
 
     //Interlock do Rack
     fap.Rack = Gpdi6Read();//Variavel usada para debug
     if(!fap.RackItlkSts)fap.RackItlkSts = Gpdi6Read();
 
-#endif
-
-/*******************************************************************************************/
-
-#ifdef SIRIUS_SALA_FONTES
-
-    //Interlock do Rack
-    fap.Rack = Gpdi7Read();//Variavel usada para debug
-    if(!fap.RackItlkSts)fap.RackItlkSts = Gpdi7Read();
-
-#endif
-
-/*******************************************************************************************/
-
-#ifdef SIRIUS_LT
-
-    //Interlock do Rack
-    fap.Rack = Gpdi3Read();//Variavel usada para debug
-    if(!fap.RackItlkSts)fap.RackItlkSts = Gpdi3Read();
-
-#endif
-
 /////////////////////////////////////////////////////////////////////////////////////////////
-
-#ifdef GIGA
 
     //Status do Contato do Rele
     fap.Relay = Gpdi7Read();
-
-#endif
-
-/*******************************************************************************************/
-
-#ifdef SIRIUS_SALA_FONTES
-
-    //Status do Contato do Rele
-    fap.Relay = Gpdi8Read();
-
-#endif
-
-/*******************************************************************************************/
-
-#ifdef SIRIUS_LT
-
-    //Status do Contato do Rele
-    fap.Relay = Gpdi4Read();
-
-#endif
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

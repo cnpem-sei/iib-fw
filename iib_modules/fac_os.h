@@ -516,7 +516,7 @@ extern volatile fac_os_t fac_os;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                              335.833333 // resistores mais 250 ohms do LV 20P
+#define LV_Primary_Voltage_Vin                              602.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Primary_Voltage_GND_Leakage                      4.86
 
@@ -730,7 +730,7 @@ extern volatile fac_os_t fac_os;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                              335.833333 // resistores mais 250 ohms do LV 20P
+#define LV_Primary_Voltage_Vin                              602.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Primary_Voltage_GND_Leakage                      4.86
 
@@ -944,7 +944,7 @@ extern volatile fac_os_t fac_os;
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                              335.833333 // resistores mais 250 ohms do LV 20P
+#define LV_Primary_Voltage_Vin                              602.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Primary_Voltage_GND_Leakage                      4.86
 
