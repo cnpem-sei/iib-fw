@@ -1,5 +1,5 @@
 /*
- * fac_giga_teste__os.h
+ * bo_fam_ps_b2__cmd.h
  *
  *  Created on: 20 de jun de 2022
  *      Author: rogerio.marcondeli
@@ -7,60 +7,51 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef FAC_GIGA_TESTE__OS_H_
-#define FAC_GIGA_TESTE__OS_H_
+#ifndef BO_FAM_PS_B2__CMD_H_
+#define BO_FAM_PS_B2__CMD_H_
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //Set Power Module Alarms And Interlocks
 
-//FAC Giga de Testes OS
+//Rack PA-RaPSF01 / PA-RaPSF02 / PA-RaPSF03 / PA-RaPSF04 / PA-RaPSF06 / PA-RaPSF07 / PA-RaPSF08 / PA-RaPSF09
 
-///////////////////////
+//BO-FAM:PS-B-2
 
-#define FAC_OS
+#define FAC_CMD
 
 #define ON                                                  1
 #define OFF                                                 0
 
-#define FAC_OS_INPUT_OVERVOLTAGE_ALM_LIM                    290.0
-#define FAC_OS_INPUT_OVERVOLTAGE_ITLK_LIM                   295.0
+#define FAC_CMD_CAPBANK_OVERVOLTAGE_ALM_LIM                 290.0
+#define FAC_CMD_CAPBANK_OVERVOLTAGE_ITLK_LIM                300.0
 
-#define FAC_OS_INPUT_OVERCURRENT_ALM_LIM                    430.0
-#define FAC_OS_INPUT_OVERCURRENT_ITLK_LIM                   440.0
+#define FAC_CMD_OUTPUT_OVERVOLTAGE_ALM_LIM                  260.0
+#define FAC_CMD_OUTPUT_OVERVOLTAGE_ITLK_LIM                 270.0
 
-#define FAC_OS_OUTPUT_OVERCURRENT_ALM_LIM                   570.0
-#define FAC_OS_OUTPUT_OVERCURRENT_ITLK_LIM                  590.0
+#define FAC_CMD_AUX_AND_IDB_SUPPLY_OVERVOLTAGE_ALM_LIM      16.0
+#define FAC_CMD_AUX_AND_IDB_SUPPLY_OVERVOLTAGE_ITLK_LIM     17.0
 
-#define FAC_OS_IGBT1_OVERTEMP_ALM_LIM                       60.0
-#define FAC_OS_IGBT1_OVERTEMP_ITLK_LIM                      80.0
+#define FAC_CMD_AUX_SUPPLY_OVERCURRENT_ALM_LIM              2.0
+#define FAC_CMD_AUX_SUPPLY_OVERCURRENT_ITLK_LIM             2.4
 
-#define FAC_OS_IGBT2_OVERTEMP_ALM_LIM                       60.0
-#define FAC_OS_IGBT2_OVERTEMP_ITLK_LIM                      80.0
+#define FAC_CMD_IDB_SUPPLY_OVERCURRENT_ALM_LIM              2.0
+#define FAC_CMD_IDB_SUPPLY_OVERCURRENT_ITLK_LIM             2.4
 
-#define FAC_OS_DRIVER_OVERVOLTAGE_ALM_LIM                   16.0
-#define FAC_OS_DRIVER_OVERVOLTAGE_ITLK_LIM                  17.0
+#define FAC_CMD_GROUND_LEAKAGE_ALM_LIM                      0.600
+#define FAC_CMD_GROUND_LEAKAGE_ITLK_LIM                     0.650
 
-#define FAC_OS_DRIVER1_OVERCURRENT_ALM_LIM                  2.0
-#define FAC_OS_DRIVER1_OVERCURRENT_ITLK_LIM                 2.4
+#define FAC_CMD_INDUC_OVERTEMP_ALM_LIM                      50.0
+#define FAC_CMD_INDUC_OVERTEMP_ITLK_LIM                     60.0
 
-#define FAC_OS_DRIVER2_OVERCURRENT_ALM_LIM                  2.0
-#define FAC_OS_DRIVER2_OVERCURRENT_ITLK_LIM                 2.4
+#define FAC_CMD_HS_OVERTEMP_ALM_LIM                         50.0
+#define FAC_CMD_HS_OVERTEMP_ITLK_LIM                        60.0
 
-#define FAC_OS_GROUND_LEAKAGE_ALM_LIM                       0.600
-#define FAC_OS_GROUND_LEAKAGE_ITLK_LIM                      0.650
+#define FAC_CMD_RH_OVERHUMIDITY_ALM_LIM                     80.0
+#define FAC_CMD_RH_OVERHUMIDITY_ITLK_LIM                    90.0
 
-#define FAC_OS_INDUC_OVERTEMP_ALM_LIM                       40.0
-#define FAC_OS_INDUC_OVERTEMP_ITLK_LIM                      45.0
-
-#define FAC_OS_HS_OVERTEMP_ALM_LIM                          40.0
-#define FAC_OS_HS_OVERTEMP_ITLK_LIM                         45.0
-
-#define FAC_OS_RH_OVERHUMIDITY_ALM_LIM                      60.0
-#define FAC_OS_RH_OVERHUMIDITY_ITLK_LIM                     90.0
-
-#define FAC_OS_BOARD_OVERTEMP_ALM_LIM                       50.0
-#define FAC_OS_BOARD_OVERTEMP_ITLK_LIM                      60.0
+#define FAC_CMD_BOARD_OVERTEMP_ALM_LIM                      50.0
+#define FAC_CMD_BOARD_OVERTEMP_ITLK_LIM                     60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -70,21 +61,17 @@
 
 //CurrentCh1Init and CurrentCh2Init and CurrentCh3Init and CurrentCh4Init
 
-#define Hall_Primary_Current_Iin                            300.0
+#define Hall_Primary_Current                                000.0
 
-#define Hall_Primary_Current_Iout                           500.0
+#define Hall_Secondary_Current                              0.000
 
-#define Hall_Secondary_Current_Iin                          0.150
-
-#define Hall_Secondary_Current_Iout                         0.100
-
-#define Hall_Burden_Resistor                                50.0
+#define Hall_Burden_Resistor                                00.0
 
 //Debouncing delay_us
 #define Hall_Delay                                          0
 
-#define CurrentCh1Enable                                    ON
-#define CurrentCh2Enable                                    ON
+#define CurrentCh1Enable                                    OFF
+#define CurrentCh2Enable                                    OFF
 #define CurrentCh3Enable                                    OFF
 #define CurrentCh4Enable                                    OFF
 
@@ -94,17 +81,22 @@
 
 //LvCurrentCh1Init and LvCurrentCh2Init and LvCurrentCh3Init
 
-#define LV_Primary_Voltage_Vin                              602.5 // resistores mais 250 ohms do LV 20P
+#define LV_Primary_Voltage_Cap_Bank                         602.5 // resistores mais 250 ohms do LV 20P
+
+#define LV_Primary_Voltage_Vout                             302.5 // resistores mais 250 ohms do LV 20P
 
 #define LV_Secondary_Current_Vin                            0.025
 
 #define LV_Burden_Resistor                                  120.0
 
 //Debouncing delay_us
-#define Delay_Voltage_Vin                                   3
+#define Delay_Voltage_Cap_Bank                              3
+
+//Debouncing delay_us
+#define Delay_Vout                                          3
 
 #define LvCurrentCh1Enable                                  ON
-#define LvCurrentCh2Enable                                  OFF
+#define LvCurrentCh2Enable                                  ON
 #define LvCurrentCh3Enable                                  OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -112,8 +104,8 @@
 //PT100 CH1 and CH2 configuration
 //Debouncing delay_ms
 
-#define Delay_PT100CH1                                      2
-#define Delay_PT100CH2                                      2
+#define Delay_PT100CH1                                      4
+#define Delay_PT100CH2                                      4
 
 #define Pt100Ch1Enable                                      ON
 #define Pt100Ch2Enable                                      ON
@@ -125,8 +117,8 @@
 //Temperature igbt1 and igbt2 configuration
 //Debouncing delay_ms
 
-#define Delay_IGBT1                                         3
-#define Delay_IGBT2                                         3
+#define Delay_IGBT1                                         0
+#define Delay_IGBT2                                         0
 
 #define TempIgbt1Enable                                     OFF
 #define TempIgbt2Enable                                     OFF
@@ -153,9 +145,9 @@
 #define Delay_DriverVoltage                                 3
 #define Delay_DriverCurrent                                 3
 
-#define DriverVoltageEnable                                 OFF
-#define Driver1CurrentEnable                                OFF
-#define Driver2CurrentEnable                                OFF
+#define DriverVoltageEnable                                 ON  //Voltage Aux and Idb enable
+#define Driver1CurrentEnable                                ON  //Current Aux enable
+#define Driver2CurrentEnable                                ON  //Current Idb enable
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -186,7 +178,7 @@
 #define Current_GND_Leakage 10.0 / (Gain_LDC_Transducer * Gain_LDC_Amplifier)
 
 //Debouncing delay_us
-#define Delay_GND_Leakage                                   100
+#define Delay_GND_Leakage                       			100
 
 #define VoltageCh1Enable                                    ON
 #define VoltageCh2Enable                                    OFF
@@ -201,10 +193,10 @@
 #define Gpdi2Enable                                         OFF
 #define Gpdi3Enable                                         OFF
 #define Gpdi4Enable                                         OFF
-#define Gpdi5Enable                                         OFF
-#define Gpdi6Enable                                         OFF
-#define Gpdi7Enable                                         OFF
-#define Gpdi8Enable                                         OFF
+#define Gpdi5Enable                                         ON  // Main Over Current
+#define Gpdi6Enable                                         ON  // Emergency Button
+#define Gpdi7Enable                                         OFF // Main Under Voltage
+#define Gpdi8Enable                                         OFF // Main Over Voltage
 #define Gpdi9Enable                                         OFF
 #define Gpdi10Enable                                        OFF
 #define Gpdi11Enable                                        OFF
@@ -214,8 +206,8 @@
 
 //Gpdo configuration
 
-#define Gpdo1Enable                                         ON
-#define Gpdo2Enable                                         ON
+#define Gpdo1Enable                                         OFF
+#define Gpdo2Enable                                         OFF
 #define Gpdo3Enable                                         OFF
 #define Gpdo4Enable                                         OFF
 
@@ -228,7 +220,7 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-#endif /* FAC_GIGA_TESTE__OS_H_ */
+#endif /* BO_FAM_PS_B2__CMD_H_ */
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

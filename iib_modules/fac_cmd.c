@@ -254,9 +254,9 @@ void fac_cmd_application_readings()
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Medida de Fuga para o Terra
-    fac_cmd.GroundLeakage.f = LvCurrentCh3Read();
-    fac_cmd.GroundLeakageAlarmSts = LvCurrentCh3AlarmStatusRead();
-    if(!fac_cmd.GroundLeakageItlkSts)fac_cmd.GroundLeakageItlkSts = LvCurrentCh3TripStatusRead();
+    fac_cmd.GroundLeakage.f = VoltageCh1Read();
+    fac_cmd.GroundLeakageAlarmSts = VoltageCh1AlarmStatusRead();
+    if(!fac_cmd.GroundLeakageItlkSts)fac_cmd.GroundLeakageItlkSts = VoltageCh1TripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -380,15 +380,20 @@ void config_module_fac_cmd(void)
     /* Isolated Voltage */
     LvCurrentCh1Init(LV_Primary_Voltage_Vout, LV_Secondary_Current_Vin, LV_Burden_Resistor, Delay_Vout); /* Output Voltage */
     LvCurrentCh2Init(LV_Primary_Voltage_Cap_Bank, LV_Secondary_Current_Vin, LV_Burden_Resistor, Delay_Voltage_Cap_Bank); /* Voltage Capacitor Bank */
-    LvCurrentCh3Init(LV_Primary_Voltage_GND_Leakage, LV_Secondary_Current_Vin, LV_Burden_Resistor, Delay_GND_Leakage); /* GND Leakage */
 
     /* Protection Limits */
     LvCurrentCh1AlarmLevelSet(FAC_CMD_OUTPUT_OVERVOLTAGE_ALM_LIM);
     LvCurrentCh1TripLevelSet(FAC_CMD_OUTPUT_OVERVOLTAGE_ITLK_LIM);
     LvCurrentCh2AlarmLevelSet(FAC_CMD_CAPBANK_OVERVOLTAGE_ALM_LIM);
     LvCurrentCh2TripLevelSet(FAC_CMD_CAPBANK_OVERVOLTAGE_ITLK_LIM);
-    LvCurrentCh3AlarmLevelSet(FAC_CMD_GROUND_LEAKAGE_ALM_LIM);
-    LvCurrentCh3TripLevelSet(FAC_CMD_GROUND_LEAKAGE_ITLK_LIM);
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+    //Leitura de tensão
+    VoltageCh1Init(Current_GND_Leakage, Delay_GND_Leakage); //Ground Leakage
+
+    VoltageCh1AlarmLevelSet(FAC_CMD_GROUND_LEAKAGE_ALM_LIM); //Fuga para o terra alarme
+    VoltageCh1TripLevelSet(FAC_CMD_GROUND_LEAKAGE_ITLK_LIM); //Fuga para o terra interlock
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

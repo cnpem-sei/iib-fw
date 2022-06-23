@@ -236,7 +236,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_QFA
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_qfa.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_qfa.h>
 
 #endif /* SI-FAM:PS-QFA */
 
@@ -250,7 +250,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_QFP
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_qfp.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_qfp.h>
 
 #endif /* SI-FAM:PS-QFP */
 
@@ -264,7 +264,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_QFB
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_qfb.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_qfb.h>
 
 #endif /* SI-FAM:PS-QFB */
 
@@ -278,7 +278,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_QDA
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_qda.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_qda.h>
 
 #endif /* SI-FAM:PS-QDA */
 
@@ -292,7 +292,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_QDP1
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_qdp1.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_qdp1.h>
 
 #endif /* SI-FAM:PS-QDP1 */
 
@@ -306,7 +306,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_QDP2
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_qdp2.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_qdp2.h>
 
 #endif /* SI-FAM:PS-QDP2 */
 
@@ -320,7 +320,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_QDB1
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_qdb1.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_qdb1.h>
 
 #endif /* SI-FAM:PS-QDB1 */
 
@@ -334,7 +334,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_QDB2
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_qdb2.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_qdb2.h>
 
 #endif /* SI-FAM:PS-QDB2 */
 
@@ -348,7 +348,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_Q1
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_q1.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_q1.h>
 
 #endif /* SI-FAM:PS-Q1 */
 
@@ -362,7 +362,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_Q3
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_q3.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_q3.h>
 
 #endif /* SI-FAM:PS-Q3 */
 
@@ -376,7 +376,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_Q2
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_q2.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_q2.h>
 
 #endif /* SI-FAM:PS-Q2 */
 
@@ -390,7 +390,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_Q4
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_q4.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_q4.h>
 
 #endif /* SI-FAM:PS-Q4 */
 
@@ -404,7 +404,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_SDA0
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_sda0.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_sda0.h>
 
 #endif /* SI-FAM:PS-SDA0 */
 
@@ -418,7 +418,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_SDP0
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_sdp0.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_sdp0.h>
 
 #endif /* SI-FAM:PS-SDP0 */
 
@@ -432,7 +432,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_SDB0
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_sdb0.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_sdb0.h>
 
 #endif /* SI-FAM:PS-SDB0 */
 
@@ -446,7 +446,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_SFA0
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_sfa0.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_sfa0.h>
 
 #endif /* SI-FAM:PS-SFA0 */
 
@@ -460,7 +460,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_SFP0
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_sfp0.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_sfp0.h>
 
 #endif /* SI-FAM:PS-SFP0 */
 
@@ -474,7 +474,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_SFB0
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_sfb0.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_sfb0.h>
 
 #endif /* SI-FAM:PS-SFB0 */
 
@@ -488,7 +488,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_SDA1
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_sda1.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_sda1.h>
 
 #endif /* SI-FAM:PS-SDA1 */
 
@@ -502,7 +502,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_SDA2
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_sda2.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_sda2.h>
 
 #endif /* SI-FAM:PS-SDA2 */
 
@@ -516,7 +516,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_SDB1
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_sdb1.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_sdb1.h>
 
 #endif /* SI-FAM:PS-SDB1 */
 
@@ -530,7 +530,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_SDA3
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_sda3.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_sda3.h>
 
 #endif /* SI-FAM:PS-SDA3 */
 
@@ -544,7 +544,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_SFA1
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_sfa1.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_sfa1.h>
 
 #endif /* SI-FAM:PS-SFA1 */
 
@@ -558,7 +558,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_SDB2
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_sdb2.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_sdb2.h>
 
 #endif /* SI-FAM:PS-SDB2 */
 
@@ -572,7 +572,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_SFA2
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_sfa2.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_sfa2.h>
 
 #endif /* SI-FAM:PS-SFA2 */
 
@@ -586,7 +586,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_SDP1
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_sdp1.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_sdp1.h>
 
 #endif /* SI-FAM:PS-SDP1 */
 
@@ -600,7 +600,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_SDB3
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_sdb3.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_sdb3.h>
 
 #endif /* SI-FAM:PS-SDB3 */
 
@@ -614,7 +614,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_SDP2
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_sdp2.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_sdp2.h>
 
 #endif /* SI-FAM:PS-SDP2 */
 
@@ -628,7 +628,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_SDP3
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_sdp3.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_sdp3.h>
 
 #endif /* SI-FAM:PS-SDP3 */
 
@@ -642,7 +642,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_SFB1
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_sfb1.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_sfb1.h>
 
 #endif /* SI-FAM:PS-SFB1 */
 
@@ -656,7 +656,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_SFP1
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_sfp1.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_sfp1.h>
 
 #endif /* SI-FAM:PS-SFP1 */
 
@@ -670,7 +670,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_SFP2
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_sfp2.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_sfp2.h>
 
 #endif /* SI-FAM:PS-SFP2 */
 
@@ -684,7 +684,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_SFB2
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_sfb2.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_sfb2.h>
 
 #endif /* SI-FAM:PS-SFB2 */
 
@@ -698,7 +698,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_B1B2_1
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_b1b2_1.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_b1b2_1.h>
 
 #endif /* SI-FAM:PS-B1B2-1 */
 
@@ -712,7 +712,7 @@ extern volatile fap_t fap;
 
 #ifdef SI_FAM_PS_B1B2_2
 
-#include <iib_ps_parameters/racks_PA/fap/si_fam_ps_b1b2_2.h>
+#include <iib_ps_parameters/PA/fap/si_fam_ps_b1b2_2.h>
 
 #endif /* SI-FAM:PS-B1B2-2 */
 
@@ -726,7 +726,7 @@ extern volatile fap_t fap;
 
 #ifdef TS_FAM_PS_B
 
-#include <iib_ps_parameters/racks_LA/fap/ts_fam_ps_b.h>
+#include <iib_ps_parameters/LA/fap/ts_fam_ps_b.h>
 
 #endif /* TS-FAM:PS-B */
 
@@ -740,7 +740,7 @@ extern volatile fap_t fap;
 
 #ifdef TB_FAM_PS_B
 
-#include <iib_ps_parameters/racks_LA/fap/tb_fam_ps_b.h>
+#include <iib_ps_parameters/LA/fap/tb_fam_ps_b.h>
 
 #endif /* TB-FAM:PS-B */
 
@@ -754,7 +754,7 @@ extern volatile fap_t fap;
 
 #ifdef TS_01_PS_QF1A
 
-#include <iib_ps_parameters/racks_LA/fap/ts_01_ps_qf1a.h>
+#include <iib_ps_parameters/LA/fap/ts_01_ps_qf1a.h>
 
 #endif /* TS-01:PS-QF1A */
 
@@ -768,7 +768,7 @@ extern volatile fap_t fap;
 
 #ifdef TS_01_PS_QF1B
 
-#include <iib_ps_parameters/racks_LA/fap/ts_01_ps_qf1b.h>
+#include <iib_ps_parameters/LA/fap/ts_01_ps_qf1b.h>
 
 #endif /* TS-01:PS-QF1B */
 
@@ -782,7 +782,7 @@ extern volatile fap_t fap;
 
 #ifdef TS_02_PS_QF2
 
-#include <iib_ps_parameters/racks_LA/fap/ts_02_ps_qf2.h>
+#include <iib_ps_parameters/LA/fap/ts_02_ps_qf2.h>
 
 #endif /* TS-02:PS-QF2 */
 
@@ -796,7 +796,7 @@ extern volatile fap_t fap;
 
 #ifdef TS_02_PS_QD2
 
-#include <iib_ps_parameters/racks_LA/fap/ts_02_ps_qd2.h>
+#include <iib_ps_parameters/LA/fap/ts_02_ps_qd2.h>
 
 #endif /* TS-02:PS-QD2 */
 
@@ -810,7 +810,7 @@ extern volatile fap_t fap;
 
 #ifdef TS_03_PS_QF3
 
-#include <iib_ps_parameters/racks_LA/fap/ts_03_ps_qf3.h>
+#include <iib_ps_parameters/LA/fap/ts_03_ps_qf3.h>
 
 #endif /* TS-03:PS-QF3 */
 
@@ -824,7 +824,7 @@ extern volatile fap_t fap;
 
 #ifdef TS_04_PS_QF4
 
-#include <iib_ps_parameters/racks_LA/fap/ts_04_ps_qf4.h>
+#include <iib_ps_parameters/LA/fap/ts_04_ps_qf4.h>
 
 #endif /* TS-04:PS-QF4 */
 
@@ -838,7 +838,7 @@ extern volatile fap_t fap;
 
 #ifdef TS_04_PS_QD4A
 
-#include <iib_ps_parameters/racks_LA/fap/ts_04_ps_qd4a.h>
+#include <iib_ps_parameters/LA/fap/ts_04_ps_qd4a.h>
 
 #endif /* TS-04:PS-QD4A */
 
@@ -852,7 +852,7 @@ extern volatile fap_t fap;
 
 #ifdef TS_04_PS_QD4B
 
-#include <iib_ps_parameters/racks_LA/fap/ts_04_ps_qd4b.h>
+#include <iib_ps_parameters/LA/fap/ts_04_ps_qd4b.h>
 
 #endif /* TS-04:PS-QD4B */
 

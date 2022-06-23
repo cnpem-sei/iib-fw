@@ -1,5 +1,5 @@
 /*
- * fac_giga_teste__os.h
+ * fac_dcdc_ema__os.h
  *
  *  Created on: 20 de jun de 2022
  *      Author: rogerio.marcondeli
@@ -7,30 +7,30 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef FAC_GIGA_TESTE__OS_H_
-#define FAC_GIGA_TESTE__OS_H_
+#ifndef FAC_DCDC_EMA__OS_H_
+#define FAC_DCDC_EMA__OS_H_
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //Set Power Module Alarms And Interlocks
 
-//FAC Giga de Testes OS
+//Rack EMA:B:PS01
 
-///////////////////////
+//FAC_DCDC_EMA
 
 #define FAC_OS
 
 #define ON                                                  1
 #define OFF                                                 0
 
-#define FAC_OS_INPUT_OVERVOLTAGE_ALM_LIM                    290.0
-#define FAC_OS_INPUT_OVERVOLTAGE_ITLK_LIM                   295.0
+#define FAC_OS_INPUT_OVERVOLTAGE_ALM_LIM                    200.0
+#define FAC_OS_INPUT_OVERVOLTAGE_ITLK_LIM                   220.0
 
-#define FAC_OS_INPUT_OVERCURRENT_ALM_LIM                    430.0
-#define FAC_OS_INPUT_OVERCURRENT_ITLK_LIM                   440.0
+#define FAC_OS_INPUT_OVERCURRENT_ALM_LIM                    90.0
+#define FAC_OS_INPUT_OVERCURRENT_ITLK_LIM                   95.0
 
-#define FAC_OS_OUTPUT_OVERCURRENT_ALM_LIM                   570.0
-#define FAC_OS_OUTPUT_OVERCURRENT_ITLK_LIM                  590.0
+#define FAC_OS_OUTPUT_OVERCURRENT_ALM_LIM                   145.0
+#define FAC_OS_OUTPUT_OVERCURRENT_ITLK_LIM                  150.0
 
 #define FAC_OS_IGBT1_OVERTEMP_ALM_LIM                       60.0
 #define FAC_OS_IGBT1_OVERTEMP_ITLK_LIM                      80.0
@@ -50,13 +50,13 @@
 #define FAC_OS_GROUND_LEAKAGE_ALM_LIM                       0.600
 #define FAC_OS_GROUND_LEAKAGE_ITLK_LIM                      0.650
 
-#define FAC_OS_INDUC_OVERTEMP_ALM_LIM                       40.0
-#define FAC_OS_INDUC_OVERTEMP_ITLK_LIM                      45.0
+#define FAC_OS_INDUC_OVERTEMP_ALM_LIM                       50.0
+#define FAC_OS_INDUC_OVERTEMP_ITLK_LIM                      60.0
 
-#define FAC_OS_HS_OVERTEMP_ALM_LIM                          40.0
-#define FAC_OS_HS_OVERTEMP_ITLK_LIM                         45.0
+#define FAC_OS_HS_OVERTEMP_ALM_LIM                          50.0
+#define FAC_OS_HS_OVERTEMP_ITLK_LIM                         60.0
 
-#define FAC_OS_RH_OVERHUMIDITY_ALM_LIM                      60.0
+#define FAC_OS_RH_OVERHUMIDITY_ALM_LIM                      80.0
 #define FAC_OS_RH_OVERHUMIDITY_ITLK_LIM                     90.0
 
 #define FAC_OS_BOARD_OVERTEMP_ALM_LIM                       50.0
@@ -81,7 +81,7 @@
 #define Hall_Burden_Resistor                                50.0
 
 //Debouncing delay_us
-#define Hall_Delay                                          0
+#define Hall_Delay                                          2000
 
 #define CurrentCh1Enable                                    ON
 #define CurrentCh2Enable                                    ON
@@ -228,7 +228,7 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-#endif /* FAC_GIGA_TESTE__OS_H_ */
+#endif /* FAC_DCDC_EMA__OS_H_ */
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

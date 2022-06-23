@@ -310,9 +310,9 @@ void fac_os_application_readings()
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Medida de Fuga para o Terra
-    fac_os.GroundLeakage.f = LvCurrentCh3Read();
-    fac_os.GroundLeakageAlarmSts = LvCurrentCh3AlarmStatusRead();
-    if(!fac_os.GroundLeakageItlkSts)fac_os.GroundLeakageItlkSts = LvCurrentCh3TripStatusRead();
+    fac_os.GroundLeakage.f = VoltageCh1Read();
+    fac_os.GroundLeakageAlarmSts = VoltageCh1AlarmStatusRead();
+    if(!fac_os.GroundLeakageItlkSts)fac_os.GroundLeakageItlkSts = VoltageCh1TripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -450,13 +450,18 @@ void config_module_fac_os(void)
 
     /* Isolated Voltage */
     LvCurrentCh1Init(LV_Primary_Voltage_Vin, LV_Secondary_Current_Vin, LV_Burden_Resistor, Delay_Voltage_Vin); /* Input Voltage */
-    LvCurrentCh3Init(LV_Primary_Voltage_GND_Leakage, LV_Secondary_Current_Vin, LV_Burden_Resistor, Delay_GND_Leakage);  /* GND Leakage */
 
     /* Protection Limits */
     LvCurrentCh1AlarmLevelSet(FAC_OS_INPUT_OVERVOLTAGE_ALM_LIM);
     LvCurrentCh1TripLevelSet(FAC_OS_INPUT_OVERVOLTAGE_ITLK_LIM);
-    LvCurrentCh3AlarmLevelSet(FAC_OS_GROUND_LEAKAGE_ALM_LIM);
-    LvCurrentCh3TripLevelSet(FAC_OS_GROUND_LEAKAGE_ITLK_LIM);
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+    //Leitura de tensão
+    VoltageCh1Init(Current_GND_Leakage, Delay_GND_Leakage); //Ground Leakage
+
+    VoltageCh1AlarmLevelSet(FAC_OS_GROUND_LEAKAGE_ALM_LIM); //Fuga para o terra alarme
+    VoltageCh1TripLevelSet(FAC_OS_GROUND_LEAKAGE_ITLK_LIM); //Fuga para o terra interlock
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
