@@ -212,8 +212,6 @@ void check_fac_cmd_indication_leds()
 	else if(!fac_cmd.AuxiliaryOptocoupler) Led1TurnOn();
 	else Led1TurnOff();
 
-	//if((!fac_cmd.PreChargeContactor) && (!fac_cmd.AuxiliaryOptocoupler)) LedBarRunning();
-
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 	//Interlocks main over current and emergency button

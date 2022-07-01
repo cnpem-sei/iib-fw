@@ -16,7 +16,7 @@
 
 //Rack LA-RaPS01
 
-//TS-FAM:PS-B --> 4 M�DULOS
+//TS-FAM:PS-B --> 4 MODULOS
 
 #define FAP
 

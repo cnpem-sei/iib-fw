@@ -47,7 +47,7 @@
 #define FAC_OS_DRIVER2_OVERCURRENT_ALM_LIM                  2.0
 #define FAC_OS_DRIVER2_OVERCURRENT_ITLK_LIM                 2.4
 
-#define FAC_OS_GROUND_LEAKAGE_ALM_LIM                       0.600
+#define FAC_OS_GROUND_LEAKAGE_ALM_LIM                       0.450
 #define FAC_OS_GROUND_LEAKAGE_ITLK_LIM                      0.650
 
 #define FAC_OS_INDUC_OVERTEMP_ALM_LIM                       40.0

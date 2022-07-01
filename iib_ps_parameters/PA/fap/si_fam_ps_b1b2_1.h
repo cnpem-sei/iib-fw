@@ -16,7 +16,7 @@
 
 //Rack PA-RaPSD02
 
-//SI-FAM:PS-B1B2-1 --> 4 M�DULOS
+//SI-FAM:PS-B1B2-1 --> 4 MODULOS
 
 #define FAP
 

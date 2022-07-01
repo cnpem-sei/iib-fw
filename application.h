@@ -53,7 +53,7 @@
 //#define FAC_GIGA_TESTE__OS
 //#define FAC_GIGA_TESTE__IS
 //#define FAC_GIGA_TESTE__CMD
-#define FAC_GIGA_TESTE_NOVO__CMD
+//#define FAC_GIGA_TESTE_NOVO__CMD
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
