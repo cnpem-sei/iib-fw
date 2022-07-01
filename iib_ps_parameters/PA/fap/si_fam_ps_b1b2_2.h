@@ -16,7 +16,7 @@
 
 //Rack PA-RaPSD06
 
-//SI-FAM:PS-B1B2-2 --> 4 MÓDULOS
+//SI-FAM:PS-B1B2-2 --> 4 Mï¿½DULOS
 
 #define FAP
 
@@ -35,7 +35,7 @@
 #define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM        115.0
 #define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM       130.0
 
-#define FAP_GROUND_LEAKAGE_ALM_LIM              0.600
+#define FAP_GROUND_LEAKAGE_ALM_LIM              0.450
 #define FAP_GROUND_LEAKAGE_ITLK_LIM             0.650
 
 #define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
