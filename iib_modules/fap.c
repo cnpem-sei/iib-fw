@@ -177,61 +177,52 @@ void check_fap_indication_leds()
     //Output over voltage
     if(fap.VoutItlkSts) Led2TurnOff();
     else if(fap.VoutAlarmSts) Led2Toggle();
-    else Led2TurnOn();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Input over voltage
     if(fap.VinItlkSts) Led3TurnOff();
     else if(fap.VinAlarmSts) Led3Toggle();
-    else Led3TurnOn();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Output over current
     if(fap.IoutA1ItlkSts || fap.IoutA2ItlkSts) Led4TurnOff();
     else if(fap.IoutA1AlarmSts || fap.IoutA2AlarmSts) Led4Toggle();
-    else Led4TurnOn();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Over temperature
     if(fap.TempIGBT1ItlkSts || fap.TempIGBT2ItlkSts ||  fap.TempLItlkSts || fap.TempHeatSinkItlkSts) Led5TurnOff();
     else if(fap.TempIGBT1AlarmSts || fap.TempIGBT2AlarmSts ||  fap.TempLAlarmSts || fap.TempHeatSinkAlarmSts) Led5Toggle();
-    else Led5TurnOn();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Interlock Externo
     if(fap.ExternalItlkSts) Led6TurnOff();
-    else Led6TurnOn();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Fuga para o Terra
     if(fap.GroundLeakageItlkSts) Led7TurnOff();
     else if(fap.GroundLeakageAlarmSts) Led7Toggle();
-    else Led7TurnOn();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Interlock do Rack
     if(fap.RackItlkSts) Led8TurnOff();
-    else Led8TurnOn();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Interlocks dos Drivers
     if(fap.Driver1ErrorItlkSts || fap.Driver2ErrorItlkSts || fap.DriverVoltageItlkSts || fap.Driver1CurrentItlkSts || fap.Driver2CurrentItlkSts) Led9TurnOff();
     else if(fap.DriverVoltageAlarmSts || fap.Driver1CurrentAlarmSts || fap.Driver2CurrentAlarmSts) Led9Toggle();
-    else Led9TurnOn();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Interlock Temperatura PCB e Umidade Relativa
     if(fap.BoardTemperatureItlkSts || fap.RelativeHumidityItlkSts) Led10TurnOff();
     else if(fap.BoardTemperatureAlarmSts || fap.RelativeHumidityAlarmSts) Led10Toggle();
-    else Led10TurnOn();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

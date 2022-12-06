@@ -144,11 +144,10 @@ void IntTimer1msHandler(void)
 
     RunToggle();
 
-    sample_adc();
+    task_1_ms();
 
     RunToggle();
 
-    task_1_ms();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

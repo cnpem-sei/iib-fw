@@ -387,11 +387,16 @@ void Application(void)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
+    InterlockAppCheck();
+
+    AlarmAppCheck();
+
     // Interlock Test
     if(Interlock == 1 && InterlockOld == 0)
     {
         InterlockOld = 1;
         AppInterlock();
+        //Gpdo1TurnOn(); // Para teste de interlock
     }
 
     // Actions that needs to be taken during the Application initialization

@@ -11,6 +11,7 @@ typedef struct
     unsigned char Ch;
     float Gain;
     float Value;
+    int Adc_Value;
     unsigned int Offset;
     float AlarmLimit;
     float TripLimit;
@@ -48,7 +49,6 @@ extern adc_t Driver2Curr;
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 extern void AdcsInit(void);
-extern void sample_adc(void);
 extern float CurrentRange(float nFstCurr, float nSecCurr, float nBurden, float MaxVoltInput);
 
 /////////////////////////////////////////////////////////////////////////////////////////////

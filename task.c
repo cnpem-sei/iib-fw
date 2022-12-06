@@ -45,8 +45,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 unsigned int mSecond = 0;
-unsigned int uSecond = 0;
-unsigned int _8Hz = 0;
+unsigned int _10Hz = 0;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -60,10 +59,6 @@ bool StartRhTask             = 0;
 bool RhReadTask              = 0;
 bool ErrorCheckTask          = 0;
 bool LedUpdateTask           = 0;
-bool InterlockAlarmCheckTask = 0;
-bool DriverVoltReadTask      = 0;
-bool Driver1CurrtReadTask    = 0;
-bool Driver2CurrtReadTask    = 0;
 bool StartNtcTask            = 0;
 bool NtcReadTask             = 0;
 
@@ -92,14 +87,6 @@ void ErrorCheckHandle(void)
 
 void task_100_us(void)
 {
-	if(uSecond >= 10)
-	{
-		uSecond = 0;
-	}
-	else uSecond++;
-
-	if(uSecond == 0)
-	{
 
 #if (VoltageCh1Enable == 1)
 
@@ -113,21 +100,11 @@ void task_100_us(void)
 
 #endif
 
-    }
-
-    else if(uSecond == 1)
-    {
-
 #if (VoltageCh3Enable == 1)
 
         VoltageCh3Sample();
 
 #endif
-
-    }
-
-    else if(uSecond == 2)
-    {
 
 #if (VoltageCh4Enable == 1)
 
@@ -135,21 +112,11 @@ void task_100_us(void)
 
 #endif
 
-    }
-
-    else if(uSecond == 3)
-    {
-
 #if (CurrentCh1Enable == 1)
 
         CurrentCh1Sample();
 
 #endif
-
-    }
-
-    else if(uSecond == 4)
-    {
 
 #if (CurrentCh2Enable == 1)
 
@@ -157,21 +124,11 @@ void task_100_us(void)
 
 #endif
 
-    }
-
-    else if(uSecond == 5)
-    {
-
 #if (CurrentCh3Enable == 1)
 
         CurrentCh3Sample();
 
 #endif
-
-    }
-
-    else if(uSecond == 6)
-    {
 
 #if (CurrentCh4Enable == 1)
 
@@ -179,21 +136,11 @@ void task_100_us(void)
 
 #endif
 
-    }
-
-    else if(uSecond == 7)
-    {
-
 #if (LvCurrentCh1Enable == 1)
 
         LvCurrentCh1Sample();
 
 #endif
-
-    }
-
-    else if(uSecond == 8)
-    {
 
 #if (LvCurrentCh2Enable == 1)
 
@@ -201,18 +148,29 @@ void task_100_us(void)
 
 #endif
 
-    }
-
-    else if(uSecond == 9)
-    {
-
 #if (LvCurrentCh3Enable == 1)
 
         LvCurrentCh3Sample();
 
 #endif
 
-    }
+#if (DriverVoltageEnable == 1)
+
+      DriverVoltageSample();
+
+#endif
+
+#if (Driver1CurrentEnable == 1)
+
+      Driver1CurrentSample();
+
+#endif
+
+#if (Driver2CurrentEnable == 1)
+
+      Driver2CurrentSample();
+
+#endif
 
 }
 
@@ -220,13 +178,13 @@ void task_100_us(void)
 
 void task_1_ms(void)
 {
-	// Timestamp for 8Hz tasks (no critical tasks)
-    if(_8Hz >= 125)
+	// Timestamp for 10Hz tasks (no critical tasks)
+    if(_10Hz >= 100)
     {
-        _8Hz = 0;
+        _10Hz = 0;
         LedUpdateTask = 1;
     }
-    else _8Hz++;
+    else _10Hz++;
 
     // Timestamp for 1ms tasks
     if(mSecond >= 1000)
@@ -244,59 +202,51 @@ void task_1_ms(void)
     	break;
 
     case 120:
-    	DriverVoltReadTask = 1;			// 30ms
-    	break;
-
-    case 150:
     	TempPt100Ch2ReadTask = 1;		// 100ms
     	break;
 
-    case 250:
-    	Driver1CurrtReadTask = 1;		// 30ms
+    case 220:
+    	TempPt100Ch3ReadTask = 1;		// 100ms
     	break;
 
-    case 280:
-    	TempPt100Ch3ReadTask = 1;		// 60ms
+    case 320:
+    	TempPt100Ch4ReadTask = 1;		// 100ms
     	break;
 
-    case 340:
-    	Driver2CurrtReadTask = 1;		// 30ms
-    	break;
-
-    case 370:
-    	TempPt100Ch4ReadTask = 1;		// 60ms
-    	break;
-
-    case 430:
+    case 420:
     	StartBoardTempTask = 1;			// 40ms
     	break;
 
-    case 470:
+    case 460:
     	BoardTempReadTask = 1;			// 100ms
     	break;
 
-    case 570:
+    case 560:
     	StartNtcTask  = 1;				// 50ms
     	break;
 
-    case 620:
+    case 610:
     	NtcReadTask = 1;				// 100ms
     	break;
 
-    case 720:
+    case 710:
     	StartRhTask = 1;           		// 40ms
     	break;
 
-    case 760:
+    case 750:
     	RhReadTask = 1;					// 100ms
     	break;
 
-    case 860:
+    case 850:
     	ErrorCheckTask = 1;				// 40ms
     	break;
 
+    case 890:
+
+    	break;
+
     case 900:
-    	InterlockAlarmCheckTask = 1;	// 100ms
+
     	break;
 
     case 1000:
@@ -462,64 +412,11 @@ void BoardTask(void)
 
 //*******************************************************************************************
 
-  else if(DriverVoltReadTask)
-  {
-
-#if (DriverVoltageEnable == 1)
-
-      DriverVoltageSample();
-
-#endif
-
-      DriverVoltReadTask = 0;
-  }
-
-//*******************************************************************************************
-
-  else if(Driver1CurrtReadTask)
-  {
-
-#if (Driver1CurrentEnable == 1)
-
-      Driver1CurrentSample();
-
-#endif
-
-      Driver1CurrtReadTask = 0;
-  }
-
-//*******************************************************************************************
-
-  else if(Driver2CurrtReadTask)
-  {
-
-#if (Driver2CurrentEnable == 1)
-
-      Driver2CurrentSample();
-
-#endif
-
-      Driver2CurrtReadTask = 0;
-  }
-
-//*******************************************************************************************
-
   else if(ErrorCheckTask)
   {
       ErrorCheckHandle();
 
       ErrorCheckTask = 0;
-  }
-
-//*******************************************************************************************
-
-  else if(InterlockAlarmCheckTask)
-  {
-      InterlockAppCheck();
-
-      AlarmAppCheck();
-
-      InterlockAlarmCheckTask = 0;
   }
 
 //*******************************************************************************************
@@ -540,5 +437,7 @@ void BoardTask(void)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
 

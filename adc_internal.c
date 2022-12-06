@@ -4,12 +4,26 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <math.h>
+#include "inc/hw_ints.h"
 #include "inc/hw_memmap.h"
-#include "driverlib/adc.h"
+#include "inc/hw_adc.h"
+#include "inc/hw_types.h"
+#include "inc/hw_udma.h"
+#include "inc/hw_emac.h"
+#include "driverlib/debug.h"
 #include "driverlib/gpio.h"
+#include "driverlib/interrupt.h"
 #include "driverlib/pin_map.h"
 #include "driverlib/sysctl.h"
+#include "driverlib/adc.h"
+#include "driverlib/udma.h"
+#include "driverlib/emac.h"
+#include "driverlib/timer.h"
+#include "driverlib/rom.h"
+#include "driverlib/systick.h"
+
 #include "adc_internal.h"
+#include "board_drivers/hardware_def.h"
 
 #include <iib_modules/fap.h>
 #include <iib_modules/fac_os.h>
@@ -20,7 +34,47 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-static int Adc_Value = 0;
+#define ADC_SAMPLE_BUF_SIZE         7
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+static uint8_t ControlTable[1024] __attribute__ ((aligned(1024)));
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+enum BUFFER_STATUS_ADC0
+{
+	EMPTY_ADC_0,
+	FILLING_ADC_0,
+	FULL_ADC_0
+};
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+enum BUFFER_STATUS_ADC1
+{
+	EMPTY_ADC_1,
+	FILLING_ADC_1,
+	FULL_ADC_1
+};
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+uint16_t ADC0Buffer1[ADC_SAMPLE_BUF_SIZE];
+uint16_t ADC0Buffer2[ADC_SAMPLE_BUF_SIZE];
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+uint16_t ADC1Buffer1[ADC_SAMPLE_BUF_SIZE];
+uint16_t ADC1Buffer2[ADC_SAMPLE_BUF_SIZE];
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+static enum BUFFER_STATUS_ADC0 BufferStatusADC0[2];
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+static enum BUFFER_STATUS_ADC1 BufferStatusADC1[2];
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -44,14 +98,116 @@ adc_t Driver2Curr;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-static uint32_t adc_0_value[7];
-static uint32_t adc_1_value[7];
+void uDMAErrorHandler(void)
+{
+	uint32_t ui32Status;
+
+	ui32Status = uDMAErrorStatusGet();
+
+	if(ui32Status)
+	{
+		uDMAErrorStatusClear();
+
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void ADC0SS0_Handler(void)
+{
+	HWREG(ADC0_BASE + ADC_O_ISC) = HWREG(ADC0_BASE + ADC_O_RIS) & (1 << 8);
+
+	if ((uDMAChannelModeGet(UDMA_CHANNEL_ADC0 | UDMA_PRI_SELECT) ==
+			UDMA_MODE_STOP) && (BufferStatusADC0[0] == FILLING_ADC_0)) {
+
+		BufferStatusADC0[0] = FULL_ADC_0;
+		BufferStatusADC0[1] = FILLING_ADC_0;
+
+	} else if ((uDMAChannelModeGet(UDMA_CHANNEL_ADC0 | UDMA_ALT_SELECT) ==
+			UDMA_MODE_STOP) && (BufferStatusADC0[1] == FILLING_ADC_0)) {
+
+		BufferStatusADC0[0] = FILLING_ADC_0;
+		BufferStatusADC0[1] = FULL_ADC_0;
+	}
+
+	if(BufferStatusADC0[0] == FULL_ADC_0) {
+		BufferStatusADC0[0] = EMPTY_ADC_0;
+
+		uDMAChannelTransferSet(UDMA_CHANNEL_ADC0 | UDMA_PRI_SELECT,
+							   UDMA_MODE_PINGPONG,
+							   (void *)(ADC0_BASE + ADC_O_SSFIFO0),
+							   ADC0Buffer1, ADC_SAMPLE_BUF_SIZE);
+
+		uDMAChannelEnable(UDMA_CHANNEL_ADC0 | UDMA_PRI_SELECT);
+
+	} else if(BufferStatusADC0[1] == FULL_ADC_0) {
+
+		BufferStatusADC0[1] = EMPTY_ADC_0;
+
+		uDMAChannelTransferSet(UDMA_CHANNEL_ADC0 | UDMA_ALT_SELECT,
+							   UDMA_MODE_PINGPONG,
+							   (void *)(ADC0_BASE + ADC_O_SSFIFO0),
+							   ADC0Buffer2, ADC_SAMPLE_BUF_SIZE);
+
+		uDMAChannelEnable(UDMA_CHANNEL_ADC0 | UDMA_ALT_SELECT);
+	}
+
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void ADC1SS0_Handler(void)
+{
+	HWREG(ADC1_BASE + ADC_O_ISC) = HWREG(ADC1_BASE + ADC_O_RIS) & (1 << 8);
+
+	if ((uDMAChannelModeGet(UDMA_SEC_CHANNEL_ADC10 | UDMA_PRI_SELECT) ==
+			UDMA_MODE_STOP) && (BufferStatusADC1[0] == FILLING_ADC_1)) {
+
+		BufferStatusADC1[0] = FULL_ADC_1;
+		BufferStatusADC1[1] = FILLING_ADC_1;
+
+	} else if ((uDMAChannelModeGet(UDMA_SEC_CHANNEL_ADC10 | UDMA_ALT_SELECT) ==
+			UDMA_MODE_STOP) && (BufferStatusADC1[1] == FILLING_ADC_1)) {
+
+		BufferStatusADC1[0] = FILLING_ADC_1;
+		BufferStatusADC1[1] = FULL_ADC_1;
+	}
+
+	if(BufferStatusADC1[0] == FULL_ADC_1) {
+		BufferStatusADC1[0] = EMPTY_ADC_1;
+
+		uDMAChannelTransferSet(UDMA_SEC_CHANNEL_ADC10 | UDMA_PRI_SELECT,
+							   UDMA_MODE_PINGPONG,
+							   (void *)(ADC1_BASE + ADC_O_SSFIFO0),
+							   ADC1Buffer1, ADC_SAMPLE_BUF_SIZE);
+
+		uDMAChannelEnable(UDMA_SEC_CHANNEL_ADC10 | UDMA_PRI_SELECT);
+
+	} else if(BufferStatusADC1[1] == FULL_ADC_1) {
+
+		BufferStatusADC1[1] = EMPTY_ADC_1;
+
+		uDMAChannelTransferSet(UDMA_SEC_CHANNEL_ADC10 | UDMA_ALT_SELECT,
+							   UDMA_MODE_PINGPONG,
+							   (void *)(ADC1_BASE + ADC_O_SSFIFO0),
+							   ADC1Buffer2, ADC_SAMPLE_BUF_SIZE);
+
+		uDMAChannelEnable(UDMA_SEC_CHANNEL_ADC10 | UDMA_ALT_SELECT);
+	}
+
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 void AdcsInit(void)
 {
-    // Disable ADC0 and ADC1 peripheral
+	BufferStatusADC0[0] = FILLING_ADC_0;
+	BufferStatusADC0[1] = EMPTY_ADC_0;
+
+	BufferStatusADC1[0] = FILLING_ADC_1;
+	BufferStatusADC1[1] = EMPTY_ADC_1;
+
+	// Disable ADC0 and ADC1 peripheral
     SysCtlPeripheralDisable(SYSCTL_PERIPH_ADC0);
     SysCtlPeripheralDisable(SYSCTL_PERIPH_ADC1);
 
@@ -66,85 +222,159 @@ void AdcsInit(void)
     while(!SysCtlPeripheralReady(SYSCTL_PERIPH_ADC0));
     while(!SysCtlPeripheralReady(SYSCTL_PERIPH_ADC1));
 
-    // Disable sample sequences.
-    ADCSequenceDisable(ADC0_BASE, 0);
-    ADCSequenceDisable(ADC1_BASE, 0);
+    // Disable uDMA peripheral
+    SysCtlPeripheralDisable(SYSCTL_PERIPH_UDMA);
+
+    // Reset uDMA peripheral
+    SysCtlPeripheralReset(SYSCTL_PERIPH_UDMA);
+
+    // Enable uDMA peripheral
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_UDMA);
+
+    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_UDMA));
+
+    // Disable timer 4 peripheral
+    SysCtlPeripheralDisable(SYSCTL_PERIPH_TIMER4);
+
+    // Reset timer 4 peripheral
+    SysCtlPeripheralReset(SYSCTL_PERIPH_TIMER4);
+
+    // Enable timer 4 peripheral
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER4);
+
+    // Wait for the timer 4 peripheral to be ready.
+    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_TIMER4));
+
+    // Select the analog ADC function for these pins.
+    GPIOPinTypeADC(GPIO_PORTD_BASE, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3 |
+				   GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7);
+    GPIOPinTypeADC(GPIO_PORTE_BASE, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2);
+    GPIOPinTypeADC(GPIO_PORTK_BASE, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2);
+
+    uDMAEnable();
+
+    uDMAControlBaseSet(ControlTable);
+
+    uDMAChannelAssign(UDMA_CH14_ADC0_0);
+    uDMAChannelAssign(UDMA_CH24_ADC1_0);
+
+    uDMAChannelAttributeDisable(UDMA_CHANNEL_ADC0,
+								UDMA_ATTR_ALTSELECT | UDMA_ATTR_HIGH_PRIORITY |
+								UDMA_ATTR_REQMASK);
+
+    uDMAChannelAttributeDisable(UDMA_SEC_CHANNEL_ADC10,
+								UDMA_ATTR_ALTSELECT | UDMA_ATTR_HIGH_PRIORITY |
+								UDMA_ATTR_REQMASK);
+
+    uDMAChannelControlSet(UDMA_CHANNEL_ADC0 | UDMA_PRI_SELECT, UDMA_SIZE_16 |
+						  UDMA_SRC_INC_NONE | UDMA_DST_INC_16 | UDMA_ARB_1);
+
+    uDMAChannelControlSet(UDMA_CHANNEL_ADC0 | UDMA_ALT_SELECT, UDMA_SIZE_16 |
+						  UDMA_SRC_INC_NONE | UDMA_DST_INC_16 | UDMA_ARB_1);
+
+    uDMAChannelControlSet(UDMA_SEC_CHANNEL_ADC10 | UDMA_PRI_SELECT, UDMA_SIZE_16 |
+						  UDMA_SRC_INC_NONE | UDMA_DST_INC_16 | UDMA_ARB_1);
+
+    uDMAChannelControlSet(UDMA_SEC_CHANNEL_ADC10 | UDMA_ALT_SELECT, UDMA_SIZE_16 |
+						  UDMA_SRC_INC_NONE | UDMA_DST_INC_16 | UDMA_ARB_1);
+
+    uDMAChannelTransferSet(UDMA_CHANNEL_ADC0 | UDMA_PRI_SELECT,
+						   UDMA_MODE_PINGPONG,
+						   (void *)(ADC0_BASE + ADC_O_SSFIFO0),
+						   ADC0Buffer1, ADC_SAMPLE_BUF_SIZE);
+
+    uDMAChannelTransferSet(UDMA_CHANNEL_ADC0 | UDMA_ALT_SELECT,
+						   UDMA_MODE_PINGPONG,
+						   (void *)(ADC0_BASE + ADC_O_SSFIFO0),
+						   ADC0Buffer2, ADC_SAMPLE_BUF_SIZE);
+
+    uDMAChannelTransferSet(UDMA_SEC_CHANNEL_ADC10 | UDMA_PRI_SELECT,
+						   UDMA_MODE_PINGPONG,
+						   (void *)(ADC1_BASE + ADC_O_SSFIFO0),
+						   ADC1Buffer1, ADC_SAMPLE_BUF_SIZE);
+
+    uDMAChannelTransferSet(UDMA_SEC_CHANNEL_ADC10 | UDMA_ALT_SELECT,
+						   UDMA_MODE_PINGPONG,
+						   (void *)(ADC1_BASE + ADC_O_SSFIFO0),
+						   ADC1Buffer2, ADC_SAMPLE_BUF_SIZE);
+
+    uDMAChannelAttributeEnable(UDMA_CHANNEL_ADC0, UDMA_ATTR_USEBURST);
+    uDMAChannelAttributeEnable(UDMA_SEC_CHANNEL_ADC10, UDMA_ATTR_USEBURST);
+
+    uDMAChannelEnable(UDMA_CHANNEL_ADC0);
+    uDMAChannelEnable(UDMA_SEC_CHANNEL_ADC10);
+
+    // Oversampling average multiple samples from same analog input. Rates suported are
+    // 2x, 4x, 8x, 16x, 32x, 64x. If set to 0 hardware oversampling is disabled
+
+    //ADCHardwareOversampleConfigure(ADC0_BASE, 64);
+    //ADCHardwareOversampleConfigure(ADC1_BASE, 64);
+
+    ADCClockConfigSet(ADC0_BASE,ADC_CLOCK_SRC_PIOSC | ADC_CLOCK_RATE_FULL, 1);
+    ADCClockConfigSet(ADC1_BASE,ADC_CLOCK_SRC_PIOSC | ADC_CLOCK_RATE_FULL, 1);
+
+    SysCtlDelay(10);
+
+    IntDisable(INT_ADC0SS0);
+    IntDisable(INT_ADC1SS0);
+
+    ADCIntDisable(ADC0_BASE, 0);
+    ADCIntDisable(ADC1_BASE, 0);
 
     // Config ADC as a external voltage reference
     ADCReferenceSet(ADC0_BASE, ADC_REF_EXT_3V);
     ADCReferenceSet(ADC1_BASE, ADC_REF_EXT_3V);
 
-    // Select the analog ADC function for these pins.
+    // Disable sample sequences.
+    ADCSequenceDisable(ADC0_BASE, 0);
+    ADCSequenceDisable(ADC1_BASE, 0);
 
-    GPIOPinTypeADC(GPIO_PORTD_BASE, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3 |
-                                    GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7);
-    GPIOPinTypeADC(GPIO_PORTE_BASE, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2);
-    GPIOPinTypeADC(GPIO_PORTK_BASE, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2);
-
-    // Enable sample sequence 0 (Max 8 samples) for ADC0 and
-    // enable sample sequence 1 (Max 4 samples) for ADC1
-    // Both with a processor trigger signal
-    ADCSequenceConfigure(ADC0_BASE, 0, ADC_TRIGGER_PROCESSOR, 0);
-    ADCSequenceConfigure(ADC1_BASE, 0, ADC_TRIGGER_PROCESSOR, 0);
+    // Enable sample sequence 0 (Max 8 samples) for ADC0
+    // Enable sample sequence 0 (Max 8 samples) for ADC1
+    // Both with a timer 4 trigger signal
+    ADCSequenceConfigure(ADC0_BASE, 0, ADC_TRIGGER_TIMER, 0);
+    ADCSequenceConfigure(ADC1_BASE, 0, ADC_TRIGGER_TIMER, 0);
 
     // Configure steps on sequence 0 and 1. Here, we are using 7 channels
     // for ADC0 and 4 channels for ADC1
-    ADCSequenceStepConfigure(ADC0_BASE, 0, 0, ADC_CTL_CH5); // VOLTAGE_1
-    ADCSequenceStepConfigure(ADC0_BASE, 0, 1, ADC_CTL_CH4); // VOLTAGE_2
-    ADCSequenceStepConfigure(ADC0_BASE, 0, 2, ADC_CTL_CH6); // VOLTAGE_3
-    ADCSequenceStepConfigure(ADC0_BASE, 0, 3, ADC_CTL_CH7); // VOLTAGE_4
-    ADCSequenceStepConfigure(ADC0_BASE, 0, 4, ADC_CTL_CH13); // LV_2X_SIGNAL1
-    ADCSequenceStepConfigure(ADC0_BASE, 0, 5, ADC_CTL_CH14); // LV_2X_SIGNAL2
-    ADCSequenceStepConfigure(ADC0_BASE, 0, 6, ADC_CTL_CH15 | ADC_CTL_IE |
-                             ADC_CTL_END); // LV_2X_SIGNAL3
-    ADCSequenceStepConfigure(ADC1_BASE, 0, 0, ADC_CTL_CH3); // CURRENT_1
-    ADCSequenceStepConfigure(ADC1_BASE, 0, 1, ADC_CTL_CH2); // CURRENT_2
-    ADCSequenceStepConfigure(ADC1_BASE, 0, 2, ADC_CTL_CH1); // CURRENT_3
-    ADCSequenceStepConfigure(ADC1_BASE, 0, 3, ADC_CTL_CH12); // CURRENT_4
-    ADCSequenceStepConfigure(ADC1_BASE, 0, 4, ADC_CTL_CH16); // DRIVER_VOLT
-    ADCSequenceStepConfigure(ADC1_BASE, 0, 5, ADC_CTL_CH17); // DRIVER2_AMP
-    ADCSequenceStepConfigure(ADC1_BASE, 0, 6, ADC_CTL_CH18 | ADC_CTL_IE |
-                             ADC_CTL_END); // DRIVER1_AMP
+    ADCSequenceStepConfigure(ADC0_BASE, 0, 0, ADC_CTL_CH5); 							// VOLTAGE_1
+    ADCSequenceStepConfigure(ADC0_BASE, 0, 1, ADC_CTL_CH4); 							// VOLTAGE_2
+    ADCSequenceStepConfigure(ADC0_BASE, 0, 2, ADC_CTL_CH6); 							// VOLTAGE_3
+    ADCSequenceStepConfigure(ADC0_BASE, 0, 3, ADC_CTL_CH7); 							// VOLTAGE_4
+    ADCSequenceStepConfigure(ADC0_BASE, 0, 4, ADC_CTL_CH13); 							// LV_2X_SIGNAL1
+    ADCSequenceStepConfigure(ADC0_BASE, 0, 5, ADC_CTL_CH14); 							// LV_2X_SIGNAL2
+    ADCSequenceStepConfigure(ADC0_BASE, 0, 6, ADC_CTL_CH15 | ADC_CTL_END | ADC_CTL_IE); // LV_2X_SIGNAL3
+
+    ADCSequenceStepConfigure(ADC1_BASE, 0, 0, ADC_CTL_CH3); 							// CURRENT_1
+    ADCSequenceStepConfigure(ADC1_BASE, 0, 1, ADC_CTL_CH2); 							// CURRENT_2
+    ADCSequenceStepConfigure(ADC1_BASE, 0, 2, ADC_CTL_CH1); 							// CURRENT_3
+    ADCSequenceStepConfigure(ADC1_BASE, 0, 3, ADC_CTL_CH12); 							// CURRENT_4
+    ADCSequenceStepConfigure(ADC1_BASE, 0, 4, ADC_CTL_CH16); 							// DRIVER_VOLT
+    ADCSequenceStepConfigure(ADC1_BASE, 0, 5, ADC_CTL_CH18); 							// DRIVER1_AMP
+    ADCSequenceStepConfigure(ADC1_BASE, 0, 6, ADC_CTL_CH17 | ADC_CTL_END | ADC_CTL_IE); // DRIVER2_AMP
 
     // Enable sample sequences.
     ADCSequenceEnable(ADC0_BASE, 0);
     ADCSequenceEnable(ADC1_BASE, 0);
 
-    // Clear the interrupt status flag.  This is done to make sure the
-    // interrupt flag is cleared before we sample.
-    ADCIntClear(ADC0_BASE, 0);
-    ADCIntClear(ADC1_BASE, 0);
+    ADCSequenceDMAEnable(ADC0_BASE, 0);
+    ADCSequenceDMAEnable(ADC1_BASE, 0);
 
-}
+    ADCIntEnableEx(ADC0_BASE, ADC_INT_DMA_SS0);
+    ADCIntEnableEx(ADC1_BASE, ADC_INT_DMA_SS0);
 
-/////////////////////////////////////////////////////////////////////////////////////////////
+    IntEnable(INT_ADC0SS0);
+    IntEnable(INT_ADC1SS0);
 
-void sample_adc(void)
-{
+    IntMasterEnable();
 
-    // Trigger the ADC0 conversion.
-    ADCProcessorTrigger(ADC0_BASE, 0);
+    TimerConfigure(TIMER4_BASE, TIMER_CFG_SPLIT_PAIR | TIMER_CFG_A_PERIODIC);
 
-    // Wait for conversion to be completed.
-    while(!ADCIntStatus(ADC0_BASE, 0, false)){}
+    TimerLoadSet(TIMER4_BASE, TIMER_A, (SYSCLOCK / 20000) - 1);
 
-    // Clear the ADC interrupt flag.
-    ADCIntClear(ADC0_BASE, 0);
+    TimerControlTrigger(TIMER4_BASE, TIMER_A, true);
 
-    // Read ADC Value.
-    ADCSequenceDataGet(ADC0_BASE, 0, adc_0_value);
-
-    // Trigger the ADC1 conversion.
-    ADCProcessorTrigger(ADC1_BASE, 0);
-
-    // Wait for conversion to be completed.
-    while(!ADCIntStatus(ADC1_BASE, 0, false)){}
-
-    // Clear the ADC interrupt flag.
-    ADCIntClear(ADC1_BASE, 0);
-
-    // Read ADC Value.
-    ADCSequenceDataGet(ADC1_BASE, 0, adc_1_value);
+    TimerEnable(TIMER4_BASE, TIMER_A);
 
 }
 
@@ -426,9 +656,9 @@ void DriverCurrentInit(void)
 
 void VoltageCh1Sample(void)
 {
-    Adc_Value = adc_0_value[0];
-    Adc_Value = Adc_Value - VoltageCh1.Offset;
-    VoltageCh1.Value = (float)Adc_Value * VoltageCh1.Gain;
+    VoltageCh1.Adc_Value = ADC0Buffer1[0];
+    VoltageCh1.Adc_Value = VoltageCh1.Adc_Value - VoltageCh1.Offset;
+    VoltageCh1.Value = (float)VoltageCh1.Adc_Value * VoltageCh1.Gain;
     
     if(VoltageCh1.InvertPol) VoltageCh1.Value = VoltageCh1.Value * -1.0;
     
@@ -459,9 +689,9 @@ void VoltageCh1Sample(void)
 
 void VoltageCh2Sample(void)
 {
-    Adc_Value = adc_0_value[1];
-    Adc_Value = Adc_Value - VoltageCh2.Offset;
-    VoltageCh2.Value = (float)Adc_Value * VoltageCh2.Gain;
+	VoltageCh2.Adc_Value = ADC0Buffer1[1];
+	VoltageCh2.Adc_Value = VoltageCh2.Adc_Value - VoltageCh2.Offset;
+    VoltageCh2.Value = (float)VoltageCh2.Adc_Value * VoltageCh2.Gain;
 
     if(VoltageCh2.InvertPol) VoltageCh2.Value = VoltageCh2.Value * -1.0;
 
@@ -492,9 +722,9 @@ void VoltageCh2Sample(void)
 
 void VoltageCh3Sample(void)
 {
-    Adc_Value = adc_0_value[2];
-    Adc_Value = Adc_Value - VoltageCh3.Offset;
-    VoltageCh3.Value = (float)Adc_Value * VoltageCh3.Gain;
+	VoltageCh3.Adc_Value = ADC0Buffer1[2];
+	VoltageCh3.Adc_Value = VoltageCh3.Adc_Value - VoltageCh3.Offset;
+    VoltageCh3.Value = (float)VoltageCh3.Adc_Value * VoltageCh3.Gain;
     
     if(VoltageCh3.InvertPol) VoltageCh3.Value = VoltageCh3.Value * -1.0;
 
@@ -525,9 +755,9 @@ void VoltageCh3Sample(void)
 
 void VoltageCh4Sample(void)
 {
-    Adc_Value = adc_0_value[3];
-    Adc_Value = Adc_Value - VoltageCh4.Offset;
-    VoltageCh4.Value = (float)Adc_Value * VoltageCh4.Gain;
+	VoltageCh4.Adc_Value = ADC0Buffer1[3];
+	VoltageCh4.Adc_Value = VoltageCh4.Adc_Value - VoltageCh4.Offset;
+    VoltageCh4.Value = (float)VoltageCh4.Adc_Value * VoltageCh4.Gain;
     
     if(VoltageCh4.InvertPol) VoltageCh4.Value = VoltageCh4.Value * -1.0;
 
@@ -558,9 +788,9 @@ void VoltageCh4Sample(void)
 
 void CurrentCh1Sample(void)
 {
-    Adc_Value = adc_1_value[0];
-    Adc_Value = Adc_Value - CurrentCh1.Offset;
-    CurrentCh1.Value = (float)Adc_Value * CurrentCh1.Gain;
+	CurrentCh1.Adc_Value = ADC1Buffer1[0];
+	CurrentCh1.Adc_Value = CurrentCh1.Adc_Value - CurrentCh1.Offset;
+    CurrentCh1.Value = (float)CurrentCh1.Adc_Value * CurrentCh1.Gain;
 
     if(CurrentCh1.InvertPol) CurrentCh1.Value = CurrentCh1.Value * -1.0;
 
@@ -591,9 +821,9 @@ void CurrentCh1Sample(void)
 
 void CurrentCh2Sample(void)
 {
-    Adc_Value = adc_1_value[1];
-    Adc_Value = Adc_Value - CurrentCh2.Offset;
-    CurrentCh2.Value = (float)Adc_Value * CurrentCh2.Gain;
+	CurrentCh2.Adc_Value = ADC1Buffer1[1];
+	CurrentCh2.Adc_Value = CurrentCh2.Adc_Value - CurrentCh2.Offset;
+    CurrentCh2.Value = (float)CurrentCh2.Adc_Value * CurrentCh2.Gain;
 
     if(CurrentCh2.InvertPol) CurrentCh2.Value = CurrentCh2.Value * -1.0;
 
@@ -625,9 +855,9 @@ void CurrentCh2Sample(void)
 
 void CurrentCh3Sample(void)
 {
-    Adc_Value = adc_1_value[2];
-    Adc_Value = Adc_Value - CurrentCh3.Offset;
-    CurrentCh3.Value = (float)Adc_Value * CurrentCh3.Gain;
+	CurrentCh3.Adc_Value = ADC1Buffer1[2];
+	CurrentCh3.Adc_Value = CurrentCh3.Adc_Value - CurrentCh3.Offset;
+    CurrentCh3.Value = (float)CurrentCh3.Adc_Value * CurrentCh3.Gain;
 
     if(CurrentCh3.InvertPol) CurrentCh3.Value = CurrentCh3.Value * -1.0;
 
@@ -658,9 +888,9 @@ void CurrentCh3Sample(void)
 
 void CurrentCh4Sample(void)
 {
-    Adc_Value = adc_1_value[3];
-    Adc_Value = Adc_Value - CurrentCh4.Offset;
-    CurrentCh4.Value = (float)Adc_Value * CurrentCh4.Gain;
+	CurrentCh4.Adc_Value = ADC1Buffer1[3];
+	CurrentCh4.Adc_Value = CurrentCh4.Adc_Value - CurrentCh4.Offset;
+    CurrentCh4.Value = (float)CurrentCh4.Adc_Value * CurrentCh4.Gain;
 
     if(CurrentCh4.InvertPol) CurrentCh4.Value = CurrentCh4.Value * -1.0;
 
@@ -691,9 +921,9 @@ void CurrentCh4Sample(void)
 
 void LvCurrentCh1Sample(void)
 {
-    Adc_Value = adc_0_value[4];
-    Adc_Value = Adc_Value - LvCurrentCh1.Offset;
-    LvCurrentCh1.Value = (float)Adc_Value * LvCurrentCh1.Gain;
+	LvCurrentCh1.Adc_Value = ADC0Buffer1[4];
+	LvCurrentCh1.Adc_Value = LvCurrentCh1.Adc_Value - LvCurrentCh1.Offset;
+    LvCurrentCh1.Value = (float)LvCurrentCh1.Adc_Value * LvCurrentCh1.Gain;
 
     if(LvCurrentCh1.InvertPol) LvCurrentCh1.Value = LvCurrentCh1.Value * -1.0;
 
@@ -724,9 +954,9 @@ void LvCurrentCh1Sample(void)
 
 void LvCurrentCh2Sample(void)
 {
-    Adc_Value = adc_0_value[5];
-    Adc_Value = Adc_Value - LvCurrentCh2.Offset;
-    LvCurrentCh2.Value = (float)Adc_Value * LvCurrentCh2.Gain;
+	LvCurrentCh2.Adc_Value = ADC0Buffer1[5];
+	LvCurrentCh2.Adc_Value = LvCurrentCh2.Adc_Value - LvCurrentCh2.Offset;
+    LvCurrentCh2.Value = (float)LvCurrentCh2.Adc_Value * LvCurrentCh2.Gain;
 
     if(LvCurrentCh2.InvertPol) LvCurrentCh2.Value = LvCurrentCh2.Value * -1.0;
 
@@ -757,9 +987,9 @@ void LvCurrentCh2Sample(void)
 
 void LvCurrentCh3Sample(void)
 {
-    Adc_Value = adc_0_value[6];
-    Adc_Value = Adc_Value - LvCurrentCh3.Offset;
-    LvCurrentCh3.Value = (float)Adc_Value * LvCurrentCh3.Gain;
+	LvCurrentCh3.Adc_Value = ADC0Buffer1[6];
+	LvCurrentCh3.Adc_Value = LvCurrentCh3.Adc_Value - LvCurrentCh3.Offset;
+    LvCurrentCh3.Value = (float)LvCurrentCh3.Adc_Value * LvCurrentCh3.Gain;
 
     if(LvCurrentCh3.InvertPol) LvCurrentCh3.Value = LvCurrentCh3.Value * -1.0;
 
@@ -790,8 +1020,8 @@ void LvCurrentCh3Sample(void)
 
 void DriverVoltageSample(void)
 {
-    Adc_Value = adc_1_value[4];
-    DriverVolt.Value = (float)Adc_Value * DriverVolt.Gain;
+	DriverVolt.Adc_Value = ADC1Buffer1[4];
+    DriverVolt.Value = (float)DriverVolt.Adc_Value * DriverVolt.Gain;
     
     if(DriverVolt.Value > DriverVolt.AlarmLimit)
     {
@@ -820,9 +1050,9 @@ void DriverVoltageSample(void)
 
 void Driver1CurrentSample(void)
 {
-    Adc_Value = adc_1_value[6];
-    Adc_Value = Adc_Value - Driver1Curr.Offset;
-    Driver1Curr.Value = (float)Adc_Value * Driver1Curr.Gain;
+	Driver1Curr.Adc_Value = ADC1Buffer1[5];
+	Driver1Curr.Adc_Value = Driver1Curr.Adc_Value - Driver1Curr.Offset;
+    Driver1Curr.Value = (float)Driver1Curr.Adc_Value * Driver1Curr.Gain;
     
     if(Driver1Curr.Value > Driver1Curr.AlarmLimit)
     {
@@ -851,9 +1081,9 @@ void Driver1CurrentSample(void)
 
 void Driver2CurrentSample(void)
 {
-    Adc_Value = adc_1_value[5];
-    Adc_Value = Adc_Value - Driver2Curr.Offset;
-    Driver2Curr.Value = (float)Adc_Value * Driver2Curr.Gain;
+	Driver2Curr.Adc_Value = ADC1Buffer1[6];
+	Driver2Curr.Adc_Value = Driver2Curr.Adc_Value - Driver2Curr.Offset;
+    Driver2Curr.Value = (float)Driver2Curr.Adc_Value * Driver2Curr.Gain;
 
     if(Driver2Curr.Value > Driver2Curr.AlarmLimit)
     {
