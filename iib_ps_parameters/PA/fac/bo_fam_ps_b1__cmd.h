@@ -38,8 +38,8 @@
 #define FAC_CMD_IDB_SUPPLY_OVERCURRENT_ALM_LIM              2.0
 #define FAC_CMD_IDB_SUPPLY_OVERCURRENT_ITLK_LIM             2.4
 
-#define FAC_CMD_GROUND_LEAKAGE_ALM_LIM                      1.5
-#define FAC_CMD_GROUND_LEAKAGE_ITLK_LIM                     3.0
+#define FAC_CMD_GROUND_LEAKAGE_ALM_LIM                      0.900
+#define FAC_CMD_GROUND_LEAKAGE_ITLK_LIM                     1.0
 
 #define FAC_CMD_INDUC_OVERTEMP_ALM_LIM                      50.0
 #define FAC_CMD_INDUC_OVERTEMP_ITLK_LIM                     60.0

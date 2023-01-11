@@ -47,8 +47,8 @@
 #define FAC_OS_DRIVER2_OVERCURRENT_ALM_LIM                  2.0
 #define FAC_OS_DRIVER2_OVERCURRENT_ITLK_LIM                 2.4
 
-#define FAC_OS_GROUND_LEAKAGE_ALM_LIM                       0.450
-#define FAC_OS_GROUND_LEAKAGE_ITLK_LIM                      0.650
+#define FAC_OS_GROUND_LEAKAGE_ALM_LIM                       0.400
+#define FAC_OS_GROUND_LEAKAGE_ITLK_LIM                      0.450
 
 #define FAC_OS_INDUC_OVERTEMP_ALM_LIM                       50.0
 #define FAC_OS_INDUC_OVERTEMP_ITLK_LIM                      60.0
@@ -188,7 +188,7 @@
 //Debouncing delay_us
 #define Delay_GND_Leakage                                   100
 
-#define VoltageCh1Enable                                    ON
+#define VoltageCh1Enable                                    OFF
 #define VoltageCh2Enable                                    OFF
 #define VoltageCh3Enable                                    OFF
 #define VoltageCh4Enable                                    OFF

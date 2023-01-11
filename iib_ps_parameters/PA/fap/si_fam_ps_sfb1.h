@@ -35,8 +35,8 @@
 #define FAP_OUTPUT_OVERCURRENT_2_ALM_LIM        95.0
 #define FAP_OUTPUT_OVERCURRENT_2_ITLK_LIM       100.0
 
-#define FAP_GROUND_LEAKAGE_ALM_LIM              0.450
-#define FAP_GROUND_LEAKAGE_ITLK_LIM             0.650
+#define FAP_GROUND_LEAKAGE_ALM_LIM              0.300
+#define FAP_GROUND_LEAKAGE_ITLK_LIM             0.400
 
 #define FAP_IGBT1_OVERTEMP_ALM_LIM              60.0
 #define FAP_IGBT1_OVERTEMP_ITLK_LIM             80.0
