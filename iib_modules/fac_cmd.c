@@ -135,6 +135,8 @@ uint8_t check_fac_cmd_alarms()
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
+#if !defined (FAC_NOVO_CMD)
+
 void check_fac_cmd_indication_leds()
 {
     //Input over voltage
@@ -197,6 +199,83 @@ void check_fac_cmd_indication_leds()
     else Led10TurnOn();
 }
 
+#endif /* FAC_NOVO_CMD */
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+#ifdef FAC_NOVO_CMD
+
+void check_fac_cmd_indication_leds()
+{
+	//AC-Mains Contactor Status
+	if(!fac_cmd.PreChargeContactor) Led1Toggle();
+	else if(!fac_cmd.AuxiliaryOptocoupler) Led1TurnOn();
+	else Led1TurnOff();
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+	//Interlocks main over current and emergency button
+    if(fac_cmd.MainOverCurrentItlkSts || fac_cmd.EmergencyButtonItlkSts) Led2TurnOff();
+    else Led2TurnOn();
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+    //Interlocks main under voltage and main over voltage
+    if(fac_cmd.MainUnderVoltageItlkSts || fac_cmd.MainOverVoltageItlkSts) Led3TurnOff();
+    else Led3TurnOn();
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+    //Input over voltage
+    if(fac_cmd.VcapBankItlkSts) Led4TurnOff();
+    else if(fac_cmd.VcapBankAlarmSts) Led4Toggle();
+    else Led4TurnOn();
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+    //Output over voltage
+    if(fac_cmd.VoutItlkSts) Led5TurnOff();
+    else if(fac_cmd.VoutAlarmSts) Led5Toggle();
+    else Led5TurnOn();
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+    //Interlocks Aux and Idb voltage and current
+    if(fac_cmd.AuxIdbVoltageItlkSts || fac_cmd.AuxCurrentItlkSts || fac_cmd.IdbCurrentItlkSts) Led6TurnOff();
+    else if(fac_cmd.AuxIdbVoltageAlarmSts || fac_cmd.AuxCurrentAlarmSts || fac_cmd.IdbCurrentAlarmSts) Led6Toggle();
+    else Led6TurnOn();
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+    //Fuga para o Terra
+    if(fac_cmd.GroundLeakageItlkSts) Led7TurnOff();
+    else if(fac_cmd.GroundLeakageAlarmSts) Led7Toggle();
+    else Led7TurnOn();
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Heatsink Over temperature
+    if(fac_cmd.TempHeatSinkItlkSts) Led8TurnOff();
+    else if(fac_cmd.TempHeatSinkAlarmSts) Led8Toggle();
+    else Led8TurnOn();
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Inductor Over temperature
+    if(fac_cmd.TempLItlkSts) Led9TurnOff();
+    else if(fac_cmd.TempLAlarmSts) Led9Toggle();
+    else Led9TurnOn();
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+    //Interlock Temperatura PCB e Umidade Relativa
+    if(fac_cmd.BoardTemperatureItlkSts || fac_cmd.RelativeHumidityItlkSts) Led10TurnOff();
+    else if(fac_cmd.BoardTemperatureAlarmSts || fac_cmd.RelativeHumidityAlarmSts) Led10Toggle();
+    else Led10TurnOn();
+}
+
+#endif /* FAC_NOVO_CMD */
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 void fac_cmd_application_readings()
@@ -254,9 +333,9 @@ void fac_cmd_application_readings()
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Medida de Fuga para o Terra
-    fac_cmd.GroundLeakage.f = LvCurrentCh3Read();
-    fac_cmd.GroundLeakageAlarmSts = LvCurrentCh3AlarmStatusRead();
-    if(!fac_cmd.GroundLeakageItlkSts)fac_cmd.GroundLeakageItlkSts = LvCurrentCh3TripStatusRead();
+    fac_cmd.GroundLeakage.f = VoltageCh1Read();
+    fac_cmd.GroundLeakageAlarmSts = VoltageCh1AlarmStatusRead();
+    if(!fac_cmd.GroundLeakageItlkSts)fac_cmd.GroundLeakageItlkSts = VoltageCh1TripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -302,6 +381,24 @@ void fac_cmd_application_readings()
     //Interlock Main Over Voltage
     fac_cmd.MainOverVoltageItlk = Gpdi8Read();//Variavel usada para debug
     if(!fac_cmd.MainOverVoltageItlkSts)fac_cmd.MainOverVoltageItlkSts = Gpdi8Read();
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+#ifdef FAC_NOVO_CMD
+
+    //Status do Contator de Pré-Carga
+    fac_cmd.PreChargeContactor = Gpdi9Read();
+
+#endif /* FAC_NOVO_CMD */
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+#ifdef FAC_NOVO_CMD
+
+    //Status do Optoacoplador da Placa Auxiliar
+    fac_cmd.AuxiliaryOptocoupler = Gpdi10Read();
+
+#endif /* FAC_NOVO_CMD */
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -380,15 +477,20 @@ void config_module_fac_cmd(void)
     /* Isolated Voltage */
     LvCurrentCh1Init(LV_Primary_Voltage_Vout, LV_Secondary_Current_Vin, LV_Burden_Resistor, Delay_Vout); /* Output Voltage */
     LvCurrentCh2Init(LV_Primary_Voltage_Cap_Bank, LV_Secondary_Current_Vin, LV_Burden_Resistor, Delay_Voltage_Cap_Bank); /* Voltage Capacitor Bank */
-    LvCurrentCh3Init(LV_Primary_Voltage_GND_Leakage, LV_Secondary_Current_Vin, LV_Burden_Resistor, Delay_GND_Leakage); /* GND Leakage */
 
     /* Protection Limits */
     LvCurrentCh1AlarmLevelSet(FAC_CMD_OUTPUT_OVERVOLTAGE_ALM_LIM);
     LvCurrentCh1TripLevelSet(FAC_CMD_OUTPUT_OVERVOLTAGE_ITLK_LIM);
     LvCurrentCh2AlarmLevelSet(FAC_CMD_CAPBANK_OVERVOLTAGE_ALM_LIM);
     LvCurrentCh2TripLevelSet(FAC_CMD_CAPBANK_OVERVOLTAGE_ITLK_LIM);
-    LvCurrentCh3AlarmLevelSet(FAC_CMD_GROUND_LEAKAGE_ALM_LIM);
-    LvCurrentCh3TripLevelSet(FAC_CMD_GROUND_LEAKAGE_ITLK_LIM);
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+    //Leitura de tensão
+    VoltageCh1Init(Current_GND_Leakage, Delay_GND_Leakage); //Ground Leakage
+
+    VoltageCh1AlarmLevelSet(FAC_CMD_GROUND_LEAKAGE_ALM_LIM); //Fuga para o terra alarme
+    VoltageCh1TripLevelSet(FAC_CMD_GROUND_LEAKAGE_ITLK_LIM); //Fuga para o terra interlock
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -490,6 +592,8 @@ void config_module_fac_cmd(void)
     fac_cmd.RelativeHumidity.f       = 0.0;
     fac_cmd.RelativeHumidityAlarmSts = 0;
     fac_cmd.RelativeHumidityItlkSts  = 0;
+    fac_cmd.PreChargeContactor       = 0;
+    fac_cmd.AuxiliaryOptocoupler     = 0;
     fac_cmd.InterlocksRegister.u32   = 0;
     fac_cmd.AlarmsRegister.u32       = 0;
 

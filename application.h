@@ -5,30 +5,55 @@
 #define __APPLICATION_H__
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-
-//Modules iib FACs
-
-//#define BO_FAM_PS_QF__CMD
-//#define BO_FAM_PS_QF__IS
-//#define BO_FAM_PS_QF__OS
-
+//                                 Modules iib FACs                                        //
 /////////////////////////////////////////////////////////////////////////////////////////////
 
+/*************************************/
+//Racks PA-RaPSC01 / PA-RaPSC02
+/*************************************/
+
+//#define BO_FAM_PS_QF__OS
+//#define BO_FAM_PS_QF__IS
+//#define BO_FAM_PS_QF__CMD
+
+/***********************/
+//Rack PA-RaPSC04
+/***********************/
+
+//#define BO_FAM_PS_SF__OS
+//#define BO_FAM_PS_SD__OS
 //#define BO_FAM_PS_QD__OS
-//#define BO_FAM_PS_SD_SF__OS
+
+/***********************/
+//Rack EMA:B:PS01
+/***********************/
+
 //#define FAC_DCDC_EMA__OS
 
-/////////////////////////////////////////////////////////////////////////////////////////////
+/******************************************************************************************************************/
+//Rack PA-RaPSE01 / PA-RaPSE02 / PA-RaPSE03 / PA-RaPSE04 / PA-RaPSE06 / PA-RaPSE07 / PA-RaPSE08 / PA-RaPSE09
+/******************************************************************************************************************/
 
-//#define BO_FAM_PS_B1_and_B2__CMD
-//#define BO_FAM_PS_B1_and_B2__IS
-//#define BO_FAM_PS_B1_and_B2__OS
+//#define BO_FAM_PS_B1__OS
+//#define BO_FAM_PS_B1__IS
+//#define BO_FAM_PS_B1__CMD
 
-/////////////////////////////////////////////////////////////////////////////////////////////
+/******************************************************************************************************************/
+//Rack PA-RaPSF01 / PA-RaPSF02 / PA-RaPSF03 / PA-RaPSF04 / PA-RaPSF06 / PA-RaPSF07 / PA-RaPSF08 / PA-RaPSF09
+/******************************************************************************************************************/
 
-//#define FAC_GIGA_TESTE__CMD
-//#define FAC_GIGA_TESTE__IS
+//#define BO_FAM_PS_B2__OS
+//#define BO_FAM_PS_B2__IS
+//#define BO_FAM_PS_B2__CMD
+
+/***********************/
+//Development FAC
+/***********************/
+
 //#define FAC_GIGA_TESTE__OS
+//#define FAC_GIGA_TESTE__IS
+//#define FAC_GIGA_TESTE__CMD
+//#define FAC_GIGA_TESTE_NOVO__CMD
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -38,24 +63,143 @@
 /********************************************************************************************/
 
 /////////////////////////////////////////////////////////////////////////////////////////////
+//                                 Modules iib FAPs                                        //
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-//Modules iib FAPs
+/***********************/
+//Rack PA-RaPSA01
+/***********************/
 
 //#define SI_FAM_PS_QFA
 //#define SI_FAM_PS_QFP
 //#define SI_FAM_PS_QFB
-//#define SI_FAM_PS_QDA_QDP1_QDP2
-//#define SI_FAM_PS_QDB1_QDB2
-//#define SI_FAM_PS_Q1_Q3_Q4
+
+/***********************/
+//Rack PA-RaPSA03
+/***********************/
+
+//#define SI_FAM_PS_QDA
+//#define SI_FAM_PS_QDP1
+//#define SI_FAM_PS_QDP2
+
+/***********************/
+//Rack PA-RaPSA04
+/***********************/
+
+//#define SI_FAM_PS_QDB1
+//#define SI_FAM_PS_QDB2
+
+/***********************/
+//Rack PA-RaPSA06
+/***********************/
+
+//#define SI_FAM_PS_Q1
+//#define SI_FAM_PS_Q3
+
+/***********************/
+//Rack PA-RaPSA07
+/***********************/
+
 //#define SI_FAM_PS_Q2
-//#define SI_FAM_PS_SDA0_SDP0_SFA0_SFP0_SDA1_SDA2_SDA3_SFA1_SFA2_SDP1_SDP2_SDP3_SFP2
-//#define SI_FAM_PS_SFP1
-//#define SI_FAM_PS_SDB0_SDB1_SDB2_SDB3_SFB0_SFB2
+//#define SI_FAM_PS_Q4
+
+/***********************/
+//Rack PA-RaPSB01
+/***********************/
+
+//#define SI_FAM_PS_SDA0
+//#define SI_FAM_PS_SDP0
+//#define SI_FAM_PS_SDB0
+
+/***********************/
+//Rack PA-RaPSB03
+/***********************/
+
+//#define SI_FAM_PS_SFA0
+//#define SI_FAM_PS_SFP0
+//#define SI_FAM_PS_SFB0
+
+/***********************/
+//Rack PA-RaPSB04
+/***********************/
+
+//#define SI_FAM_PS_SDA1
+//#define SI_FAM_PS_SDA2
+//#define SI_FAM_PS_SDB1
+
+/***********************/
+//Rack PA-RaPSB05
+/***********************/
+
+//#define SI_FAM_PS_SDA3
+//#define SI_FAM_PS_SFA1
+//#define SI_FAM_PS_SDB2
+
+/***********************/
+//Rack PA-RaPSB07
+/***********************/
+
+//#define SI_FAM_PS_SFA2
+//#define SI_FAM_PS_SDP1
+//#define SI_FAM_PS_SDB3
+
+/***********************/
+//Rack PA-RaPSB08
+/***********************/
+
+//#define SI_FAM_PS_SDP2
+//#define SI_FAM_PS_SDP3
 //#define SI_FAM_PS_SFB1
-//#define SI_FAM_PS_B1B2_1_and_B1B2_2
+
+/***********************/
+//Rack PA-RaPSB10
+/***********************/
+
+//#define SI_FAM_PS_SFP1
+//#define SI_FAM_PS_SFP2
+//#define SI_FAM_PS_SFB2
+
+/***********************/
+//Rack PA-RaPSD02
+/***********************/
+
+//#define SI_FAM_PS_B1B2_1
+
+/***********************/
+//Rack PA-RaPSD06
+/***********************/
+
+//#define SI_FAM_PS_B1B2_2
+
+/***********************/
+//Rack LA-RaPS01
+/***********************/
+
 //#define TS_FAM_PS_B
+
+/***********************/
+//Rack LA-RaPS03
+/***********************/
+
 //#define TB_FAM_PS_B
-//#define TS_01_PS_QF1A_TS_01_PS_QF1B_TS_02_PS_QF2_TS_02_PS_QD2_TS_03_PS_QF3_TS_04_PS_QF4_TS_04_PS_QD4A_TS_04_PS_QD4B
+//#define TS_01_PS_QF1A
+//#define TS_01_PS_QF1B
+//#define TS_02_PS_QF2
+//#define TS_02_PS_QD2
+
+/***********************/
+//Rack LA-RaPS05
+/***********************/
+
+//#define TS_03_PS_QF3
+//#define TS_04_PS_QF4
+//#define TS_04_PS_QD4A
+//#define TS_04_PS_QD4B
+
+/***********************/
+//Development FAP
+/***********************/
+
 //#define FAP_GIGA_TESTE_IGBT_1200V
 //#define GIGA_TESTES_IIBs
 //#define FAP_GIGA_TESTE_IGBT_1200V_DCLINK_400V
