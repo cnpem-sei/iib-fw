@@ -133,14 +133,6 @@ typedef volatile struct
     union {
         volatile float       f;
         volatile uint8_t     u8[4];
-    } GroundLeakage;
-
-    volatile bool GroundLeakageAlarmSts;
-    volatile bool GroundLeakageItlkSts;
-
-    union {
-        volatile float       f;
-        volatile uint8_t     u8[4];
     } BoardTemperature;
 
     volatile bool BoardTemperatureAlarmSts;
@@ -184,9 +176,8 @@ typedef volatile struct
 #define FAC_OS_DRIVER2_ERROR_BOT_ITLK       0x00002000
 #define FAC_OS_INDUC_OVERTEMP_ITLK          0x00004000
 #define FAC_OS_HS_OVERTEMP_ITLK             0x00008000
-#define FAC_OS_GROUND_LKG_ITLK              0x00010000
-#define FAC_OS_BOARD_IIB_OVERTEMP_ITLK      0x00020000
-#define FAC_OS_BOARD_IIB_OVERHUMIDITY_ITLK  0x00040000
+#define FAC_OS_BOARD_IIB_OVERTEMP_ITLK      0x00010000
+#define FAC_OS_BOARD_IIB_OVERHUMIDITY_ITLK  0x00020000
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -200,9 +191,8 @@ typedef volatile struct
 #define FAC_OS_DRIVER2_OVERCURRENT_ALM      0x00000080
 #define FAC_OS_INDUC_OVERTEMP_ALM           0x00000100
 #define FAC_OS_HS_OVERTEMP_ALM              0x00000200
-#define FAC_OS_GROUND_LKG_ALM               0x00000400
-#define FAC_OS_BOARD_IIB_OVERTEMP_ALM       0x00000800
-#define FAC_OS_BOARD_IIB_OVERHUMIDITY_ALM   0x00001000
+#define FAC_OS_BOARD_IIB_OVERTEMP_ALM       0x00000400
+#define FAC_OS_BOARD_IIB_OVERHUMIDITY_ALM   0x00000800
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

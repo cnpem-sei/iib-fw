@@ -62,7 +62,6 @@ void clear_fac_os_interlocks()
     fac_os.Driver1ErrorBotItlkSts   = 0;
     fac_os.Driver2ErrorTopItlkSts   = 0;
     fac_os.Driver2ErrorBotItlkSts   = 0;
-    fac_os.GroundLeakageItlkSts     = 0;
     fac_os.TempLItlkSts             = 0;
     fac_os.TempHeatSinkItlkSts      = 0;
     fac_os.DriverVoltageItlkSts     = 0;
@@ -92,7 +91,6 @@ uint8_t check_fac_os_interlocks()
     test |= fac_os.Driver1ErrorBotItlkSts;
     test |= fac_os.Driver2ErrorTopItlkSts;
     test |= fac_os.Driver2ErrorBotItlkSts;
-    test |= fac_os.GroundLeakageItlkSts;
     test |= fac_os.TempLItlkSts;
     test |= fac_os.TempHeatSinkItlkSts;
     test |= fac_os.DriverVoltageItlkSts;
@@ -113,7 +111,6 @@ void clear_fac_os_alarms()
     fac_os.IoutAlarmSts              = 0;
     fac_os.TempIGBT1AlarmSts         = 0;
     fac_os.TempIGBT2AlarmSts         = 0;
-    fac_os.GroundLeakageAlarmSts     = 0;
     fac_os.TempLAlarmSts             = 0;
     fac_os.TempHeatSinkAlarmSts      = 0;
     fac_os.DriverVoltageAlarmSts     = 0;
@@ -137,7 +134,6 @@ uint8_t check_fac_os_alarms()
     test |= fac_os.IoutAlarmSts;
     test |= fac_os.TempIGBT1AlarmSts;
     test |= fac_os.TempIGBT2AlarmSts;
-    test |= fac_os.GroundLeakageAlarmSts;
     test |= fac_os.TempLAlarmSts;
     test |= fac_os.TempHeatSinkAlarmSts;
     test |= fac_os.DriverVoltageAlarmSts;
@@ -187,10 +183,10 @@ void check_fac_os_indication_leds()
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-    //Fuga para o Terra
-    if(fac_os.GroundLeakageItlkSts) Led7TurnOff();
-    else if(fac_os.GroundLeakageAlarmSts) Led7Toggle();
-    else Led7TurnOn();
+    //Reservado
+    /*if() Led7TurnOff();
+    else if() Led7Toggle();
+    else Led7TurnOn();*/
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -309,13 +305,6 @@ void fac_os_application_readings()
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-    //Medida de Fuga para o Terra
-    fac_os.GroundLeakage.f = VoltageCh1Read();
-    fac_os.GroundLeakageAlarmSts = VoltageCh1AlarmStatusRead();
-    if(!fac_os.GroundLeakageItlkSts)fac_os.GroundLeakageItlkSts = VoltageCh1TripStatusRead();
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
     fac_os.Iin.f = CurrentCh1Read();
     fac_os.IinAlarmSts = CurrentCh1AlarmStatusRead();
     if(!fac_os.IinItlkSts)fac_os.IinItlkSts = CurrentCh1TripStatusRead();
@@ -376,7 +365,6 @@ void fac_os_application_readings()
     	if (fac_os.Driver2ErrorBotItlkSts)      fac_os.InterlocksRegister.u32 |= FAC_OS_DRIVER2_ERROR_BOT_ITLK;
     	if (fac_os.TempLItlkSts)                fac_os.InterlocksRegister.u32 |= FAC_OS_INDUC_OVERTEMP_ITLK;
     	if (fac_os.TempHeatSinkItlkSts)         fac_os.InterlocksRegister.u32 |= FAC_OS_HS_OVERTEMP_ITLK;
-    	if (fac_os.GroundLeakageItlkSts)        fac_os.InterlocksRegister.u32 |= FAC_OS_GROUND_LKG_ITLK;
     	if (fac_os.BoardTemperatureItlkSts)     fac_os.InterlocksRegister.u32 |= FAC_OS_BOARD_IIB_OVERTEMP_ITLK;
     	if (fac_os.RelativeHumidityItlkSts)     fac_os.InterlocksRegister.u32 |= FAC_OS_BOARD_IIB_OVERHUMIDITY_ITLK;
     }
@@ -400,7 +388,6 @@ void fac_os_application_readings()
     	if (fac_os.Driver2CurrentAlarmSts)      fac_os.AlarmsRegister.u32 |= FAC_OS_DRIVER2_OVERCURRENT_ALM;
     	if (fac_os.TempLAlarmSts)               fac_os.AlarmsRegister.u32 |= FAC_OS_INDUC_OVERTEMP_ALM;
     	if (fac_os.TempHeatSinkAlarmSts)        fac_os.AlarmsRegister.u32 |= FAC_OS_HS_OVERTEMP_ALM;
-    	if (fac_os.GroundLeakageAlarmSts)       fac_os.AlarmsRegister.u32 |= FAC_OS_GROUND_LKG_ALM;
     	if (fac_os.BoardTemperatureAlarmSts)    fac_os.AlarmsRegister.u32 |= FAC_OS_BOARD_IIB_OVERTEMP_ALM;
     	if (fac_os.RelativeHumidityAlarmSts)    fac_os.AlarmsRegister.u32 |= FAC_OS_BOARD_IIB_OVERHUMIDITY_ALM;
     }
@@ -420,13 +407,12 @@ void fac_os_application_readings()
     g_controller_iib.iib_signals[5].f       = fac_os.DriverVoltage.f;
     g_controller_iib.iib_signals[6].f       = fac_os.Driver1Current.f;
     g_controller_iib.iib_signals[7].f       = fac_os.Driver2Current.f;
-    g_controller_iib.iib_signals[8].f       = fac_os.GroundLeakage.f;
-    g_controller_iib.iib_signals[9].f       = fac_os.TempL.f;
-    g_controller_iib.iib_signals[10].f      = fac_os.TempHeatSink.f;
-    g_controller_iib.iib_signals[11].f      = fac_os.BoardTemperature.f;
-    g_controller_iib.iib_signals[12].f      = fac_os.RelativeHumidity.f;
-    g_controller_iib.iib_signals[13].u32    = fac_os.InterlocksRegister.u32;
-    g_controller_iib.iib_signals[14].u32    = fac_os.AlarmsRegister.u32;
+    g_controller_iib.iib_signals[8].f       = fac_os.TempL.f;
+    g_controller_iib.iib_signals[9].f       = fac_os.TempHeatSink.f;
+    g_controller_iib.iib_signals[10].f      = fac_os.BoardTemperature.f;
+    g_controller_iib.iib_signals[11].f      = fac_os.RelativeHumidity.f;
+    g_controller_iib.iib_signals[12].u32    = fac_os.InterlocksRegister.u32;
+    g_controller_iib.iib_signals[13].u32    = fac_os.AlarmsRegister.u32;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -454,14 +440,6 @@ void config_module_fac_os(void)
     /* Protection Limits */
     LvCurrentCh1AlarmLevelSet(FAC_OS_INPUT_OVERVOLTAGE_ALM_LIM);
     LvCurrentCh1TripLevelSet(FAC_OS_INPUT_OVERVOLTAGE_ITLK_LIM);
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-    //Leitura de tensão
-    VoltageCh1Init(Current_GND_Leakage, Delay_GND_Leakage); //Ground Leakage
-
-    VoltageCh1AlarmLevelSet(FAC_OS_GROUND_LEAKAGE_ALM_LIM); //Fuga para o terra alarme
-    VoltageCh1TripLevelSet(FAC_OS_GROUND_LEAKAGE_ITLK_LIM); //Fuga para o terra interlock
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -579,9 +557,6 @@ void config_module_fac_os(void)
     fac_os.Driver2ErrorTopItlkSts       = 0;
     fac_os.Driver2ErrorBot              = 0;
     fac_os.Driver2ErrorBotItlkSts       = 0;
-    fac_os.GroundLeakage.f              = 0.0;
-    fac_os.GroundLeakageAlarmSts        = 0;
-    fac_os.GroundLeakageItlkSts         = 0;
     fac_os.TempL.f                      = 0.0;
     fac_os.TempLAlarmSts                = 0;
     fac_os.TempLItlkSts                 = 0;

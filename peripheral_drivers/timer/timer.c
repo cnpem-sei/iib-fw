@@ -73,7 +73,7 @@ volatile static uint32_t millis = 0;
 
 #ifdef FAC_OS
 
-#define Timer_CAN_BUS			80 // 10Hz cada ID de Mensagem, 8 mensages em 1/12.5ms
+#define Timer_CAN_BUS			70 // 10Hz cada ID de Mensagem, 7 mensages em 1/14.28ms
 
 #endif
 

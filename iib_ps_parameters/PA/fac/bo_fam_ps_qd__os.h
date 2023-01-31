@@ -47,9 +47,6 @@
 #define FAC_OS_DRIVER2_OVERCURRENT_ALM_LIM                  2.0
 #define FAC_OS_DRIVER2_OVERCURRENT_ITLK_LIM                 2.4
 
-#define FAC_OS_GROUND_LEAKAGE_ALM_LIM                       0.400
-#define FAC_OS_GROUND_LEAKAGE_ITLK_LIM                      0.450
-
 #define FAC_OS_INDUC_OVERTEMP_ALM_LIM                       50.0
 #define FAC_OS_INDUC_OVERTEMP_ITLK_LIM                      60.0
 
@@ -174,19 +171,6 @@
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //Voltage configuration
-
-//VoltageCh1 convert to Current
-
-#define Gain_LDC_Transducer 4.0 //Gain Transducer CTSR 0.3-P
-
-//#define Gain_LDC_Transducer 1.2 //Gain Transducer CTSR 1-P
-
-#define Gain_LDC_Amplifier 4.99
-
-#define Current_GND_Leakage 10.0 / (Gain_LDC_Transducer * Gain_LDC_Amplifier)
-
-//Debouncing delay_us
-#define Delay_GND_Leakage                                   100
 
 #define VoltageCh1Enable                                    OFF
 #define VoltageCh2Enable                                    OFF

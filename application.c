@@ -473,7 +473,7 @@ void send_data_schedule()
 
     i++;
 
-    if (i > 7) i = 0;
+    if (i > 6) i = 0;
 
 #endif
 
