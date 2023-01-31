@@ -12,7 +12,7 @@
 //Racks PA-RaPSC01 / PA-RaPSC02
 /*************************************/
 
-#define BO_FAM_PS_QF__OS
+//#define BO_FAM_PS_QF__OS
 //#define BO_FAM_PS_QF__IS
 //#define BO_FAM_PS_QF__CMD
 
