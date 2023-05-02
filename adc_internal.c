@@ -1729,7 +1729,7 @@ unsigned char DriverVoltageAlarmStatusRead(void)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-unsigned char DriverVolatgeTripStatusRead(void)
+unsigned char DriverVoltageTripStatusRead(void)
 {
 #if (DriverVoltageEnable == 1)
 

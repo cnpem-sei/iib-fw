@@ -278,10 +278,10 @@ void fac_os_application_readings()
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-    //DriverVotage
+    //DriverVoltage
     fac_os.DriverVoltage.f = DriverVoltageRead();
     fac_os.DriverVoltageAlarmSts = DriverVoltageAlarmStatusRead();
-    if(!fac_os.DriverVoltageItlkSts)fac_os.DriverVoltageItlkSts = DriverVolatgeTripStatusRead();
+    if(!fac_os.DriverVoltageItlkSts)fac_os.DriverVoltageItlkSts = DriverVoltageTripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -342,7 +342,7 @@ void fac_cmd_application_readings()
     //Aux and Idb Voltage
     fac_cmd.AuxIdbVoltage.f = DriverVoltageRead();
     fac_cmd.AuxIdbVoltageAlarmSts = DriverVoltageAlarmStatusRead();
-    if(!fac_cmd.AuxIdbVoltageItlkSts)fac_cmd.AuxIdbVoltageItlkSts = DriverVolatgeTripStatusRead();
+    if(!fac_cmd.AuxIdbVoltageItlkSts)fac_cmd.AuxIdbVoltageItlkSts = DriverVoltageTripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

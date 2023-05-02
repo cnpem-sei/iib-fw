@@ -290,10 +290,10 @@ void fap_application_readings()
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-    //DriverVotage
+    //DriverVoltage
     fap.DriverVoltage.f = DriverVoltageRead();
     fap.DriverVoltageAlarmSts = DriverVoltageAlarmStatusRead();
-    if(!fap.DriverVoltageItlkSts)fap.DriverVoltageItlkSts = DriverVolatgeTripStatusRead();
+    if(!fap.DriverVoltageItlkSts)fap.DriverVoltageItlkSts = DriverVoltageTripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -247,10 +247,10 @@ void fac_is_application_readings()
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-    //DriverVotage
+    //DriverVoltage
     fac_is.DriverVoltage.f = DriverVoltageRead();
     fac_is.DriverVoltageAlarmSts = DriverVoltageAlarmStatusRead();
-    if(!fac_is.DriverVoltageItlkSts)fac_is.DriverVoltageItlkSts = DriverVolatgeTripStatusRead();
+    if(!fac_is.DriverVoltageItlkSts)fac_is.DriverVoltageItlkSts = DriverVoltageTripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

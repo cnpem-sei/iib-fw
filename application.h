@@ -205,6 +205,12 @@
 //#define FAP_GIGA_TESTE_IGBT_1200V_DCLINK_400V
 //#define FAP_GIGA_TESTE_IGBT_600V_DCLINK_400V
 
+/*********************************/
+//Development RESONANT_SWLS
+/*********************************/
+
+#define RESONANT_SWLS
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 extern volatile unsigned char Interlock;
