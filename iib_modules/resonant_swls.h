@@ -151,11 +151,10 @@ typedef volatile struct
     volatile bool Relay;
 
     volatile bool EmergencyButtonItlk;
-    volatile bool EmergencyButtonItlkSts;     ///////verificar
+    volatile bool EmergencyButtonItlkSts;
 
     volatile bool ReleAuxItlkSts;
     volatile bool ReleExtItlkSts;
-    volatile bool RelayOpenItlkSts;
     volatile bool RelayContactStickingItlkSts;
 
 } resonant_swls_t;
@@ -214,7 +213,7 @@ extern volatile resonant_swls_t resonant_swls;
 
 #ifdef RESONANT_SWLS
 
-#include <iib_ps_parameters/development/resonant_swls/resonant_swls.h>
+#include <iib_ps_parameters/development/resonant_swls/resonant_swls_parameters.h>
 
 #endif /* RESONANT_SWLS */
 

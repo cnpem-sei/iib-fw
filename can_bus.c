@@ -37,6 +37,7 @@
 #include <iib_modules/fac_os.h>
 #include <iib_modules/fac_is.h>
 #include <iib_modules/fac_cmd.h>
+#include <iib_modules/resonant_swls.h>
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -525,122 +526,122 @@ void send_data_message(uint8_t var)
 
 	switch(var)
 	{
-		case 0:
-		{
-			message_data[0] = g_controller_iib.iib_signals[0].u8[0]; // fap.Vin.f
-			message_data[1] = g_controller_iib.iib_signals[0].u8[1]; //
-			message_data[2] = g_controller_iib.iib_signals[0].u8[2]; //
-			message_data[3] = g_controller_iib.iib_signals[0].u8[3]; //
+	case 0:
+	{
+		message_data[0] = g_controller_iib.iib_signals[0].u8[0]; // fap.Vin.f
+		message_data[1] = g_controller_iib.iib_signals[0].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[0].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[0].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_signals[1].u8[0]; // fap.Vout.f
-			message_data[5] = g_controller_iib.iib_signals[1].u8[1]; //
-			message_data[6] = g_controller_iib.iib_signals[1].u8[2]; //
-			message_data[7] = g_controller_iib.iib_signals[1].u8[3]; //
+		message_data[4] = g_controller_iib.iib_signals[1].u8[0]; // fap.Vout.f
+		message_data[5] = g_controller_iib.iib_signals[1].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[1].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[1].u8[3]; //
 
-			break;
-		}
-		case 1:
-		{
-			message_data[0] = g_controller_iib.iib_signals[2].u8[0]; // fap.IoutA1.f
-			message_data[1] = g_controller_iib.iib_signals[2].u8[1]; //
-			message_data[2] = g_controller_iib.iib_signals[2].u8[2]; //
-			message_data[3] = g_controller_iib.iib_signals[2].u8[3]; //
+		break;
+	}
+	case 1:
+	{
+		message_data[0] = g_controller_iib.iib_signals[2].u8[0]; // fap.IoutA1.f
+		message_data[1] = g_controller_iib.iib_signals[2].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[2].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[2].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_signals[3].u8[0]; // fap.IoutA2.f
-			message_data[5] = g_controller_iib.iib_signals[3].u8[1]; //
-			message_data[6] = g_controller_iib.iib_signals[3].u8[2]; //
-			message_data[7] = g_controller_iib.iib_signals[3].u8[3]; //
+		message_data[4] = g_controller_iib.iib_signals[3].u8[0]; // fap.IoutA2.f
+		message_data[5] = g_controller_iib.iib_signals[3].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[3].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[3].u8[3]; //
 
-			break;
-		}
-		case 2:
-		{
-			message_data[0] = g_controller_iib.iib_signals[6].u8[0]; // fap.DriverVoltage.f
-			message_data[1] = g_controller_iib.iib_signals[6].u8[1]; //
-			message_data[2] = g_controller_iib.iib_signals[6].u8[2]; //
-			message_data[3] = g_controller_iib.iib_signals[6].u8[3]; //
+		break;
+	}
+	case 2:
+	{
+		message_data[0] = g_controller_iib.iib_signals[6].u8[0]; // fap.DriverVoltage.f
+		message_data[1] = g_controller_iib.iib_signals[6].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[6].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[6].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_signals[11].u8[0]; // fap.GroundLeakage.f
-			message_data[5] = g_controller_iib.iib_signals[11].u8[1]; //
-			message_data[6] = g_controller_iib.iib_signals[11].u8[2]; //
-			message_data[7] = g_controller_iib.iib_signals[11].u8[3]; //
+		message_data[4] = g_controller_iib.iib_signals[11].u8[0]; // fap.GroundLeakage.f
+		message_data[5] = g_controller_iib.iib_signals[11].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[11].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[11].u8[3]; //
 
-			break;
-		}
-		case 3:
-		{
-			message_data[0] = g_controller_iib.iib_signals[7].u8[0]; // fap.Driver1Current.f
-			message_data[1] = g_controller_iib.iib_signals[7].u8[1]; //
-			message_data[2] = g_controller_iib.iib_signals[7].u8[2]; //
-			message_data[3] = g_controller_iib.iib_signals[7].u8[3]; //
+		break;
+	}
+	case 3:
+	{
+		message_data[0] = g_controller_iib.iib_signals[7].u8[0]; // fap.Driver1Current.f
+		message_data[1] = g_controller_iib.iib_signals[7].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[7].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[7].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_signals[8].u8[0]; // fap.Driver2Current.f
-			message_data[5] = g_controller_iib.iib_signals[8].u8[1]; //
-			message_data[6] = g_controller_iib.iib_signals[8].u8[2]; //
-			message_data[7] = g_controller_iib.iib_signals[8].u8[3]; //
+		message_data[4] = g_controller_iib.iib_signals[8].u8[0]; // fap.Driver2Current.f
+		message_data[5] = g_controller_iib.iib_signals[8].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[8].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[8].u8[3]; //
 
-			break;
-		}
-		case 4:
-		{
-			message_data[0] = g_controller_iib.iib_signals[4].u8[0]; // fap.TempIGBT1.f
-			message_data[1] = g_controller_iib.iib_signals[4].u8[1]; //
-			message_data[2] = g_controller_iib.iib_signals[4].u8[2]; //
-			message_data[3] = g_controller_iib.iib_signals[4].u8[3]; //
+		break;
+	}
+	case 4:
+	{
+		message_data[0] = g_controller_iib.iib_signals[4].u8[0]; // fap.TempIGBT1.f
+		message_data[1] = g_controller_iib.iib_signals[4].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[4].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[4].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_signals[5].u8[0]; // fap.TempIGBT2.f
-			message_data[5] = g_controller_iib.iib_signals[5].u8[1]; //
-			message_data[6] = g_controller_iib.iib_signals[5].u8[2]; //
-			message_data[7] = g_controller_iib.iib_signals[5].u8[3]; //
+		message_data[4] = g_controller_iib.iib_signals[5].u8[0]; // fap.TempIGBT2.f
+		message_data[5] = g_controller_iib.iib_signals[5].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[5].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[5].u8[3]; //
 
-			break;
-		}
-		case 5:
-		{
-			message_data[0] = g_controller_iib.iib_signals[9].u8[0]; // fap.TempL.f
-			message_data[1] = g_controller_iib.iib_signals[9].u8[1]; //
-			message_data[2] = g_controller_iib.iib_signals[9].u8[2]; //
-			message_data[3] = g_controller_iib.iib_signals[9].u8[3]; //
+		break;
+	}
+	case 5:
+	{
+		message_data[0] = g_controller_iib.iib_signals[9].u8[0]; // fap.TempL.f
+		message_data[1] = g_controller_iib.iib_signals[9].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[9].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[9].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_signals[10].u8[0]; // fap.TempHeatSink.f
-			message_data[5] = g_controller_iib.iib_signals[10].u8[1]; //
-			message_data[6] = g_controller_iib.iib_signals[10].u8[2]; //
-			message_data[7] = g_controller_iib.iib_signals[10].u8[3]; //
+		message_data[4] = g_controller_iib.iib_signals[10].u8[0]; // fap.TempHeatSink.f
+		message_data[5] = g_controller_iib.iib_signals[10].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[10].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[10].u8[3]; //
 
-			break;
-		}
-		case 6:
-		{
-			message_data[0] = g_controller_iib.iib_signals[12].u8[0]; // fap.BoardTemperature.f
-			message_data[1] = g_controller_iib.iib_signals[12].u8[1]; //
-			message_data[2] = g_controller_iib.iib_signals[12].u8[2]; //
-			message_data[3] = g_controller_iib.iib_signals[12].u8[3]; //
+		break;
+	}
+	case 6:
+	{
+		message_data[0] = g_controller_iib.iib_signals[12].u8[0]; // fap.BoardTemperature.f
+		message_data[1] = g_controller_iib.iib_signals[12].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[12].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[12].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_signals[13].u8[0]; // fap.RelativeHumidity.f
-			message_data[5] = g_controller_iib.iib_signals[13].u8[1]; //
-			message_data[6] = g_controller_iib.iib_signals[13].u8[2]; //
-			message_data[7] = g_controller_iib.iib_signals[13].u8[3]; //
+		message_data[4] = g_controller_iib.iib_signals[13].u8[0]; // fap.RelativeHumidity.f
+		message_data[5] = g_controller_iib.iib_signals[13].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[13].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[13].u8[3]; //
 
-			break;
-		}
-		case 7:
-		{
-			message_data[0] = g_controller_iib.iib_signals[14].u8[0]; // fap Interlock
-			message_data[1] = g_controller_iib.iib_signals[14].u8[1]; //
-			message_data[2] = g_controller_iib.iib_signals[14].u8[2]; //
-			message_data[3] = g_controller_iib.iib_signals[14].u8[3]; //
+		break;
+	}
+	case 7:
+	{
+		message_data[0] = g_controller_iib.iib_signals[14].u8[0]; // fap Interlock
+		message_data[1] = g_controller_iib.iib_signals[14].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[14].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[14].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_signals[15].u8[0]; // fap Alarm
-			message_data[5] = g_controller_iib.iib_signals[15].u8[1]; //
-			message_data[6] = g_controller_iib.iib_signals[15].u8[2]; //
-			message_data[7] = g_controller_iib.iib_signals[15].u8[3]; //
+		message_data[4] = g_controller_iib.iib_signals[15].u8[0]; // fap Alarm
+		message_data[5] = g_controller_iib.iib_signals[15].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[15].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[15].u8[3]; //
 
-			break;
-		}
-		default:
-		{
-			break;
-		}
+		break;
+	}
+	default:
+	{
+		break;
+	}
 	}
 
 #endif
@@ -651,108 +652,108 @@ void send_data_message(uint8_t var)
 
 	switch(var)
 	{
-		case 0:
-		{
-			message_data[0] = g_controller_iib.iib_signals[0].u8[0]; // fac_os.VdcLink.f
-			message_data[1] = g_controller_iib.iib_signals[0].u8[1]; //
-			message_data[2] = g_controller_iib.iib_signals[0].u8[2]; //
-			message_data[3] = g_controller_iib.iib_signals[0].u8[3]; //
+	case 0:
+	{
+		message_data[0] = g_controller_iib.iib_signals[0].u8[0]; // fac_os.VdcLink.f
+		message_data[1] = g_controller_iib.iib_signals[0].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[0].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[0].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_signals[5].u8[0]; // fac_os.DriverVoltage.f
-			message_data[5] = g_controller_iib.iib_signals[5].u8[1]; //
-			message_data[6] = g_controller_iib.iib_signals[5].u8[2]; //
-			message_data[7] = g_controller_iib.iib_signals[5].u8[3]; //
+		message_data[4] = g_controller_iib.iib_signals[5].u8[0]; // fac_os.DriverVoltage.f
+		message_data[5] = g_controller_iib.iib_signals[5].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[5].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[5].u8[3]; //
 
-			break;
-		}
-		case 1:
-		{
-			message_data[0] = g_controller_iib.iib_signals[1].u8[0]; // fac_os.Iin.f;
-			message_data[1] = g_controller_iib.iib_signals[1].u8[1]; //
-			message_data[2] = g_controller_iib.iib_signals[1].u8[2]; //
-			message_data[3] = g_controller_iib.iib_signals[1].u8[3]; //
+		break;
+	}
+	case 1:
+	{
+		message_data[0] = g_controller_iib.iib_signals[1].u8[0]; // fac_os.Iin.f;
+		message_data[1] = g_controller_iib.iib_signals[1].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[1].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[1].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_signals[2].u8[0]; // fac_os.Iout.f
-			message_data[5] = g_controller_iib.iib_signals[2].u8[1]; //
-			message_data[6] = g_controller_iib.iib_signals[2].u8[2]; //
-			message_data[7] = g_controller_iib.iib_signals[2].u8[3]; //
+		message_data[4] = g_controller_iib.iib_signals[2].u8[0]; // fac_os.Iout.f
+		message_data[5] = g_controller_iib.iib_signals[2].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[2].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[2].u8[3]; //
 
-			break;
-		}
-		case 2:
-		{
-			message_data[0] = g_controller_iib.iib_signals[6].u8[0]; // fac_os.Driver1Current.f
-			message_data[1] = g_controller_iib.iib_signals[6].u8[1]; //
-			message_data[2] = g_controller_iib.iib_signals[6].u8[2]; //
-			message_data[3] = g_controller_iib.iib_signals[6].u8[3]; //
+		break;
+	}
+	case 2:
+	{
+		message_data[0] = g_controller_iib.iib_signals[6].u8[0]; // fac_os.Driver1Current.f
+		message_data[1] = g_controller_iib.iib_signals[6].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[6].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[6].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_signals[7].u8[0]; // fac_os.Driver2Current.f
-			message_data[5] = g_controller_iib.iib_signals[7].u8[1]; //
-			message_data[6] = g_controller_iib.iib_signals[7].u8[2]; //
-			message_data[7] = g_controller_iib.iib_signals[7].u8[3]; //
+		message_data[4] = g_controller_iib.iib_signals[7].u8[0]; // fac_os.Driver2Current.f
+		message_data[5] = g_controller_iib.iib_signals[7].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[7].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[7].u8[3]; //
 
-			break;
-		}
-		case 3:
-		{
-			message_data[0] = g_controller_iib.iib_signals[3].u8[0]; // fac_os.TempIGBT1.f
-			message_data[1] = g_controller_iib.iib_signals[3].u8[1]; //
-			message_data[2] = g_controller_iib.iib_signals[3].u8[2]; //
-			message_data[3] = g_controller_iib.iib_signals[3].u8[3]; //
+		break;
+	}
+	case 3:
+	{
+		message_data[0] = g_controller_iib.iib_signals[3].u8[0]; // fac_os.TempIGBT1.f
+		message_data[1] = g_controller_iib.iib_signals[3].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[3].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[3].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_signals[4].u8[0]; // fac_os.TempIGBT2.f
-			message_data[5] = g_controller_iib.iib_signals[4].u8[1]; //
-			message_data[6] = g_controller_iib.iib_signals[4].u8[2]; //
-			message_data[7] = g_controller_iib.iib_signals[4].u8[3]; //
+		message_data[4] = g_controller_iib.iib_signals[4].u8[0]; // fac_os.TempIGBT2.f
+		message_data[5] = g_controller_iib.iib_signals[4].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[4].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[4].u8[3]; //
 
-			break;
-		}
-		case 4:
-		{
-			message_data[0] = g_controller_iib.iib_signals[8].u8[0]; // fac_os.TempL.f
-			message_data[1] = g_controller_iib.iib_signals[8].u8[1]; //
-			message_data[2] = g_controller_iib.iib_signals[8].u8[2]; //
-			message_data[3] = g_controller_iib.iib_signals[8].u8[3]; //
+		break;
+	}
+	case 4:
+	{
+		message_data[0] = g_controller_iib.iib_signals[8].u8[0]; // fac_os.TempL.f
+		message_data[1] = g_controller_iib.iib_signals[8].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[8].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[8].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_signals[9].u8[0]; // fac_os.TempHeatSink.
-			message_data[5] = g_controller_iib.iib_signals[9].u8[1]; //
-			message_data[6] = g_controller_iib.iib_signals[9].u8[2]; //
-			message_data[7] = g_controller_iib.iib_signals[9].u8[3]; //
+		message_data[4] = g_controller_iib.iib_signals[9].u8[0]; // fac_os.TempHeatSink.
+		message_data[5] = g_controller_iib.iib_signals[9].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[9].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[9].u8[3]; //
 
-			break;
-		}
-		case 5:
-		{
-			message_data[0] = g_controller_iib.iib_signals[10].u8[0]; // fac_os.BoardTemperature.f
-			message_data[1] = g_controller_iib.iib_signals[10].u8[1]; //
-			message_data[2] = g_controller_iib.iib_signals[10].u8[2]; //
-			message_data[3] = g_controller_iib.iib_signals[10].u8[3]; //
+		break;
+	}
+	case 5:
+	{
+		message_data[0] = g_controller_iib.iib_signals[10].u8[0]; // fac_os.BoardTemperature.f
+		message_data[1] = g_controller_iib.iib_signals[10].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[10].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[10].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_signals[11].u8[0]; // fac_os.RelativeHumidity.f
-			message_data[5] = g_controller_iib.iib_signals[11].u8[1]; //
-			message_data[6] = g_controller_iib.iib_signals[11].u8[2]; //
-			message_data[7] = g_controller_iib.iib_signals[11].u8[3]; //
+		message_data[4] = g_controller_iib.iib_signals[11].u8[0]; // fac_os.RelativeHumidity.f
+		message_data[5] = g_controller_iib.iib_signals[11].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[11].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[11].u8[3]; //
 
-			break;
-		}
-		case 6:
-		{
-			message_data[0] = g_controller_iib.iib_signals[12].u8[0]; // fac_os Interlock
-			message_data[1] = g_controller_iib.iib_signals[12].u8[1]; //
-			message_data[2] = g_controller_iib.iib_signals[12].u8[2]; //
-			message_data[3] = g_controller_iib.iib_signals[12].u8[3]; //
+		break;
+	}
+	case 6:
+	{
+		message_data[0] = g_controller_iib.iib_signals[12].u8[0]; // fac_os Interlock
+		message_data[1] = g_controller_iib.iib_signals[12].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[12].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[12].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_signals[13].u8[0]; // fac_os Alarm
-			message_data[5] = g_controller_iib.iib_signals[13].u8[1]; //
-			message_data[6] = g_controller_iib.iib_signals[13].u8[2]; //
-			message_data[7] = g_controller_iib.iib_signals[13].u8[3]; //
+		message_data[4] = g_controller_iib.iib_signals[13].u8[0]; // fac_os Alarm
+		message_data[5] = g_controller_iib.iib_signals[13].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[13].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[13].u8[3]; //
 
-			break;
-		}
-		default:
-		{
-			break;
-		}
+		break;
+	}
+	default:
+	{
+		break;
+	}
 	}
 
 #endif
@@ -763,94 +764,94 @@ void send_data_message(uint8_t var)
 
 	switch(var)
 	{
-		case 0:
-		{
-			message_data[0] = g_controller_iib.iib_signals[0].u8[0]; // fac_is.VdcLink.f
-			message_data[1] = g_controller_iib.iib_signals[0].u8[1]; //
-			message_data[2] = g_controller_iib.iib_signals[0].u8[2]; //
-			message_data[3] = g_controller_iib.iib_signals[0].u8[3]; //
+	case 0:
+	{
+		message_data[0] = g_controller_iib.iib_signals[0].u8[0]; // fac_is.VdcLink.f
+		message_data[1] = g_controller_iib.iib_signals[0].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[0].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[0].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_signals[3].u8[0]; // fac_is.DriverVoltage.f
-			message_data[5] = g_controller_iib.iib_signals[3].u8[1]; //
-			message_data[6] = g_controller_iib.iib_signals[3].u8[2]; //
-			message_data[7] = g_controller_iib.iib_signals[3].u8[3]; //
+		message_data[4] = g_controller_iib.iib_signals[3].u8[0]; // fac_is.DriverVoltage.f
+		message_data[5] = g_controller_iib.iib_signals[3].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[3].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[3].u8[3]; //
 
-			break;
-		}
-		case 1:
-		{
-			message_data[0] = g_controller_iib.iib_signals[1].u8[0]; // fac_is.Iin.f
-			message_data[1] = g_controller_iib.iib_signals[1].u8[1]; //
-			message_data[2] = g_controller_iib.iib_signals[1].u8[2]; //
-			message_data[3] = g_controller_iib.iib_signals[1].u8[3]; //
+		break;
+	}
+	case 1:
+	{
+		message_data[0] = g_controller_iib.iib_signals[1].u8[0]; // fac_is.Iin.f
+		message_data[1] = g_controller_iib.iib_signals[1].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[1].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[1].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_signals[4].u8[0]; // fac_is.Driver1Current.f
-			message_data[5] = g_controller_iib.iib_signals[4].u8[1]; //
-			message_data[6] = g_controller_iib.iib_signals[4].u8[2]; //
-			message_data[7] = g_controller_iib.iib_signals[4].u8[3]; //
+		message_data[4] = g_controller_iib.iib_signals[4].u8[0]; // fac_is.Driver1Current.f
+		message_data[5] = g_controller_iib.iib_signals[4].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[4].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[4].u8[3]; //
 
-			break;
-		}
-		case 2:
-		{
-			message_data[0] = g_controller_iib.iib_signals[2].u8[0]; // fac_is.TempIGBT1.f
-			message_data[1] = g_controller_iib.iib_signals[2].u8[1]; //
-			message_data[2] = g_controller_iib.iib_signals[2].u8[2]; //
-			message_data[3] = g_controller_iib.iib_signals[2].u8[3]; //
+		break;
+	}
+	case 2:
+	{
+		message_data[0] = g_controller_iib.iib_signals[2].u8[0]; // fac_is.TempIGBT1.f
+		message_data[1] = g_controller_iib.iib_signals[2].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[2].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[2].u8[3]; //
 
-			message_data[4] = 0; // zero
-			message_data[5] = 0; //
-			message_data[6] = 0; //
-			message_data[7] = 0; //
+		message_data[4] = 0; // zero
+		message_data[5] = 0; //
+		message_data[6] = 0; //
+		message_data[7] = 0; //
 
-			break;
-		}
-		case 3:
-		{
-			message_data[0] = g_controller_iib.iib_signals[5].u8[0]; // fac_is.TempL.f
-			message_data[1] = g_controller_iib.iib_signals[5].u8[1]; //
-			message_data[2] = g_controller_iib.iib_signals[5].u8[2]; //
-			message_data[3] = g_controller_iib.iib_signals[5].u8[3]; //
+		break;
+	}
+	case 3:
+	{
+		message_data[0] = g_controller_iib.iib_signals[5].u8[0]; // fac_is.TempL.f
+		message_data[1] = g_controller_iib.iib_signals[5].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[5].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[5].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_signals[6].u8[0]; // fac_is.TempHeatSink.f
-			message_data[5] = g_controller_iib.iib_signals[6].u8[1]; //
-			message_data[6] = g_controller_iib.iib_signals[6].u8[2]; //
-			message_data[7] = g_controller_iib.iib_signals[6].u8[3]; //
+		message_data[4] = g_controller_iib.iib_signals[6].u8[0]; // fac_is.TempHeatSink.f
+		message_data[5] = g_controller_iib.iib_signals[6].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[6].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[6].u8[3]; //
 
-			break;
-		}
-		case 4:
-		{
-			message_data[0] = g_controller_iib.iib_signals[7].u8[0]; // fac_is.BoardTemperature.f
-			message_data[1] = g_controller_iib.iib_signals[7].u8[1]; //
-			message_data[2] = g_controller_iib.iib_signals[7].u8[2]; //
-			message_data[3] = g_controller_iib.iib_signals[7].u8[3]; //
+		break;
+	}
+	case 4:
+	{
+		message_data[0] = g_controller_iib.iib_signals[7].u8[0]; // fac_is.BoardTemperature.f
+		message_data[1] = g_controller_iib.iib_signals[7].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[7].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[7].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_signals[8].u8[0]; // fac_is.RelativeHumidity.f
-			message_data[5] = g_controller_iib.iib_signals[8].u8[1]; //
-			message_data[6] = g_controller_iib.iib_signals[8].u8[2]; //
-			message_data[7] = g_controller_iib.iib_signals[8].u8[3]; //
+		message_data[4] = g_controller_iib.iib_signals[8].u8[0]; // fac_is.RelativeHumidity.f
+		message_data[5] = g_controller_iib.iib_signals[8].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[8].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[8].u8[3]; //
 
-			break;
-		}
-		case 5:
-		{
-			message_data[0] = g_controller_iib.iib_signals[9].u8[0]; // fac_is Interlock
-			message_data[1] = g_controller_iib.iib_signals[9].u8[1]; //
-			message_data[2] = g_controller_iib.iib_signals[9].u8[2]; //
-			message_data[3] = g_controller_iib.iib_signals[9].u8[3]; //
+		break;
+	}
+	case 5:
+	{
+		message_data[0] = g_controller_iib.iib_signals[9].u8[0]; // fac_is Interlock
+		message_data[1] = g_controller_iib.iib_signals[9].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[9].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[9].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_signals[10].u8[0]; // fac_is Alarm
-			message_data[5] = g_controller_iib.iib_signals[10].u8[1]; //
-			message_data[6] = g_controller_iib.iib_signals[10].u8[2]; //
-			message_data[7] = g_controller_iib.iib_signals[10].u8[3]; //
+		message_data[4] = g_controller_iib.iib_signals[10].u8[0]; // fac_is Alarm
+		message_data[5] = g_controller_iib.iib_signals[10].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[10].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[10].u8[3]; //
 
-			break;
-		}
-		default:
-		{
-			break;
-		}
+		break;
+	}
+	default:
+	{
+		break;
+	}
 	}
 
 #endif
@@ -860,95 +861,221 @@ void send_data_message(uint8_t var)
 #ifdef FAC_CMD
 
 	switch(var)
-		{
-		case 0:
-		{
-			message_data[0] = g_controller_iib.iib_signals[0].u8[0]; // fac_cmd.VcapBank.f
-			message_data[1] = g_controller_iib.iib_signals[0].u8[1]; //
-			message_data[2] = g_controller_iib.iib_signals[0].u8[2]; //
-			message_data[3] = g_controller_iib.iib_signals[0].u8[3]; //
+	{
+	case 0:
+	{
+		message_data[0] = g_controller_iib.iib_signals[0].u8[0]; // fac_cmd.VcapBank.f
+		message_data[1] = g_controller_iib.iib_signals[0].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[0].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[0].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_signals[1].u8[0]; // fac_cmd.Vout.f
-			message_data[5] = g_controller_iib.iib_signals[1].u8[1]; //
-			message_data[6] = g_controller_iib.iib_signals[1].u8[2]; //
-			message_data[7] = g_controller_iib.iib_signals[1].u8[3]; //
+		message_data[4] = g_controller_iib.iib_signals[1].u8[0]; // fac_cmd.Vout.f
+		message_data[5] = g_controller_iib.iib_signals[1].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[1].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[1].u8[3]; //
 
-			break;
-		}
-		case 1:
-		{
-			message_data[0] = g_controller_iib.iib_signals[3].u8[0]; // fac_cmd.AuxCurrent.f
-			message_data[1] = g_controller_iib.iib_signals[3].u8[1]; //
-			message_data[2] = g_controller_iib.iib_signals[3].u8[2]; //
-			message_data[3] = g_controller_iib.iib_signals[3].u8[3]; //
+		break;
+	}
+	case 1:
+	{
+		message_data[0] = g_controller_iib.iib_signals[3].u8[0]; // fac_cmd.AuxCurrent.f
+		message_data[1] = g_controller_iib.iib_signals[3].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[3].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[3].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_signals[4].u8[0]; // fac_cmd.IdbCurrent.f
-			message_data[5] = g_controller_iib.iib_signals[4].u8[1]; //
-			message_data[6] = g_controller_iib.iib_signals[4].u8[2]; //
-			message_data[7] = g_controller_iib.iib_signals[4].u8[3]; //
+		message_data[4] = g_controller_iib.iib_signals[4].u8[0]; // fac_cmd.IdbCurrent.f
+		message_data[5] = g_controller_iib.iib_signals[4].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[4].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[4].u8[3]; //
 
-			break;
-		}
-		case 2:
-		{
-			message_data[0] = g_controller_iib.iib_signals[2].u8[0]; // fac_cmd.AuxIdbVoltage.f
-			message_data[1] = g_controller_iib.iib_signals[2].u8[1]; //
-			message_data[2] = g_controller_iib.iib_signals[2].u8[2]; //
-			message_data[3] = g_controller_iib.iib_signals[2].u8[3]; //
+		break;
+	}
+	case 2:
+	{
+		message_data[0] = g_controller_iib.iib_signals[2].u8[0]; // fac_cmd.AuxIdbVoltage.f
+		message_data[1] = g_controller_iib.iib_signals[2].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[2].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[2].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_signals[5].u8[0]; // fac_cmd.GroundLeakage.f
-			message_data[5] = g_controller_iib.iib_signals[5].u8[1]; //
-			message_data[6] = g_controller_iib.iib_signals[5].u8[2]; //
-			message_data[7] = g_controller_iib.iib_signals[5].u8[3]; //
+		message_data[4] = g_controller_iib.iib_signals[5].u8[0]; // fac_cmd.GroundLeakage.f
+		message_data[5] = g_controller_iib.iib_signals[5].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[5].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[5].u8[3]; //
 
-			break;
-		}
-		case 3:
-		{
-			message_data[0] = g_controller_iib.iib_signals[6].u8[0]; // fac_cmd.TempL.f
-			message_data[1] = g_controller_iib.iib_signals[6].u8[1]; //
-			message_data[2] = g_controller_iib.iib_signals[6].u8[2]; //
-			message_data[3] = g_controller_iib.iib_signals[6].u8[3]; //
+		break;
+	}
+	case 3:
+	{
+		message_data[0] = g_controller_iib.iib_signals[6].u8[0]; // fac_cmd.TempL.f
+		message_data[1] = g_controller_iib.iib_signals[6].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[6].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[6].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_signals[7].u8[0]; // fac_cmd.TempHeatSink.f
-			message_data[5] = g_controller_iib.iib_signals[7].u8[1]; //
-			message_data[6] = g_controller_iib.iib_signals[7].u8[2]; //
-			message_data[7] = g_controller_iib.iib_signals[7].u8[3]; //
+		message_data[4] = g_controller_iib.iib_signals[7].u8[0]; // fac_cmd.TempHeatSink.f
+		message_data[5] = g_controller_iib.iib_signals[7].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[7].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[7].u8[3]; //
 
-			break;
-		}
-		case 4:
-		{
-			message_data[0] = g_controller_iib.iib_signals[8].u8[0]; // fac_cmd.BoardTemperature.f
-			message_data[1] = g_controller_iib.iib_signals[8].u8[1]; //
-			message_data[2] = g_controller_iib.iib_signals[8].u8[2]; //
-			message_data[3] = g_controller_iib.iib_signals[8].u8[3]; //
+		break;
+	}
+	case 4:
+	{
+		message_data[0] = g_controller_iib.iib_signals[8].u8[0]; // fac_cmd.BoardTemperature.f
+		message_data[1] = g_controller_iib.iib_signals[8].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[8].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[8].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_signals[9].u8[0]; // fac_cmd.RelativeHumidity.f
-			message_data[5] = g_controller_iib.iib_signals[9].u8[1]; //
-			message_data[6] = g_controller_iib.iib_signals[9].u8[2]; //
-			message_data[7] = g_controller_iib.iib_signals[9].u8[3]; //
+		message_data[4] = g_controller_iib.iib_signals[9].u8[0]; // fac_cmd.RelativeHumidity.f
+		message_data[5] = g_controller_iib.iib_signals[9].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[9].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[9].u8[3]; //
 
-			break;
-		}
-		case 5:
-		{
-			message_data[0] = g_controller_iib.iib_signals[10].u8[0]; // fac_cmd Interlock
-			message_data[1] = g_controller_iib.iib_signals[10].u8[1]; //
-			message_data[2] = g_controller_iib.iib_signals[10].u8[2]; //
-			message_data[3] = g_controller_iib.iib_signals[10].u8[3]; //
+		break;
+	}
+	case 5:
+	{
+		message_data[0] = g_controller_iib.iib_signals[10].u8[0]; // fac_cmd Interlock
+		message_data[1] = g_controller_iib.iib_signals[10].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[10].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[10].u8[3]; //
 
-			message_data[4] = g_controller_iib.iib_signals[11].u8[0]; // fac_cmd Alarm
-			message_data[5] = g_controller_iib.iib_signals[11].u8[1]; //
-			message_data[6] = g_controller_iib.iib_signals[11].u8[2]; //
-			message_data[7] = g_controller_iib.iib_signals[11].u8[3]; //
+		message_data[4] = g_controller_iib.iib_signals[11].u8[0]; // fac_cmd Alarm
+		message_data[5] = g_controller_iib.iib_signals[11].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[11].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[11].u8[3]; //
 
-			break;
-		}
-		default:
-		{
-			break;
-		}
+		break;
+	}
+	default:
+	{
+		break;
+	}
+	}
+
+#endif
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+#ifdef RES_SWLS
+
+	switch(var)
+	{
+	case 0:
+	{
+		message_data[0] = g_controller_iib.iib_signals[0].u8[0]; // resonant_swls.Vin.f
+		message_data[1] = g_controller_iib.iib_signals[0].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[0].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[0].u8[3]; //
+
+		message_data[4] = g_controller_iib.iib_signals[1].u8[0]; // resonant_swls.Vout.f
+		message_data[5] = g_controller_iib.iib_signals[1].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[1].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[1].u8[3]; //
+
+		break;
+	}
+	case 1:
+	{
+		message_data[0] = g_controller_iib.iib_signals[2].u8[0]; // resonant_swls.Iin.f
+		message_data[1] = g_controller_iib.iib_signals[2].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[2].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[2].u8[3]; //
+
+		message_data[4] = g_controller_iib.iib_signals[3].u8[0]; // resonant_swls.Iout.f
+		message_data[5] = g_controller_iib.iib_signals[3].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[3].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[3].u8[3]; //
+
+		break;
+	}
+	case 2:
+	{
+		message_data[0] = g_controller_iib.iib_signals[4].u8[0]; // resonant_swls.TempInputInductor.f
+		message_data[1] = g_controller_iib.iib_signals[4].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[4].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[4].u8[3]; //
+
+		message_data[4] = g_controller_iib.iib_signals[5].u8[0]; // resonant_swls.TempOutputInductor.f
+		message_data[5] = g_controller_iib.iib_signals[5].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[5].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[5].u8[3]; //
+
+		break;
+	}
+	case 3:
+	{
+		message_data[0] = g_controller_iib.iib_signals[6].u8[0]; // resonant_swls.TempHeatSinkMosfets.f
+		message_data[1] = g_controller_iib.iib_signals[6].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[6].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[6].u8[3]; //
+
+		message_data[4] = g_controller_iib.iib_signals[7].u8[0]; // resonant_swls.TempHeatSinkDiodes.f
+		message_data[5] = g_controller_iib.iib_signals[7].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[7].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[7].u8[3]; //
+
+		break;
+	}
+	case 4:
+	{
+		message_data[0] = g_controller_iib.iib_signals[8].u8[0]; // resonant_swls.DriverVoltage.f
+		message_data[1] = g_controller_iib.iib_signals[8].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[8].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[8].u8[3]; //
+
+		message_data[4] = g_controller_iib.iib_signals[9].u8[0]; // resonant_swls.Driver1Current.f
+		message_data[5] = g_controller_iib.iib_signals[9].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[9].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[9].u8[3]; //
+
+		break;
+	}
+	case 5:
+	{
+		message_data[0] = g_controller_iib.iib_signals[10].u8[0]; // resonant_swls.GroundLeakage.f
+		message_data[1] = g_controller_iib.iib_signals[10].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[10].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[10].u8[3]; //
+
+		message_data[4] = 0; // zero
+		message_data[5] = 0; //
+		message_data[6] = 0; //
+		message_data[7] = 0; //
+
+		break;
+	}
+	case 6:
+	{
+		message_data[0] = g_controller_iib.iib_signals[11].u8[0]; // resonant_swls.BoardTemperature.f
+		message_data[1] = g_controller_iib.iib_signals[11].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[11].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[11].u8[3]; //
+
+		message_data[4] = g_controller_iib.iib_signals[12].u8[0]; // resonant_swls.RelativeHumidity.f
+		message_data[5] = g_controller_iib.iib_signals[12].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[12].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[12].u8[3]; //
+
+		break;
+	}
+	case 7:
+	{
+		message_data[0] = g_controller_iib.iib_signals[13].u8[0]; // resonant_swls Interlock
+		message_data[1] = g_controller_iib.iib_signals[13].u8[1]; //
+		message_data[2] = g_controller_iib.iib_signals[13].u8[2]; //
+		message_data[3] = g_controller_iib.iib_signals[13].u8[3]; //
+
+		message_data[4] = g_controller_iib.iib_signals[14].u8[0]; // resonant_swls Alarm
+		message_data[5] = g_controller_iib.iib_signals[14].u8[1]; //
+		message_data[6] = g_controller_iib.iib_signals[14].u8[2]; //
+		message_data[7] = g_controller_iib.iib_signals[14].u8[3]; //
+
+		break;
+	}
+	default:
+	{
+		break;
+	}
 	}
 
 #endif
@@ -970,7 +1097,6 @@ uint16_t get_can_address(void)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-
 
 
 

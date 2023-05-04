@@ -26,6 +26,7 @@
 #include <iib_modules/fac_os.h>
 #include <iib_modules/fac_is.h>
 #include <iib_modules/fac_cmd.h>
+#include <iib_modules/resonant_swls.h>
 
 #include "application.h"
 

@@ -54,6 +54,7 @@
 #include <iib_modules/fac_os.h>
 #include <iib_modules/fac_is.h>
 #include <iib_modules/fac_cmd.h>
+#include <iib_modules/resonant_swls.h>
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -90,6 +91,14 @@ volatile static uint32_t millis = 0;
 #ifdef FAC_CMD
 
 #define Timer_CAN_BUS			60 // 10Hz cada ID de Mensagem, 6 mensages em 1/16.6ms
+
+#endif
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+#ifdef RES_SWLS
+
+#define Timer_CAN_BUS			80 // 10Hz cada ID de Mensagem, 8 mensages em 1/12.5ms
 
 #endif
 
