@@ -438,7 +438,7 @@ void config_module_resonant_swls(void)
 #ifdef RES_SWLS
 
 	//Leitura de tensao isolada
-	LvCurrentCh1Init(LV_Primary_Voltage_Vin, LV_Secondary_Current_Vin, LV_Burden_Resistor, Delay_Vin); // Vin
+	LvCurrentCh1Init(LV_Primary_Voltage_Vin, LV_Secondary_Current_Vin, LV_Burden_Resistor, Delay_Vin);   // Vin
 	LvCurrentCh2Init(LV_Primary_Voltage_Vout, LV_Secondary_Current_Vin, LV_Burden_Resistor, Delay_Vout); // Vout
 
 	LvCurrentCh1AlarmLevelSet(RESONANT_SWLS_INPUT_OVERVOLTAGE_ALM_LIM);  //Tensão de entrada Alarme
@@ -449,12 +449,12 @@ void config_module_resonant_swls(void)
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 	//Set current range RESONANT_SWLS 130 A and 300 A
-    CurrentCh1Init(LA_Primary_Current, LA_Secondary_Current, LA_Burden_Resistor, LA_Delay); //Corrente Sensor Hall LEM LA 130-P
+    CurrentCh1Init(LA_Primary_Current, LA_Secondary_Current, LA_Burden_Resistor, LA_Delay);         //Corrente Sensor Hall LEM LA 130-P
     CurrentCh2Init(Hall_Primary_Current, Hall_Secondary_Current, Hall_Burden_Resistor, Hall_Delay); //Corrente Sensor Hall LEM LF 310-S
 
     //Set protection limits FAP 130 A and 300 A
-    CurrentCh1AlarmLevelSet(RESONANT_SWLS_INPUT_OVERCURRENT_ALM_LIM);  // Alarme Corrente Iin
-    CurrentCh1TripLevelSet(RESONANT_SWLS_INPUT_OVERCURRENT_ITLK_LIM);  // Interlock Corrente Iin
+    CurrentCh1AlarmLevelSet(RESONANT_SWLS_INPUT_OVERCURRENT_ALM_LIM);   // Alarme Corrente Iin
+    CurrentCh1TripLevelSet(RESONANT_SWLS_INPUT_OVERCURRENT_ITLK_LIM);   // Interlock Corrente Iin
     CurrentCh2AlarmLevelSet(RESONANT_SWLS_OUTPUT_OVERCURRENT_ALM_LIM);  // Alarme Corrente Iout
     CurrentCh2TripLevelSet(RESONANT_SWLS_OUTPUT_OVERCURRENT_ITLK_LIM);  // Interlock Corrente Iout
 

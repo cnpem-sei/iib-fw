@@ -23,32 +23,32 @@
 #define ON                                      	      		1
 #define OFF                                               		0
 
-#define RESONANT_SWLS_INPUT_OVERVOLTAGE_ALM_LIM           		555.0
-#define RESONANT_SWLS_INPUT_OVERVOLTAGE_ITLK_LIM          		560.0
+#define RESONANT_SWLS_INPUT_OVERVOLTAGE_ALM_LIM           		320.0
+#define RESONANT_SWLS_INPUT_OVERVOLTAGE_ITLK_LIM          		330.0
 
-#define RESONANT_SWLS_OUTPUT_OVERVOLTAGE_ALM_LIM          		260.0
-#define RESONANT_SWLS_OUTPUT_OVERVOLTAGE_ITLK_LIM         		270.0
+#define RESONANT_SWLS_OUTPUT_OVERVOLTAGE_ALM_LIM          		10.5
+#define RESONANT_SWLS_OUTPUT_OVERVOLTAGE_ITLK_LIM         		11.0
 
-#define RESONANT_SWLS_INPUT_OVERCURRENT_ALM_LIM           		115.0
-#define RESONANT_SWLS_INPUT_OVERCURRENT_ITLK_LIM          		120.0
+#define RESONANT_SWLS_INPUT_OVERCURRENT_ALM_LIM           		10.5
+#define RESONANT_SWLS_INPUT_OVERCURRENT_ITLK_LIM          		11.0
 
-#define RESONANT_SWLS_OUTPUT_OVERCURRENT_ALM_LIM          		115.0
-#define RESONANT_SWLS_OUTPUT_OVERCURRENT_ITLK_LIM         		120.0
+#define RESONANT_SWLS_OUTPUT_OVERCURRENT_ALM_LIM          		310.0
+#define RESONANT_SWLS_OUTPUT_OVERCURRENT_ITLK_LIM         		320.0
 
 #define RESONANT_SWLS_GROUND_LEAKAGE_ALM_LIM              		0.450
-#define RESONANT_SWLS_GROUND_LEAKAGE_ITLK_LIM             		0.650
+#define RESONANT_SWLS_GROUND_LEAKAGE_ITLK_LIM             		0.475
 
-#define RESONANT_SWLS_INDUC_INPUT_OVERTEMP_ALM_LIM				60.0
-#define RESONANT_SWLS_INDUC_INPUT_OVERTEMP_ITLK_LIM				80.0
+#define RESONANT_SWLS_INDUC_INPUT_OVERTEMP_ALM_LIM				50.0
+#define RESONANT_SWLS_INDUC_INPUT_OVERTEMP_ITLK_LIM				60.0
 
-#define RESONANT_SWLS_INDUC_OUTPUT_OVERTEMP_ALM_LIM         	60.0
-#define RESONANT_SWLS_INDUC_OUTPUT_OVERTEMP_ITLK_LIM        	80.0
+#define RESONANT_SWLS_INDUC_OUTPUT_OVERTEMP_ALM_LIM         	50.0
+#define RESONANT_SWLS_INDUC_OUTPUT_OVERTEMP_ITLK_LIM        	60.0
 
-#define RESONANT_SWLS_HS_MOSFETS_OVERTEMP_ALM_LIM           	60.0
-#define RESONANT_SWLS_HS_MOSFETS_OVERTEMP_ITLK_LIM          	80.0
+#define RESONANT_SWLS_HS_MOSFETS_OVERTEMP_ALM_LIM           	40.0
+#define RESONANT_SWLS_HS_MOSFETS_OVERTEMP_ITLK_LIM          	50.0
 
 #define RESONANT_SWLS_HS_DIODES_OVERTEMP_ALM_LIM            	60.0
-#define RESONANT_SWLS_HS_DIODES_OVERTEMP_ITLK_LIM           	80.0
+#define RESONANT_SWLS_HS_DIODES_OVERTEMP_ITLK_LIM           	70.0
 
 #define RESONANT_SWLS_DRIVER_MOSFETS_OVERVOLTAGE_ALM_LIM    	16.0
 #define RESONANT_SWLS_DRIVER_MOSFETS_OVERVOLTAGE_ITLK_LIM   	17.0
@@ -56,7 +56,7 @@
 #define RESONANT_SWLS_DRIVER1_MOSFETS_OVERCURRENT_ALM_LIM   	2.0
 #define RESONANT_SWLS_DRIVER1_MOSFETS_OVERCURRENT_ITLK_LIM		2.4
 
-#define RESONANT_SWLS_BOARD_IIB_OVERHUMIDITY_ALM_LIM        	60.0
+#define RESONANT_SWLS_BOARD_IIB_OVERHUMIDITY_ALM_LIM        	80.0
 #define RESONANT_SWLS_BOARD_IIB_OVERHUMIDITY_ITLK_LIM       	90.0
 
 #define RESONANT_SWLS_BOARD_IIB_OVERTEMP_ALM_LIM            	50.0
@@ -87,9 +87,9 @@
 
 //CurrentCh2Init
 
-#define Hall_Primary_Current                                	300.0
+#define Hall_Primary_Current                                	500.0 //Primary current, measuring range max value
 
-#define Hall_Secondary_Current                              	0.150
+#define Hall_Secondary_Current                              	0.250 //Secondary current, measuring range max value
 
 #define Hall_Burden_Resistor                                	50.0
 
@@ -107,9 +107,9 @@
 
 //LvCurrentCh1Init and LvCurrentCh2Init
 
-#define LV_Primary_Voltage_Vin                  				34.5
+#define LV_Primary_Voltage_Vin                  				402.5 //resistores mais 250 ohms do LV 20P
 
-#define LV_Primary_Voltage_Vout                 				34.5
+#define LV_Primary_Voltage_Vout                 				16.5  //resistores mais 250 ohms do LV 20P
 
 #define LV_Secondary_Current_Vin                				0.025
 
