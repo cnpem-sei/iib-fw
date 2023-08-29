@@ -59,6 +59,7 @@ void clear_resonant_swls_interlocks()
     resonant_swls.RelayContactStickingItlkSts = 0;
     resonant_swls.ReleAuxItlkSts = 0;
     resonant_swls.ReleExtItlkSts = 0;
+    resonant_swls.EmergencyButtonItlkSts = 0;
 
     flag1 = 0;
     FiltroUP1 = 1024;
@@ -358,8 +359,8 @@ void resonant_swls_application_readings()
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-    //Se nao houver sinal na entrada digital dos 2 sinais, defina a acao como Interlock.
-    if(resonant_swls.Relay || resonant_swls.EmergencyButtonItlkSts) InterlockSet();
+    //Se nao houver sinal na entrada digital, defina a acao como Interlock.
+    if(resonant_swls.EmergencyButtonItlkSts) InterlockSet();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -448,9 +449,9 @@ void config_module_resonant_swls(void)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-	//Set current range RESONANT_SWLS 130 A and 300 A
+	//Set current range RESONANT_SWLS 130 A and 800 A
     CurrentCh1Init(LA_Primary_Current, LA_Secondary_Current, LA_Burden_Resistor, LA_Delay);         //Corrente Sensor Hall LEM LA 130-P
-    CurrentCh2Init(Hall_Primary_Current, Hall_Secondary_Current, Hall_Burden_Resistor, Hall_Delay); //Corrente Sensor Hall LEM LF 310-S
+    CurrentCh2Init(Hall_Primary_Current, Hall_Secondary_Current, Hall_Burden_Resistor, Hall_Delay); //Corrente Sensor Hall LEM LF 510-S
 
     //Set protection limits FAP 130 A and 300 A
     CurrentCh1AlarmLevelSet(RESONANT_SWLS_INPUT_OVERCURRENT_ALM_LIM);   // Alarme Corrente Iin

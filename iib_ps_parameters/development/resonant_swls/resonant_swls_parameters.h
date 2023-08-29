@@ -83,13 +83,13 @@
 
 //Set current range
 
-//Sensor Hall LEM LF 310-S
+//Sensor Hall LEM LF 510-S
 
 //CurrentCh2Init
 
-#define Hall_Primary_Current                                	500.0 //Primary current, measuring range max value
+#define Hall_Primary_Current                                	800.0 //Primary current, measuring range max value
 
-#define Hall_Secondary_Current                              	0.250 //Secondary current, measuring range max value
+#define Hall_Secondary_Current                              	0.160 //Secondary current, measuring range max value
 
 #define Hall_Burden_Resistor                                	50.0
 
