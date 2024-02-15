@@ -66,21 +66,22 @@ void clear_resonant_swls_interlocks()
 
 ////////////////////////////////////////
 
-    resonant_swls.VinItlkSts                  = 0;
-    resonant_swls.VoutItlkSts                 = 0;
-    resonant_swls.IinItlkSts                  = 0;
-    resonant_swls.IoutItlkSts                 = 0;
-    resonant_swls.GroundLeakageItlkSts        = 0;
-    resonant_swls.TempInputInductorItlkSts    = 0;
-    resonant_swls.TempOutputInductorItlkSts   = 0;
-    resonant_swls.TempHeatSinkMosfetsItlkSts  = 0;
-    resonant_swls.TempHeatSinkDiodesItlkSts   = 0;
-    resonant_swls.DriverVoltageItlkSts        = 0;
-    resonant_swls.Driver1CurrentItlkSts    	  = 0;
-    resonant_swls.BoardTemperatureItlkSts     = 0;
-    resonant_swls.RelativeHumidityItlkSts     = 0;
+    resonant_swls.VinItlkSts                  		= 0;
+    resonant_swls.VoutItlkSts                 		= 0;
+    resonant_swls.IinItlkSts                  		= 0;
+    resonant_swls.IoutItlkSts                 		= 0;
+    resonant_swls.GroundLeakageItlkSts        		= 0;
+    resonant_swls.TempHeatSinkTransformerItlkSts	= 0;
+    resonant_swls.TempOutputInductorItlkSts   		= 0;
+    resonant_swls.TempHeatSinkDiodeOneItlkSts  		= 0;
+    resonant_swls.TempHeatSinkDiodeTwoItlkSts  		= 0;
+    resonant_swls.DriverAuxVoltageItlkSts        	= 0;
+    resonant_swls.Driver1CurrentItlkSts         	= 0;
+    resonant_swls.AuxCurrentItlkSts             	= 0;
+    resonant_swls.BoardTemperatureItlkSts     		= 0;
+    resonant_swls.RelativeHumidityItlkSts     		= 0;
 
-    resonant_swls.InterlocksRegister.u32      = 0;
+    resonant_swls.InterlocksRegister.u32      		= 0;
 
 }
 
@@ -95,12 +96,13 @@ uint8_t check_resonant_swls_interlocks()
     test |= resonant_swls.IinItlkSts;
     test |= resonant_swls.IoutItlkSts;
     test |= resonant_swls.GroundLeakageItlkSts;
-    test |= resonant_swls.TempInputInductorItlkSts;
+    test |= resonant_swls.TempHeatSinkTransformerItlkSts;
     test |= resonant_swls.TempOutputInductorItlkSts;
-    test |= resonant_swls.TempHeatSinkMosfetsItlkSts;
-    test |= resonant_swls.TempHeatSinkDiodesItlkSts;
-    test |= resonant_swls.DriverVoltageItlkSts;
+    test |= resonant_swls.TempHeatSinkDiodeOneItlkSts;
+    test |= resonant_swls.TempHeatSinkDiodeTwoItlkSts;
+    test |= resonant_swls.DriverAuxVoltageItlkSts;
     test |= resonant_swls.Driver1CurrentItlkSts;
+    test |= resonant_swls.AuxCurrentItlkSts;
     test |= resonant_swls.BoardTemperatureItlkSts;
     test |= resonant_swls.RelativeHumidityItlkSts;
 
@@ -111,21 +113,22 @@ uint8_t check_resonant_swls_interlocks()
 
 void clear_resonant_swls_alarms()
 {
-    resonant_swls.VinAlarmSts                  = 0;
-    resonant_swls.VoutAlarmSts                 = 0;
-    resonant_swls.IinAlarmSts                  = 0;
-    resonant_swls.IoutAlarmSts                 = 0;
-    resonant_swls.TempInputInductorAlarmSts    = 0;
-    resonant_swls.TempOutputInductorAlarmSts   = 0;
-    resonant_swls.TempHeatSinkMosfetsAlarmSts  = 0;
-    resonant_swls.TempHeatSinkDiodesAlarmSts   = 0;
-    resonant_swls.DriverVoltageAlarmSts        = 0;
-    resonant_swls.Driver1CurrentAlarmSts       = 0;
-    resonant_swls.GroundLeakageAlarmSts        = 0;
-    resonant_swls.BoardTemperatureAlarmSts     = 0;
-    resonant_swls.RelativeHumidityAlarmSts     = 0;
+    resonant_swls.VinAlarmSts                  		= 0;
+    resonant_swls.VoutAlarmSts                 		= 0;
+    resonant_swls.IinAlarmSts                  		= 0;
+    resonant_swls.IoutAlarmSts                 		= 0;
+    resonant_swls.TempHeatSinkTransformerAlarmSts	= 0;
+    resonant_swls.TempOutputInductorAlarmSts   		= 0;
+    resonant_swls.TempHeatSinkDiodeOneAlarmSts  	= 0;
+    resonant_swls.TempHeatSinkDiodeTwoAlarmSts   	= 0;
+    resonant_swls.DriverAuxVoltageAlarmSts        	= 0;
+    resonant_swls.Driver1CurrentAlarmSts       		= 0;
+    resonant_swls.AuxCurrentAlarmSts             	= 0;
+    resonant_swls.GroundLeakageAlarmSts        		= 0;
+    resonant_swls.BoardTemperatureAlarmSts     		= 0;
+    resonant_swls.RelativeHumidityAlarmSts     		= 0;
 
-    resonant_swls.AlarmsRegister.u32           = 0;
+    resonant_swls.AlarmsRegister.u32           		= 0;
 
 }
 
@@ -139,12 +142,13 @@ uint8_t check_resonant_swls_alarms()
     test |= resonant_swls.VoutAlarmSts;
     test |= resonant_swls.IinAlarmSts;
     test |= resonant_swls.IoutAlarmSts;
-    test |= resonant_swls.TempInputInductorAlarmSts;
+    test |= resonant_swls.TempHeatSinkTransformerAlarmSts;
     test |= resonant_swls.TempOutputInductorAlarmSts;
-    test |= resonant_swls.TempHeatSinkMosfetsAlarmSts;
-    test |= resonant_swls.TempHeatSinkDiodesAlarmSts;
-    test |= resonant_swls.DriverVoltageAlarmSts;
+    test |= resonant_swls.TempHeatSinkDiodeOneAlarmSts;
+    test |= resonant_swls.TempHeatSinkDiodeTwoAlarmSts;
+    test |= resonant_swls.DriverAuxVoltageAlarmSts;
     test |= resonant_swls.Driver1CurrentAlarmSts;
+    test |= resonant_swls.AuxCurrentAlarmSts;
     test |= resonant_swls.GroundLeakageAlarmSts;
     test |= resonant_swls.BoardTemperatureAlarmSts;
     test |= resonant_swls.RelativeHumidityAlarmSts;
@@ -185,10 +189,10 @@ void check_resonant_swls_indication_leds()
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Over temperature
-    if(resonant_swls.TempInputInductorItlkSts || resonant_swls.TempOutputInductorItlkSts
-    		||  resonant_swls.TempHeatSinkMosfetsItlkSts || resonant_swls.TempHeatSinkDiodesItlkSts) Led6TurnOff();
-    else if(resonant_swls.TempInputInductorAlarmSts || resonant_swls.TempOutputInductorAlarmSts
-    		||  resonant_swls.TempHeatSinkMosfetsAlarmSts || resonant_swls.TempHeatSinkDiodesAlarmSts) Led6Toggle();
+    if(resonant_swls.TempHeatSinkTransformerItlkSts || resonant_swls.TempOutputInductorItlkSts
+    		||  resonant_swls.TempHeatSinkDiodeOneItlkSts || resonant_swls.TempHeatSinkDiodeTwoItlkSts) Led6TurnOff();
+    else if(resonant_swls.TempHeatSinkTransformerAlarmSts || resonant_swls.TempOutputInductorAlarmSts
+    		||  resonant_swls.TempHeatSinkDiodeOneAlarmSts || resonant_swls.TempHeatSinkDiodeTwoAlarmSts) Led6Toggle();
     else Led6TurnOn();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -201,8 +205,8 @@ void check_resonant_swls_indication_leds()
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Interlocks dos Drivers
-    if(resonant_swls.DriverVoltageItlkSts || resonant_swls.Driver1CurrentItlkSts) Led8TurnOff();
-    else if(resonant_swls.DriverVoltageAlarmSts || resonant_swls.Driver1CurrentAlarmSts) Led8Toggle();
+    if(resonant_swls.DriverAuxVoltageItlkSts || resonant_swls.Driver1CurrentItlkSts || resonant_swls.AuxCurrentItlkSts) Led8TurnOff();
+    else if(resonant_swls.DriverAuxVoltageAlarmSts || resonant_swls.Driver1CurrentAlarmSts || resonant_swls.AuxCurrentAlarmSts) Led8Toggle();
     else Led8TurnOn();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -223,10 +227,10 @@ void check_resonant_swls_indication_leds()
 
 void resonant_swls_application_readings()
 {
-    //PT100 CH1 Temperatura Indutor de entrada
-    resonant_swls.TempInputInductor.f = Pt100Ch1Read();
-    resonant_swls.TempInputInductorAlarmSts = Pt100Ch1AlarmStatusRead();
-    if(!resonant_swls.TempInputInductorItlkSts)resonant_swls.TempInputInductorItlkSts = Pt100Ch1TripStatusRead();
+    //PT100 CH1 Temperatura Dissipador Transformador
+    resonant_swls.TempHeatSinkTransformer.f = Pt100Ch1Read();
+    resonant_swls.TempHeatSinkTransformerAlarmSts = Pt100Ch1AlarmStatusRead();
+    if(!resonant_swls.TempHeatSinkTransformerItlkSts)resonant_swls.TempHeatSinkTransformerItlkSts = Pt100Ch1TripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -237,17 +241,17 @@ void resonant_swls_application_readings()
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-    //PT100 CH3 Temperatura Dissipador Mosfets
-    resonant_swls.TempHeatSinkMosfets.f = Pt100Ch3Read();
-    resonant_swls.TempHeatSinkMosfetsAlarmSts = Pt100Ch3AlarmStatusRead();
-    if(!resonant_swls.TempHeatSinkMosfetsItlkSts)resonant_swls.TempHeatSinkMosfetsItlkSts = Pt100Ch3TripStatusRead();
+    //PT100 CH3 Temperatura Dissipador Diodo 1
+    resonant_swls.TempHeatSinkDiodeOne.f = Pt100Ch3Read();
+    resonant_swls.TempHeatSinkDiodeOneAlarmSts = Pt100Ch3AlarmStatusRead();
+    if(!resonant_swls.TempHeatSinkDiodeOneItlkSts)resonant_swls.TempHeatSinkDiodeOneItlkSts = Pt100Ch3TripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-    //PT100 CH4 Temperatura Dissipador Diodos
-    resonant_swls.TempHeatSinkDiodes.f = Pt100Ch4Read();
-    resonant_swls.TempHeatSinkDiodesAlarmSts = Pt100Ch4AlarmStatusRead();
-    if(!resonant_swls.TempHeatSinkDiodesItlkSts)resonant_swls.TempHeatSinkDiodesItlkSts = Pt100Ch4TripStatusRead();
+    //PT100 CH4 Temperatura Dissipador Diodo 2
+    resonant_swls.TempHeatSinkDiodeTwo.f = Pt100Ch4Read();
+    resonant_swls.TempHeatSinkDiodeTwoAlarmSts = Pt100Ch4AlarmStatusRead();
+    if(!resonant_swls.TempHeatSinkDiodeTwoItlkSts)resonant_swls.TempHeatSinkDiodeTwoItlkSts = Pt100Ch4TripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -275,10 +279,10 @@ void resonant_swls_application_readings()
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-    //DriverVoltage
-    resonant_swls.DriverVoltage.f = DriverVoltageRead();
-    resonant_swls.DriverVoltageAlarmSts = DriverVoltageAlarmStatusRead();
-    if(!resonant_swls.DriverVoltageItlkSts)resonant_swls.DriverVoltageItlkSts = DriverVoltageTripStatusRead();
+    //DriverAuxVoltage
+    resonant_swls.DriverAuxVoltage.f = DriverVoltageRead();
+    resonant_swls.DriverAuxVoltageAlarmSts = DriverVoltageAlarmStatusRead();
+    if(!resonant_swls.DriverAuxVoltageItlkSts)resonant_swls.DriverAuxVoltageItlkSts = DriverVoltageTripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -286,6 +290,13 @@ void resonant_swls_application_readings()
     resonant_swls.Driver1Current.f = Driver1CurrentRead();
     resonant_swls.Driver1CurrentAlarmSts = Driver1CurrentAlarmStatusRead();
     if(!resonant_swls.Driver1CurrentItlkSts)resonant_swls.Driver1CurrentItlkSts = Driver1CurrentTripStatusRead();
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+    //AuxCurrent
+    resonant_swls.AuxCurrent.f = Driver2CurrentRead();
+    resonant_swls.AuxCurrentAlarmSts = Driver2CurrentAlarmStatusRead();
+    if(!resonant_swls.AuxCurrentItlkSts)resonant_swls.AuxCurrentItlkSts = Driver2CurrentTripStatusRead();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -366,21 +377,22 @@ void resonant_swls_application_readings()
 
     if(Interlock == 1)
     {
-    	if (resonant_swls.VinItlkSts)                     resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_INPUT_OVERVOLTAGE_ITLK;
-    	if (resonant_swls.VoutItlkSts)                    resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_OUTPUT_OVERVOLTAGE_ITLK;
-    	if (resonant_swls.IinItlkSts)                     resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_INPUT_OVERCURRENT_ITLK;
-    	if (resonant_swls.IoutItlkSts)                    resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_OUTPUT_OVERCURRENT_ITLK;
-    	if (resonant_swls.TempInputInductorItlkSts)       resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_INDUC_INPUT_OVERTEMP_ITLK;
-    	if (resonant_swls.TempOutputInductorItlkSts)      resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_INDUC_OUTPUT_OVERTEMP_ITLK;
-    	if (resonant_swls.TempHeatSinkMosfetsItlkSts)     resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_HS_MOSFETS_OVERTEMP_ITLK;
-    	if (resonant_swls.TempHeatSinkDiodesItlkSts)      resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_HS_DIODES_OVERTEMP_ITLK;
-    	if (resonant_swls.DriverVoltageItlkSts)           resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_DRIVER_MOSFETS_OVERVOLTAGE_ITLK;
-    	if (resonant_swls.Driver1CurrentItlkSts)          resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_DRIVER1_MOSFETS_OVERCURRENT_ITLK;
-    	if (resonant_swls.GroundLeakageItlkSts)           resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_GROUND_LKG_ITLK;
-    	if (resonant_swls.BoardTemperatureItlkSts)        resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_BOARD_IIB_OVERTEMP_ITLK;
-    	if (resonant_swls.RelativeHumidityItlkSts)        resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_BOARD_IIB_OVERHUMIDITY_ITLK;
-    	if (resonant_swls.RelayContactStickingItlkSts)    resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_RELAY_CONTACT_STICKING_ITLK;
-    	if (resonant_swls.EmergencyButtonItlkSts)         resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_EMERGENCY_BUTTON_ITLK;
+    	if (resonant_swls.VinItlkSts)                     	resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_INPUT_OVERVOLTAGE_ITLK;
+    	if (resonant_swls.VoutItlkSts)                    	resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_OUTPUT_OVERVOLTAGE_ITLK;
+    	if (resonant_swls.IinItlkSts)                     	resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_INPUT_OVERCURRENT_ITLK;
+    	if (resonant_swls.IoutItlkSts)                    	resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_OUTPUT_OVERCURRENT_ITLK;
+    	if (resonant_swls.TempHeatSinkTransformerItlkSts)	resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_HS_TRANSFORMER_OVERTEMP_ITLK;
+    	if (resonant_swls.TempOutputInductorItlkSts)      	resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_INDUC_OUTPUT_OVERTEMP_ITLK;
+    	if (resonant_swls.TempHeatSinkDiodeOneItlkSts)      resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_HS_DIODE_ONE_OVERTEMP_ITLK;
+    	if (resonant_swls.TempHeatSinkDiodeTwoItlkSts)      resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_HS_DIODE_TWO_OVERTEMP_ITLK;
+    	if (resonant_swls.DriverAuxVoltageItlkSts)          resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_DRIVER_MOSFETS_AND_AUX_OVERVOLTAGE_ITLK;
+    	if (resonant_swls.Driver1CurrentItlkSts)          	resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_DRIVER1_MOSFETS_OVERCURRENT_ITLK;
+    	if (resonant_swls.AuxCurrentItlkSts)				resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_AUX_SUPPLY_OVERCURRENT_ITLK;
+    	if (resonant_swls.GroundLeakageItlkSts)           	resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_GROUND_LKG_ITLK;
+    	if (resonant_swls.BoardTemperatureItlkSts)        	resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_BOARD_IIB_OVERTEMP_ITLK;
+    	if (resonant_swls.RelativeHumidityItlkSts)        	resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_BOARD_IIB_OVERHUMIDITY_ITLK;
+    	if (resonant_swls.RelayContactStickingItlkSts)    	resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_RELAY_CONTACT_STICKING_ITLK;
+    	if (resonant_swls.EmergencyButtonItlkSts)         	resonant_swls.InterlocksRegister.u32 |= RESONANT_SWLS_EMERGENCY_BUTTON_ITLK;
     }
 
     else
@@ -392,19 +404,20 @@ void resonant_swls_application_readings()
 
     if(Alarm == 1)
     {
-    	if (resonant_swls.VinAlarmSts)                    resonant_swls.AlarmsRegister.u32 |= RESONANT_SWLS_INPUT_OVERVOLTAGE_ALM;
-    	if (resonant_swls.VoutAlarmSts)                   resonant_swls.AlarmsRegister.u32 |= RESONANT_SWLS_OUTPUT_OVERVOLTAGE_ALM;
-    	if (resonant_swls.IinAlarmSts)                    resonant_swls.AlarmsRegister.u32 |= RESONANT_SWLS_INPUT_OVERCURRENT_ALM;
-    	if (resonant_swls.IoutAlarmSts)                   resonant_swls.AlarmsRegister.u32 |= RESONANT_SWLS_OUTPUT_OVERCURRENT_ALM;
-    	if (resonant_swls.TempInputInductorAlarmSts)      resonant_swls.AlarmsRegister.u32 |= RESONANT_SWLS_INDUC_INPUT_OVERTEMP_ALM;
-    	if (resonant_swls.TempOutputInductorAlarmSts)     resonant_swls.AlarmsRegister.u32 |= RESONANT_SWLS_INDUC_OUTPUT_OVERTEMP_ALM;
-    	if (resonant_swls.TempHeatSinkMosfetsAlarmSts)    resonant_swls.AlarmsRegister.u32 |= RESONANT_SWLS_HS_MOSFETS_OVERTEMP_ALM;
-    	if (resonant_swls.TempHeatSinkDiodesAlarmSts)     resonant_swls.AlarmsRegister.u32 |= RESONANT_SWLS_HS_DIODES_OVERTEMP_ALM;
-    	if (resonant_swls.DriverVoltageAlarmSts)          resonant_swls.AlarmsRegister.u32 |= RESONANT_SWLS_DRIVER_MOSFETS_OVERVOLTAGE_ALM;
-    	if (resonant_swls.Driver1CurrentAlarmSts)         resonant_swls.AlarmsRegister.u32 |= RESONANT_SWLS_DRIVER1_MOSFETS_OVERCURRENT_ALM;
-    	if (resonant_swls.GroundLeakageAlarmSts)          resonant_swls.AlarmsRegister.u32 |= RESONANT_SWLS_GROUND_LKG_ALM;
-    	if (resonant_swls.BoardTemperatureAlarmSts)       resonant_swls.AlarmsRegister.u32 |= RESONANT_SWLS_BOARD_IIB_OVERTEMP_ALM;
-    	if (resonant_swls.RelativeHumidityAlarmSts)       resonant_swls.AlarmsRegister.u32 |= RESONANT_SWLS_BOARD_IIB_OVERHUMIDITY_ALM;
+    	if (resonant_swls.VinAlarmSts)                    	resonant_swls.AlarmsRegister.u32 |= RESONANT_SWLS_INPUT_OVERVOLTAGE_ALM;
+    	if (resonant_swls.VoutAlarmSts)                   	resonant_swls.AlarmsRegister.u32 |= RESONANT_SWLS_OUTPUT_OVERVOLTAGE_ALM;
+    	if (resonant_swls.IinAlarmSts)                    	resonant_swls.AlarmsRegister.u32 |= RESONANT_SWLS_INPUT_OVERCURRENT_ALM;
+    	if (resonant_swls.IoutAlarmSts)                   	resonant_swls.AlarmsRegister.u32 |= RESONANT_SWLS_OUTPUT_OVERCURRENT_ALM;
+    	if (resonant_swls.TempHeatSinkTransformerAlarmSts)	resonant_swls.AlarmsRegister.u32 |= RESONANT_SWLS_HS_TRANSFORMER_OVERTEMP_ALM;
+    	if (resonant_swls.TempOutputInductorAlarmSts)     	resonant_swls.AlarmsRegister.u32 |= RESONANT_SWLS_INDUC_OUTPUT_OVERTEMP_ALM;
+    	if (resonant_swls.TempHeatSinkDiodeOneAlarmSts)    	resonant_swls.AlarmsRegister.u32 |= RESONANT_SWLS_HS_DIODE_ONE_OVERTEMP_ALM;
+    	if (resonant_swls.TempHeatSinkDiodeTwoAlarmSts)     resonant_swls.AlarmsRegister.u32 |= RESONANT_SWLS_HS_DIODE_TWO_OVERTEMP_ALM;
+    	if (resonant_swls.DriverAuxVoltageAlarmSts)         resonant_swls.AlarmsRegister.u32 |= RESONANT_SWLS_DRIVER_MOSFETS_AND_AUX_OVERVOLTAGE_ALM;
+    	if (resonant_swls.Driver1CurrentAlarmSts)         	resonant_swls.AlarmsRegister.u32 |= RESONANT_SWLS_DRIVER1_MOSFETS_OVERCURRENT_ALM;
+    	if (resonant_swls.AuxCurrentAlarmSts)				resonant_swls.AlarmsRegister.u32 |= RESONANT_SWLS_AUX_SUPPLY_OVERCURRENT_ALM;
+    	if (resonant_swls.GroundLeakageAlarmSts)          	resonant_swls.AlarmsRegister.u32 |= RESONANT_SWLS_GROUND_LKG_ALM;
+    	if (resonant_swls.BoardTemperatureAlarmSts)       	resonant_swls.AlarmsRegister.u32 |= RESONANT_SWLS_BOARD_IIB_OVERTEMP_ALM;
+    	if (resonant_swls.RelativeHumidityAlarmSts)       	resonant_swls.AlarmsRegister.u32 |= RESONANT_SWLS_BOARD_IIB_OVERHUMIDITY_ALM;
     }
 
     else
@@ -418,17 +431,18 @@ void resonant_swls_application_readings()
     g_controller_iib.iib_signals[1].f       = resonant_swls.Vout.f;
     g_controller_iib.iib_signals[2].f       = resonant_swls.Iin.f;
     g_controller_iib.iib_signals[3].f       = resonant_swls.Iout.f;
-    g_controller_iib.iib_signals[4].f       = resonant_swls.TempInputInductor.f;
+    g_controller_iib.iib_signals[4].f       = resonant_swls.TempHeatSinkTransformer.f;
     g_controller_iib.iib_signals[5].f       = resonant_swls.TempOutputInductor.f;
-    g_controller_iib.iib_signals[6].f       = resonant_swls.TempHeatSinkMosfets.f;
-    g_controller_iib.iib_signals[7].f       = resonant_swls.TempHeatSinkDiodes.f;
-    g_controller_iib.iib_signals[8].f       = resonant_swls.DriverVoltage.f;
+    g_controller_iib.iib_signals[6].f       = resonant_swls.TempHeatSinkDiodeOne.f;
+    g_controller_iib.iib_signals[7].f       = resonant_swls.TempHeatSinkDiodeTwo.f;
+    g_controller_iib.iib_signals[8].f       = resonant_swls.DriverAuxVoltage.f;
     g_controller_iib.iib_signals[9].f       = resonant_swls.Driver1Current.f;
-    g_controller_iib.iib_signals[10].f      = resonant_swls.GroundLeakage.f;
-    g_controller_iib.iib_signals[11].f      = resonant_swls.BoardTemperature.f;
-    g_controller_iib.iib_signals[12].f      = resonant_swls.RelativeHumidity.f;
-    g_controller_iib.iib_signals[13].u32    = resonant_swls.InterlocksRegister.u32;
-    g_controller_iib.iib_signals[14].u32    = resonant_swls.AlarmsRegister.u32;
+    g_controller_iib.iib_signals[10].f      = resonant_swls.AuxCurrent.f;
+    g_controller_iib.iib_signals[11].f      = resonant_swls.GroundLeakage.f;
+    g_controller_iib.iib_signals[12].f      = resonant_swls.BoardTemperature.f;
+    g_controller_iib.iib_signals[13].f      = resonant_swls.RelativeHumidity.f;
+    g_controller_iib.iib_signals[14].u32    = resonant_swls.InterlocksRegister.u32;
+    g_controller_iib.iib_signals[15].u32    = resonant_swls.AlarmsRegister.u32;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -477,17 +491,17 @@ void config_module_resonant_swls(void)
     Pt100Ch4Delay(Delay_PT100CH4);
 
     //PT100 configuration limits
-    Pt100Ch1AlarmLevelSet(RESONANT_SWLS_INDUC_INPUT_OVERTEMP_ALM_LIM);  //Alarme temperatura indutor de entrada
-    Pt100Ch1TripLevelSet(RESONANT_SWLS_INDUC_INPUT_OVERTEMP_ITLK_LIM);  //Interlock temperatura indutor de entrada
+    Pt100Ch1AlarmLevelSet(RESONANT_SWLS_HS_TRANSFORMER_OVERTEMP_ALM_LIM);	//Alarme temperatura dissipador transformador
+    Pt100Ch1TripLevelSet(RESONANT_SWLS_HS_TRANSFORMER_OVERTEMP_ITLK_LIM);	//Interlock temperatura dissipador transformador
 
-    Pt100Ch2AlarmLevelSet(RESONANT_SWLS_INDUC_OUTPUT_OVERTEMP_ALM_LIM); //Alarme temperatura indutor de saida
-    Pt100Ch2TripLevelSet(RESONANT_SWLS_INDUC_OUTPUT_OVERTEMP_ITLK_LIM); //Interlock temperatura indutor de saida
+    Pt100Ch2AlarmLevelSet(RESONANT_SWLS_INDUC_OUTPUT_OVERTEMP_ALM_LIM);		//Alarme temperatura indutor de saida
+    Pt100Ch2TripLevelSet(RESONANT_SWLS_INDUC_OUTPUT_OVERTEMP_ITLK_LIM);		//Interlock temperatura indutor de saida
 
-    Pt100Ch3AlarmLevelSet(RESONANT_SWLS_HS_MOSFETS_OVERTEMP_ALM_LIM);   //Alarme temperatura dissipador mosfets
-    Pt100Ch3TripLevelSet(RESONANT_SWLS_HS_MOSFETS_OVERTEMP_ITLK_LIM);   //Interlock temperatura dissipador mosfets
+    Pt100Ch3AlarmLevelSet(RESONANT_SWLS_HS_DIODE_ONE_OVERTEMP_ALM_LIM);		//Alarme temperatura dissipador diodo 1
+    Pt100Ch3TripLevelSet(RESONANT_SWLS_HS_DIODE_ONE_OVERTEMP_ITLK_LIM);		//Interlock temperatura dissipador diodo 1
 
-    Pt100Ch4AlarmLevelSet(RESONANT_SWLS_HS_DIODES_OVERTEMP_ALM_LIM);    //Alarme temperatura dissipador diodos
-    Pt100Ch4TripLevelSet(RESONANT_SWLS_HS_DIODES_OVERTEMP_ITLK_LIM);    //Interlock temperatura dissipador diodos
+    Pt100Ch4AlarmLevelSet(RESONANT_SWLS_HS_DIODE_TWO_OVERTEMP_ALM_LIM);		//Alarme temperatura dissipador diodo 2
+    Pt100Ch4TripLevelSet(RESONANT_SWLS_HS_DIODE_TWO_OVERTEMP_ITLK_LIM);		//Interlock temperatura dissipador diodo 2
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -515,8 +529,8 @@ void config_module_resonant_swls(void)
     DriverVoltageDelay(Delay_DriverVoltage); //Inserir valor de delay
 
     //Limite de alarme e interlock da tensao dos drivers
-    DriverVoltageAlarmLevelSet(RESONANT_SWLS_DRIVER_MOSFETS_OVERVOLTAGE_ALM_LIM);
-    DriverVoltageTripLevelSet(RESONANT_SWLS_DRIVER_MOSFETS_OVERVOLTAGE_ITLK_LIM);
+    DriverVoltageAlarmLevelSet(RESONANT_SWLS_DRIVER_MOSFETS_AND_AUX_OVERVOLTAGE_ALM_LIM);
+    DriverVoltageTripLevelSet(RESONANT_SWLS_DRIVER_MOSFETS_AND_AUX_OVERVOLTAGE_ITLK_LIM);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -529,58 +543,65 @@ void config_module_resonant_swls(void)
     Driver1CurrentAlarmLevelSet(RESONANT_SWLS_DRIVER1_MOSFETS_OVERCURRENT_ALM_LIM);
     Driver1CurrentTripLevelSet(RESONANT_SWLS_DRIVER1_MOSFETS_OVERCURRENT_ITLK_LIM);
 
+    //Limite de alarme e interlock da corrente da placa auxiliar
+    Driver2CurrentAlarmLevelSet(RESONANT_SWLS_AUX_SUPPLY_OVERCURRENT_ALM_LIM);
+    Driver2CurrentTripLevelSet(RESONANT_SWLS_AUX_SUPPLY_OVERCURRENT_ITLK_LIM);
+
 #endif
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     //Init Variables
-    resonant_swls.Vin.f                        = 0.0;
-    resonant_swls.VinAlarmSts                  = 0;
-    resonant_swls.VinItlkSts                   = 0;
-    resonant_swls.Vout.f                       = 0.0;
-    resonant_swls.VoutAlarmSts                 = 0;
-    resonant_swls.VoutItlkSts                  = 0;
-    resonant_swls.Iin.f                        = 0.0;
-    resonant_swls.IinAlarmSts                  = 0;
-    resonant_swls.IinItlkSts                   = 0;
-    resonant_swls.Iout.f                       = 0.0;
-    resonant_swls.IoutAlarmSts                 = 0;
-    resonant_swls.IoutItlkSts                  = 0;
-    resonant_swls.GroundLeakage.f              = 0.0;
-    resonant_swls.GroundLeakageAlarmSts        = 0;
-    resonant_swls.GroundLeakageItlkSts         = 0;
-    resonant_swls.TempInputInductor.f          = 0.0;
-    resonant_swls.TempInputInductorAlarmSts    = 0;
-    resonant_swls.TempInputInductorItlkSts     = 0;
-    resonant_swls.TempOutputInductor.f         = 0.0;
-    resonant_swls.TempOutputInductorAlarmSts   = 0;
-    resonant_swls.TempOutputInductorItlkSts    = 0;
-    resonant_swls.TempHeatSinkMosfets.f        = 0.0;
-    resonant_swls.TempHeatSinkMosfetsAlarmSts  = 0;
-    resonant_swls.TempHeatSinkMosfetsItlkSts   = 0;
-    resonant_swls.TempHeatSinkDiodes.f         = 0.0;
-    resonant_swls.TempHeatSinkDiodesAlarmSts   = 0;
-    resonant_swls.TempHeatSinkDiodesItlkSts    = 0;
-    resonant_swls.DriverVoltage.f              = 0.0;
-    resonant_swls.DriverVoltageAlarmSts        = 0;
-    resonant_swls.DriverVoltageItlkSts         = 0;
-    resonant_swls.Driver1Current.f             = 0.0;
-    resonant_swls.Driver1CurrentAlarmSts       = 0;
-    resonant_swls.Driver1CurrentItlkSts        = 0;
-    resonant_swls.BoardTemperature.f           = 0.0;
-    resonant_swls.BoardTemperatureAlarmSts     = 0;
-    resonant_swls.BoardTemperatureItlkSts      = 0;
-    resonant_swls.RelativeHumidity.f           = 0.0;
-    resonant_swls.RelativeHumidityAlarmSts     = 0;
-    resonant_swls.RelativeHumidityItlkSts      = 0;
-    resonant_swls.Relay                        = 0;
-    resonant_swls.EmergencyButtonItlk          = 0;
-    resonant_swls.EmergencyButtonItlkSts       = 0;
-    resonant_swls.ReleAuxItlkSts               = 0;
-    resonant_swls.ReleExtItlkSts               = 0;
-    resonant_swls.RelayContactStickingItlkSts  = 0;
-    resonant_swls.InterlocksRegister.u32       = 0;
-    resonant_swls.AlarmsRegister.u32           = 0;
+    resonant_swls.Vin.f                        		= 0.0;
+    resonant_swls.VinAlarmSts                  		= 0;
+    resonant_swls.VinItlkSts                   		= 0;
+    resonant_swls.Vout.f                       		= 0.0;
+    resonant_swls.VoutAlarmSts                 		= 0;
+    resonant_swls.VoutItlkSts                  		= 0;
+    resonant_swls.Iin.f                        		= 0.0;
+    resonant_swls.IinAlarmSts                  		= 0;
+    resonant_swls.IinItlkSts                   		= 0;
+    resonant_swls.Iout.f                       		= 0.0;
+    resonant_swls.IoutAlarmSts                 		= 0;
+    resonant_swls.IoutItlkSts                  		= 0;
+    resonant_swls.GroundLeakage.f              		= 0.0;
+    resonant_swls.GroundLeakageAlarmSts        		= 0;
+    resonant_swls.GroundLeakageItlkSts         		= 0;
+    resonant_swls.TempHeatSinkTransformer.f      	= 0.0;
+    resonant_swls.TempHeatSinkTransformerAlarmSts	= 0;
+    resonant_swls.TempHeatSinkTransformerItlkSts  	= 0;
+    resonant_swls.TempOutputInductor.f         		= 0.0;
+    resonant_swls.TempOutputInductorAlarmSts   		= 0;
+    resonant_swls.TempOutputInductorItlkSts    		= 0;
+    resonant_swls.TempHeatSinkDiodeOne.f        	= 0.0;
+    resonant_swls.TempHeatSinkDiodeOneAlarmSts  	= 0;
+    resonant_swls.TempHeatSinkDiodeOneItlkSts   	= 0;
+    resonant_swls.TempHeatSinkDiodeTwo.f         	= 0.0;
+    resonant_swls.TempHeatSinkDiodeTwoAlarmSts   	= 0;
+    resonant_swls.TempHeatSinkDiodeTwoItlkSts    	= 0;
+    resonant_swls.DriverAuxVoltage.f              	= 0.0;
+    resonant_swls.DriverAuxVoltageAlarmSts        	= 0;
+    resonant_swls.DriverAuxVoltageItlkSts         	= 0;
+    resonant_swls.Driver1Current.f             		= 0.0;
+    resonant_swls.Driver1CurrentAlarmSts       		= 0;
+    resonant_swls.Driver1CurrentItlkSts        		= 0;
+    resonant_swls.AuxCurrent.f                  	= 0.0;
+    resonant_swls.AuxCurrentAlarmSts             	= 0;
+    resonant_swls.AuxCurrentItlkSts              	= 0;
+    resonant_swls.BoardTemperature.f           		= 0.0;
+    resonant_swls.BoardTemperatureAlarmSts     		= 0;
+    resonant_swls.BoardTemperatureItlkSts      		= 0;
+    resonant_swls.RelativeHumidity.f           		= 0.0;
+    resonant_swls.RelativeHumidityAlarmSts     		= 0;
+    resonant_swls.RelativeHumidityItlkSts      		= 0;
+    resonant_swls.Relay                        		= 0;
+    resonant_swls.EmergencyButtonItlk          		= 0;
+    resonant_swls.EmergencyButtonItlkSts       		= 0;
+    resonant_swls.ReleAuxItlkSts               		= 0;
+    resonant_swls.ReleExtItlkSts               		= 0;
+    resonant_swls.RelayContactStickingItlkSts  		= 0;
+    resonant_swls.InterlocksRegister.u32       		= 0;
+    resonant_swls.AlarmsRegister.u32           		= 0;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

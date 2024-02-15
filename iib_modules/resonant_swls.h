@@ -77,10 +77,10 @@ typedef volatile struct
     union {
     	volatile float       f;
     	volatile uint8_t     u8[4];
-    } TempInputInductor;
+    } TempHeatSinkTransformer;
 
-    volatile bool TempInputInductorAlarmSts;
-    volatile bool TempInputInductorItlkSts;
+    volatile bool TempHeatSinkTransformerAlarmSts;
+    volatile bool TempHeatSinkTransformerItlkSts;
 
     union {
     	volatile float       f;
@@ -93,26 +93,26 @@ typedef volatile struct
     union {
     	volatile float       f;
     	volatile uint8_t     u8[4];
-    } TempHeatSinkMosfets;
+    } TempHeatSinkDiodeOne;
 
-    volatile bool TempHeatSinkMosfetsAlarmSts;
-    volatile bool TempHeatSinkMosfetsItlkSts;
-
-    union {
-    	volatile float       f;
-    	volatile uint8_t     u8[4];
-    } TempHeatSinkDiodes;
-
-    volatile bool TempHeatSinkDiodesAlarmSts;
-    volatile bool TempHeatSinkDiodesItlkSts;
+    volatile bool TempHeatSinkDiodeOneAlarmSts;
+    volatile bool TempHeatSinkDiodeOneItlkSts;
 
     union {
     	volatile float       f;
     	volatile uint8_t     u8[4];
-    } DriverVoltage;
+    } TempHeatSinkDiodeTwo;
 
-    volatile bool DriverVoltageAlarmSts;
-    volatile bool DriverVoltageItlkSts;
+    volatile bool TempHeatSinkDiodeTwoAlarmSts;
+    volatile bool TempHeatSinkDiodeTwoItlkSts;
+
+    union {
+    	volatile float       f;
+    	volatile uint8_t     u8[4];
+    } DriverAuxVoltage;
+
+    volatile bool DriverAuxVoltageAlarmSts;
+    volatile bool DriverAuxVoltageItlkSts;
 
     union {
     	volatile float       f;
@@ -121,6 +121,14 @@ typedef volatile struct
 
     volatile bool Driver1CurrentAlarmSts;
     volatile bool Driver1CurrentItlkSts;
+
+    union {
+        volatile float       f;
+        volatile uint8_t     u8[4];
+    } AuxCurrent;
+
+    volatile bool AuxCurrentAlarmSts;
+    volatile bool AuxCurrentItlkSts;
 
     union {
     	volatile float       f;
@@ -161,37 +169,39 @@ typedef volatile struct
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-#define RESONANT_SWLS_INPUT_OVERVOLTAGE_ITLK          		0x00000001
-#define RESONANT_SWLS_OUTPUT_OVERVOLTAGE_ITLK         		0x00000002
-#define RESONANT_SWLS_INPUT_OVERCURRENT_ITLK          		0x00000004
-#define RESONANT_SWLS_OUTPUT_OVERCURRENT_ITLK         		0x00000008
-#define RESONANT_SWLS_INDUC_INPUT_OVERTEMP_ITLK       		0x00000010
-#define RESONANT_SWLS_INDUC_OUTPUT_OVERTEMP_ITLK      		0x00000020
-#define RESONANT_SWLS_HS_MOSFETS_OVERTEMP_ITLK        		0x00000040
-#define RESONANT_SWLS_HS_DIODES_OVERTEMP_ITLK         		0x00000080
-#define RESONANT_SWLS_DRIVER_MOSFETS_OVERVOLTAGE_ITLK       0x00000100
-#define RESONANT_SWLS_DRIVER1_MOSFETS_OVERCURRENT_ITLK		0x00000200
-#define RESONANT_SWLS_GROUND_LKG_ITLK                       0x00000400
-#define RESONANT_SWLS_BOARD_IIB_OVERTEMP_ITLK         		0x00000800
-#define RESONANT_SWLS_BOARD_IIB_OVERHUMIDITY_ITLK     		0x00001000
-#define RESONANT_SWLS_RELAY_CONTACT_STICKING_ITLK     		0x00002000
-#define RESONANT_SWLS_EMERGENCY_BUTTON_ITLK                 0x00004000
+#define RESONANT_SWLS_INPUT_OVERVOLTAGE_ITLK          				0x00000001
+#define RESONANT_SWLS_OUTPUT_OVERVOLTAGE_ITLK         				0x00000002
+#define RESONANT_SWLS_INPUT_OVERCURRENT_ITLK          				0x00000004
+#define RESONANT_SWLS_OUTPUT_OVERCURRENT_ITLK         				0x00000008
+#define RESONANT_SWLS_HS_TRANSFORMER_OVERTEMP_ITLK       			0x00000010
+#define RESONANT_SWLS_INDUC_OUTPUT_OVERTEMP_ITLK      				0x00000020
+#define RESONANT_SWLS_HS_DIODE_ONE_OVERTEMP_ITLK        			0x00000040
+#define RESONANT_SWLS_HS_DIODE_TWO_OVERTEMP_ITLK         			0x00000080
+#define RESONANT_SWLS_DRIVER_MOSFETS_AND_AUX_OVERVOLTAGE_ITLK   	0x00000100
+#define RESONANT_SWLS_DRIVER1_MOSFETS_OVERCURRENT_ITLK				0x00000200
+#define RESONANT_SWLS_AUX_SUPPLY_OVERCURRENT_ITLK          			0x00000400
+#define RESONANT_SWLS_GROUND_LKG_ITLK                     		 	0x00000800
+#define RESONANT_SWLS_BOARD_IIB_OVERTEMP_ITLK         				0x00001000
+#define RESONANT_SWLS_BOARD_IIB_OVERHUMIDITY_ITLK     				0x00002000
+#define RESONANT_SWLS_RELAY_CONTACT_STICKING_ITLK     				0x00004000
+#define RESONANT_SWLS_EMERGENCY_BUTTON_ITLK                			0x00008000
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-#define RESONANT_SWLS_INPUT_OVERVOLTAGE_ALM           		0x00000001
-#define RESONANT_SWLS_OUTPUT_OVERVOLTAGE_ALM          		0x00000002
-#define RESONANT_SWLS_INPUT_OVERCURRENT_ALM        			0x00000004
-#define RESONANT_SWLS_OUTPUT_OVERCURRENT_ALM        		0x00000008
-#define RESONANT_SWLS_INDUC_INPUT_OVERTEMP_ALM              0x00000010
-#define RESONANT_SWLS_INDUC_OUTPUT_OVERTEMP_ALM             0x00000020
-#define RESONANT_SWLS_HS_MOSFETS_OVERTEMP_ALM          		0x00000040
-#define RESONANT_SWLS_HS_DIODES_OVERTEMP_ALM         		0x00000080
-#define RESONANT_SWLS_DRIVER_MOSFETS_OVERVOLTAGE_ALM        0x00000100
-#define RESONANT_SWLS_DRIVER1_MOSFETS_OVERCURRENT_ALM       0x00000200
-#define RESONANT_SWLS_GROUND_LKG_ALM                  		0x00000400
-#define RESONANT_SWLS_BOARD_IIB_OVERTEMP_ALM          		0x00000800
-#define RESONANT_SWLS_BOARD_IIB_OVERHUMIDITY_ALM      		0x00001000
+#define RESONANT_SWLS_INPUT_OVERVOLTAGE_ALM           				0x00000001
+#define RESONANT_SWLS_OUTPUT_OVERVOLTAGE_ALM          				0x00000002
+#define RESONANT_SWLS_INPUT_OVERCURRENT_ALM               			0x00000004
+#define RESONANT_SWLS_OUTPUT_OVERCURRENT_ALM        				0x00000008
+#define RESONANT_SWLS_HS_TRANSFORMER_OVERTEMP_ALM         			0x00000010
+#define RESONANT_SWLS_INDUC_OUTPUT_OVERTEMP_ALM           			0x00000020
+#define RESONANT_SWLS_HS_DIODE_ONE_OVERTEMP_ALM          			0x00000040
+#define RESONANT_SWLS_HS_DIODE_TWO_OVERTEMP_ALM         			0x00000080
+#define RESONANT_SWLS_DRIVER_MOSFETS_AND_AUX_OVERVOLTAGE_ALM		0x00000100
+#define RESONANT_SWLS_DRIVER1_MOSFETS_OVERCURRENT_ALM      			0x00000200
+#define RESONANT_SWLS_AUX_SUPPLY_OVERCURRENT_ALM           			0x00000400
+#define RESONANT_SWLS_GROUND_LKG_ALM                  				0x00000800
+#define RESONANT_SWLS_BOARD_IIB_OVERTEMP_ALM          				0x00001000
+#define RESONANT_SWLS_BOARD_IIB_OVERHUMIDITY_ALM      				0x00002000
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

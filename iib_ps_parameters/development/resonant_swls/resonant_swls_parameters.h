@@ -20,47 +20,50 @@
 
 #define RES_SWLS
 
-#define ON                                      	      		1
-#define OFF                                               		0
+#define ON                                      	      				1
+#define OFF                                               				0
 
-#define RESONANT_SWLS_INPUT_OVERVOLTAGE_ALM_LIM           		320.0
-#define RESONANT_SWLS_INPUT_OVERVOLTAGE_ITLK_LIM          		330.0
+#define RESONANT_SWLS_INPUT_OVERVOLTAGE_ALM_LIM           				320.0
+#define RESONANT_SWLS_INPUT_OVERVOLTAGE_ITLK_LIM          				330.0
 
-#define RESONANT_SWLS_OUTPUT_OVERVOLTAGE_ALM_LIM          		10.5
-#define RESONANT_SWLS_OUTPUT_OVERVOLTAGE_ITLK_LIM         		11.0
+#define RESONANT_SWLS_OUTPUT_OVERVOLTAGE_ALM_LIM          				10.5
+#define RESONANT_SWLS_OUTPUT_OVERVOLTAGE_ITLK_LIM         				11.0
 
-#define RESONANT_SWLS_INPUT_OVERCURRENT_ALM_LIM           		10.5
-#define RESONANT_SWLS_INPUT_OVERCURRENT_ITLK_LIM          		11.0
+#define RESONANT_SWLS_INPUT_OVERCURRENT_ALM_LIM           				10.5
+#define RESONANT_SWLS_INPUT_OVERCURRENT_ITLK_LIM          				11.0
 
-#define RESONANT_SWLS_OUTPUT_OVERCURRENT_ALM_LIM          		310.0
-#define RESONANT_SWLS_OUTPUT_OVERCURRENT_ITLK_LIM         		320.0
+#define RESONANT_SWLS_OUTPUT_OVERCURRENT_ALM_LIM          				310.0
+#define RESONANT_SWLS_OUTPUT_OVERCURRENT_ITLK_LIM         				320.0
 
-#define RESONANT_SWLS_GROUND_LEAKAGE_ALM_LIM              		0.450
-#define RESONANT_SWLS_GROUND_LEAKAGE_ITLK_LIM             		0.475
+#define RESONANT_SWLS_GROUND_LEAKAGE_ALM_LIM              				0.450
+#define RESONANT_SWLS_GROUND_LEAKAGE_ITLK_LIM             				0.475
 
-#define RESONANT_SWLS_INDUC_INPUT_OVERTEMP_ALM_LIM				50.0
-#define RESONANT_SWLS_INDUC_INPUT_OVERTEMP_ITLK_LIM				60.0
+#define RESONANT_SWLS_HS_TRANSFORMER_OVERTEMP_ALM_LIM					50.0
+#define RESONANT_SWLS_HS_TRANSFORMER_OVERTEMP_ITLK_LIM					60.0
 
-#define RESONANT_SWLS_INDUC_OUTPUT_OVERTEMP_ALM_LIM         	50.0
-#define RESONANT_SWLS_INDUC_OUTPUT_OVERTEMP_ITLK_LIM        	60.0
+#define RESONANT_SWLS_INDUC_OUTPUT_OVERTEMP_ALM_LIM        				50.0
+#define RESONANT_SWLS_INDUC_OUTPUT_OVERTEMP_ITLK_LIM       				60.0
 
-#define RESONANT_SWLS_HS_MOSFETS_OVERTEMP_ALM_LIM           	40.0
-#define RESONANT_SWLS_HS_MOSFETS_OVERTEMP_ITLK_LIM          	50.0
+#define RESONANT_SWLS_HS_DIODE_ONE_OVERTEMP_ALM_LIM		        		60.0
+#define RESONANT_SWLS_HS_DIODE_ONE_OVERTEMP_ITLK_LIM       				70.0
 
-#define RESONANT_SWLS_HS_DIODES_OVERTEMP_ALM_LIM            	60.0
-#define RESONANT_SWLS_HS_DIODES_OVERTEMP_ITLK_LIM           	70.0
+#define RESONANT_SWLS_HS_DIODE_TWO_OVERTEMP_ALM_LIM        				60.0
+#define RESONANT_SWLS_HS_DIODE_TWO_OVERTEMP_ITLK_LIM       				70.0
 
-#define RESONANT_SWLS_DRIVER_MOSFETS_OVERVOLTAGE_ALM_LIM    	16.0
-#define RESONANT_SWLS_DRIVER_MOSFETS_OVERVOLTAGE_ITLK_LIM   	17.0
+#define RESONANT_SWLS_DRIVER_MOSFETS_AND_AUX_OVERVOLTAGE_ALM_LIM 		16.0
+#define RESONANT_SWLS_DRIVER_MOSFETS_AND_AUX_OVERVOLTAGE_ITLK_LIM  		17.0
 
-#define RESONANT_SWLS_DRIVER1_MOSFETS_OVERCURRENT_ALM_LIM   	2.0
-#define RESONANT_SWLS_DRIVER1_MOSFETS_OVERCURRENT_ITLK_LIM		2.4
+#define RESONANT_SWLS_DRIVER1_MOSFETS_OVERCURRENT_ALM_LIM 				2.0
+#define RESONANT_SWLS_DRIVER1_MOSFETS_OVERCURRENT_ITLK_LIM				2.4
 
-#define RESONANT_SWLS_BOARD_IIB_OVERHUMIDITY_ALM_LIM        	80.0
-#define RESONANT_SWLS_BOARD_IIB_OVERHUMIDITY_ITLK_LIM       	90.0
+#define RESONANT_SWLS_AUX_SUPPLY_OVERCURRENT_ALM_LIM 					2.0
+#define RESONANT_SWLS_AUX_SUPPLY_OVERCURRENT_ITLK_LIM					2.4
 
-#define RESONANT_SWLS_BOARD_IIB_OVERTEMP_ALM_LIM            	50.0
-#define RESONANT_SWLS_BOARD_IIB_OVERTEMP_ITLK_LIM           	60.0
+#define RESONANT_SWLS_BOARD_IIB_OVERHUMIDITY_ALM_LIM 					80.0
+#define RESONANT_SWLS_BOARD_IIB_OVERHUMIDITY_ITLK_LIM 					90.0
+
+#define RESONANT_SWLS_BOARD_IIB_OVERTEMP_ALM_LIM 		        		50.0
+#define RESONANT_SWLS_BOARD_IIB_OVERTEMP_ITLK_LIM 		      			60.0
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -162,9 +165,9 @@
 #define Delay_DriverVoltage                     				3
 #define Delay_DriverCurrent                     				3
 
-#define DriverVoltageEnable                     				ON
-#define Driver1CurrentEnable                    				ON
-#define Driver2CurrentEnable                    				OFF
+#define DriverVoltageEnable                     				ON  //Voltage Driver 1 and AUX enable
+#define Driver1CurrentEnable                    				ON  //Current Driver 1 enable
+#define Driver2CurrentEnable                    				ON  //Current Aux enable
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
