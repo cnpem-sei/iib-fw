@@ -38,8 +38,8 @@
 #define FAC_CMD_IDB_SUPPLY_OVERCURRENT_ALM_LIM              2.0
 #define FAC_CMD_IDB_SUPPLY_OVERCURRENT_ITLK_LIM             2.4
 
-#define FAC_CMD_GROUND_LEAKAGE_ALM_LIM                      0.450
-#define FAC_CMD_GROUND_LEAKAGE_ITLK_LIM                     0.650
+#define FAC_CMD_GROUND_LEAKAGE_ALM_LIM                      0.400
+#define FAC_CMD_GROUND_LEAKAGE_ITLK_LIM                     0.450
 
 #define FAC_CMD_INDUC_OVERTEMP_ALM_LIM                      55.0
 #define FAC_CMD_INDUC_OVERTEMP_ITLK_LIM                     60.0
@@ -193,12 +193,12 @@
 #define Gpdi2Enable                                         OFF
 #define Gpdi3Enable                                         OFF
 #define Gpdi4Enable                                         OFF
-#define Gpdi5Enable                                         ON  // Main Over Current
-#define Gpdi6Enable                                         ON  // Emergency Button
-#define Gpdi7Enable                                         ON  // Main Under Voltage
-#define Gpdi8Enable                                         ON  // Main Over Voltage
-#define Gpdi9Enable                                         OFF
-#define Gpdi10Enable                                        OFF
+#define Gpdi5Enable                                         OFF  // Main Over Current
+#define Gpdi6Enable                                         OFF  // Emergency Button
+#define Gpdi7Enable                                         OFF  // Main Under Voltage
+#define Gpdi8Enable                                         OFF  // Main Over Voltage
+#define Gpdi9Enable                                         ON  // Pre Charge Contactor
+#define Gpdi10Enable                                        ON  // Auxiliary Optocoupler
 #define Gpdi11Enable                                        OFF
 #define Gpdi12Enable                                        OFF
 

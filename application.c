@@ -550,11 +550,7 @@ void power_on_check()
 
 #ifdef FAC_CMD
 
-#if !defined (FAC_NOVO_CMD)
-
-    Led1TurnOn();
-
-#endif /* FAC_NOVO_CMD */
+    //Led1TurnOn(); //AC-Mains Contactor Status
 
 #endif
 

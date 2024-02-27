@@ -135,76 +135,6 @@ uint8_t check_fac_cmd_alarms()
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-#if !defined (FAC_NOVO_CMD)
-
-void check_fac_cmd_indication_leds()
-{
-    //Input over voltage
-    if(fac_cmd.VcapBankItlkSts) Led2TurnOff();
-    else if(fac_cmd.VcapBankAlarmSts) Led2Toggle();
-    else Led2TurnOn();
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-    //Output over voltage
-    if(fac_cmd.VoutItlkSts) Led3TurnOff();
-    else if(fac_cmd.VoutAlarmSts) Led3Toggle();
-    else Led3TurnOn();
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-    //Interlocks Aux and Idb voltage and current
-    if(fac_cmd.AuxIdbVoltageItlkSts || fac_cmd.AuxCurrentItlkSts || fac_cmd.IdbCurrentItlkSts) Led4TurnOff();
-    else if(fac_cmd.AuxIdbVoltageAlarmSts || fac_cmd.AuxCurrentAlarmSts || fac_cmd.IdbCurrentAlarmSts) Led4Toggle();
-    else Led4TurnOn();
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-    //Interlocks main over current and emergency button
-    if(fac_cmd.MainOverCurrentItlkSts || fac_cmd.EmergencyButtonItlkSts) Led5TurnOff();
-    else Led5TurnOn();
-
-////////////////////////////////////////////////////////////////////////////////////////////
-
-    //Interlocks main under voltage and main over voltage
-    if(fac_cmd.MainUnderVoltageItlkSts || fac_cmd.MainOverVoltageItlkSts) Led6TurnOff();
-    else Led6TurnOn();
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-    //Fuga para o Terra
-    if(fac_cmd.GroundLeakageItlkSts) Led7TurnOff();
-    else if(fac_cmd.GroundLeakageAlarmSts) Led7Toggle();
-    else Led7TurnOn();
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-    // Heatsink Over temperature
-    if(fac_cmd.TempHeatSinkItlkSts) Led8TurnOff();
-    else if(fac_cmd.TempHeatSinkAlarmSts) Led8Toggle();
-    else Led8TurnOn();
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-    // Inductor Over temperature
-    if(fac_cmd.TempLItlkSts) Led9TurnOff();
-    else if(fac_cmd.TempLAlarmSts) Led9Toggle();
-    else Led9TurnOn();
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-    //Interlock Temperatura PCB e Umidade Relativa
-    if(fac_cmd.BoardTemperatureItlkSts || fac_cmd.RelativeHumidityItlkSts) Led10TurnOff();
-    else if(fac_cmd.BoardTemperatureAlarmSts || fac_cmd.RelativeHumidityAlarmSts) Led10Toggle();
-    else Led10TurnOn();
-}
-
-#endif /* FAC_NOVO_CMD */
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-#ifdef FAC_NOVO_CMD
-
 void check_fac_cmd_indication_leds()
 {
 	//AC-Mains Contactor Status
@@ -273,8 +203,6 @@ void check_fac_cmd_indication_leds()
     else if(fac_cmd.BoardTemperatureAlarmSts || fac_cmd.RelativeHumidityAlarmSts) Led10Toggle();
     else Led10TurnOn();
 }
-
-#endif /* FAC_NOVO_CMD */
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -384,21 +312,13 @@ void fac_cmd_application_readings()
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifdef FAC_NOVO_CMD
-
     //Status do Contator de Pré-Carga
     fac_cmd.PreChargeContactor = Gpdi9Read();
 
-#endif /* FAC_NOVO_CMD */
-
 /////////////////////////////////////////////////////////////////////////////////////////////
-
-#ifdef FAC_NOVO_CMD
 
     //Status do Optoacoplador da Placa Auxiliar
     fac_cmd.AuxiliaryOptocoupler = Gpdi10Read();
-
-#endif /* FAC_NOVO_CMD */
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
