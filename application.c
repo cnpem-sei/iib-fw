@@ -644,15 +644,7 @@ void power_on_check()
 
 #ifdef RES_SWLS
 
-    if(resonant_swls.Relay) {
-
-    	Led1TurnOff();
-    }
-
-    else {
-
-    	Led1TurnOn();
-    }
+    //Led1TurnOn();
 
 #endif
 

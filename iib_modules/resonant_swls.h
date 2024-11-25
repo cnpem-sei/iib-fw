@@ -77,10 +77,10 @@ typedef volatile struct
     union {
     	volatile float       f;
     	volatile uint8_t     u8[4];
-    } TempHeatSinkTransformer;
+    } TempHeatSinkTransformerPfc;
 
-    volatile bool TempHeatSinkTransformerAlarmSts;
-    volatile bool TempHeatSinkTransformerItlkSts;
+    volatile bool TempHeatSinkTransformerPfcAlarmSts;
+    volatile bool TempHeatSinkTransformerPfcItlkSts;
 
     union {
     	volatile float       f;
@@ -93,18 +93,18 @@ typedef volatile struct
     union {
     	volatile float       f;
     	volatile uint8_t     u8[4];
-    } TempHeatSinkDiodeOne;
+    } TempHeatSinkDiodes;
 
-    volatile bool TempHeatSinkDiodeOneAlarmSts;
-    volatile bool TempHeatSinkDiodeOneItlkSts;
+    volatile bool TempHeatSinkDiodesAlarmSts;
+    volatile bool TempHeatSinkDiodesItlkSts;
 
     union {
     	volatile float       f;
     	volatile uint8_t     u8[4];
-    } TempHeatSinkDiodeTwo;
+    } TempHeatSinkClamp;
 
-    volatile bool TempHeatSinkDiodeTwoAlarmSts;
-    volatile bool TempHeatSinkDiodeTwoItlkSts;
+    volatile bool TempHeatSinkClampAlarmSts;
+    volatile bool TempHeatSinkClampItlkSts;
 
     union {
     	volatile float       f;
@@ -121,6 +121,11 @@ typedef volatile struct
 
     volatile bool Driver1CurrentAlarmSts;
     volatile bool Driver1CurrentItlkSts;
+
+    volatile bool DriverFlagHSError;
+    volatile bool DriverFlagHSErrorItlkSts;
+    volatile bool DriverFlagLSError;
+    volatile bool DriverFlagLSErrorItlkSts;
 
     union {
         volatile float       f;
@@ -156,14 +161,21 @@ typedef volatile struct
         volatile uint32_t    u32;
     } AlarmsRegister;
 
-    volatile bool Relay;
+    volatile bool ContactorK1;
+    volatile bool ContactorK1OpenItlkSts;
+    volatile bool ContactorK1ContactStickingItlkSts;
+
+    volatile bool ContactorK2;
+    volatile bool ContactorK2OpenItlkSts;
+    volatile bool ContactorK2ContactStickingItlkSts;
+
+    volatile bool ContactorK1OverCurrentItlk;
+    volatile bool ContactorK1OverCurrentItlkSts;
 
     volatile bool EmergencyButtonItlk;
     volatile bool EmergencyButtonItlkSts;
 
     volatile bool ReleAuxItlkSts;
-    volatile bool ReleExtItlkSts;
-    volatile bool RelayContactStickingItlkSts;
 
 } resonant_swls_t;
 
@@ -173,18 +185,24 @@ typedef volatile struct
 #define RESONANT_SWLS_OUTPUT_OVERVOLTAGE_ITLK         				0x00000002
 #define RESONANT_SWLS_INPUT_OVERCURRENT_ITLK          				0x00000004
 #define RESONANT_SWLS_OUTPUT_OVERCURRENT_ITLK         				0x00000008
-#define RESONANT_SWLS_HS_TRANSFORMER_OVERTEMP_ITLK       			0x00000010
+#define RESONANT_SWLS_HS_TRANSFORMER_AND_PFC_OVERTEMP_ITLK          0x00000010
 #define RESONANT_SWLS_INDUC_OUTPUT_OVERTEMP_ITLK      				0x00000020
-#define RESONANT_SWLS_HS_DIODE_ONE_OVERTEMP_ITLK        			0x00000040
-#define RESONANT_SWLS_HS_DIODE_TWO_OVERTEMP_ITLK         			0x00000080
+#define RESONANT_SWLS_HS_DIODES_OVERTEMP_ITLK                       0x00000040
+#define RESONANT_SWLS_HS_CLAMP_OVERTEMP_ITLK                        0x00000080
 #define RESONANT_SWLS_DRIVER_MOSFETS_AND_AUX_OVERVOLTAGE_ITLK   	0x00000100
 #define RESONANT_SWLS_DRIVER1_MOSFETS_OVERCURRENT_ITLK				0x00000200
-#define RESONANT_SWLS_AUX_SUPPLY_OVERCURRENT_ITLK          			0x00000400
-#define RESONANT_SWLS_GROUND_LKG_ITLK                     		 	0x00000800
-#define RESONANT_SWLS_BOARD_IIB_OVERTEMP_ITLK         				0x00001000
-#define RESONANT_SWLS_BOARD_IIB_OVERHUMIDITY_ITLK     				0x00002000
-#define RESONANT_SWLS_RELAY_CONTACT_STICKING_ITLK     				0x00004000
-#define RESONANT_SWLS_EMERGENCY_BUTTON_ITLK                			0x00008000
+#define RESONANT_SWLS_DRIVER_FLAG_HS_ERROR_ITLK                     0x00000400
+#define RESONANT_SWLS_DRIVER_FLAG_LS_ERROR_ITLK                     0x00000800
+#define RESONANT_SWLS_AUX_SUPPLY_OVERCURRENT_ITLK          			0x00001000
+#define RESONANT_SWLS_GROUND_LKG_ITLK                     		 	0x00002000
+#define RESONANT_SWLS_BOARD_IIB_OVERTEMP_ITLK         				0x00004000
+#define RESONANT_SWLS_BOARD_IIB_OVERHUMIDITY_ITLK     				0x00008000
+#define RESONANT_SWLS_CONTACTOR_K1_OVER_CURRENT_ITLK                0x00010000
+#define RESONANT_SWLS_CONTACTOR_K1_OPEN_ITLK                        0x00020000
+#define RESONANT_SWLS_CONTACTOR_K1_CONTACT_STICKING_ITLK            0x00040000
+#define RESONANT_SWLS_CONTACTOR_K2_OPEN_ITLK                        0x00080000
+#define RESONANT_SWLS_CONTACTOR_K2_CONTACT_STICKING_ITLK            0x00100000
+#define RESONANT_SWLS_EMERGENCY_BUTTON_ITLK                			0x00200000
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -192,10 +210,10 @@ typedef volatile struct
 #define RESONANT_SWLS_OUTPUT_OVERVOLTAGE_ALM          				0x00000002
 #define RESONANT_SWLS_INPUT_OVERCURRENT_ALM               			0x00000004
 #define RESONANT_SWLS_OUTPUT_OVERCURRENT_ALM        				0x00000008
-#define RESONANT_SWLS_HS_TRANSFORMER_OVERTEMP_ALM         			0x00000010
+#define RESONANT_SWLS_HS_TRANSFORMER_AND_PFC_OVERTEMP_ALM           0x00000010
 #define RESONANT_SWLS_INDUC_OUTPUT_OVERTEMP_ALM           			0x00000020
-#define RESONANT_SWLS_HS_DIODE_ONE_OVERTEMP_ALM          			0x00000040
-#define RESONANT_SWLS_HS_DIODE_TWO_OVERTEMP_ALM         			0x00000080
+#define RESONANT_SWLS_HS_DIODES_OVERTEMP_ALM                        0x00000040
+#define RESONANT_SWLS_HS_CLAMP_OVERTEMP_ALM                         0x00000080
 #define RESONANT_SWLS_DRIVER_MOSFETS_AND_AUX_OVERVOLTAGE_ALM		0x00000100
 #define RESONANT_SWLS_DRIVER1_MOSFETS_OVERCURRENT_ALM      			0x00000200
 #define RESONANT_SWLS_AUX_SUPPLY_OVERCURRENT_ALM           			0x00000400

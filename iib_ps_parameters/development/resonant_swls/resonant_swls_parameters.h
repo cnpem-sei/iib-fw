@@ -38,17 +38,17 @@
 #define RESONANT_SWLS_GROUND_LEAKAGE_ALM_LIM              				0.450
 #define RESONANT_SWLS_GROUND_LEAKAGE_ITLK_LIM             				0.475
 
-#define RESONANT_SWLS_HS_TRANSFORMER_OVERTEMP_ALM_LIM					50.0
-#define RESONANT_SWLS_HS_TRANSFORMER_OVERTEMP_ITLK_LIM					60.0
+#define RESONANT_SWLS_HS_TRANSFORMER_AND_PFC_OVERTEMP_ALM_LIM			50.0
+#define RESONANT_SWLS_HS_TRANSFORMER_AND_PFC_OVERTEMP_ITLK_LIM			60.0
 
 #define RESONANT_SWLS_INDUC_OUTPUT_OVERTEMP_ALM_LIM        				50.0
 #define RESONANT_SWLS_INDUC_OUTPUT_OVERTEMP_ITLK_LIM       				60.0
 
-#define RESONANT_SWLS_HS_DIODE_ONE_OVERTEMP_ALM_LIM		        		60.0
-#define RESONANT_SWLS_HS_DIODE_ONE_OVERTEMP_ITLK_LIM       				70.0
+#define RESONANT_SWLS_HS_DIODES_OVERTEMP_ALM_LIM		        		60.0
+#define RESONANT_SWLS_HS_DIODES_OVERTEMP_ITLK_LIM       				70.0
 
-#define RESONANT_SWLS_HS_DIODE_TWO_OVERTEMP_ALM_LIM        				60.0
-#define RESONANT_SWLS_HS_DIODE_TWO_OVERTEMP_ITLK_LIM       				70.0
+#define RESONANT_SWLS_HS_CLAMP_OVERTEMP_ALM_LIM        				    50.0
+#define RESONANT_SWLS_HS_CLAMP_OVERTEMP_ITLK_LIM       				    60.0
 
 #define RESONANT_SWLS_DRIVER_MOSFETS_AND_AUX_OVERVOLTAGE_ALM_LIM 		16.0
 #define RESONANT_SWLS_DRIVER_MOSFETS_AND_AUX_OVERVOLTAGE_ITLK_LIM  		17.0
@@ -199,12 +199,12 @@
 #define Gpdi2Enable                             				OFF
 #define Gpdi3Enable                             				OFF
 #define Gpdi4Enable                             				OFF
-#define Gpdi5Enable                             				ON  // Status Relay
-#define Gpdi6Enable                             				ON  // Emergency Button
-#define Gpdi7Enable                             				OFF
-#define Gpdi8Enable                             				OFF
-#define Gpdi9Enable                             				OFF
-#define Gpdi10Enable                            				OFF
+#define Gpdi5Enable                             				ON  // Emergency Button
+#define Gpdi6Enable                             				ON  // Contactor K1 Over Current
+#define Gpdi7Enable                             				ON  // Status Driver FlagHS
+#define Gpdi8Enable                             				ON  // Status Driver FlagLS
+#define Gpdi9Enable                             				ON  // Status Contactor K1
+#define Gpdi10Enable                            				ON  // Status Contactor K2
 #define Gpdi11Enable                            				OFF
 #define Gpdi12Enable                            				OFF
 
@@ -222,7 +222,7 @@
 //ReleAux and ReleExtItlk configuration
 
 #define ReleAuxEnable                           				ON
-#define ReleExtItlkEnable                       				ON
+#define ReleExtItlkEnable                       				OFF
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
